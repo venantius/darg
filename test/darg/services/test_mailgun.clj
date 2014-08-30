@@ -2,31 +2,20 @@
   (:require [clojure.test :refer :all]
             [darg.services.mailgun :as mailgun]))
 
-(def test-message
+(def test-text-message
   {:from "test@darg.io"
    :to "demo@darg.io"
    :subject "Hi!"
    :text "This is a test"})
 
-(def test-message2
+(def test-html-message
   {:from "test@darg.io"
    :to "demo@darg.io"
    :subject "Hi!"
    :html "<html>This is a test</html>"})
 
-;; Events API tests
-
-(deftest get-events-works
-  (is (mailgun/get-events)))
-
 ;; Messages API tests
 
 (deftest send-message-works
-  (is (mailgun/send-message test-message))
-  (is (mailgun/send-message test-message2)))
-
-(deftest we-can-use-a-key-from-events-to-get-a-single-message
-  (is (= 0 1)))
-
-(deftest delete-message-works
-  (is (= 0 1)))
+  (is (mailgun/send-message test-text-message))
+  (is (mailgun/send-message test-html-message)))
