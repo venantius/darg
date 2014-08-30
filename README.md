@@ -2,6 +2,13 @@
 
 A Clojure clone of iDoneThis, designed to be better (and cheaper!) in all regards.
 
+## Development Setup
+
+1. `brew install postgres; initdb; createdb darg` ;; this probably doesn't work like this 
+2  `brew install leiningen`
+3. `git clone git@github.com:ursacorp/darg.git`
+4. `lein deps`
+
 ## Usage
 
 `lein run` to start a server running on localhost:8080

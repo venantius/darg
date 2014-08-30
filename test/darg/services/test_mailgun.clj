@@ -25,5 +25,8 @@
   (is (mailgun/send-message test-message))
   (is (mailgun/send-message test-message2)))
 
+(deftest we-can-use-a-key-from-events-to-get-a-single-message
+  (is (= 0 1)))
+
 (deftest delete-message-works
-  (is (= 1 1)))
+  (is (= 0 1)))
