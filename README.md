@@ -1,14 +1,11 @@
 # darg
 
-A Clojure library designed to ... well, that part is up to you.
+A Clojure clone of iDoneThis, designed to be better (and cheaper!) in all regards.
 
 ## Usage
 
-FIXME
+`lein run` to start a server running on localhost:8080
 
 ## License
 
-Copyright © 2014 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Copyright © 2014 UrsaCorp. All rights reserved.
