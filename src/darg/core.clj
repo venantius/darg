@@ -1,11 +1,11 @@
 (ns darg.core
   (:gen-class) ;; need this for the main method
-  (:require [ring.adapter.jetty :as ring]))
+  (:require [compojure.core :refer [defroutes GET]]
+            [ring.adapter.jetty :as ring]))
 
-(defn handler [request]
-  {:status 200
-   :headers {"Content-Type" "text/html"}
-   :body "Hello, world!"})
+(defroutes routes
+  (GET "/" [] "<h2>Hello World</h2>"))
 
 (defn -main []
-  (ring/run-jetty handler {:port 8080}))
+  (ring/run-jetty #'routes {:port 8080
+                            :join? false}))
