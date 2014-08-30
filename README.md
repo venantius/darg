@@ -1,4 +1,4 @@
-# darg
+# Darg
 
 A Clojure clone of iDoneThis, designed to be better (and cheaper!) in all regards.
 
@@ -8,9 +8,12 @@ A Clojure clone of iDoneThis, designed to be better (and cheaper!) in all regard
 
 ## Deployment
 
-We're deploying to Heroku. 
-App URL: http://darg.herokuapp.com/
-Git URL: git@heroku.com:darg.git
+We're deploying to Heroku. At the moment CircleCI is configured to automatically deploy to Heroku on a successful build.
+
+App URL: `http://darg.herokuapp.com/`
+
+Git URL: `git@heroku.com:darg.git`
+
 Do the following to set up the app for local development: `git clone git@heroku.com:darg.git -o heroku`
 
 ## License
