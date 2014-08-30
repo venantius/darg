@@ -14,7 +14,7 @@ App URL: `http://darg.herokuapp.com/`
 
 Git URL: `git@heroku.com:darg.git`
 
-Do the following to set up the app for local development: `git clone git@heroku.com:darg.git -o heroku`
+Do the following to set up the app for local development: `git remote add heroku git@heroku.com:darg.git`
 
 ## License
 
