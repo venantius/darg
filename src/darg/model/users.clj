@@ -1,4 +1,4 @@
-(ns darg.model.user
+(ns darg.model.users
   (:use korma.core))
 
 (declare users)
