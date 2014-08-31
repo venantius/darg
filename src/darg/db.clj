@@ -8,6 +8,7 @@
 (def datasource
   (datasource-from-url dburi))
 
+;; This is used for Lobos only.
 (def dargdb
   (assoc (parse-url dburi)
          :subprotocol "postgresql"
