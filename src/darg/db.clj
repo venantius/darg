@@ -14,7 +14,5 @@
          :subprotocol "postgresql"
          :subname "darg"))
 
-(println dburi)
-
 (when (nil? @korma.db/_default)
   (korma.db/default-connection {:pool {:datasource datasource}}))

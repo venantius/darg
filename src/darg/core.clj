@@ -9,6 +9,6 @@
   (GET "/" [] "<h2>Hello World</h2>"))
 
 (defn -main []
-  (lobos/migrate)
+  ;; (lobos/migrate) ; This makes Heroku very sad
   (ring/run-jetty #'routes {:port (Integer. (or (System/getenv "PORT") "8080"))
                             :join? false}))

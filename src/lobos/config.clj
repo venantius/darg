@@ -1,7 +1,7 @@
 (ns lobos.config
-  (:require [darg.db])
+  (:require [darg.db]
+            [lobos.connectivity :as lobos])
   (:refer-clojure
-    :exclude [alter drop bigint boolean char double float time])
-  (use (lobos connectivity)))
+    :exclude [alter drop bigint boolean char double float time]))
 
-(open-global darg.db/dargdb)
+(lobos/open-global darg.db/dargdb)
