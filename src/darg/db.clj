@@ -1,5 +1,5 @@
 (ns darg.db
-  (:require [clojurewerkz.urly.core :as urly])
+  (:require [uri.core :as uri])
   (:use korma.db
         clj-bonecp-url.core))
 
@@ -12,7 +12,7 @@
 (defn build-subname
   "I hate everything"
   [dburi]
-  (let [uri-map (urly/as-map dburi)
+  (let [uri-map (uri/uri->map (uri/make dburi))
         host (if (= "127.0.0.1" (:host uri-map))
                     "localhost"
                     (:host uri-map))
