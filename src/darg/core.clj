@@ -1,5 +1,5 @@
 (ns darg.core
-  (:gen-class) ;; need this for the main method
+  (:gen-class)
   (:require [compojure.core :refer [defroutes GET POST]]
             [compojure.route :as route]
             [compojure.handler :as handler]
