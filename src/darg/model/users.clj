@@ -5,5 +5,4 @@
 (defentity users
   (pk :id)
   (table :users)
-  (database db)
   )
