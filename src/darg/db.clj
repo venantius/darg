@@ -10,6 +10,7 @@
 
 ;; This is used for Lobos only.
 (def dargdb
+  (println dburi)
   (assoc (parse-url dburi)
          :subprotocol "postgresql"
          :subname "darg"))
