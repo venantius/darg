@@ -3,7 +3,7 @@
         clj-bonecp-url.core))
 
 (def dburi (or (System/getenv "DATABASE_URL")
-               "postgres://user:pass@localhost:5432/darg"))
+               "postgres://dev@localhost:5432/darg"))
 
 (def datasource
   (datasource-from-url dburi))
