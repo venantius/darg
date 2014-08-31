@@ -17,7 +17,7 @@
                  [lobos "1.0.0-beta3"]
                  [clj-bonecp-url "0.1.1"]
                  [org.slf4j/slf4j-nop "1.7.2"]
-                 [org.postgresql/postgresql "9.2-1002-jdbc4"]
+                 [org.postgresql/postgresql "9.2-1004-jdbc4"]
 
 
                  ;; webserver
