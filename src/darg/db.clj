@@ -13,7 +13,9 @@
   "I hate everything"
   [dburi]
   (let [uri-map (urly/as-map dburi)
-        host (:host uri-map)
+        host (if (= "127.0.0.1" (:host uri-map))
+                    "localhost"
+                    (:host uri-map))
         port (:port uri-map)
         path (:path uri-map)]
     (clojure.string/join ["//" host ":" port path])))
