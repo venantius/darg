@@ -2,12 +2,11 @@
   (:require [darg.db])
   (:refer-clojure
     :exclude [alter drop bigint boolean char double float time])
-  (:use (lobos [migration :only [defmigration]] core schema)))
+  (:use (lobos [migration :only [defmigration]] core schema
+               config)))
 
 ;; NOTE: Found this a handy reference on Lobos
 ;; http://vijaykiran.com/2012/01/web-application-development-with-clojure-part-2/
-
-(def dargdb darg.db/dargdb)
 
 (defmigration add-users-table
   (up [] (create
