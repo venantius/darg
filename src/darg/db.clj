@@ -25,6 +25,7 @@
   (assoc (parse-url dburi)
          :subprotocol "postgresql"
          :subname (build-subname dburi)))
+(println "DATABASE_CREDENTIALS" dargdb)
 
 (when (nil? @korma.db/_default)
   (korma.db/default-connection {:pool {:datasource datasource}}))
