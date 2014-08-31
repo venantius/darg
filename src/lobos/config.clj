@@ -5,4 +5,5 @@
     :exclude [alter drop bigint boolean char double float time]))
 
 (println darg.db/dargdb)
+(println (System/getenv "DATABASE_URL"))
 (lobos/open-global darg.db/dargdb)
