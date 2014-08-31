@@ -4,7 +4,11 @@ A Clojure clone of iDoneThis, designed to be better (and cheaper!) in all regard
 
 ## Development Setup
 
+### Postgres
 1. `brew install postgres; initdb; createdb darg` ;; this probably doesn't work like this 
+2. `createuser dev -s` ;; dev superuser for local development
+
+### Leiningen
 2  `brew install leiningen`
 3. `git clone git@github.com:ursacorp/darg.git`
 4. `lein deps`
