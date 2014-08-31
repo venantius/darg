@@ -8,6 +8,7 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
 
                  [cheshire "5.3.1"]
+                 [clojurewerkz/urly "1.0.0"]
                  [clj-http "1.0.0"]
 
                  ;; services / integrations
