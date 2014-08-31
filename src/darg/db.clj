@@ -10,10 +10,11 @@
 
 ;; This is used for Lobos only.
 (def dargdb
-  (println dburi)
   (assoc (parse-url dburi)
          :subprotocol "postgresql"
          :subname "darg"))
+
+(println dburi)
 
 (when (nil? @korma.db/_default)
   (korma.db/default-connection {:pool {:datasource datasource}}))
