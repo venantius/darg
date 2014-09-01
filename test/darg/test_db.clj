@@ -4,15 +4,15 @@
             [korma.core :refer :all]
             [darg.db :as db]
             [darg.model :refer :all]
+            [lobos.core :as lobos]
+            [lobos.config :as lconfig]
             ))
-(use '[darg.core :only [-main]])
+
+  (lconfig/init)
+  (lobos/migrate)
 
 (deftest darg-db-is-assigned
   (is korma/_default))
-
-(deftest migrate 
-	(darg.core/-main)
-	)
 
 (deftest we-can-insert-into-the-db
 	(insert users (values{:id 99, :email "domo@test.com", :username "arrigato"}))
