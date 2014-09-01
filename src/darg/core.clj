@@ -1,14 +1,14 @@
 (ns darg.core
   (:gen-class)
-  (:use darg.config)
-  (:require [compojure.core :refer [defroutes GET POST]]
+  (:require [clojure.tools.logging :as logging]
+            [compojure.core :refer [defroutes GET POST]]
             [compojure.route :as route]
             [compojure.handler :as handler]
-            [clojure.tools.logging :as logging]
-            [ring.adapter.jetty :as ring]
+            [darg.api.v1 :as api]
+            [darg.init :as init] ;; needs to be imported before the jetty adapter
             [lobos.core :as lobos]
             [lobos.config :as lconfig]
-            [darg.api.v1 :as api]))
+            [ring.adapter.jetty :as ring]))
 
 (defroutes routes
   (GET "/" [] "<h2>Hello World</h2>")
@@ -17,8 +17,6 @@
 (def app (-> routes handler/site))
 
 (defn -main []
-  (lconfig/init)
-  (lobos/migrate)
-  (logging/info "Info thing goes here at startup")
+  (init/configure)
   (ring/run-jetty #'app {:port (Integer. (or (System/getenv "PORT") "8080"))
                          :join? false}))
