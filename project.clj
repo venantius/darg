@@ -13,10 +13,7 @@
                  ;; logging
                  [org.clojure/tools.logging "0.3.0"]
                  [clj-logging-config "1.9.12"]
-                 [log4j/log4j "1.2.17" :exclusions [javax.mail/mail
-                                                    javax.jms/jms
-                                                    com.sun.jdmk/jmxtools
-                                                    com.sun.jmx/jmxri]]
+                 [log4j/log4j "1.2.17"]
                  [org.slf4j/slf4j-log4j12 "1.7.1"]
 
                  ;; HTTP client helpers
@@ -27,9 +24,9 @@
                  [abengoa/clj-stripe "1.0.4"]
 
                  ;; db
-                 [korma "0.3.0"]
+                 [korma "0.4.0"]
+                 [org.clojure/java.jdbc "0.3.5"] ;; specific for korma
                  [lobos "1.0.0-beta3"]
-                 [clj-bonecp-url "0.1.1"]
                  [uri "1.1.0"]
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]
 

@@ -1,5 +1,6 @@
 (ns darg.init
-  (:require [darg.logging :as logging]
+  (:require [darg.db :as db]
+            [darg.logging :as logging]
             [lobos.config :as lconfig]
             [lobos.core :as lobos]))
 
@@ -14,4 +15,6 @@
   (logging/set-logging-defaults)
 
   (lconfig/init)
-  (lobos/migrate))
+  (lobos/migrate)
+
+  (db/set-korma-db))
