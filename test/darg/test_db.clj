@@ -8,8 +8,10 @@
             [lobos.config :as lconfig]
             ))
 
-  (lconfig/init)
-  (lobos/migrate)
+  (deftest prepare-database
+  	(lconfig/init)
+  	(lobos/migrate)
+  )
 
 (deftest darg-db-is-assigned
   (is korma/_default))
