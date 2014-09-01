@@ -3,10 +3,16 @@
             [korma.db :as korma]
             [korma.core :refer :all]
             [darg.db :as db]
-            [darg.model :refer :all]))
+            [darg.model :refer :all]
+            ))
+(use '[darg.core :only [-main]])
 
 (deftest darg-db-is-assigned
   (is korma/_default))
+
+(deftest migrate 
+	(darg.core/-main)
+	)
 
 (deftest we-can-insert-into-the-db
 	(insert users (values{:id 99, :email "domo@test.com", :username "arrigato"}))
