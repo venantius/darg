@@ -10,9 +10,4 @@
                 body-html stripped-html attachment-count
                 attachment-x timestamp token signature
                 message-headers content-id-map]} params]
-    (logging/error "FUCK!")
-    (logging/info "BODY" body)
-    (logging/warn "PARAMS" params)
-    (println "BOOBIES" params)
-    "BANGLES!"
-    ))
+    (logging/info "Mailgun Params" params)))

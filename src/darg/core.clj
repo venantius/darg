@@ -9,15 +9,9 @@
             [lobos.config :as lconfig]
             [darg.api.v1 :as api]))
 
-(defn test-response
-  []
-  (println "HAHA!")
-  "Meh")
-
 (defroutes routes
   (GET "/" [] "<h2>Hello World</h2>")
-  (GET "/butts" [] (test-response))
-  (POST "/api/v1/email/" {body :body} (api/parse-forwarded-email body)))
+  (POST "/api/v1/email/" x (api/parse-forwarded-email x)))
 
 (def app (-> routes handler/site))
 
