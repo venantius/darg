@@ -11,4 +11,4 @@ deployment:
 
 test:
   pre:
-     - lein migrate
+     - lein lobos migrate
