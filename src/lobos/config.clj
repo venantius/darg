@@ -1,5 +1,4 @@
 (ns lobos.config
-  (:use darg.logging)
   (:require [darg.db]
             [lobos.connectivity :as lobos])
   (:refer-clojure

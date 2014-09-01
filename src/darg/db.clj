@@ -1,13 +1,11 @@
 (ns darg.db
-  (:require [uri.core :as uri])
-  (:use korma.db
-        clj-bonecp-url.core))
+  (:require [uri.core :as uri]
+            [darg.util :as util])
+  (:use darg.logging
+        korma.db))
 
 (def dburi (or (System/getenv "DATABASE_URL")
                "postgres://dev@localhost:5432/darg"))
-
-(def datasource
-  (datasource-from-url dburi))
 
 (defn build-subname
   "I hate everything"
@@ -22,11 +20,14 @@
 
 ;; This is used for Lobos only.
 (def dargdb
-  (let [parsed-uri (parse-url dburi)]
+  (let [parsed-uri (util/parse-url dburi)]
     (assoc parsed-uri
            :subprotocol "postgresql"
            :subname (build-subname dburi)
            :user (:username parsed-uri))))
 
-(when (nil? @korma.db/_default)
-  (korma.db/default-connection {:pool {:datasource datasource}}))
+(defn set-korma-db
+  "Set Korma's default database connection if it hasn't been set already"
+  []
+  (when (nil? @korma.db/_default)
+    (korma.db/default-connection (util/parse-url dburi))))
