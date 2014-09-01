@@ -4,5 +4,5 @@
 
 ;; http://www.codejava.net/coding/common-conversion-patterns-for-log4js-patternlayout
 (set-loggers! :root {:level :info
-                     :out org.apache.log4j.ConsoleAppender
+                     :out :console
                      :pattern "[%p] %d{MM-dd-yyyy HH:mm:ss} | %m%n"})
