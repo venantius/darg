@@ -4,6 +4,7 @@
   (:require [compojure.core :refer [defroutes GET POST]]
             [compojure.route :as route]
             [compojure.handler :as handler]
+            [clojure.tools.logging :as logging]
             [ring.adapter.jetty :as ring]
             [lobos.core :as lobos]
             [lobos.config :as lconfig]
@@ -18,5 +19,6 @@
 (defn -main []
   (lconfig/init)
   (lobos/migrate)
+  (logging/info "Info thing goes here at startup")
   (ring/run-jetty #'app {:port (Integer. (or (System/getenv "PORT") "8080"))
                          :join? false}))
