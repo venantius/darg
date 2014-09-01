@@ -17,8 +17,9 @@
   )
 
 (deftest we-can-update-in-the-db
-	(update users (set-fields {:username "irrashaimase"}) (where {:id 99}))
-	(is (= "irrashaimase" (:username (first (select users (where {:id 99}))))))
+       (insert users (values {:id 98, :email "domo2@test.com", :username "otakon"}))
+	(update users (set-fields {:username "irrashaimase"}) (where {:id 98}))
+	(is (= "irrashaimase" (:username (first (select users (where {:id 98}))))))
 )
 
 (deftest we-can-delete-from-the-db
