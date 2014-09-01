@@ -13,7 +13,8 @@
            (table :users
                   (integer :id :primary-key)
                   (text :email :unique :not-null)
-                  (test :username :unique :not-null)
+                  (text :username :unique :not-null)
+                  (text :address)
                   (boolean :admin (default false)))))
   (down [] (drop (table :users))))
 
@@ -40,5 +41,6 @@
                   (date :date :not-null)
                   (integer :user-id [:refer :users :id] :not-null)
                   (integer :team-id [:refer :teams :id] :not-null)
+                  (text :title)
                   (text :task))))
   (down [] (drop (table :tasks))))
