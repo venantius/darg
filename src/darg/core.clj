@@ -1,5 +1,6 @@
 (ns darg.core
   (:gen-class)
+  (:use darg.config)
   (:require [compojure.core :refer [defroutes GET POST]]
             [compojure.route :as route]
             [compojure.handler :as handler]
@@ -8,11 +9,15 @@
             [lobos.config :as lconfig]
             [darg.api.v1 :as api]))
 
+(defn test-response
+  []
+  (println "HAHA!")
+  "Meh")
+
 (defroutes routes
   (GET "/" [] "<h2>Hello World</h2>")
-  (POST "/api/v1/email/" {body :body} api/parse-forwarded-email)
-  (route/resources "/")
-  (route/not-found "Not Found!"))
+  (GET "/butts" [] (test-response))
+  (POST "/api/v1/email/" {body :body} (api/parse-forwarded-email body)))
 
 (def app (-> routes handler/site))
 

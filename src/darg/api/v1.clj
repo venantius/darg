@@ -1,4 +1,5 @@
-(ns darg.api.v1)
+(ns darg.api.v1
+  (:require [clojure.tools.logging :as logging]))
 
 (defn parse-forwarded-email
   "Parse an e-mail that has been forwarded by Mailgun"
@@ -9,5 +10,9 @@
                 body-html stripped-html attachment-count
                 attachment-x timestamp token signature
                 message-headers content-id-map]} params]
-    (println "BODY" body)
-    (println "PARAMS" params)))
+    (logging/error "FUCK!")
+    (logging/info "BODY" body)
+    (logging/warn "PARAMS" params)
+    (println "BOOBIES" params)
+    "BANGLES!"
+    ))
