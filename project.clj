@@ -32,6 +32,8 @@
                  [ring/ring-core "1.3.0"]
                  [ring/ring-jetty-adapter "1.3.0"]
                  [compojure "1.1.6"]]
+
+  :plugins [[lein-lobos "1.0.0-beta1"]]
   :profiles {:dev {}}
 
   :main darg.core
