@@ -10,4 +10,5 @@
                 body-html stripped-html attachment-count
                 attachment-x timestamp token signature
                 message-headers content-id-map]} params]
-    (logging/info "Mailgun Params" params)))
+    (logging/info "Mailgun Params" params)
+    (str params)))

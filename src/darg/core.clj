@@ -12,14 +12,22 @@
             [clj-logging-config.log4j :as logging-config]
             ))
 
+(defn test-endpoint []
+  (.write *out*  (str "hello" "world"))
+  "5"
+  )
+
 (defroutes routes
   (GET "/" [] "<h2>Hello World</h2>")
   (GET "/logs" [] (logging-config/get-loggers))
+  (GET "/out" [] (str *out*))
+  (GET "/test" [] (test-endpoint))
   (POST "/api/v1/email/" x (api/parse-forwarded-email x)))
 
 (def app (-> routes handler/site))
 
 (defn -main []
   (init/configure)
+  (println "This is a test during launch")
   (ring/run-jetty #'app {:port (Integer. (or (System/getenv "PORT") "8080"))
                          :join? false}))
