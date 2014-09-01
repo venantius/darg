@@ -12,6 +12,7 @@
                  [org.clojure/tools.logging "0.3.0"]
                  [clj-logging-config "1.9.12"]
                  [log4j/log4j "1.2.17"]
+                 [org.slf4j/slf4j-log4j12 "1.7.1"]
 
                  ;; HTTP client helpers
                  [cheshire "5.3.1"]
