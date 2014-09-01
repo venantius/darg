@@ -7,7 +7,7 @@
   "Set the logging level for the application root"
   []
   (set-loggers! :root {:level :info
-                       :out :console
+                       :out *out*
                        :pattern "[%p] %d{MM-dd-yyyy HH:mm:ss} | %m%n"}))
 
 (set-logging-defaults)
