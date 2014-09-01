@@ -8,10 +8,13 @@
             [darg.init :as init] ;; needs to be imported before the jetty adapter
             [lobos.core :as lobos]
             [lobos.config :as lconfig]
-            [ring.adapter.jetty :as ring]))
+            [ring.adapter.jetty :as ring]
+            [clj-logging-config.log4j :as logging-config]
+            ))
 
 (defroutes routes
   (GET "/" [] "<h2>Hello World</h2>")
+  (GET "/logs" [] (logging-config/get-loggers))
   (POST "/api/v1/email/" x (api/parse-forwarded-email x)))
 
 (def app (-> routes handler/site))
