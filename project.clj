@@ -1,10 +1,11 @@
 (defproject darg "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :main darg.core
+  :description "Simple Accomplishment Tracking for Teams"
   :min-lein-version "2.0.0"
-  :url "http://example.com/FIXME"
-  :license {:name "Eclipse Public License"
+  :url "http://darg.io"
+
+  :license {:name "Eclipse Public License" ;; should change this
             :url "http://www.eclipse.org/legal/epl-v10.html"}
+
   :dependencies [[org.clojure/clojure "1.6.0"]
 
                  [com.cemerick/drawbridge "0.0.6"] ;; not currently implemented
@@ -32,9 +33,14 @@
                  [uri "1.1.0"]
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]
 
-
                  ;; webserver
                  [ring/ring-core "1.3.0"]
                  [ring/ring-jetty-adapter "1.3.0"]
-                 [compojure "1.1.6"]
-                 ])
+                 [compojure "1.1.6"]]
+  :profiles {:dev {}}
+
+  :main darg.core
+  :aot [darg.core]
+  :uberjar-name "darg-0.1.jar"
+  )
+
