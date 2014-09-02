@@ -6,28 +6,23 @@
             [compojure.handler :as handler]
             [darg.api.v1 :as api]
             [darg.init :as init] ;; needs to be imported before the jetty adapter
+            [darg.middleware :as middleware]
             [lobos.core :as lobos]
             [lobos.config :as lconfig]
             [ring.adapter.jetty :as ring]
-            [clj-logging-config.log4j :as logging-config]
-            ))
+            [clj-logging-config.log4j :as logging-config]))
 
-(defn test-endpoint []
-  (.write *out*  (str "hello" "world"))
-  "5"
-  )
-
+;; Pay attention to trailing slashes - right now the only thing that should end in a
+;; slash is the root.
 (defroutes routes
   (GET "/" [] "<h2>Hello World</h2>")
-  (GET "/logs" [] (logging-config/get-loggers))
-  (GET "/out" [] (str *out*))
-  (GET "/test" [] (test-endpoint))
-  (POST "/api/v1/email/" x (api/parse-forwarded-email x)))
+  (POST "/api/v1/email" x (api/parse-forwarded-email x)))
 
-(def app (-> routes handler/site))
+(def app (-> routes
+             handler/site
+             middleware/ignore-trailing-slash))
 
 (defn -main []
   (init/configure)
-  (println "This is a test during launch")
   (ring/run-jetty #'app {:port (Integer. (or (System/getenv "PORT") "8080"))
                          :join? false}))
