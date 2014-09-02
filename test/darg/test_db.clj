@@ -25,7 +25,7 @@
 )
 
 (deftest we-can-delete-from-the-db
-	(db/set-kroma-db)
+	(db/set-korma-db)
 	(delete users (where{:id 99}))
 	(is (= nil (first (select users (where {:id 99})))))
 )
