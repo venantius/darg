@@ -1,0 +1,22 @@
+users:
+  - id: 1
+  email: 'savelago@gmail.com'
+  username: 'yawn'
+  admin: t
+  phone-number: '(404) 555-2291'
+  - id: 2
+  email: 'domo@darg.io'
+  username: 'domodomo'
+  admin: f
+  - id: 3
+  email: 'arrigato@darg.io'
+  username: 'arrigato'
+  admin: f
+teams:
+  - id: 1
+  name: 'Darg'
+  - id: 2
+  name: 'Robotocorp'
+  - id: 3
+  name: 'Jake n Cake'
+
