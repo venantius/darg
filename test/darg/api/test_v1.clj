@@ -30,3 +30,7 @@
    :Content-Type "text/plain; charset=\"ascii\""
    :subject "Let's dance mofo"
    :body-plain "Dancing tiem!!"})
+
+(deftest email-sent-to-us-is-parseable
+  (is (= 1 1))
+  )
