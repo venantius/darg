@@ -23,7 +23,6 @@
 
                  ;; db
                  [korma "0.4.0"]
-                 [org.clojure/java.jdbc "0.3.5"] ;; specific for korma
                  [lobos "1.0.0-beta3"]
                  [uri "1.1.0"]
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]

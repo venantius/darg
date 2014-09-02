@@ -19,6 +19,7 @@
     (clojure.string/join ["//" host ":" port path])))
 
 ;; This is used for Lobos only.
+;; dissoc username
 (def dargdb
   (let [parsed-uri (util/parse-url dburi)]
     (assoc parsed-uri
@@ -30,4 +31,4 @@
   "Set Korma's default database connection if it hasn't been set already"
   []
   (when (nil? @korma.db/_default)
-    (korma.db/default-connection (util/parse-url dburi))))
+    (korma.db/default-connection dargdb)))
