@@ -13,6 +13,8 @@
            (table :users
                   (integer :id :primary-key)
                   (text :email :unique :not-null)
+                  (text :username :unique :not-null)
+                  (text :address)
                   (boolean :admin (default false)))))
   (down [] (drop (table :users))))
 
@@ -23,12 +25,13 @@
                   (text :name))))
   (down [] (drop (table :teams))))
 
-(defmigration add-team-admins-table
+(defmigration add-team-users-table
   (up [] (create
-           (table :team_admins
+           (table :team_users
                   (integer :id :primary-key)
                   (integer :user-id [:refer :users :id] :not-null)
-                  (integer :team-id [:refer :teams :id] :not-null))))
+                  (integer :team-id [:refer :teams :id] :not-null)
+                  (boolean :admin (default false)))))
   (down [] (drop (table :team-admins))))
 
 (defmigration add-tasks-table
@@ -38,5 +41,14 @@
                   (date :date :not-null)
                   (integer :user-id [:refer :users :id] :not-null)
                   (integer :team-id [:refer :teams :id] :not-null)
+                  (text :title)
                   (text :task))))
   (down [] (drop (table :tasks))))
+
+(defmigration add-phonenumber-to-users
+  (up [] (alter :add
+      (table :users
+        (text :phone-number))))
+  (down [] (alter :drop 
+    (table :users
+      (column :phone-number)))))
