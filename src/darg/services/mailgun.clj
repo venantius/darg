@@ -9,19 +9,7 @@
 (def -post-message-endpoint
   (clojure.string/join [-base-url "/" settings/domain "/messages"]))
 
-;; events API
-
-;; Leaving this in here for future reference
-(defn filter-events-for-test-messages
-  "Filter our events for only messages from test@darg.io"
-  [events-response]
-  (let [events (:items events-response)]
-    (filter #(= "test@darg.io"
-                (-> % :message :headers :from))
-            events)))
-
 ;; messages API
-
 (defn send-message
   "Send an e-mail"
   [{:keys [from to subject text html]}]
