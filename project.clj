@@ -24,8 +24,10 @@
                  ;; db
                  [korma "0.4.0"]
                  [lobos "1.0.0-beta3"]
+                 [org.clojure/java.jdbc "0.3.5"]
                  [uri "1.1.0"]
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]
+                 [clj-yaml "0.3.1"]
 
                  ;; webserver
                  [ring "1.3.1"]
@@ -41,6 +43,7 @@
              :test {:env {:database-url "postgres://localhost:5432/darg_test"}}
              :staging {:env {}}
              :production {:env {}}}
+  :resource-paths ["src/resources"]
 
   :main darg.core
   :uberjar-name "darg-0.1.jar"
