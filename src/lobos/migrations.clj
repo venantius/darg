@@ -44,4 +44,3 @@
                   (integer :team-id [:refer :teams :id] :not-null)
                   (text :task))))
   (down [] (drop (table :tasks))))
-
