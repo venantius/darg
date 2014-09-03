@@ -27,6 +27,8 @@
                  ;; db
                  [korma "0.4.0"]
                  [lobos "1.0.0-beta3"]
+                 [org.clojure/java.jdbc "0.3.5"]
+                 [uri "1.1.0"]
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]
 
                  ;; webserver
@@ -37,6 +39,7 @@
                  ;; testing
                  [ring-mock "0.1.5"]]
 
+
   :plugins [[lein-lobos "1.0.0-beta1"]
             [lein-environ "1.0.0"]]
   :profiles {:dev {:env {:database-url "postgres://localhost:5432/darg"
@@ -45,6 +48,7 @@
                           :darg-environment :test}}
              :staging {:env {:darg-environment :staging}}
              :production {:env {:darg-environment :production}}}
+  :resource-paths ["src/resources"]
 
   :main darg.core
   :aot [clojure.tools.logging.impl]
