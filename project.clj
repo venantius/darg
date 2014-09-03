@@ -30,6 +30,7 @@
                  [org.clojure/java.jdbc "0.3.5"]
                  [uri "1.1.0"]
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]
+                 [clj-yaml "0.3.1"]
 
                  ;; webserver
                  [ring "1.3.1"]
@@ -46,7 +47,6 @@
              :staging {:env {}}
              :production {:env {}}}
   :resource-paths ["src/resources"]
-
   :main darg.core
   :aot [clojure.tools.logging.impl]
   )
