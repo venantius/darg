@@ -42,6 +42,5 @@
                   (date :date :not-null)
                   (integer :user-id [:refer :users :id] :not-null)
                   (integer :team-id [:refer :teams :id] :not-null)
-                  (text :title)
                   (text :task))))
   (down [] (drop (table :tasks))))
