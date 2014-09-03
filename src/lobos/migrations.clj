@@ -41,14 +41,5 @@
                   (date :date :not-null)
                   (integer :user-id [:refer :users :id] :not-null)
                   (integer :team-id [:refer :teams :id] :not-null)
-                  (text :title)
                   (text :task))))
   (down [] (drop (table :tasks))))
-
-(defmigration add-phonenumber-to-users
-  (up [] (alter :add
-      (table :users
-        (text :phone-number))))
-  (down [] (alter :drop 
-    (table :users
-      (column :phone-number)))))
