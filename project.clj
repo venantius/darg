@@ -39,7 +39,6 @@
                  ;; testing
                  [ring-mock "0.1.5"]]
 
-
   :plugins [[lein-lobos "1.0.0-beta1"]
             [lein-environ "1.0.0"]]
   :profiles {:dev {:env {:database-url "postgres://localhost:5432/darg"
