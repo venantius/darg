@@ -9,6 +9,7 @@ teams:
   - 
     id: 3
     name: "Jake n Cake"
+<<<<<<< HEAD
 
 users: 
   - 
@@ -25,4 +26,22 @@ users:
     id: 3
     admin: True
     email: arrigato@darg.io
+=======
+users: 
+  - 
+    admin: t
+    email: savelago@gmail.com
+    id: 1
+    phone-number: "(404) 555-2291"
+    username: yawn
+  - 
+    admin: f
+    email: domo@darg.io
+    id: 2
+    username: domodomo
+  - 
+    admin: f
+    email: arrigato@darg.io
+    id: 3
+>>>>>>> FETCH_HEAD
     username: arrigato
