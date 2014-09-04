@@ -9,20 +9,20 @@ teams:
   - 
     id: 3
     name: "Jake n Cake"
+
 users: 
   - 
-    admin: t
-    email: savelago@gmail.com
     id: 1
-    phone-number: "(404) 555-2291"
+    admin: True
+    email: savelago@gmail.com
     username: yawn
   - 
-    admin: f
-    email: domo@darg.io
     id: 2
+    admin: False
+    email: domo@darg.io
     username: domodomo
   - 
-    admin: f
-    email: arrigato@darg.io
     id: 3
+    admin: True
+    email: arrigato@darg.io
     username: arrigato
