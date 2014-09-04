@@ -11,7 +11,8 @@
 
 (defn reset-db
 "Resets db: Deletes all data, applies fixtures"
-	(doseq [x table-list] (
+  ((
+	(for [x table-list] (
 		(delete x) 
 		(insert x (values ((keyword (:name x)) (parse-string(slurp fixture-yaml))))))
 	)
