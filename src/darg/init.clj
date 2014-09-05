@@ -16,5 +16,5 @@
 
   (lconfig/init)
   (lobos/migrate)
-
-  (db/set-korma-db))
+  (db/set-korma-db)
+  )
