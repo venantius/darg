@@ -43,7 +43,6 @@
              :production {:env {}}}
 
   :main darg.core
-  :aot [darg.core]
   :uberjar-name "darg-0.1.jar"
   )
 
