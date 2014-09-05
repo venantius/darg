@@ -11,7 +11,7 @@
   (let [names (if (empty? names)
                 (mig/pending-migrations db-spec sname)
                 names)]
-    (mig/do-migrations db-spec sname :up names :silent)))
+    (mig/do-migrations db-spec sname :up names )))
 
 (lobos/defcommand silent-rollback
   "Replace lobos/rollback with silent on"
@@ -27,7 +27,7 @@
                   (= arg :all) migs
                   :else args))
                :else args)]
-    (mig/do-migrations db-spec sname :down names :silent)))
+    (mig/do-migrations db-spec sname :down names )))
 
 (defn -db-fixtures
   "Migrates the database using Lobos, and inserts fixture data into
