@@ -7,8 +7,3 @@ deployment:
     branch: master
     heroku:
       appname: darg
-
-
-test:
-  pre:
-     - lein lobos migrate
