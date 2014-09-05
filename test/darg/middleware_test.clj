@@ -1,4 +1,4 @@
-(ns darg.test-middleware
+(ns darg.middleware-test
   (:require [clojure.test :refer :all]
             [compojure.core :refer [defroutes GET POST]]
             [compojure.handler :as handler]

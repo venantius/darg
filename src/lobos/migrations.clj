@@ -32,7 +32,7 @@
                   (integer :user-id [:refer :users :id] :not-null)
                   (integer :team-id [:refer :teams :id] :not-null)
                   (boolean :admin (default false)))))
-  (down [] (drop (table :team-admins))))
+  (down [] (drop (table :team_users))))
 
 (defmigration add-tasks-table
   (up [] (create
@@ -49,6 +49,6 @@
   (up [] (alter :add
       (table :users
         (text :phone-number))))
-  (down [] (alter :drop 
+  (down [] (alter :drop
     (table :users
       (column :phone-number)))))

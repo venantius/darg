@@ -1,4 +1,4 @@
-(ns darg.api.test-v1
+(ns darg.api.v1-test
   (:require [clojure.test :refer :all]))
 
 (def test-received-params

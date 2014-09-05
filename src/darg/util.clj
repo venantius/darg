@@ -28,13 +28,16 @@
             adapter (subproto-map scheme scheme)
             classname (classname-map scheme)]
         (merge {:classname classname
+                :host host
+                :port port
+                :path path
                 :adapter  (keyword adapter)
                 :jdbc-url (str "jdbc:" adapter "://" host
                                (when port ":") (or port "") path
                                (when query "?") (or query ""))}
                (if-let [user-info (.getUserInfo ^URI url)]
                  (let [[un pw] (str/split user-info #":")]
-                   {:username un
+                   {:user un
                     :password pw}))))
       ;; String
       (string? url)
@@ -50,3 +53,12 @@
                    (pr-str url))))))
   ([url]
      (parse-url url default-subproto-map default-classname-map)))
+
+(defn build-db-subname
+  "Given a database URI, assembles the :subname that Lobos requires"
+  [dburi]
+  (let [uri-map (parse-url dburi)
+        host (if (= "127.0.0.1" (:host uri-map))
+                    "localhost"
+                    (:host uri-map))]
+    (clojure.string/join ["//" host ":" (:port uri-map) (:path uri-map)])))

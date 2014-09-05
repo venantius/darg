@@ -3,6 +3,7 @@
   :min-lein-version "2.0.0"
   :url "http://darg.io"
 
+  :injections  [(require 'darg.injections.logging)]
   :dependencies [[org.clojure/clojure "1.6.0"]
 
                  ;; util
@@ -36,10 +37,10 @@
 
   :plugins [[lein-lobos "1.0.0-beta1"]
             [lein-environ "1.0.0"]]
-  :profiles {:dev {}
-             :test {}
-             :staging {}
-             :production {}}
+  :profiles {:dev {:env {:database-url "postgres://localhost:5432/darg"}}
+             :test {:env {:database-url "postgres://localhost:5432/darg_test"}}
+             :staging {:env {}}
+             :production {:env {}}}
 
   :main darg.core
   :aot [darg.core]

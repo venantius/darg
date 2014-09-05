@@ -4,7 +4,7 @@
   (:refer-clojure
     :exclude [alter drop bigint boolean char double float time]))
 
-(def db darg.db/dargdb)
+(def db darg.db/database-map)
 
 (defn init []
   (lobos/open-global db))

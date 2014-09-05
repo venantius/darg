@@ -12,9 +12,6 @@
    - Configure Lobos to target the right database
    - Run any migrations, as needed"
   []
-  (logging/set-logging-defaults)
-
   (lconfig/init)
   (lobos/migrate)
-  (db/set-korma-db)
   )
