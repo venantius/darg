@@ -9,5 +9,3 @@
   (set-loggers! :root {:level :info
                        :out :console
                        :pattern "[%p] %d{MM-dd-yyyy HH:mm:ss} | %m%n"}))
-
-(set-logging-defaults)

@@ -3,15 +3,14 @@
   :min-lein-version "2.0.0"
   :url "http://darg.io"
 
-  :license {:name "Eclipse Public License" ;; should change this
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
-
   :dependencies [[org.clojure/clojure "1.6.0"]
+
+                 ;; util
+                 [environ "1.0.0"]
 
                  ;; logging
                  [org.clojure/tools.logging "0.3.0"]
                  [clj-logging-config "1.9.12"]
-                 [log4j/log4j "1.2.17"]
                  [org.slf4j/slf4j-log4j12 "1.7.1"]
 
                  ;; HTTP client helpers
@@ -28,15 +27,19 @@
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]
 
                  ;; webserver
-                 [ring/ring-core "1.3.0"]
-                 [ring/ring-jetty-adapter "1.3.0"]
-                 [compojure "1.1.6"]
+                 [ring "1.3.1"]
+                 [compojure "1.1.8"]
+                 [http-kit "2.0.0"]
 
                  ;; testing
                  [ring-mock "0.1.5"]]
 
-  :plugins [[lein-lobos "1.0.0-beta1"]]
-  :profiles {:dev {}}
+  :plugins [[lein-lobos "1.0.0-beta1"]
+            [lein-environ "1.0.0"]]
+  :profiles {:dev {}
+             :test {}
+             :staging {}
+             :production {}}
 
   :main darg.core
   :aot [darg.core]
