@@ -15,6 +15,7 @@
                   (text :email :unique :not-null)
                   (text :username :unique :not-null)
                   (text :address)
+                  (text :phone-number)
                   (boolean :admin (default false)))))
   (down [] (drop (table :users))))
 
@@ -44,11 +45,3 @@
                   (text :title)
                   (text :task))))
   (down [] (drop (table :tasks))))
-
-(defmigration add-phonenumber-to-users
-  (up [] (alter :add
-      (table :users
-        (text :phone-number))))
-  (down [] (alter :drop
-    (table :users
-      (column :phone-number)))))

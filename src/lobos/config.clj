@@ -7,4 +7,5 @@
 (def db darg.db/database-map)
 
 (defn init []
-  (lobos/open-global db))
+  (if (empty? @lobos.connectivity/global-connections)
+    (lobos/open-global db)))
