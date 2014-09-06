@@ -22,6 +22,6 @@
 
 (defn -main []
   (init/configure)
-  (let [port (Integer. (or (System/getenv "PORT") "8080"))] ;; TODO replace with env
+  (let [port (Integer. (or (System/getenv "PORT") "6000"))] ;; TODO replace with env
     (logging/info "Starting Darg server on port" port)
     (server/run-server #'app {:port port :join? false})))
