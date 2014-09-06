@@ -23,6 +23,6 @@
       (into (empty [])
         (for [task tasks] 
           { :user-id (get-userid "email" (:from email))
-            :team-email (get-teamid "email" (:recipient email))
+            :team-id (get-teamid "email" (:recipient email))
             :date (sql-date-from-subject (:subject email)) 
             :task task}))))
