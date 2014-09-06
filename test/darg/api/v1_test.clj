@@ -36,6 +36,7 @@
    :body-plain "Dancing tiem!!
    Aint it a thing?"})
 
+
 (def test-received-params-2
   ;; this is an example of what we actually get forwarded to us from Mailgun
   {:stripped-html "<p>Dancing tiem!!</p><p>Aint it a thing?</p><p>Reticulated Splines</p>"
