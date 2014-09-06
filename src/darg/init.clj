@@ -13,5 +13,4 @@
    - Run any migrations, as needed"
   []
   (lconfig/init)
-  (lobos/migrate)
-  )
+  (lobos/migrate))

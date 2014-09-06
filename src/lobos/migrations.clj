@@ -11,7 +11,7 @@
 (defmigration add-users-table
   (up [] (create
            (table :users
-                  (integer :id :primary-key)
+                  (integer :id :auto-inc :primary-key)
                   (text :email :unique :not-null)
                   (text :username :unique :not-null)
                   (text :address)
@@ -22,14 +22,14 @@
 (defmigration add-teams-table
   (up [] (create
            (table :teams
-                  (integer :id :primary-key)
+                  (integer :id :auto-inc :primary-key)
                   (text :name))))
   (down [] (drop (table :teams))))
 
 (defmigration add-team-users-table
   (up [] (create
            (table :team_users
-                  (integer :id :primary-key)
+                  (integer :id :auto-inc :primary-key)
                   (integer :user-id [:refer :users :id] :not-null)
                   (integer :team-id [:refer :teams :id] :not-null)
                   (boolean :admin (default false)))))
@@ -38,7 +38,7 @@
 (defmigration add-tasks-table
   (up [] (create
            (table :tasks
-                  (integer :id :primary-key)
+                  (integer :id :auto-inc :primary-key)
                   (date :date :not-null)
                   (integer :user-id [:refer :users :id] :not-null)
                   (integer :team-id [:refer :teams :id] :not-null)

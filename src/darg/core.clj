@@ -3,6 +3,7 @@
   (:require [compojure.core :refer [defroutes GET POST]]
             [compojure.route :as route]
             [compojure.handler :as handler]
+            [clojure.tools.logging :as logging]
             [darg.api.v1 :as api]
             [darg.init :as init]
             [darg.middleware :as middleware]
@@ -21,5 +22,6 @@
 
 (defn -main []
   (init/configure)
-  (server/run-server #'app {:port (Integer. (or (System/getenv "PORT") "8080"))
-                            :join? false}))
+  (let [port (Integer. (or (System/getenv "PORT") "8080"))] ;; TODO replace with env
+    (logging/info "Starting Darg server on port" port)
+    (server/run-server #'app {:port port :join? false})))

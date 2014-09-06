@@ -3,8 +3,11 @@
   :min-lein-version "2.0.0"
   :url "http://darg.io"
 
-  :injections  [(require 'darg.injections.logging)]
+  :injections  [(require 'darg.injections)]
   :dependencies [[org.clojure/clojure "1.6.0"]
+
+                 ;; repl
+                 [org.clojure/tools.nrepl "0.2.5"]
 
                  ;; util
                  [environ "1.0.0"]
@@ -24,7 +27,6 @@
                  ;; db
                  [korma "0.4.0"]
                  [lobos "1.0.0-beta3"]
-                 [uri "1.1.0"]
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]
 
                  ;; webserver
