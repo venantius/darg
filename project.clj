@@ -29,7 +29,6 @@
                  [korma "0.4.0"]
                  [lobos "1.0.0-beta3"]
                  [org.clojure/java.jdbc "0.3.5"]
-                 [uri "1.1.0"]
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]
 
                  ;; webserver
