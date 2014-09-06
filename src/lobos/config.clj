@@ -4,8 +4,6 @@
   (:refer-clojure
     :exclude [alter drop bigint boolean char double float time]))
 
-(def db darg.db/database-map)
-
 (defn init []
   (if (empty? @lobos.connectivity/global-connections)
-    (lobos/open-global db)))
+    (lobos/open-global (darg.db/construct-db-map))))

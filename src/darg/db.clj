@@ -4,13 +4,14 @@
             [environ.core :refer [env]]
             [korma.db :as korma]))
 
-(defn get-dburi
+(defn construct-db-map
   []
-  (env :database-url))
-
-(def database-map
-  (assoc (util/parse-url (get-dburi))
+  (assoc (util/parse-url (env :database-url))
          :subprotocol "postgresql"
-         :subname (util/build-db-subname (get-dburi))))
+         :subname (util/build-db-subname (env :database-url))))
 
-(korma/defdb korma-db (korma/postgres database-map))
+(defn set-korma-db
+  "Set Korma's default database connection if it hasn't been set already"
+  []
+  (when (nil? @korma.db/_default)
+    (korma.db/default-connection (construct-db-map))))
