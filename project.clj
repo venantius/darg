@@ -47,7 +47,7 @@
              :production {:env {:darg-environment :production}}}
 
   :main darg.core
-  :aot [darg.core
-        clojure.tools.logging.impl]
+  :aot [clojure.tools.logging.impl
+        darg.core]
   )
 
