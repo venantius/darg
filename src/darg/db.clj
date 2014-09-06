@@ -4,11 +4,13 @@
             [environ.core :refer [env]]
             [korma.db :as korma]))
 
-(def dburi (env :database-url))
+(defn get-dburi
+  []
+  (env :database-url))
 
 (def database-map
-  (assoc (util/parse-url dburi)
+  (assoc (util/parse-url (get-dburi))
          :subprotocol "postgresql"
-         :subname (util/build-db-subname dburi)))
+         :subname (util/build-db-subname (get-dburi))))
 
 (korma/defdb korma-db (korma/postgres database-map))
