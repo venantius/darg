@@ -44,6 +44,7 @@
              :test {:env {:database-url "postgres://localhost:5432/darg_test"}}
              :staging {:env {}}
              :production {:env {}}}
+  :repl-options {:port 6001}
   :main darg.core
   )
 
