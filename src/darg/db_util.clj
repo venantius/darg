@@ -15,8 +15,8 @@
 	(select teams (fields :id) (where {(keyword field) value}))
 )
 
-(defn add-teammembers
-	[teamid [userids]]
-	(doseq [id (userids)]
-		(insert team_users (values {:team-id teamid :user-id id})))
-	)
+; (defn add-teammembers
+; 	[teamid [userids]]
+; 	(doseq [id (userids)]
+; 		(insert team_users (values {:team-id teamid :user-id id})))
+; 	)
