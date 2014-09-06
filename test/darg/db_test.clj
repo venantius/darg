@@ -6,8 +6,7 @@
             [darg.db :as db]
             [darg.model :refer :all]
             [lobos.core :as lobos]
-            [lobos.config :as lconfig]
-            ))
+            [lobos.config :as lconfig]))
 
 (with-db-fixtures)
 
@@ -15,7 +14,7 @@
   (is korma/_default))
 
 (deftest we-can-insert-into-the-db
-	(insert users (values {:id 4, :email "haruko@test.com", :username "haruko"}))
+	(insert users (values {:email "haruko@test.com", :username "haruko"}))
 	(is (= "haruko" (:username (first (select users (where {:id 4})))))))
 
 (deftest we-can-update-in-the-db
