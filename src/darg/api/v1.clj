@@ -1,5 +1,5 @@
 (ns darg.api.v1
-  (:require [clojure.tools.logging :as logging]))
+  (:require [taoensso.timbre :as logging]))
 
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email

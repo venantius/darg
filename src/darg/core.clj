@@ -1,14 +1,12 @@
 (ns darg.core
-  (:gen-class)
   (:require [compojure.core :refer [defroutes GET POST]]
             [compojure.route :as route]
             [compojure.handler :as handler]
-            [clojure.tools.logging :as logging]
             [darg.api.v1 :as api]
             [darg.init :as init]
             [darg.middleware :as middleware]
             [org.httpkit.server :as server]
-            ))
+            [taoensso.timbre :as logging]))
 
 ;; Pay attention to trailing slashes - right now the only thing that should end in a
 ;; slash is the root.
