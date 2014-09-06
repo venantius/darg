@@ -3,7 +3,6 @@
   :min-lein-version "2.0.0"
   :url "http://darg.io"
 
-  :injections  [(require 'darg.injections)]
   :dependencies [[org.clojure/clojure "1.6.0"]
 
                  ;; repl
@@ -14,7 +13,7 @@
                  [clj-time "0.8.0"]
 
                  ;; logging
-                 [com.taoensso/timbre "3.3.0" :exclusions [org.clojure/clojure]]
+                 [org.clojure/tools.logging "0.3.0"]
                  [clj-logging-config "1.9.12"]
                  [org.slf4j/slf4j-log4j12 "1.7.1"]
 
