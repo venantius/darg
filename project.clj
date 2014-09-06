@@ -26,7 +26,7 @@
 
                  ;; db
                  [korma "0.4.0"]
-                 [lobos "1.0.0-beta1"]
+                 [lobos "1.0.0-beta3"]
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]
 
                  ;; webserver
@@ -47,7 +47,6 @@
              :production {:env {:darg-environment :production}}}
 
   :main darg.core
-  :aot [clojure.tools.logging.impl
-        darg.core]
+  :aot [clojure.tools.logging.impl]
   )
 
