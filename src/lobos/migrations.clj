@@ -14,8 +14,6 @@
                   (integer :id :auto-inc :primary-key)
                   (text :email :unique :not-null)
                   (text :username :unique :not-null)
-                  (text :address)
-                  (text :phone-number)
                   (boolean :admin (default false)))))
   (down [] (drop (table :users))))
 
@@ -42,6 +40,6 @@
                   (date :date :not-null)
                   (integer :user-id [:refer :users :id] :not-null)
                   (integer :team-id [:refer :teams :id] :not-null)
-                  (text :title)
                   (text :task))))
   (down [] (drop (table :tasks))))
+;)
