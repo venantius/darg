@@ -13,7 +13,7 @@
                  [environ "1.0.0"]
 
                  ;; logging
-                 [org.clojure/tools.logging "0.3.0"]
+                 [com.taoensso/timbre "3.3.0" :exclusions [org.clojure/clojure]]
                  [clj-logging-config "1.9.12"]
                  [org.slf4j/slf4j-log4j12 "1.7.1"]
 
@@ -47,6 +47,5 @@
              :production {:env {:darg-environment :production}}}
 
   :main darg.core
-  :aot [clojure.tools.logging.impl]
   )
 
