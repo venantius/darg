@@ -14,8 +14,8 @@
   (is korma/_default))
 
 (deftest we-can-insert-into-the-db
-	(insert users (values {:email "haruko@test.com", :username "haruko"}))
-	(is (= "haruko" (:username (first (select users (where {:id 4})))))))
+	(insert users (values {:id 5, :email "haruko@test.com", :username "haruko"}))
+	(is (= "haruko" (:username (first (select users (where {:id 5})))))))
 
 (deftest we-can-update-in-the-db
   (update users (set-fields {:username "irrashaimase"}) (where {:id 3}))
