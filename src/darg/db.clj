@@ -1,10 +1,8 @@
 (ns darg.db
-  (:require [uri.core :as uri]
-            [darg.util :as util]
+  (:use darg.logging)
+  (:require [darg.util :as util]
             [environ.core :refer [env]]
-            )
-  (:use darg.logging
-        korma.db))
+            [korma.db :as korma]))
 
 (def dburi (env :database-url))
 
@@ -13,4 +11,4 @@
          :subprotocol "postgresql"
          :subname (util/build-db-subname dburi)))
 
-(defdb korma-db (postgres database-map))
+(korma/defdb korma-db (korma/postgres database-map))
