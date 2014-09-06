@@ -11,6 +11,7 @@
 
                  ;; util
                  [environ "1.0.0"]
+                 [clj-time "0.8.0"]
 
                  ;; logging
                  [org.clojure/tools.logging "0.3.0"]
@@ -27,6 +28,8 @@
                  ;; db
                  [korma "0.4.0"]
                  [lobos "1.0.0-beta3"]
+                 [org.clojure/java.jdbc "0.3.5"]
+                 [uri "1.1.0"]
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]
 
                  ;; webserver
@@ -39,13 +42,11 @@
 
   :plugins [[lein-lobos "1.0.0-beta1"]
             [lein-environ "1.0.0"]]
-  :profiles {:dev {:env {:database-url "postgres://localhost:5432/darg"
-                         :darg-environment :development}}
-             :test {:env {:database-url "postgres://localhost:5432/darg_test"
-                          :darg-environment :test}}
-             :staging {:env {:darg-environment :staging}}
-             :production {:env {:darg-environment :production}}}
-
+  :profiles {:dev {:env {:database-url "postgres://localhost:5432/darg"}}
+             :test {:env {:database-url "postgres://localhost:5432/darg_test"}}
+             :staging {:env {}}
+             :production {:env {}}}
+  :resource-paths ["src/darg/resources"]
   :main darg.core
   :aot [clojure.tools.logging.impl]
   )
