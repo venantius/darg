@@ -26,5 +26,3 @@
 		(f/formatter "MMM dd YYY") 
 		(re-find (re-pattern "(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\s\\d{2}\\s\\d{4}") string))))
 
-
-
