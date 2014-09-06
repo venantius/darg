@@ -33,6 +33,7 @@
   "Migrates the database using Lobos, and inserts fixture data into
   the database before each test"
   [test-fn]
+  (silent-rollback :all)
   (silent-migrate)
   (db/insert-db-fixture-data)
   (test-fn)
