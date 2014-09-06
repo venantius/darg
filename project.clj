@@ -11,7 +11,7 @@
 
                  ;; util
                  [environ "1.0.0"]
-                 [clj-time "0.9.0-beta1"]
+                 [clj-time "0.8.0"]
 
                  ;; logging
                  [org.clojure/tools.logging "0.3.0"]
@@ -31,7 +31,6 @@
                  [org.clojure/java.jdbc "0.3.5"]
                  [uri "1.1.0"]
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]
-                 [clj-yaml "0.3.1"]
 
                  ;; webserver
                  [ring "1.3.1"]
