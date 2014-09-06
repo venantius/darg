@@ -40,10 +40,13 @@
 
   :plugins [[lein-lobos "1.0.0-beta1"]
             [lein-environ "1.0.0"]]
-  :profiles {:dev {:env {:database-url "postgres://localhost:5432/darg"}}
-             :test {:env {:database-url "postgres://localhost:5432/darg_test"}}
-             :staging {:env {}}
-             :production {:env {}}}
+  :profiles {:dev {:env {:darg-environment :dev
+                         :database-url "postgres://localhost:5432/darg"
+                         :reload-db-on-run true}}
+             :test {:env {:darg-environment :test
+                          :database-url "postgres://localhost:5432/darg_test"}}
+             :staging {:env {:darg-environment :staging}}
+             :production {:env {:darg-environment :production}}}
   :repl-options {:port 6001}
   :main darg.core
   )
