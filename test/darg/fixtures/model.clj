@@ -7,31 +7,39 @@
 
 
 (def users-test-1
-	[  { :email "savelago@gmail.com"
+	[  { :id 1
+	     :email "savelago@gmail.com"
 	     :username "yawn"
 	     :admin true } 
-	   { :email "domo@darg.io"
+	   { :id 2
+	     :email "domo@darg.io"
 	     :username "domodomo"
 	     :admin false}
-	   { :email "arrigato@darg.io"
+	   { :id 3
+	     :email "arrigato@darg.io"
 	     :username "arrigato"
 	     :admin false 
 	   }]
 )
 
 (def team-test-1
-	[ {  :name "darg"}
-	  {  :name "Robtocorp"}
-	  {  :name "Jake n Cake"} ]
+	[ {  :id 1
+	     :name "darg"}
+	  {  :id 2
+	     :name "Robtocorp"}
+	  {  :id 3
+	     :name "Jake n Cake"} ]
 )
 
 (def task-test-1
-	[{ :date (t/today) 
+	[{ :id 1
+               :date [<= (sqlfn now)]
                :user-id 1
                :team-id 1
                :task "Do a good deed everyday"
              }
-             { :date (t/today)
+             {  :id 2
+                :date [<= (sqlfn now)]
                 :user-id 2
                 :team-id 2
                 :task "Destroy all humans"
