@@ -1,0 +1,27 @@
+--- 
+teams: 
+  - 
+    id: 1
+    name: Darg
+  - 
+    id: 2
+    name: Robotocorp
+  - 
+    id: 3
+    name: "Jake n Cake"
+users: 
+  - 
+    admin: t
+    email: savelago@gmail.com
+    id: 1
+    username: yawn
+  - 
+    admin: f
+    email: domo@darg.io
+    id: 2
+    username: domodomo
+  - 
+    admin: f
+    email: arrigato@darg.io
+    id: 3
+    username: arrigato
