@@ -18,9 +18,6 @@
 	[field value]
 	(select teams (fields :id) (where {(keyword field) value})))
 
-; (defn date-extract
-; 	[string]
-; 	(re-find (re-pattern "(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\s\\d{2}\\s\\d{4}") string))
 
 (defn sql-date-from-subject
 	"Used to extract dates from the subject line. Assumes date format like 'Sept 23 2013' "
@@ -31,8 +28,3 @@
 
 
 
-; (defn add-teammembers
-; 	[teamid [userids]]
-; 	(doseq [id (userids)]
-; 		(insert team_users (values {:team-id teamid :user-id id})))
-; 	)

@@ -6,6 +6,7 @@
 (defn insert-user-fixture-data
 	[fixture]
 	(insert users (values fixture)))
+)
 
 (defn insert-team-fixture-data
 	[fixture]
