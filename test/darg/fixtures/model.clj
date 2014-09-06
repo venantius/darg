@@ -6,15 +6,22 @@
             [darg.db-util :as db-util]))
 
 (def users-test-1
-  [{:email "savelago@gmail.com"
-    :username "yawn"
-    :admin true }
-   {:email "domo@darg.io"
-    :username "domodomo"
-    :admin false}
-   {:email "arrigato@darg.io"
-    :username "arrigato"
-    :admin false}])
+	[  { :id 1
+	     :email "savelago@gmail.com"
+	     :username "yawn"
+	     :admin true} 
+	   { :id 2
+	     :email "domo@darg.io"
+	     :username "domodomo"
+	     :admin false}
+	   { :id 3
+	     :email "arrigato@darg.io"
+	     :username "arrigato"
+	     :admin false}
+	   { :id 4
+	     :email "butts@darg.io"
+	     :username "Mr. Butts"
+	     :admin false }])
 
 (def team-test-1
   [{:name "darg"}
