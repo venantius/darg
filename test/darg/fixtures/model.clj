@@ -11,7 +11,7 @@
 	[  { :id 1
 	     :email "savelago@gmail.com"
 	     :username "yawn"
-	     :admin true } 
+	     :admin true} 
 	   { :id 2
 	     :email "domo@darg.io"
 	     :username "domodomo"
@@ -19,8 +19,11 @@
 	   { :id 3
 	     :email "arrigato@darg.io"
 	     :username "arrigato"
-	     :admin false 
-	   }]
+	     :admin false}
+	   { :id 4
+	     :email "butts@darg.io"
+	     :username "Mr. Butts"
+	     :admin false }]
 )
 
 (def team-test-1
