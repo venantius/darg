@@ -2,18 +2,10 @@
 	(:use [korma.core :as korma]
 		  [darg.model :refer :all]
 		  )
-	(:require [clj-yaml.core :as yaml]
+	(:require 
 		   [darg.fixtures.model :as fmodel])
 	)
 
-; (def fixture-yaml "./src/darg/resources/fixtures.yml")
-; (def table-list [users teams tasks])
-; ; (def fixture-map (yaml/parse-string (slurp fixture-yaml)))
-
-; (defn insert-db-fixture-data 
-; 	[]
-; 	(for [x table-list] 
-; 		(insert x (values ((keyword (:name x)) fixture-map)))))
 
 (defn insert-user-fixture-data
 	[fixture]
