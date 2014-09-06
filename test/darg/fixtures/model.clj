@@ -33,13 +33,11 @@
 
 (def task-test-1
 	[{ :id 1
-               :date [<= (sqlfn now)]
                :user-id 1
                :team-id 1
                :task "Do a good deed everyday"
              }
              {  :id 2
-                :date [<= (sqlfn now)]
                 :user-id 2
                 :team-id 2
                 :task "Destroy all humans"
