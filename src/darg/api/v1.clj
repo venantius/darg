@@ -18,7 +18,7 @@
 
 (defn email-parse
   [email]
-    (let [tasks (clojure.string/split (:body-plain email) #"/n   ")]
-      (into (empty parsed-email)
+    (let [tasks (clojure.string/split (:body-plain email) #"\n   ")]
+      (into (empty [])
         (for [task tasks] 
           {:user-email (:from email) :team-email (:recipient email) :date (:subject email) :task task}))))
