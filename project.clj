@@ -46,7 +46,6 @@
              :test {:env {:database-url "postgres://localhost:5432/darg_test"}}
              :staging {:env {}}
              :production {:env {}}}
-  :resource-paths ["src/darg/resources"]
   :main darg.core
   :aot [clojure.tools.logging.impl]
   )
