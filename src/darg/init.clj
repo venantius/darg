@@ -13,4 +13,6 @@
    - Run any migrations, as needed"
   []
   (lconfig/init)
-  (lobos/migrate))
+  (lobos/migrate)
+  (db/set-korma-db)
+  )
