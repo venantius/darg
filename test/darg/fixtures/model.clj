@@ -24,9 +24,16 @@
 	     :admin false }])
 
 (def team-test-1
-  [{:name "darg"}
-   {:name "Robtocorp"}
-   {:name "Jake n Cake"}])
+	[ {  :id 1
+	     :name "darg"
+	     :email "test.api@darg.io"}
+	  {  :id 2
+	     :name "Robtocorp"
+	     :email "rcorp@darg.io"}
+	  {  :id 3
+	     :name "Jake n Cake"
+	     :email "jncake@darg.io"} ]
+)
 
 (def task-test-1
   [{:date (c/to-sql-date (t/date-time 2012 2 16))
