@@ -13,9 +13,9 @@
 
 (defentity team-users
   (table :team_users)
-  (has-many teams {:FK :team_id})
-  (has-many users {:FK :user_id}))
+  (has-many teams {:FK :teams_id})
+  (has-many users {:FK :users_id}))
 
 (defentity tasks
-  (belongs-to users {:FK :user_id})
-  (belongs-to teams {:FK :team_id}))
+  (belongs-to users {:FK :users_id})
+  (belongs-to teams {:FK :teams_id}))

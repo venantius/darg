@@ -1,6 +1,9 @@
 (ns darg.api.v1
   (:require [clojure.tools.logging :as logging]
             [clojure.string :as str :only [split trim]]
+            [darg.model.tasks :as tasks]
+            [darg.model.users :as users]
+            [darg.model.teams :as teams]
             [darg.db-util :as dbutil]
             [darg.services.stormpath :as stormpath]
             [korma.core :refer :all]
@@ -70,10 +73,10 @@
 (defn parse-email
   [email]
   (let [tasks (map str/trim (str/split (:body-plain email) #"\n"))
-     email-metadata {:user-id (dbutil/get-userid "email" (:from email))
-                     :team-id (dbutil/get-teamid "email" (:recipient email))
+     email-metadata {:user-id (users/get-userid {:email (:from email)})
+                     :team-id (teams/get-teamid {:email (:recipient email)}) 
                      :date (dbutil/sql-date-from-subject (:subject email))}
-     build-task-map-and-insert (fn [task] (dbutil/insert-task (assoc email-metadata (:task task))))]
+     build-task-map-and-insert (fn [task] (tasks/create-task (assoc email-metadata (:task task))))]
     "Insert each task into the tasks db"
     (map build-task-map-and-insert [tasks])))
 

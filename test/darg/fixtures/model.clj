@@ -44,14 +44,14 @@
 
 (def test-task-1
   {:date (c/to-sql-date (t/date-time 2012 2 16))
-   :user_id 1
-   :team_id 1
+   :users_id 1
+   :teams_id 1
    :task "Do a good deed everyday"})
 
 (def test-task-2
   {:date (c/to-sql-date (t/date-time 2012 2 16))
-   :user_id 2
-   :team_id 2
+   :users_id 2
+   :teams_id 2
    :task "Destroy all humans"})
 
 (def test-tasks
