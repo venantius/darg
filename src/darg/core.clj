@@ -8,13 +8,16 @@
             [darg.api.v1 :as api]
             [darg.init :as init]
             [darg.middleware :as middleware]
-            [org.httpkit.server :as server]))
+            [org.httpkit.server :as server]
+            [ring.util.response :as resp]))
 
 ;; Pay attention to trailing slashes - right now the only thing that should end in a
 ;; slash is the root.
 (defroutes routes
-  (GET "/" [] "<h2>Hello World</h2>")
-  (POST "/api/v1/email" x (api/parse-forwarded-email x)))
+  (GET "/" [] (resp/resource-response "index.html" {:root "public"}))
+  (POST "/api/v1/email" x (api/parse-forwarded-email x))
+  (route/resources "/")
+  )
 
 (def app (-> routes
              handler/site
@@ -22,6 +25,6 @@
 
 (defn -main []
   (init/configure)
-  (let [port (Integer. (or (System/getenv "PORT") "6000"))] ;; TODO replace with env
+  (let [port (Integer. (or (System/getenv "PORT") "8080"))] ;; TODO replace with env
     (logging/info "Starting Darg server on port" port)
     (server/run-server #'app {:port port :join? false})))
