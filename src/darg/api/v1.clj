@@ -1,6 +1,6 @@
 (ns darg.api.v1
   (:require [clojure.tools.logging :as logging]
-    [clojure.string :only [split] ]
+    [clojure.string :as str :only [split trim] ]
     [darg.db-util :refer :all]))
 
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
@@ -18,11 +18,13 @@
     (str params)))
 
 (defn parse-email
-  [email]
-    (let [tasks (clojure.string/split (:body-plain email) #"\n   ")]
-      (into (empty [])
-        (for [task tasks] 
-          {:user-id (get-userid "email" (:from email))
-           :team-id (get-teamid "email" (:recipient email))
-           :date (sql-date-from-subject (:subject email)) 
-           :task task}))))
+    [email]
+    (let [tasks (map str/trim (str/split(:body-plain email) #"\n"))
+           email-metadata {:user-id (get-userid "email" (:from email))
+                          :team-id (get-teamid "email" (:recipient email)) 
+                          :date (sql-date-from-subject (:subject email))}
+            insert-task (fn [task] (add-task (assoc email-metadata (:task task))))]
+      "Insert each task into the tasks db"
+      (map insert-task [tasks])))
+
+

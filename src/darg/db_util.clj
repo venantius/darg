@@ -2,8 +2,7 @@
 	(:use [korma.core :as korma]
               [darg.model :refer :all]
               [clj-time.format :as f]
-              [clj-time.coerce :as c]
-              [clj-time.core :as t]))
+              [clj-time.coerce :as c]))
 
 
 (defn get-userid 
@@ -19,6 +18,10 @@
     (select teams 
     	   (fields :id) 
     	   (where {(keyword field) value})))
+
+(defn add-task 
+  [params]
+  (insert tasks (values params)))
 
 (defn sql-date-from-subject
     "Used to extract dates from the subject line. Assumes date format like 'Sept 23 2013' "
