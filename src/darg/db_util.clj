@@ -20,7 +20,7 @@
     	   (fields :id) 
     	   (where {(keyword field) value})))
 
-(defn add-task 
+(defn insert-task
   [params]
   (insert tasks (values params)))
 

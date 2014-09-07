@@ -1,10 +1,10 @@
 (ns darg.api.v1-test
   (:use [darg.fixtures]
-           [korma.core]
-           [darg.model])
+        [korma.core]
+        [darg.model])
   (:require [clojure.test :refer :all]
-                [darg.api.v1 :as api]
-                [darg.db :as db]))
+            [darg.api.v1 :as api]
+            [darg.db :as db]))
 
 (def test-received-params-1
   ;; this is an example of what we actually get forwarded to us from Mailgun
@@ -78,6 +78,7 @@
   (is (api/parse-email test-received-params-2)))
 
 (deftest parsed-email-is-written-to-db
+  (api/parse-email test-received-params-2)
   (is (select tasks (where {:task "Dancing tiem!!"})))
   (is (select tasks (where {:task "Reticulated Splines"}))))
 
