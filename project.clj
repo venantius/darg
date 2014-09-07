@@ -11,6 +11,7 @@
                  ;; util
                  [environ "1.0.0"]
                  [clj-time "0.8.0"]
+                 [slingshot "0.10.3"]
 
                  ;; logging
                  [org.clojure/tools.logging "0.3.0"]

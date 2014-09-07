@@ -13,7 +13,8 @@
            (table :users
                   (integer :id :auto-inc :primary-key)
                   (text :email :unique :not-null)
-                  (text :username :unique :not-null)
+                  (text :first_name)
+                  (text :last_name)
                   (boolean :admin (default false)))))
   (down [] (drop (table :users))))
 
@@ -28,8 +29,8 @@
   (up [] (create
            (table :team_users
                   (integer :id :auto-inc :primary-key)
-                  (integer :user-id [:refer :users :id] :not-null)
-                  (integer :team-id [:refer :teams :id] :not-null)
+                  (integer :user_id [:refer :users :id] :not-null)
+                  (integer :team_id [:refer :teams :id] :not-null)
                   (boolean :admin (default false)))))
   (down [] (drop (table :team_users))))
 
@@ -38,7 +39,7 @@
            (table :tasks
                   (integer :id :auto-inc :primary-key)
                   (date :date :not-null)
-                  (integer :user-id [:refer :users :id] :not-null)
-                  (integer :team-id [:refer :teams :id] :not-null)
+                  (integer :user_id [:refer :users :id] :not-null)
+                  (integer :team_id [:refer :teams :id] :not-null)
                   (text :task))))
   (down [] (drop (table :tasks))))
