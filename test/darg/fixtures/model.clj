@@ -7,13 +7,13 @@
 
 (def users-test-1
   [{:email "savelago@gmail.com"
-    :username "yawn"
+    :first_name "yawn"
     :admin true }
    {:email "domo@darg.io"
-    :username "domodomo"
+    :first_name "domodomo"
     :admin false}
    {:email "arrigato@darg.io"
-    :username "arrigato"
+    :first_name "arrigato"
     :admin false}])
 
 (def team-test-1
@@ -23,11 +23,11 @@
 
 (def task-test-1
   [{:date (c/to-sql-date (t/date-time 2012 2 16))
-    :user-id 1
-    :team-id 1
+    :user_id 1
+    :team_id 1
     :task "Do a good deed everyday"}
    {:date (c/to-sql-date (t/date-time 2012 2 16))
-    :user-id 2
-    :team-id 2
+    :user_id 2
+    :team_id 2
     :task "Destroy all humans"}])
 

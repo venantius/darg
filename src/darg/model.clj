@@ -4,18 +4,18 @@
 (declare users teams tasks)
 
 (defentity users
-	(many-to-many teams :team_users)
-	(has-many tasks)
-	)
+  (has-many tasks)
+  (many-to-many teams :team_users))
 
 (defentity teams
-	(many-to-many users :team_users)
-	(has-many tasks)
-	)
+  (has-many tasks)
+  (many-to-many users :team_users))
+
+(defentity team-users
+  (table :team_users)
+  (has-many teams {:FK :team_id})
+  (has-many users {:FK :user_id}))
 
 (defentity tasks
-	(belongs-to users)
-	(belongs-to teams)
-	)
-
-  
+  (belongs-to users {:FK :user_id})
+  (belongs-to teams {:FK :team_id}))
