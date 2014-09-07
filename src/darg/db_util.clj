@@ -1,6 +1,7 @@
 (ns darg.db-util
 	(:use [korma.core :as korma]
-              [darg.model :refer :all]
+               [darg.model])
+      (:require
               [clj-time.format :as f]
               [clj-time.coerce :as c]))
 
