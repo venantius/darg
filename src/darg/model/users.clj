@@ -47,4 +47,3 @@
   (select db/users 
     (where {:id id})
     (with db/teams)))
-
