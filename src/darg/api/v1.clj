@@ -1,7 +1,9 @@
 (ns darg.api.v1
   (:require [clojure.tools.logging :as logging]
-    [clojure.string :only [split] ]
-    [darg.db-util :refer :all]))
+            [clojure.string :as str :only [split trim] ]
+            [darg.db-util :as dbutil]
+            [korma.core :refer :all]))
+
 
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
@@ -19,10 +21,11 @@
 
 (defn parse-email
   [email]
-    (let [tasks (clojure.string/split (:body-plain email) #"\n   ")]
-      (into (empty [])
-        (for [task tasks] 
-          {:user-id (get-userid "email" (:from email))
-           :team-id (get-teamid "email" (:recipient email))
-           :date (sql-date-from-subject (:subject email)) 
-           :task task}))))
+  (let [tasks (map str/trim (str/split (:body-plain email) #"\n"))
+     email-metadata {:user-id (dbutil/get-userid "email" (:from email))
+                     :team-id (dbutil/get-teamid "email" (:recipient email)) 
+                     :date (dbutil/sql-date-from-subject (:subject email))}
+     build-task-map-and-insert (fn [task] (dbutil/insert-task (assoc email-metadata (:task task))))]
+    "Insert each task into the tasks db"
+    (map build-task-map-and-insert [tasks])))
+

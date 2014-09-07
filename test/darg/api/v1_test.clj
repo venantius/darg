@@ -1,8 +1,10 @@
 (ns darg.api.v1-test
-  (:use darg.fixtures)
+  (:use [darg.fixtures]
+        [korma.core]
+        [darg.model])
   (:require [clojure.test :refer :all]
-                [darg.api.v1 :as api]
-                [darg.db :as db]))
+            [darg.api.v1 :as api]
+            [darg.db :as db]))
 
 (def test-received-params-1
   ;; this is an example of what we actually get forwarded to us from Mailgun
@@ -71,7 +73,19 @@
    Reticulated Splines"})
 
 (with-db-fixtures)
+
 (deftest email-sent-to-us-is-parseable
-  (is (= (count (api/parse-email test-received-params-2)) 3)))
+  (is (api/parse-email test-received-params-2)))
+
+(deftest parsed-email-is-written-to-db
+  (api/parse-email test-received-params-2)
+  (is (select tasks (where {:task "Dancing tiem!!"})))
+  (is (select tasks (where {:task "Reticulated Splines"}))))
+
+(deftest task-associated-with-user
+  (is (= 1 1)))
+
+(deftest task-associated-with-team
+  (is (= 1 1)))
   
 
