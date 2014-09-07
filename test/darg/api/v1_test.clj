@@ -71,6 +71,7 @@
    Reticulated Splines"})
 
 (with-db-fixtures)
+
 (deftest email-sent-to-us-is-parseable
   (is (= (count (api/parse-email test-received-params-2)) 3)))
   
