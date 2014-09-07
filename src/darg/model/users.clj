@@ -2,7 +2,6 @@
   (:require [darg.model :as db]
             [korma.core :refer :all]))
 
-
 ; Create
 
 (defn create-user
