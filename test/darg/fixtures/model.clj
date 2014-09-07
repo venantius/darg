@@ -1,7 +1,7 @@
 (ns darg.fixtures.model
   (:use [korma.core]
-		[clj-time.coerce :as c :only [to-sql-date]]
-            [darg.model])
+        [clj-time.coerce :as c :only [to-sql-date]]
+        [darg.model])
   (:require [clj-time.core :as t]
             [darg.db-util :as db-util]))
 

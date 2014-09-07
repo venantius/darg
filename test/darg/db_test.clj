@@ -1,12 +1,12 @@
 (ns darg.db-test
   (:use darg.fixtures)
   (:require [clojure.test :refer :all]
-                [korma.db :as korma]
-                [korma.core :refer :all]
-                [darg.db :as db]
-                [darg.model :refer :all]
-                [lobos.core :as lobos]
-                [lobos.config :as lconfig]))
+            [korma.db :as korma]
+            [korma.core :refer :all]
+            [darg.db :as db]
+            [darg.model :refer :all]
+            [lobos.core :as lobos]
+            [lobos.config :as lconfig]))
 
 (with-db-fixtures)
 
@@ -15,10 +15,10 @@
 
 (deftest we-can-insert-into-the-db
 	(insert users 
-                (values {:email "haruko@test.com", 
-                              :first_name "haruko"}))
+               (values {:email "haruko@test.com", 
+                        :first_name "haruko"}))
 	(is (select users 
-                      (where {:email "haruko@test.com"}))))
+                   (where {:email "haruko@test.com"}))))
 
 (deftest we-can-update-in-the-db
   (update users 
