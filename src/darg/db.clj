@@ -1,8 +1,8 @@
 (ns darg.db
   (:use darg.logging)
   (:require [darg.util :as util]
-            [environ.core :refer [env]]
-            [korma.db :as korma]))
+                [environ.core :refer [env]]
+                [korma.db :as korma]))
 
 (defn construct-db-map
   []

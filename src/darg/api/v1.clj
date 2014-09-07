@@ -22,7 +22,7 @@
     (let [tasks (clojure.string/split (:body-plain email) #"\n   ")]
       (into (empty [])
         (for [task tasks] 
-          { :user-id (get-userid "email" (:from email))
-            :team-id (get-teamid "email" (:recipient email))
-            :date (sql-date-from-subject (:subject email)) 
-            :task task}))))
+          {:user-id (get-userid "email" (:from email))
+           :team-id (get-teamid "email" (:recipient email))
+           :date (sql-date-from-subject (:subject email)) 
+           :task task}))))
