@@ -26,13 +26,16 @@
    test-user-3])
 
 (def test-team-1
-  {:name "darg"})
+  {:name "darg"
+   :email "test.api@darg.io"})
 
 (def test-team-2
-  {:name "Robtocorp"})
+  {:name "Robtocorp"
+   :email "rcorp@darg.io"})
 
 (def test-team-3
-  {:name "Jake n Cake"})
+  {:name "Jake n Cake"
+   :email "jncake@darg.io"})
 
 (def test-teams
   [test-team-1
