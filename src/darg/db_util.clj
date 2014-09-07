@@ -2,8 +2,7 @@
 	(:use [korma.core :as korma]
               [darg.model :refer :all]
               [clj-time.format :as f]
-              [clj-time.coerce :as c]
-              [clj-time.core :as t]))
+              [clj-time.coerce :as c]))
 
 
 (defn get-userid 
