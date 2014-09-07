@@ -17,6 +17,9 @@
   (clojure.string/join [-base-url "/applications/" -application-id]))
 (def -application-login-endpoint
   (clojure.string/join [-base-url "/applications/" -application-id "/loginAttempts"]))
+(def -application-password-reset-endpoint
+  (clojure.string/join [-base-url "/applications/"
+                        -application-id "/passwordResetTokens"]))
 (def -directory-account-endpoint
   (clojure.string/join [-base-url "/directories/" -directory-id "/accounts"]))
 
@@ -113,3 +116,14 @@
                                  :body body
                                  :accept :json
                                  :content-type :json}))))
+
+(defn reset-account-password
+  "Initiate the account password reset flow"
+  [email]
+  (let [{:keys [api-key secret-key]} settings/stormpath-credentials]
+    (client/post
+      -application-password-reset-endpoint
+      {:basic-auth [api-key secret-key]
+       :body (json/encode {:email email})
+       :accept :json
+       :content-type :json})))
