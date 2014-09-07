@@ -23,7 +23,7 @@
   [params]
   (select db/users (where params)))
 
-(defn get-user-id
+(defn get-userid
   "Find just the user's id based on other information"
   [params]
   (select db/users (fields :id) (where params)))
@@ -41,10 +41,10 @@
   (delete db/users (where params)))
 
 ; User Team Membership
-(defn get-user-teamlist
+(defn get-user-teams
   "Gets the list of teams a user belongs to"
   [id]
   (select db/users 
-    (with db/teams)
-    (where {:id id})))
+    (where {:id id})
+    (with db/teams)))
 
