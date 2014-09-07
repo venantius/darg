@@ -46,8 +46,3 @@
   (select db/teams 
     (where {:id id})
     (with db/users)))
-
-(defn get-team-user-ids
-  [teamid]
-  (map (get-team-users [teamid])))
-
