@@ -28,11 +28,14 @@
 
 (def team-test-1
 	[ {  :id 1
-	     :name "darg"}
+	     :name "darg"
+	     :email "test.api@darg.io"}
 	  {  :id 2
-	     :name "Robtocorp"}
+	     :name "Robtocorp"
+	     :email "rcorp@darg.io"}
 	  {  :id 3
-	     :name "Jake n Cake"} ]
+	     :name "Jake n Cake"
+	     :email "jncake@darg.io"} ]
 )
 
 (def task-test-1

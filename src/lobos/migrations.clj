@@ -21,7 +21,8 @@
   (up [] (create
            (table :teams
                   (integer :id :auto-inc :primary-key)
-                  (text :name))))
+                  (text :name :not-null)
+                  (text :email :not-null :unique))))
   (down [] (drop (table :teams))))
 
 (defmigration add-team-users-table

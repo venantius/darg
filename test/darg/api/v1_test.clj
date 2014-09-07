@@ -1,6 +1,8 @@
 (ns darg.api.v1-test
+  (:use darg.fixtures)
   (:require [clojure.test :refer :all]
-                [darg.api.v1 :as api]))
+                [darg.api.v1 :as api]
+                [darg.db :as db]))
 
 (def test-received-params-1
   ;; this is an example of what we actually get forwarded to us from Mailgun
@@ -67,6 +69,8 @@
    :body-plain "Dancing tiem!!
    Aint it a thing?
    Reticulated Splines"})
+
+(with-db-fixtures)
 
 (deftest email-sent-to-us-is-parseable
   (is (= (count (api/parse-email test-received-params-2)) 3)))
