@@ -43,6 +43,9 @@
         ;Date is within bounds
         }))))
 
+;(defn get-tasks-for-user-in-team
+ ; [userid teamid ])
+
 ;; Team Tasks
 
 (defn get-all-tasks-for-team

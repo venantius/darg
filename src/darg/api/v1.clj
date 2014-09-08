@@ -24,11 +24,11 @@
 
 (defn parse-email
   [email]
-  (let [tasks (map str/trim (str/split (:body-plain email) #"\n"))
-     email-metadata {:user-id (users/get-userid {:email (:from email)})
-                     :team-id (teams/get-teamid {:email (:recipient email)}) 
-                     :date (dbutil/sql-date-from-subject (:subject email))}
-     build-task-map-and-insert (fn [task] (tasks/create-task (assoc email-metadata (:task task))))]
-    "Insert each task into the tasks db"
-    (map build-task-map-and-insert [tasks])))
+  (let [task-list (map str/trim (str/split (:body-plain email) #"\n"))
+     email-metadata {:users_id (users/get-userid {:email (:from email)})
+                     :teams_id (teams/get-teamid {:email (:recipient email)}) 
+                     :date (dbutil/sql-date-from-subject (:subject email))}]
+    (tasks/create-task-list task-list email-metadata)))
 
+
+;build-task-map-and-insert (fn [task] (tasks/create-task (assoc email-metadata (:task task))))
