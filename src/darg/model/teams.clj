@@ -51,4 +51,3 @@
   [teamid]
   (map (get-team-users [teamid])))
 
-(defn get-team-user-emails)
