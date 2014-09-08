@@ -56,7 +56,7 @@
 
 (defn is-user-in-team-v2
   [userid teamid]
-  (if (select db/team_users (where {:users_id userid :teams_id teamid}))))
+  (if (select db/team-users (where {:users_id userid :teams_id teamid})) \t \f))
 
 (defn get-user-teams
   "Gets the list of teams a user belongs to"
