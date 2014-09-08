@@ -26,12 +26,12 @@
 (defn get-userid
   "Find just the user's id based on other information"
   [params]
-  (select db/users (fields :id) (where params)))
+  (:id (first (select db/users (fields :id) (where params)))))
 
 (defn get-user-by-id
   "Find a user in the db based on their unique id"
   [id]
-  (select db/users (where {:id id})))
+  (first (select db/users (where {:id id}))))
 
 ; Destroy
 
@@ -41,6 +41,15 @@
   (delete db/users (where params)))
 
 ; User Team Membership
+
+(defn is-user-in-team
+  [userid teamid]
+  (if (select db/users
+    (where {:id userid})
+    (with db/teams
+      (where {:id teamid})))
+  \t \f))
+
 (defn get-user-teams
   "Gets the list of teams a user belongs to"
   [id]

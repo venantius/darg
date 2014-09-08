@@ -44,7 +44,7 @@
 (def test-received-params-2
   ;; this is an example of what we actually get forwarded to us from Mailgun
   {:stripped-html "<p>Dancing tiem!!</p><p>Aint it a thing?</p><p>Reticulated Splines</p>"
-   :From "butts@darg.io"
+   :From "domo@darg.io"
    :message-headers [["Received", "by luna.mailgun.net with HTTP; Tue, 02 Sep 2014 01:51:29 +0000",]
                      ["Mime-Version", "1.0"],
                      ["Content-Type", "text/plain; charset=\"ascii\""],
@@ -62,9 +62,9 @@
    :Subject "Send in your log for Today: Sep 06 2014"
    :Mime-Version 1.0
    :token "ee55af9ce04725e2b93ca5844b14621ac96de7e9144b21222f"
-   :from "butts@darg.io"
+   :from "domo@darg.io"
    :Received "by luna.mailgun.net with HTTP; Tue, 02 Sep 2014 01:51:29 +0000"
-   :sender "butts@darg.io"
+   :sender "domo@darg.io"
    :Message-Id "<20140902015129.23125.83955@darg.io>"
    :To "test.api@darg.io"
    :Content-Transfer-Encoding "7bit"

@@ -12,19 +12,19 @@
 ; Getters
 
 (defn get-team-by-field
-  "Find a team in the db based on a field + value"
+  "Find a team in the db based on a field + value. Returns a vector containing matching teams as maps"
   [params]
   (select db/teams (where params)))
 
 (defn get-teamid
-  "Find just the team's id based on other information"
+  "Find just the team's id based on other information. Returns just the value"
   [params]
-  (select db/teams (fields :id) (where params)))
+  (:id (first (select db/teams (fields :id) (where params)))))
 
 (defn get-team-by-id
   "Find a team in the db based on their unique id"
   [id]
-  (select db/teams (where {:id id})))
+  (first (select db/teams (where {:id id}))))
 
 ; Update
 
