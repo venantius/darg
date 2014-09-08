@@ -28,7 +28,7 @@
 
 ; Update
 
-(defn update-user
+(defn update-team
   [id params]
   (update db/teams (where {:id id}) (set-fields params)))
 
