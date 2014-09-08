@@ -10,6 +10,10 @@
   [params]
   (insert db/users (values params)))
 
+(defn add-user-to-team
+  [userid teamid]
+  (insert db/team-users (values {:teams_id teamid :users_id userid})))
+
 ; Update
 
 (defn update-user
@@ -42,13 +46,17 @@
 
 ; User Team Membership
 
-(defn is-user-in-team
+(defn is-user-in-team-v1
   [userid teamid]
   (if (select db/users
     (where {:id userid})
     (with db/teams
       (where {:id teamid})))
   \t \f))
+
+(defn is-user-in-team-v2
+  [userid teamid]
+  (if (select db/team_users (where {:users_id userid :teams_id teamid}))))
 
 (defn get-user-teams
   "Gets the list of teams a user belongs to"
