@@ -1,82 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="darg">
   <head>
     <meta charset="utf-8">
-    <title>Darg.io</title>
-    <meta name="description" content="Darg.io"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Darg.io: Accomplishment Tracking for Teams</title>
 
-    <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
-    <!-- Loading Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
 
     <!-- Loading Flat UI -->
-    <link href="css/flat-ui.min.css" rel="stylesheet">
+    <link href="css/flat-ui.css" rel="stylesheet">
     <link href="css/demo.css" rel="stylesheet">
 
-    <!-- favicon -->
     <link rel="shortcut icon" href="images/favicon.ico">
 
   </head>
   <body>
-    <!-- top menu --> 
-
-    <div class="row demo-row">
-      <div class="col-xs-9">
-        <nav class="navbar navbar-inverse navbar-fixed-top navbar-embossed" role="navigation">
-          <div class="container">
-            <div class="collapse navbar-collapse" id="navbar-collapse-01">
-              <ul class="nav navbar-nav navbar-left">
-                <li>
-                  <a href="/">Home</a>
-                </li>
-                <li>
-                  <a href="/features">Features</a>
-                </li>
-                <!-- TODO: Only show this if logged in -->
-                <li class="dropdown">
-                  <a href="/teams" class="dropdown-toggle" data-toggle="dropdown">
-                    Teams 
-                    <b class="caret"></b>
-                  </a>
-                  <span class="dropdown-arrow"></span>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Standard Treasury</a></li>
-                    <li><a href="#">eBay</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </li>
-                <li><a href="#fakelink">About Us</a></li>
-              </ul>
-
-              <!-- TODO: replace this with code that knows whether or not -->
-              <!-- the user is actually logged in. -->
-              <ul class="nav navbar-nav navbar-right">
-                <li>
-                  <form role="search" class="navbar-form navbar-left" action="#">
-                    <div class="form-group">
-                      <input type="text" placeholder="Email" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <input type="password" size="8" placeholder="Password" class="form-control">
-                    </div>
-                    <button class="btn btn-default" type="submit">Login</button>
-                  </form>
-                </li>
-              </ul>
-            </div><!--/.navbar-collapse -->
-          </div>
-        </nav>
-      </div><!-- /.navbar-collapse -->
-    </div>
-    <!-- / top menu --> 
-
-
     <div class="container">
       <div class="demo-headline">
         <h1 class="demo-logo">
           <div class="logo"></div>
-          Darg.io
+          Flat UI
           <small>Free User Interface Kit</small>
         </h1>
       </div> <!-- /demo-headline -->
@@ -157,9 +101,9 @@
       <h3 class="demo-panel-title">Input</h3>
       <div class="row">
         <div class="col-xs-3">
-        	<div class="form-group">
-	        	<input type="text" value="" placeholder="Inactive" class="form-control" />
-        	</div>          
+            <div class="form-group">
+                <input type="text" value="" placeholder="Inactive" class="form-control" />
+            </div>          
         </div>
         <div class="col-xs-3">
           <div class="form-group has-error">
@@ -173,9 +117,9 @@
           </div>
         </div>
         <div class="col-xs-3">
-        	<div class="form-group">
-	        	<input type="text" value="Disabled" disabled="disabled" class="form-control" />
-        	</div>          
+            <div class="form-group">
+                <input type="text" value="Disabled" disabled="disabled" class="form-control" />
+            </div>          
         </div>
       </div> <!-- /row -->
 
@@ -306,14 +250,14 @@
             <tr>
               <td class="pbm">
                 <div class="switch switch-square" data-on-label="<i class='fui-check'></i>" data-off-label="<i class='fui-cross'></i>">
-		              <input type="checkbox" />
-		            </div>
+                      <input type="checkbox" />
+                    </div>
               </td>
 
               <td class="pbm">
                 <div class="switch switch-square" data-on-label="<i class='fui-check'></i>" data-off-label="<i class='fui-cross'></i>">
-		              <input type="checkbox" checked />
-		            </div>
+                      <input type="checkbox" checked />
+                    </div>
               </td>
             </tr>
             <tr>
@@ -366,60 +310,60 @@
       </div> <!-- /row -->
       
       <div class="demo-row typography-row">
-      	<div class="demo-title">
-      		<h3 class="demo-panel-title">Typography</h3>
-      	</div>
-      	<div class="demo-content">      		
-      		<div class="demo-type-example">
-	      		<h1><span class="demo-heading-note">Header 1</span>Showers across the W</h1>
-      		</div>
-      		<div class="demo-type-example">
-	      		<h2><span class="demo-heading-note">Header 2</span>Give this quartet a few</h2>
-      		</div>
-      		<div class="demo-type-example">
-	      		<h3><span class="demo-heading-note">Header 3</span>The Vatican transitions to a</h3>
-      		</div>
-      		<div class="demo-type-example">
-	      		<h4><span class="demo-heading-note">Header 4</span>Great American Bites: Telluride's Oak, The</h4>
-      		</div>
-      		<div class="demo-type-example">
-	      		<h5><span class="demo-heading-note">Header 5</span>Author Diane Alberts loves her some good</h5>
-      		</div>
-      		<div class="demo-type-example">
-	      		<h6><span class="demo-heading-note">Header 6</span>With the success of young-adult book-to-movie</h6>
-      		</div>
-      		<div class="demo-type-example">
-	      		<span class="demo-text-note">Paragraph</span>
-	          <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. <strong>Donec ullamcorper</strong> nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
-      		</div>
-      		<div class="demo-type-example">
-	      		<span class="demo-text-note">Image</span>
-	          <img src="images/example-image.jpg" alt="example-image" class="img-rounded img-responsive">
-	          <p class="img-comment"><strong>Note:</strong> gravida at eget metus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
-      		</div>
-      		<div class="demo-type-example">
-	      		<span class="demo-text-note">Lead Text</span>
-						<p class="lead">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-      		</div>
-      		<div class="demo-type-example">
-	      		<span class="demo-text-note">Quote</span>
-	          <blockquote>
-	            <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus.</p>
-	            <small>Steve Jobs, CEO Apple</small>
-	          </blockquote>
-      		</div>
-      		<div class="demo-type-example">
-	      		<span class="demo-text-note">Small Font</span>
-	          <p><small>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</small></p>
-      		</div>
-      	</div><!-- /.demo-content-wide -->
+        <div class="demo-title">
+            <h3 class="demo-panel-title">Typography</h3>
+        </div>
+        <div class="demo-content">              
+            <div class="demo-type-example">
+                <h1><span class="demo-heading-note">Header 1</span>Showers across the W</h1>
+            </div>
+            <div class="demo-type-example">
+                <h2><span class="demo-heading-note">Header 2</span>Give this quartet a few</h2>
+            </div>
+            <div class="demo-type-example">
+                <h3><span class="demo-heading-note">Header 3</span>The Vatican transitions to a</h3>
+            </div>
+            <div class="demo-type-example">
+                <h4><span class="demo-heading-note">Header 4</span>Great American Bites: Telluride's Oak, The</h4>
+            </div>
+            <div class="demo-type-example">
+                <h5><span class="demo-heading-note">Header 5</span>Author Diane Alberts loves her some good</h5>
+            </div>
+            <div class="demo-type-example">
+                <h6><span class="demo-heading-note">Header 6</span>With the success of young-adult book-to-movie</h6>
+            </div>
+            <div class="demo-type-example">
+                <span class="demo-text-note">Paragraph</span>
+              <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. <strong>Donec ullamcorper</strong> nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
+            </div>
+            <div class="demo-type-example">
+                <span class="demo-text-note">Image</span>
+              <img src="images/exaple-image.jpg" alt="exaple-image" class="img-rounded img-responsive">
+              <p class="img-comment"><strong>Note:</strong> gravida at eget metus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
+            </div>
+            <div class="demo-type-example">
+                <span class="demo-text-note">Lead Text</span>
+                        <p class="lead">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+            </div>
+            <div class="demo-type-example">
+                <span class="demo-text-note">Quote</span>
+              <blockquote>
+                <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus.</p>
+                <small>Steve Jobs, CEO Apple</small>
+              </blockquote>
+            </div>
+            <div class="demo-type-example">
+                <span class="demo-text-note">Small Font</span>
+              <p><small>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</small></p>
+            </div>
+        </div><!-- /.demo-content-wide -->
       </div><!-- /.demo-row -->
 
       <h3 class="demo-panel-title">Color Swatches</h3>
       <div class="row demo-swatches-row">
-	      <div class="swatches-col">
-		      <div class="pallete-item">
-			      <dl class="palette palette-turquoise">
+          <div class="swatches-col">
+              <div class="pallete-item">
+                  <dl class="palette palette-turquoise">
                 <dt>#1abc9c</dt>
                 <dd>Turquoise</dd>
               </dl>
@@ -427,9 +371,9 @@
                 <dt>#16a085</dt>
                 <dd>Green sea</dd>
               </dl>
-		      </div>
-		      <div class="pallete-item">
-			      <dl class="palette palette-emerald">
+              </div>
+              <div class="pallete-item">
+                  <dl class="palette palette-emerald">
               <dt>#2ecc71</dt>
               <dd>Emerald</dd>
             </dl>
@@ -437,9 +381,9 @@
               <dt>#27ae60</dt>
               <dd>Nephritis</dd>
             </dl>
-		      </div>
-		      <div class="pallete-item">
-			      <dl class="palette palette-peter-river">
+              </div>
+              <div class="pallete-item">
+                  <dl class="palette palette-peter-river">
               <dt>#3498db</dt>
               <dd>Peter river</dd>
             </dl>
@@ -447,9 +391,9 @@
               <dt>#2980b9</dt>
               <dd>Belize hole</dd>
             </dl>
-		      </div>
-		      <div class="pallete-item">
-			      <dl class="palette palette-amethyst">
+              </div>
+              <div class="pallete-item">
+                  <dl class="palette palette-amethyst">
               <dt>#9b59b6</dt>
               <dd>Amethyst</dd>
             </dl>
@@ -457,9 +401,9 @@
               <dt>#8e44ad</dt>
               <dd>Wisteria</dd>
             </dl>
-		      </div>
-		      <div class="pallete-item">
-			      <dl class="palette palette-wet-asphalt">
+              </div>
+              <div class="pallete-item">
+                  <dl class="palette palette-wet-asphalt">
               <dt>#34495e</dt>
               <dd>Wet asphalt</dd>
             </dl>
@@ -467,9 +411,9 @@
               <dt>#2c3e50</dt>
               <dd>Midnight blue</dd>
             </dl>
-		      </div>
-		      <div class="pallete-item">
-			      <dl class="palette palette-sun-flower">
+              </div>
+              <div class="pallete-item">
+                  <dl class="palette palette-sun-flower">
               <dt>#f1c40f</dt>
               <dd>Sun flower</dd>
             </dl>
@@ -477,9 +421,9 @@
               <dt>#f39c12</dt>
               <dd>Orange</dd>
             </dl>
-		      </div>
-		      <div class="pallete-item">
-			      <dl class="palette palette-carrot">
+              </div>
+              <div class="pallete-item">
+                  <dl class="palette palette-carrot">
               <dt>#e67e22</dt>
               <dd>Carrot</dd>
             </dl>
@@ -487,9 +431,9 @@
               <dt>#d35400</dt>
               <dd>Pumpkin</dd>
             </dl>
-		      </div>
-		      <div class="pallete-item">
-			      <dl class="palette palette-alizarin">
+              </div>
+              <div class="pallete-item">
+                  <dl class="palette palette-alizarin">
               <dt>#e74c3c</dt>
               <dd>Alizarin</dd>
             </dl>
@@ -497,9 +441,9 @@
               <dt>#c0392b</dt>
               <dd>Pomegranate</dd>
             </dl>
-		      </div>
-		      <div class="pallete-item">
-			      <dl class="palette palette-clouds">
+              </div>
+              <div class="pallete-item">
+                  <dl class="palette palette-clouds">
               <dt>#ecf0f1</dt>
               <dd>Clouds</dd>
             </dl>
@@ -507,9 +451,9 @@
               <dt>#bdc3c7</dt>
               <dd>Silver</dd>
             </dl>
-		      </div>
-		      <div class="pallete-item">
-			      <dl class="palette palette-concrete">
+              </div>
+              <div class="pallete-item">
+                  <dl class="palette palette-concrete">
               <dt>#95a5a6</dt>
               <dd>Concrete</dd>
             </dl>
@@ -517,10 +461,10 @@
               <dt>#7f8c8d</dt>
               <dd>Asbestos</dd>
             </dl>
-		      </div>
-	      </div> <!-- /swatches items -->
-	      <div class="swatches-desc-col">
-		      <h6 class="palette-headline">SWATCHES</h6>
+              </div>
+          </div> <!-- /swatches items -->
+          <div class="swatches-desc-col">
+              <h6 class="palette-headline">SWATCHES</h6>
           <p class="palette-paragraph">
             Colors &mdash; is almost the most important part of the <strong>Flat UI</strong>. Better to use different shades of provided colors than new.
           </p>
@@ -530,7 +474,7 @@
           <p class="palette-paragraph">
             <strong>No gradients, no shadows.</strong>
           </p>
-	      </div> <!-- /swatches desc -->
+          </div> <!-- /swatches desc -->
       </div> <!-- /swatches row -->
 
       <h3 class="demo-panel-title">Icons <small>(14)</small></h3>
@@ -770,7 +714,7 @@
 
             <p class="pvl">
               <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://designmodo.com/flat-free/" data-text="Flat UI Free - PSD&amp;amp;HTML User Interface Kit" data-via="designmodo">Tweet</a>
-							<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
               <iframe src="http://ghbtns.com/github-btn.html?user=designmodo&repo=Flat-UI&type=watch&count=true" height="20" width="107" frameborder="0" scrolling="0" style="width:105px; height: 20px;" allowTransparency="true"></iframe>
               <iframe src="http://ghbtns.com/github-btn.html?user=designmodo&repo=Flat-UI&type=fork&count=true" height="20" width="107" frameborder="0" scrolling="0" style="width:105px; height: 20px;" allowTransparency="true"></iframe>
               <iframe src="http://ghbtns.com/github-btn.html?user=designmodo&type=follow&count=true" height="20" width="195" frameborder="0" scrolling="0" style="width:195px; height: 20px;" allowTransparency="true"></iframe>
@@ -813,4 +757,5 @@
     <script src="http://vjs.zencdn.net/4.3/video.js"></script>
     <script src="js/application.js"></script>
   </body>
+
 </html>
