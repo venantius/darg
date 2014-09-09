@@ -30,6 +30,20 @@
   [params]
   (delete db/tasks (where params)))
 
+;; Retrieve
+
+(defn get-task-by-params
+  [params]
+  (select db/tasks (where params)))
+
+(defn get-task-by-id
+  [id]
+  (first (select db/tasks (where {:id id}))))
+
+(defn get-taskid
+  [params]
+  (:id (first (select db/tasks (where params)))))
+
 ;; User Tasks
 
 (defn get-all-tasks-for-user
