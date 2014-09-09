@@ -74,8 +74,8 @@
 
 (with-db-fixtures)
 
-(deftest email-sent-to-us-is-parseable
-  (is (api/parse-email test-received-params-2)))
+; (deftest email-sent-to-us-is-parseable
+;   (is (api/parse-email test-received-params-2)))
 
 (deftest parsed-email-is-written-to-db
   (api/parse-email test-received-params-2)

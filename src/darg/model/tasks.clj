@@ -5,15 +5,18 @@
 ;; Create
 (defn create-task
   [params]
+  (println params)
+  (println "Inserting")
   (insert db/tasks (values params)))
 
 (defn create-task-list
   [tasks-list metadata]
-  (map (fn 
+  (println "Create Task List")
+  (dorun (map (fn 
          [task] 
            (create-task 
            (assoc metadata :task task))) 
-       tasks-list))
+       tasks-list)))
 
 ;; Update
 
