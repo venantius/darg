@@ -57,3 +57,15 @@
 (def test-tasks
   [test-task-1
    test-task-2])
+
+(def test-user-team-pair-1
+  {:user_id 1
+   :team_id 2})
+
+(def test-user-team-pair-2
+  {:user_id 3
+   :team_id 2})
+
+(def test-user-team-pairs
+  [test-user-team-pair-1
+   test-user-team-pair-2])

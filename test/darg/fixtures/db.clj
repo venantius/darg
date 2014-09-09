@@ -15,8 +15,14 @@
   [fixture]
   (insert tasks (values fixture)))
 
+(defn insert-user-team-fixture-data
+  [fixture]
+  (insert team-users (values fixture)))
+
 (defn insert-db-fixture-data
   []
   (insert-user-fixture-data fmodel/test-users)
   (insert-team-fixture-data fmodel/test-teams)
-  (insert-task-fixture-data fmodel/test-tasks))
+  (insert-task-fixture-data fmodel/test-tasks)
+  (insert-user-team-fixture-data fmodel/test-user-team-pairs))
+
