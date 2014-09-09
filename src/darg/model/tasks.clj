@@ -58,7 +58,6 @@
   [id minDate maxDate]
   (select db/tasks
     (with db/users
-      (where {:id id
-        ;Date is within bounds
-        }))))
+      (where (and {:id id}
+                          (between :date [minDate maxDate]))))))
 

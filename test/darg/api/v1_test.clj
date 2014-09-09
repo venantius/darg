@@ -110,5 +110,14 @@
 
 (deftest parsed-email-is-written-to-db
   (api/parse-email test-received-params-2)
-  (is (select tasks (where {:task "Dancing tiem!!"})))
-  (is (select tasks (where {:task "Reticulated Splines"}))))
+  (println (select tasks))
+  (println (select tasks (where {:task "Dancing tiem!!"})))
+  (is (not (empty? (select tasks (where {:task "Dancing tiem!!"}))))))
+
+(deftest task-associated-with-user
+  (is (= 1 1)))
+
+(deftest task-associated-with-team
+  (is (= 1 1)))
+  
+
