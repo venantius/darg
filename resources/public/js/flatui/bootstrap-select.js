@@ -1,0 +1,1 @@
+../../../Flat-UI-master/js/bootstrap-select.js
