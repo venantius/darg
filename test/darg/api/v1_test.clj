@@ -74,6 +74,14 @@
 
 (with-db-fixtures)
 
+;; /api/v1/login
+
+(deftest i-can-login-and-it-set-my-cookies)
+
+(deftest i-can't-login-and-it-don't-set-no-cookies)
+
+;; api/v1/email
+
 (deftest email-sent-to-us-is-parseable
   (is (api/parse-email test-received-params-2)))
 
@@ -81,11 +89,3 @@
   (api/parse-email test-received-params-2)
   (is (select tasks (where {:task "Dancing tiem!!"})))
   (is (select tasks (where {:task "Reticulated Splines"}))))
-
-(deftest task-associated-with-user
-  (is (= 1 1)))
-
-(deftest task-associated-with-team
-  (is (= 1 1)))
-  
-

@@ -12,18 +12,24 @@
             [ring.middleware.session.cookie :as cookie]
             [ring.util.response :as resp]))
 
+(defn debug [request-map]
+  (logging/info (str request-map))
+  {:body (str request-map)})
+
 ;; Pay attention to trailing slashes - right now the only thing that should end in a
 ;; slash is the root.
 (defroutes routes
-  (GET "/" [] (resp/resource-response "index.html" {:root "public"}))
-  (POST "/api/v1/email" x (api/parse-forwarded-email x))
+  (GET "/" request-map (do (logging/info request-map) (resp/resource-response "index.html" {:root "public"})))
+  (GET "/debug" request-map (debug request-map))
+  (POST "/api/v1/email" request-map (api/parse-forwarded-email request-map))
+  (POST "/api/v1/login" request-map (api/login request-map))
   (route/resources "/"))
 
 (def app (-> routes
              (handler/site
-               {:session {:store (cookie/cookie-store {:key "california--bear"})
-                          :cookie-attrs {:max-age 259200 ;; 3 days
-                                         }}})
+               {:session {:store (cookie/cookie-store {:key "california--bear"}) ;; TODO -- store in env
+                          :cookie-attrs {:max-age 259200
+                                         :path "/"}}})
              middleware/ignore-trailing-slash))
 
 (defn -main []
