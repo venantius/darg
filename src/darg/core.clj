@@ -28,8 +28,7 @@
 (def app (-> routes
              (handler/site
                {:session {:store (cookie/cookie-store {:key "california--bear"}) ;; TODO -- store in env
-                          :cookie-attrs {:max-age 259200
-                                         :path "/"}}})
+                          :cookie-attrs {:max-age 259200}}})
              middleware/ignore-trailing-slash))
 
 (defn -main []

@@ -8,19 +8,26 @@
             ))
 
 (defn login
-  "Authenticate"
+  "/v1/api/login
+
+  Authentication endpoint. Routes input parameters to Stormpath for
+  authentication; if successful, we set auth in their session and
+  update the cookie to indicate that they're now logged in."
   [request-map]
   (let [email (-> request-map :params :email)
         password (-> request-map :params :password)]
     (try+
-      ; (stormpath/authenticate email password)
-      (logging/info "Successfully authenticated")
+      (stormpath/authenticate email password)
+      (logging/info "Successfully authenticated with email" email)
       {:body "Successfully authenticated"
-       :cookies {"logged-in" "true"}
+       :cookies {"logged-in" {:value true :path "/"}}
        :session {:authenticated true}
        :status 200}
       (catch [:status 400] response
-        (logging/warn "Failed to authenticate")))))
+        (logging/info "Failed to authenticate with email " email)
+        {:body "Failed to authenticate"
+         :session {:authenticated false}
+         :status 401}))))
 
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
