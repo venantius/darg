@@ -13,6 +13,9 @@ A Clojure clone of iDoneThis, designed to be better (and cheaper!) in all regard
 3. `git clone git@github.com:ursacorp/darg.git`
 4. `lein deps`
 
+### Grunt
+1. `npm install`
+
 ## Usage
 
 `lein run` to start a server running on localhost:8080
