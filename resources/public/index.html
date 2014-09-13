@@ -22,7 +22,7 @@
     <!-- top menu --> 
     <div class="row demo-row">
       <div class="col-xs-9">
-        <nav class="navbar navbar-inverse navbar-fixed-top navbar-embossed" role="navigation">
+        <nav class="navbar-sm navbar-inverse navbar-fixed-top navbar-embossed" role="navigation">
           <div class="container">
             <div class="collapse navbar-collapse" id="navbar-collapse-01">
               <ul class="nav navbar-nav navbar-left">
@@ -53,12 +53,12 @@
               <!-- the user is actually logged in. -->
               <ul class="nav navbar-nav navbar-right">
                 <li>
-                  <form role="search" class="navbar-form navbar-left" action="#">
+                  <form role="search" class="navbar-form navbar-left" action="/api/v1/login" method="POST">
                     <div class="form-group">
-                      <input type="text" placeholder="Email" class="form-control">
+                      <input type="text" placeholder="Email" class="form-control input-sm">
                     </div>
                     <div class="form-group">
-                      <input type="password" size="8" placeholder="Password" class="form-control">
+                      <input type="password" size="8" placeholder="Password" class="form-control input-sm">
                     </div>
                     <button class="btn btn-default" type="submit">Login</button>
                   </form>

@@ -4,7 +4,10 @@
         [darg.model])
   (:require [clojure.test :refer :all]
             [darg.api.v1 :as api]
-            [darg.db :as db]))
+            [darg.core :as core]
+            [darg.db :as db]
+            [darg.services.stormpath-test :as stormpath-test]
+            [ring.mock.request :as mock-request]))
 
 (def test-received-params-1
   ;; this is an example of what we actually get forwarded to us from Mailgun
@@ -74,6 +77,32 @@
 
 (with-db-fixtures)
 
+;; /api/v1/login
+
+(deftest i-can-login-and-it-set-my-cookies
+  (let [auth-response (core/app (mock-request/request
+                                  :post "/api/v1/login"
+                                  {:email (:email stormpath-test/user-2)
+                                   :password (:password stormpath-test/user-2)}))]
+    (is (= (:body auth-response) "Successfully authenticated"))
+    (is (= (:status auth-response) 200))
+    (is (some #{"logged-in=true;Path=/"}
+              (get (:headers auth-response) "Set-Cookie")))))
+
+(deftest i-can't-login-and-it-don't-set-no-cookies
+  (let [auth-response (core/app (mock-request/request
+                                  :post "/api/v1/login"
+                                  {:email (:email stormpath-test/user-1)
+                                   :password (:password stormpath-test/user-1)}))]
+    (is (= (:body auth-response) "Failed to authenticate"))
+    (is (= (:status auth-response 401)))
+    (is (not (some #{"logged-in=true;Path=/"}
+                   (get (:headers auth-response) "Set-Cookie"))))))
+
+;; /api/v1/logout
+
+;; api/v1/email
+
 (deftest email-sent-to-us-is-parseable
   (is (api/parse-email test-received-params-2)))
 
@@ -81,11 +110,3 @@
   (api/parse-email test-received-params-2)
   (is (select tasks (where {:task "Dancing tiem!!"})))
   (is (select tasks (where {:task "Reticulated Splines"}))))
-
-(deftest task-associated-with-user
-  (is (= 1 1)))
-
-(deftest task-associated-with-team
-  (is (= 1 1)))
-  
-
