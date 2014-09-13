@@ -54,8 +54,7 @@
   (select db/tasks
     (with db/users
       (where {:id id
-        ;Date is within bounds
-        }))))
+        :date ['between [minDate maxDate]]}))))
 
 ;(defn get-tasks-for-user-in-team
  ; [userid teamid ])
