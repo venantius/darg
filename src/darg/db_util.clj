@@ -4,23 +4,23 @@
   (:require [clj-time.format :as f]
             [clj-time.coerce :as c]))
 
-(defn get-userid 
-  "Takes a fieldname and value name, searches DB for the correct user-id"
-  [field value]
-  (select users 
-          (fields :id) 
-          (where {(keyword field) value})))
+; (defn get-userid 
+;   "Takes a fieldname and value name, searches DB for the correct user-id"
+;   [field value]
+;   (select users 
+;           (fields :id) 
+;           (where {(keyword field) value})))
 
-(defn get-teamid
-  "Takes a fieldname and value name, searches DB for the correct team-id"
-  [field value]
-  (select teams 
-          (fields :id) 
-    	  (where {(keyword field) value})))
+; (defn get-teamid
+;   "Takes a fieldname and value name, searches DB for the correct team-id"
+;   [field value]
+;   (select teams 
+;           (fields :id) 
+;     	  (where {(keyword field) value})))
 
-(defn insert-task
-  [params]
-  (insert tasks (values params)))
+; (defn insert-task
+;   [params]
+;   (insert tasks (values params)))
 
 (defn sql-date-from-subject
   "Used to extract dates from the subject line. Assumes date format like 'Sept 23 2013' "

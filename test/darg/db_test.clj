@@ -4,7 +4,9 @@
             [korma.db :as korma]
             [korma.core :refer :all]
             [darg.db :as db]
-            [darg.model :refer :all]
+            [darg.model.users :as users]
+            [darg.model.teams :as teams]
+            [darg.model.tasks :as tasks]
             [lobos.core :as lobos]
             [lobos.config :as lconfig]))
 
@@ -13,21 +15,38 @@
 (deftest darg-db-is-assigned
   (is korma/_default))
 
-(deftest we-can-insert-into-the-db
-	(insert users 
-               (values {:email "haruko@test.com", 
-                        :first_name "haruko"}))
-	(is (select users 
-                   (where {:email "haruko@test.com"}))))
+; User Tests
 
-(deftest we-can-update-in-the-db
-  (update users 
-              (set-fields {:first_name "irrashaimase"}) 
-              (where {:id 3}))
-  (is (= "irrashaimase" (:first_name (first (select users (where {:id 3})))))))
+(deftest we-can-insert-user-into-the-db
+  (users/create-user {:email "haruko@test.com" :first_name "haruko"})
+  (is (users/get-user-by-field {:email "haruko@test.com"})))
 
-(deftest we-can-delete-from-the-db
-	(delete users 
-                  (where{:id 3}))
-	(is (= nil (first (select users 
-                                       (where {:id 3}))))))
+(deftest we-can-update-user-in-the-db
+  (users/update-user 3 {:first_name "irrashaimase"})
+  (is (= "irrashaimase" (:first_name (users/get-user-by-id 3)))))
+
+(deftest we-can-delete-user-from-the-db
+  (users/delete-user {:id 3})
+  (is (= nil (users/get-user-by-id 3))))
+
+(deftest we-can-get-user-tasks
+  (println (tasks/get-all-tasks-for-user 1))
+  (is not (empty? (tasks/get-all-tasks-for-user 1))))
+
+(deftest we-can-check-a-user-is-in-a-team
+  (is (users/is-user-in-team-v1 3 1))
+  (is (users/is-user-in-team-v2 3 1))
+  (is not (users/is-user-in-team-v1 3 2))
+  (is not (users/is-user-in-team-v2 3 2)))
+
+(deftest we-can-add-user-to-team
+  (users/add-user-to-team 3 2)
+  (is (users/is-user-in-team-v1 3 2))
+  (is (users/is-user-in-team-v2 3 2)))
+
+;Team Tests
+(deftest we-can-insert-team-into-db
+  (teams/create-team {:name "krogancorp" :email "kcorp@darg.io"})
+  (is (teams/get-team-by-field {:name "krogancorp"})))
+
+
