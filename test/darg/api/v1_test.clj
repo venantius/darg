@@ -101,6 +101,8 @@
 
 ;; /api/v1/logout
 
+; TODO - TEST HERE WITH A HEADLESS BROWSER
+
 ;; api/v1/email
 
 (deftest email-sent-to-us-is-parseable

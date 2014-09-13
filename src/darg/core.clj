@@ -23,6 +23,8 @@
   (GET "/debug" request-map (debug request-map))
   (POST "/api/v1/email" request-map (api/parse-forwarded-email request-map))
   (POST "/api/v1/login" request-map (api/login request-map))
+  (GET "/api/v1/logout" request-map (api/logout request-map))
+  (POST "/api/v1/signup" request-map (api/signup request-map))
   (route/resources "/"))
 
 (def app (-> routes

@@ -4,8 +4,11 @@
             [darg.db-util :as dbutil]
             [darg.services.stormpath :as stormpath]
             [korma.core :refer :all]
-            [slingshot.slingshot :refer [try+]]
-            ))
+            [ring.middleware.session.cookie :as cookie-store]
+            [ring.middleware.session.store :as session-store]
+            [slingshot.slingshot :refer [try+]]))
+
+;; Authentication
 
 (defn login
   "/v1/api/login
@@ -23,11 +26,32 @@
        :cookies {"logged-in" {:value true :path "/"}}
        :session {:authenticated true}
        :status 200}
+      ;; Stormpath will return a 400 status code on failed auth
       (catch [:status 400] response
         (logging/info "Failed to authenticate with email " email)
         {:body "Failed to authenticate"
          :session {:authenticated false}
          :status 401}))))
+
+(defn logout
+  "/api/v1/logout
+
+  The other half of the authentication endpoint pair. This one clears
+  your session cookie and your plaintext cookie, logging you out both
+  in practice and appearance"
+  [request-map]
+  {:body (str request-map)
+   :status 200
+   :session nil
+   :cookies {"logged-in" {:value false :max-age 0 :path "/"}}})
+
+(defn signup
+  "/api/v1/signup
+
+  TODO"
+  [request-map]
+  nil
+  )
 
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
