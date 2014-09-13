@@ -20,7 +20,7 @@
   (let [email (-> request-map :params :email)
         password (-> request-map :params :password)]
     (try+
-      ;;(stormpath/authenticate email password)
+      (stormpath/authenticate email password)
       (logging/info "Successfully authenticated with email" email)
       {:body "Successfully authenticated"
        :cookies {"logged-in" {:value true :path "/"}}
@@ -44,6 +44,14 @@
    :status 200
    :session nil
    :cookies {"logged-in" {:value false :max-age 0 :path "/"}}})
+
+(defn signup
+  "/api/v1/signup
+
+  TODO"
+  [request-map]
+  nil
+  )
 
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
