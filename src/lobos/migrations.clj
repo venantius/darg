@@ -40,7 +40,7 @@
            (table :tasks
                   (integer :id :auto-inc :primary-key)
                   (date :date :not-null)
-                  (integer :users_id [:refer :users :id :on-delete :no-action] :not-null)
+                  (integer :users_id [:refer :users :id :on-delete :set-null])
                   (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null)
                   (text :task))))
   (down [] (drop (table :tasks))))
