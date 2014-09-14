@@ -314,6 +314,7 @@ p {
   font-size: 18px;
   line-height: 1.72222;
   margin: 0 0 15px;
+  padding: 0 0 0;
 }
 .lead {
   margin-bottom: 30px;
@@ -335,7 +336,7 @@ small,
   color: #bdc3c7;
 }
 .text-inverse {
-  color: #ffffff;
+  color: black;
 }
 .text-primary {
   color: #1abc9c;
@@ -762,8 +763,8 @@ fieldset[disabled] .btn-success.active {
 .btn-warning.active,
 .open .dropdown-toggle.btn-warning {
   color: #ffffff;
-  background-color: #f5d313;
-  border-color: #f5d313;
+  background-color: #f4d313;
+  border-color: #f4d313;
 }
 .btn-warning:active,
 .btn-warning.active,
@@ -985,9 +986,9 @@ fieldset[disabled] .btn-link:focus {
   border-bottom-style: none;
   -webkit-transition: 0.25s;
   transition: 0.25s;
-  -webkit-transform: scale(1.001);
-  -ms-transform: scale(1.001);
-  transform: scale(1.001);
+  -webkit-transform: scale(1.001, );
+  -ms-transform: scale(1.001, );
+  transform: scale(1.001, );
 }
 .dropup .caret,
 .dropup .btn-lg .caret,
@@ -1019,10 +1020,8 @@ fieldset[disabled] .btn-link:focus {
 .select.select-block:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .select.select-block:after {
   clear: both;
@@ -1383,10 +1382,8 @@ select[multiple].input-hg {
 .form-horizontal .form-group:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .form-horizontal .form-group:after {
   clear: both;
@@ -2365,7 +2362,7 @@ select[multiple].navbar-form .btn {
 }
 .navbar-default .navbar-form .input-group.focus .form-control,
 .navbar-default .navbar-form .input-group.focus .input-group-btn .btn {
-  border-color: #1abc9c;
+  border-color: none;
   color: #1abc9c;
 }
 .navbar-default .navbar-text {
@@ -2520,8 +2517,8 @@ select[multiple].navbar-form .btn {
   color: #536a81;
 }
 .navbar-inverse .navbar-form .form-control:focus {
-  border-color: #1abc9c;
-  color: #1abc9c;
+  border-color: none;
+  color: #ECF0F1;
 }
 .navbar-inverse .navbar-form .btn {
   color: #ffffff;
@@ -3318,10 +3315,8 @@ fieldset[disabled] .twitter-typeahead .tt-hint {
 .dropdown-menu li > a:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .dropdown-menu li > a:after {
   clear: both;
@@ -3623,10 +3618,8 @@ fieldset[disabled] .twitter-typeahead .tt-hint {
 .share li:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .share li:after {
   clear: both;
@@ -3647,6 +3640,14 @@ fieldset[disabled] .twitter-typeahead .tt-hint {
   line-height: 1.4;
   padding-top: 5px;
   width: 50%;
+}
+.dictionary-text {
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  line-height: 1.62222;
+}
+.dictionary-header {
+  margin-top: 10;
 }
 .pallete-item {
   width: 140px;

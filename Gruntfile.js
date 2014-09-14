@@ -8,7 +8,7 @@ module.exports = function(grunt) {
           yuicompress: true
         },
       files: {
-        "./resources/Flat-UI-master/css/test.css": "./resources/Flat-UI-master/less/flat-ui.less"
+        "./resources/Flat-UI-master/css/flat-ui.css": "./resources/Flat-UI-master/less/flat-ui.less"
       }
     }
   },

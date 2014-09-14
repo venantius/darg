@@ -20,7 +20,7 @@
   <body ng-controller="DargCtrl as darg">
 
     <!-- top menu --> 
-    <div class="row demo-row">
+    <div class="row">
       <div class="col-xs-9">
         <nav class="navbar-sm navbar-inverse navbar-fixed-top navbar-embossed" role="navigation">
           <div class="container">
@@ -71,46 +71,59 @@
     </div>
     <!-- / top menu --> 
 
+    <div class="container">
+
+      <div class="row ptl pbl">
+        <div class="col-xs-12 ptl">
+        </div>
+      </div>
 
     <!-- {{darg.gems}} -->
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-12 pagination-centered text-center">
-          <br><br>
-          <h2> 
-            What's your darg?
-          </h2>
-          <br>
+
+    <div class="row ptl">
+      <div class="col-xs-1">
+      </div>
+        <div class="col-xs-3">
+          <h2 class="dictionary-header">Darg</h2>
+        </div>
+        <div class="col-xs-8 ptl">
+          <small>
+            /dɑːɡ/  <b>noun</b><br>
+            <p class="dictionary-text">1. <i>Scot. and North English.</i> a day's work</p>
+            <p class="dictionary-text">2. <i>Australian.</i> a fixed or definite amount of work; a work quota.</i></p>
+        </small>
+      </small>
+        </div>
+      </div>
+  
+      <br>
+      <div class="row ptl pbl">
+        <div class="col-xs-12 text-center">
+
+          <h4> 
+            What's your Darg?
+          </h4>
         </div>
       </div>
 
       <!-- definition and signup form -->
-      <div class="row">
+      <div class="row ptl mtl">
         <!-- definition -->
-        <div class="col-xs-7">
-          <h3>Darg</h3>
-          <p>/dɑːɡ/</p>
-          <p><b>noun</b><p>
-          <ol>
-            <li>
-              <i>Scot. and North English.</i> a day's work
-            </li>
-            <li>
-              <i>Australian.</i> a fixed or definite amount of work; a work quota.</i>
-            </li>
-          </ol>
+        <div class="col-xs-7 prl">
+          <p><b>Say goodbye to status meetings.</b></p>
+          <p>With Darg.io, we send you an e-mail once a day asking what you did that day - all you have to do is reply, and a copy of your Dargs are collated and sent to everybody on your team.</p>
+
+          <p>Don't want to reply to an e-mail? No problem! We've got integrations with GitHub, JIRA, and Phabricator that tie into your existing workflow.</p>
+
+
           <!-- {{darg.products}} -->
         </div>
         <!-- /definition -->
         <!-- signup form -->
-        <div class="col-xs-5">
-          <br>
+        <div class="col-xs-5 pll">
           <div class="login-form">
             <div class="form-group">
-              <input type="text" class="form-control login-field" value="" placeholder="Your first name" id="email" />
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-control login-field" value="" placeholder="Your last name" id="email" />
+              <input type="text" class="form-control login-field" value="" placeholder="Your name" id="email" />
             </div>
             <div class="form-group">
               <input type="text" class="form-control login-field" value="" placeholder="Your e-mail" id="email" />
@@ -120,7 +133,7 @@
               <input type="password" class="form-control login-field" value="" placeholder="Password" id="password" />
             </div>
 
-            <a class="btn btn-primary btn-lg btn-block" href="#">Sign Up!</a>
+            <a class="btn btn-primary btn-lg btn-block" href="#">Sign Up</a>
           </div>
         </div>
       </div>
@@ -195,9 +208,8 @@
             <div class="footer-banner">
               <h3 class="footer-title">Darg.io</h3>
               <ul>
-                <li>Bootstrap Based HTML/CSS/JS Layout</li>
+                <li>Darg is an UrsaCorp product, built in collaboration between @venantius and @savelago.</li>
               </ul>
-              Go to: <a href="http://designmodo.com/flat" target="_blank">designmodo.com/flat</a>
             </div>
           </div>
         </div>
