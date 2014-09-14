@@ -40,9 +40,6 @@
 
 ;; api/v1/email
 
-(deftest email-sent-to-us-is-parseable
-  (is (api/parse-email test-received-params-2)))
-
 (deftest parsed-email-is-written-to-db
   (api/parse-email f-email/test-email-2)
   (is (not (empty? (tasks/get-task-by-params {:task "Dancing tiem!!"})))))
