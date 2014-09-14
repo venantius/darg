@@ -8,6 +8,7 @@
             [darg.model.teams :as teams]
             [darg.model.tasks :as tasks]
             [lobos.core :as lobos]
+            [darg.db-util :as dbutil]
             [lobos.config :as lconfig]))
 
 (with-db-fixtures)
@@ -29,6 +30,9 @@
   (println (users/get-user-by-id 3))
   (users/delete-user {:id 3})
   (is (= nil (users/get-user-by-id 3))))
+
+(deftest we-can-get-userid
+  (is (= 1 (users/get-userid {:id 1}))))
 
 (deftest we-can-get-user-tasks
   (println (tasks/get-all-tasks-for-user 1))
@@ -56,8 +60,33 @@
   (teams/delete-team {:id 1})
   (is (= nil (teams/get-team-by-id 1))))
 
+(deftest we-can-get-a-teamid
+  (is (= 1 (teams/get-teamid {:id 1}))))
+
 (deftest we-can-get-team-tasks
   (println (tasks/get-all-tasks-for-team 1))
   (is (not (empty? (tasks/get-all-tasks-for-team 1)))))
 
+(deftest we-can-get-team-users
+  (is (not (empty? (teams/get-team-users 1)))))
 
+;Task Test
+
+(deftest we-can-insert-task-into-db
+  (tasks/create-task {:date (dbutil/sql-date-from-subject "Sep 22 2014")
+                                 :users_id 2
+                                 :teams_id 3
+                                 :task "Interrupt the Cellular Mitosis"})
+  (is (tasks/get-task-by-params {:task "Interrupt the Cellular Mitosis"})))
+
+(deftest we-can-delete-task-from-db
+  (tasks/delete-task {:id 1})
+  (is (not (tasks/get-task-by-id 1))))
+
+(deftest we-can-update-task-in-db
+  (tasks/update-task 1 {:task "Understand the concept of love"})
+  (is (= "Understand the concept of love" (:task (tasks/get-task-by-id 1)))))
+
+(deftest we-can-get-a-taskid
+  (is (= 1 (tasks/get-taskid {:id 1}))))
+ 
