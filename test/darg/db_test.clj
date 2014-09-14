@@ -27,7 +27,6 @@
   (is (= "irrashaimase" (:first_name (users/get-user-by-id 3)))))
 
 (deftest we-can-delete-user-from-the-db
-  (println (users/get-user-by-id 3))
   (users/delete-user {:id 3})
   (is (= nil (users/get-user-by-id 3))))
 
@@ -35,7 +34,6 @@
   (is (= 1 (users/get-userid {:id 1}))))
 
 (deftest we-can-get-user-tasks
-  (println (tasks/get-all-tasks-for-user 1))
   (is (not (empty? (tasks/get-all-tasks-for-user 1)))))
 
 (deftest we-can-check-a-user-is-in-a-team
@@ -64,7 +62,6 @@
   (is (= 1 (teams/get-teamid {:id 1}))))
 
 (deftest we-can-get-team-tasks
-  (println (tasks/get-all-tasks-for-team 1))
   (is (not (empty? (tasks/get-all-tasks-for-team 1)))))
 
 (deftest we-can-get-team-users

@@ -71,12 +71,19 @@
     (str params)))
 
 (defn parse-email
+"/api/v1/parse-email
+
+Recieves a darg email from a user, parses tasklist, and inserts the tasks into the database.
+email mapping to task metadata is:
+From -> uses email address to lookup :users_id
+Recipient -> uses email address to lookup :teams_id
+Subject -> parses out date in format 'MMM dd YYYY' and converts to sqldate for :date
+Body -> Each newline in the body is parsed as a separate :task"
   [email]
   (let [task-list (map str/trim (str/split (:body-plain email) #"\n"))
-     email-metadata {:users_id (users/get-userid {:email (:from email)})
-                     :teams_id (teams/get-teamid {:email (:recipient email)}) 
-                     :date (dbutil/sql-date-from-subject (:subject email))}]
+        email-metadata {:users_id (users/get-userid {:email (:from email)})
+                        :teams_id (teams/get-teamid {:email (:recipient email)}) 
+                        :date (dbutil/sql-date-from-subject (:subject email))}]
     (tasks/create-task-list task-list email-metadata)))
 
 
-;build-task-map-and-insert (fn [task] (tasks/create-task (assoc email-metadata (:task task))))
