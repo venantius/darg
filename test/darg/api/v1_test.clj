@@ -3,7 +3,10 @@
         [korma.core])
   (:require [clojure.test :refer :all]
             [darg.api.v1 :as api]
+            [darg.core :as core]
             [darg.db :as db]
+            [darg.services.stormpath-test :as stormpath-test]
+            [ring.mock.request :as mock-request]
             [darg.fixtures.email :as f-email]
             [darg.model.tasks :as tasks]
             [darg.model.users :as users]
