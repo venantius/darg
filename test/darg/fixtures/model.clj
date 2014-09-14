@@ -54,9 +54,23 @@
    :teams_id 2
    :task "Destroy all humans"})
 
+(def test-task-3
+  {:date (c/to-sql-date (t/date-time 2012 5 17))
+   :users_id 3
+   :teams_id 1
+   :task "Salute the shorts"})
+
+(def test-task-4
+ {:date (c/to-sql-date (t/date-time 2012 3 19))
+  :users_id 2
+  :teams_id 3
+  :task "Once more into the breach"})
+
 (def test-tasks
   [test-task-1
-   test-task-2])
+   test-task-2
+   test-task-3
+   test-task-4])
 
 (def test-team-user-pair-1
   {:users_id 1

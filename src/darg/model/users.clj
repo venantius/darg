@@ -45,17 +45,9 @@
 
 ; User Team Membership
 
-(defn is-user-in-team-v1
+(defn is-user-in-team
   [userid teamid]
-  (if (select db/users
-    (where {:id userid})
-    (with db/teams
-      (where {:id teamid})))
-  \t \f))
-
-(defn is-user-in-team-v2
-  [userid teamid]
-  (if (select db/team-users (where {:users_id userid :teams_id teamid})) \t \f))
+  (if (not (empty? (select db/team-users (where {:users_id userid :teams_id teamid})))) true false))
 
 (defn get-user-teams
   "Gets the list of teams a user belongs to"

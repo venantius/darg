@@ -45,18 +45,16 @@
 
 (deftest parsed-email-is-written-to-db
   (api/parse-email f-email/test-email-2)
-  ; (println (select table/tasks))
-  ; (println (select table/tasks (where {:task "Dancing tiem!!"})))
   (is (not (empty? (tasks/get-task-by-params {:task "Dancing tiem!!"})))))
 
-(deftest we-can-get-a-user's-task-list
+(deftest we-can-get-a-users-task-list
   (api/parse-email f-email/test-email-2)
   (def test-user-id (users/get-userid {:email "domo@darg.io"}))
-  (is (= (count (tasks/get-all-tasks-for-user test-user-id)) 4)))
+  (is (= (count (tasks/get-all-tasks-for-user test-user-id)) 5)))
 
-(deftest we-can-get-a-team's-task-list
+(deftest we-can-get-a-teams-task-list
   (api/parse-email f-email/test-email-2)
   (def test-team-id (teams/get-teamid {:email "test.api@darg.io"}))
-  (is (= (count (tasks/get-all-tasks-for-team test-team-id)) 4)))
+  (is (= (count (tasks/get-all-tasks-for-team test-team-id)) 5)))
   
 
