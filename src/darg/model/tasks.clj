@@ -10,10 +10,10 @@
 (defn create-task-list
   [tasks-list metadata]
   (dorun (map (fn 
-         [task] 
-           (create-task 
-           (assoc metadata :task task))) 
-       tasks-list)))
+                [task] 
+                (create-task 
+                (assoc metadata :task task))) 
+               tasks-list)))
 
 ;; Update
 
@@ -54,10 +54,7 @@
   (select db/tasks
     (with db/users
       (where {:id id
-        :date ['between [minDate maxDate]]}))))
-
-;(defn get-tasks-for-user-in-team
- ; [userid teamid ])
+              :date ['between [minDate maxDate]]}))))
 
 ;; Team Tasks
 
@@ -72,5 +69,5 @@
   (select db/tasks
     (with db/users
       (where (and {:id id}
-                          (between :date [minDate maxDate]))))))
+             (between :date [minDate maxDate]))))))
 

@@ -44,10 +44,6 @@
   "Gets the list of users for a given team"
   [id]
   (:users (first (select db/teams 
-    (where {:id id})
-    (with db/users)))))
-
-; (defn get-team-user-ids
-;   [teamid]
-;   (map (get-team-users [teamid])))
+                   (where {:id id})
+                   (with db/users)))))
 
