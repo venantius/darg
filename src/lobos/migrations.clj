@@ -30,8 +30,8 @@
   (up [] (create
            (table :team_users
                   (integer :id :auto-inc :primary-key)
-                  (integer :user_id [:refer :users :id :on-delete :cascade] :not-null)
-                  (integer :team_id [:refer :teams :id :on-delete :cascade] :not-null)
+                  (integer :users_id [:refer :users :id :on-delete :cascade] :not-null)
+                  (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null)
                   (boolean :admin (default false)))))
   (down [] (drop (table :team_users))))
 
@@ -40,7 +40,7 @@
            (table :tasks
                   (integer :id :auto-inc :primary-key)
                   (date :date :not-null)
-                  (integer :user_id [:refer :users :id :on-delete :no-action] :not-null)
-                  (integer :team_id [:refer :teams :id :on-delete :cascade] :not-null)
+                  (integer :users_id [:refer :users :id :on-delete :set-null])
+                  (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null)
                   (text :task))))
   (down [] (drop (table :tasks))))
