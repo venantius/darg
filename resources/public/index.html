@@ -20,7 +20,8 @@
   <body ng-controller="DargCtrl as darg">
 
     <!-- top menu --> 
-    <div class="row">
+    <div ng-controller="DargLoginCtrl"> 
+    <div class="row" >
       <div class="col-xs-9">
         <nav class="navbar-sm navbar-inverse navbar-fixed-top navbar-embossed" role="navigation">
           <div class="container">
@@ -49,21 +50,33 @@
                 <li><a href="#fakelink">About Us</a></li>
               </ul>
 
-              <!-- TODO: replace this with code that knows whether or not -->
-              <!-- the user is actually logged in. -->
-              <ul class="nav navbar-nav navbar-right">
-                <li>
-                  <form role="search" class="navbar-form navbar-left" action="/api/v1/login" method="POST">
-                    <div class="form-group">
-                      <input id="email" name="email" type="text" placeholder="Email" class="form-control input-sm">
-                    </div>
-                    <div class="form-group">
-                      <input id="password" name="password" type="password" size="8" placeholder="Password" class="form-control input-sm">
-                    </div>
-                    <button class="btn btn-default" type="submit">Login</button>
-                  </form>
-                </li>
-              </ul>
+              <!-- Show log in form in logged-in -->
+              <div> 
+                <div ng-hide="LoggedIn">
+                  <ul class="nav navbar-nav navbar-right">
+                    <li>
+                      <form role="search" class="navbar-form navbar-left" action="/api/v1/login" method="POST">
+                        <div class="form-group">
+                          <input type="text" placeholder="Email" class="form-control input-sm" ng-model="LoginForm.email">
+                        </div>
+                        <div class="form-group">
+                          <input type="password" size="8" placeholder="Password" class="form-control input-sm" ng-model="LoginForm.password">
+                        </div>
+                        <button class="btn btn-default" type="submit">Login</button>
+                      </form>
+                    </li>
+                  </ul>
+                </div>
+                <div ng-show="LoggedIn">
+                  <ul class="nav navbar-nav navbar-right">
+                    <li>
+                      <form class="navbar-form navbar-left" action="/api/v1/logout" method="GET">
+                        <button class="btn btn-default" type="submit">Logout</button>
+                      </form>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div><!--/.navbar-collapse -->
           </div>
         </nav>
@@ -75,6 +88,7 @@
 
       <div class="row ptl pbl">
         <div class="col-xs-12 ptl">
+          {{LoginForm}}
         </div>
       </div>
 
@@ -87,19 +101,15 @@
           <h2 class="dictionary-header">Darg</h2>
         </div>
         <div class="col-xs-8 ptl">
-          <small>
             /dɑːɡ/  <b>noun</b><br>
             <p class="dictionary-text">1. <i>Scot. and North English.</i> a day's work</p>
-            <p class="dictionary-text">2. <i>Australian.</i> a fixed or definite amount of work; a work quota.</i></p>
-        </small>
-      </small>
+            <p class="dictionary-text">2. <i>Australian.</i> a fixed or definite amount of work; a work quota.</p>
         </div>
       </div>
   
       <br>
       <div class="row ptl pbl">
         <div class="col-xs-12 text-center">
-
           <h4> 
             What's your Darg?
           </h4>
@@ -134,7 +144,8 @@
 
             <div class="form-group">
               <input type="password" class="form-control login-field" value="" placeholder="Password" id="password" name="password"/>
-            <button class="btn btn-default" type="submit"> Sign Up </button>
+            </div>
+            <button class="btn btn-primary btn-lg btn-block" type="submit"> Sign Up </button>
             </form>
           </div>
         </div>
@@ -222,6 +233,7 @@
     <!-- Angular JS -->
     <script src="js/angular/angular.min.js"></script>
     <script src="js/angular/angular-resource.min.js"></script>
+    <script src="js/angular/angular-cookies.min.js"></script>
 
     <!-- Darg JS -->
     <script src="js/darg/app.js"></script>
@@ -238,7 +250,6 @@
     <script src="js/flatui/jquery.tagsinput.js"></script>
     <script src="js/flatui/jquery.placeholder.js"></script>
     <script src="js/flatui/jquery.stacktable.js"></script>
-    <script src="http://vjs.zencdn.net/4.3/video.js"></script>
     <script src="js/flatui/application.js"></script>
   </body>
 </html>
