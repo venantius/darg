@@ -20,6 +20,7 @@
   authentication; if successful, we set auth in their session and
   update the cookie to indicate that they're now logged in."
   [request-map]
+  (logging/info request-map)
   (let [email (-> request-map :params :email)
         password (-> request-map :params :password)]
     (try+
@@ -102,6 +103,6 @@ Body -> Each newline in the body is parsed as a separate :task"
                     (str/split #"\n")
                     (->> (map str/trim)))
         email-metadata {:users_id (users/get-userid {:email (:from email)})
-                        :teams_id (teams/get-teamid {:email (:recipient email)}) 
+                        :teams_id (teams/get-teamid {:email (:recipient email)})
                         :date (dbutil/sql-date-from-subject (:subject email))}]
     (tasks/create-task-list task-list email-metadata)))
