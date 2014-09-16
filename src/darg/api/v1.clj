@@ -66,19 +66,19 @@
       users/create-user)
     ;Create a response
     {:body "Account successfully created"
-       :cookies {"logged-in" {:value true :path "/"}}
-       :session {:authenticated true :username (get request-map :email)}
-       :status 200}
+     :cookies {"logged-in" {:value true :path "/"}}
+     :session {:authenticated true :username (get request-map :email)}
+     :status 200}
     (catch [:status 400] response
       (logging/info "Failed to create account")
-       {:body "Failed to authenticate"
-         :session {:authenticated false}
-         :status 401})
+      {:body "Failed to authenticate"
+       :session {:authenticated false}
+       :status 401})
     (catch [:status 409] response
       (logging/info "Account already exists")
       {:body "Account already exists"
-      :session {:authenticated false}
-      :status 409}))))
+       :session {:authenticated false}
+       :status 409}))))
 
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
@@ -105,9 +105,9 @@ Subject -> parses out date in format 'MMM dd YYYY' and converts to sqldate for :
 Body -> Each newline in the body is parsed as a separate :task"
   [email]
   (let [task-list (-> email
-                      (get :body-plain)
-                      (str/split #"\n")
-                      (->> (map str/trim)))
+                    (get :body-plain)
+                    (str/split #"\n")
+                    (->> (map str/trim)))
         email-metadata {:users_id (users/get-userid {:email (:from email)})
                         :teams_id (teams/get-teamid {:email (:recipient email)}) 
                         :date (dbutil/sql-date-from-subject (:subject email))}]
