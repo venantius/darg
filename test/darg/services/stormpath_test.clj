@@ -15,6 +15,10 @@
              :givenName "Finn"
              :surname "the Human"})
 
+;; Malformed/incomplete user -- to test failures
+(def quasi-user {:email "quasi-user@darg.io"
+             :givenName "Cinnamon Bun"})
+
 (deftest we-can-convert-a-darg-user-to-a-stormpath-user
   (is (= (stormpath/user->account {:email "test-user@darg.io"
                                    :password "ohmyglob"

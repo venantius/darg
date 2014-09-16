@@ -20,7 +20,6 @@
   authentication; if successful, we set auth in their session and
   update the cookie to indicate that they're now logged in."
   [request-map]
-  (logging/info "Request Params" request-map)
   (let [email (-> request-map :params :email)
         password (-> request-map :params :password)]
     (try+
@@ -28,7 +27,7 @@
       (logging/info "Successfully authenticated with email" email)
       {:body "Successfully authenticated"
        :cookies {"logged-in" {:value true :path "/"}}
-       :session {:authenticated true :username (get request-map :email)}
+       :session {:authenticated true :email (get request-map :email)}
        :status 200}
       ;; Stormpath will return a 400 status code on failed auth
       (catch [:status 400] response
@@ -54,30 +53,24 @@
 
   TODO"
   [request-map]
-  (logging/info "Request Params" request-map)
   (let [request (-> request-map :params)]
   (try+
     (stormpath/create-account request)
     (logging/info "Successfully created account" (:email request))
     ;On success, write the request map to the database
-    (-> request
-      (select-keys [:surname :givenName :email])
-      stormpath/account->user
-      users/create-user)
+    (users/create-stormpath-account-as-user request)
     ;Create a response
     {:body "Account successfully created"
      :cookies {"logged-in" {:value true :path "/"}}
-     :session {:authenticated true :username (get request-map :email)}
+     :session {:authenticated true :email (get request-map :email)}
      :status 200}
     (catch [:status 400] response
       (logging/info "Failed to create account")
-      {:body "Failed to authenticate"
-       :session {:authenticated false}
+      {:body "Failed to create account"
        :status 401})
     (catch [:status 409] response
       (logging/info "Account already exists")
       {:body "Account already exists"
-       :session {:authenticated false}
        :status 409}))))
 
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17

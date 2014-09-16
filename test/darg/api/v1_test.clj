@@ -11,7 +11,8 @@
             [darg.model.tasks :as tasks]
             [darg.model.users :as users]
             [darg.model.teams :as teams]
-            [darg.model :as table]))
+            [darg.model :as table]
+            [darg.services.stormpath :as stormpath]))
 
 (with-db-fixtures)
 
@@ -36,6 +37,37 @@
     (is (= (:status auth-response 401)))
     (is (not (some #{"logged-in=true;Path=/"}
                    (get (:headers auth-response) "Set-Cookie"))))))
+
+(deftest i-can-register-and-it-wrote-to-the-database-and-cookies
+  (let [auth-response (core/app (mock-request/request 
+    :post "/api/v1/signup"
+    stormpath-test/user-1))]
+  (is (= (:body auth-response) "Account successfully created"))
+  (is (= (:status auth-response 200)))
+  (is (not (empty? (users/get-user-by-field {:email "test-user@darg.io"}))))
+  (is (some #{"logged-in=true;Path=/"}
+    (get (:headers auth-response) "Set-Cookie")))
+  (stormpath/delete-account-by-email (:email stormpath-test/user-1))))
+
+(deftest i-cant-write-the-same-thing-twice
+  (let [auth-response (core/app (mock-request/request 
+    :post "/api/v1/signup"
+    stormpath-test/user-2))]
+  (is (= (:body auth-response) "Account already exists"))
+  (is (= (:status auth-response 409)))))
+
+(deftest signup-failure-does-not-write-to-database-and-sets-no-cookies
+  (let [auth-response (core/app (mock-request/request 
+    :post "/api/v1/signup"
+    stormpath-test/quasi-user))]
+  (is (= (:body auth-response) "Failed to create account"))
+  (is (= (:status auth-response 400)))
+  (is (empty? (users/get-user-by-field {:email "quasi-user@darg.io"})))
+  (is (not (some #{"logged-in=true;Path=/"}
+                   (get (:headers auth-response) "Set-Cookie"))))))
+  ; (stormpath/delete-account-by-email (:email stormpath-test/quasi-user))))
+
+
 
 ;; /api/v1/logout
 
