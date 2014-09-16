@@ -1,6 +1,7 @@
 (ns darg.model.users
   (:require [darg.model :as db]
-            [korma.core :refer :all]))
+            [korma.core :refer :all]
+            [darg.services.stormpath :as stormpath]))
 
 ; Create
 
@@ -8,6 +9,14 @@
   "Insert a user into the database"
   [params]
   (insert db/users (values params)))
+
+(defn create-stormpath-account-as-user
+  "Convert a stormpath account to a user and write it to database"
+  [account-map]
+  (-> account-map
+    (select-keys [:surname :givenName :email])
+      stormpath/account->user
+      create-user))
 
 (defn add-user-to-team
   [userid teamid]

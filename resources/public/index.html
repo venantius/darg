@@ -55,10 +55,10 @@
                 <li>
                   <form role="search" class="navbar-form navbar-left" action="/api/v1/login" method="POST">
                     <div class="form-group">
-                      <input type="text" placeholder="Email" class="form-control input-sm">
+                      <input id="email" name="email" type="text" placeholder="Email" class="form-control input-sm">
                     </div>
                     <div class="form-group">
-                      <input type="password" size="8" placeholder="Password" class="form-control input-sm">
+                      <input id="password" name="password" type="password" size="8" placeholder="Password" class="form-control input-sm">
                     </div>
                     <button class="btn btn-default" type="submit">Login</button>
                   </form>
@@ -121,19 +121,21 @@
         <!-- /definition -->
         <!-- signup form -->
         <div class="col-xs-5 pll">
-          <div class="login-form">
+          <form class="login-form" action="/api/v1/signup" method="POST">
             <div class="form-group">
-              <input type="text" class="form-control login-field" value="" placeholder="Your name" id="email" />
+              <input type="text" class="form-control login-field" value="" placeholder="Your name" id="givenName" name="givenName"/>
             </div>
             <div class="form-group">
-              <input type="text" class="form-control login-field" value="" placeholder="Your e-mail" id="email" />
+              <input type="test" class="form-control login-field" value="" placeholder="Your Surname" id="surname" name="surname"/>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control login-field" value="" placeholder="Your e-mail" id="email" name="email"/>
             </div>
 
             <div class="form-group">
-              <input type="password" class="form-control login-field" value="" placeholder="Password" id="password" />
-            </div>
-
-            <a class="btn btn-primary btn-lg btn-block" href="#">Sign Up</a>
+              <input type="password" class="form-control login-field" value="" placeholder="Password" id="password" name="password"/>
+            <button class="btn btn-default" type="submit"> Sign Up </button>
+            </form>
           </div>
         </div>
       </div>
