@@ -23,7 +23,7 @@
   (let [email (-> request-map :params :email)
         password (-> request-map :params :password)]
     (try+
-      ;;(stormpath/authenticate email password)
+      (stormpath/authenticate email password)
       (logging/info "Successfully authenticated with email" email)
       {:body "Successfully authenticated"
        :cookies {"logged-in" {:value true :path "/"}}
