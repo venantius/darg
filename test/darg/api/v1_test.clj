@@ -81,18 +81,31 @@
   (is (empty? (users/get-user-by-field {:email "quasi-user@darg.io"})))
   (is (not (some #{"logged-in=true;Path=/"}
                    (get (:headers auth-response) "Set-Cookie"))))))
+  ; (stormpath/delete-account-by-email (:email stormpath-test/quasi-user))))
+
+(deftest authenticated-user-can-view-their-darg
+  (let [sample-request {:session {:authenticated true :email "test-user2@darg.io"}}
+         auth-request (api/get-user-darg-list sample-request)]
+  (is (= (:status auth-request) 200))))
+
+(deftest unauthenticated-user-cant-view-a-darg
+  (let [sample-request {:session {:authenticated true :email nil}}
+    auth-response (api/get-user-darg-list sample-request)]
+  (is (= (:status auth-response 403)))
+  (is (= (:body auth-response "User not authenticated")))))
 
 
 ;; api/v1/email
 
 (deftest parsed-email-is-written-to-db
   (api/parse-email f-email/test-email-2)
-  (is (not (empty? (tasks/get-task-by-params {:task "Dancing tiem!!"})))))
+  (is (not (empty? (tasks/get-task-by-params {:task "Dancing tiem!!"}))))
+  (is (not (empty? (tasks/get-task-by-params {:task "Aint it a thing?"})))))
 
 (deftest we-can-get-a-users-task-list
   (api/parse-email f-email/test-email-2)
-  (let [test-user-id (users/get-userid {:email "domo@darg.io"})]
-    (is (= (count (tasks/get-all-tasks-for-user test-user-id)) 5))))
+  (println (tasks/get-all-tasks-for-user-by-email "domo@darg.io"))
+  (is (= (count (tasks/get-all-tasks-for-user-by-email "domo@darg.io")) 5)))
 
 (deftest we-can-get-a-teams-task-list
   (api/parse-email f-email/test-email-2)
