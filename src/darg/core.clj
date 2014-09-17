@@ -26,7 +26,7 @@
   (POST "/api/v1/login" request-map (api/login request-map))
   (GET "/api/v1/logout" request-map (api/logout request-map))
   (POST "/api/v1/signup" request-map (api/signup request-map))
-  (GET "/api/v1/darg/user" request-map (api/get-user-darg-list))
+  (GET "/api/v1/darg/user" request-map (api/get-user-darg-list request-map))
   (route/resources "/"))
 
 (def app (-> routes
