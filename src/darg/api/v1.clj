@@ -79,13 +79,14 @@
   Takes the user the email in the session cookie to return a user's darg"
 
   [request-map]
-  (let [email (-> request-map :session :email)]
-    (if (nil? email)
+  (let [email (-> request-map :session :email)
+         authenticated (-> request-map :session :authenticated)]
+    (if (and (nil? email) authenticated)
     {:body "User not authenticated"
      :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
      :session {:authenticated false}
      :status 403}
-     {:body (tasks/get-all-tasks-for-user-by-email)
+     {:body (tasks/get-all-tasks-for-user-by-email email)
       :status 200})))
 
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
