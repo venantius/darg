@@ -27,7 +27,7 @@
       (logging/info "Successfully authenticated with email" email)
       {:body "Successfully authenticated"
        :cookies {"logged-in" {:value true :path "/"}}
-       :session {:authenticated true :email (get request-map :email)}
+       :session {:authenticated true :email email}
        :status 200}
       ;; Stormpath will return a 400 status code on failed auth
       (catch [:status 400] response
@@ -72,6 +72,21 @@
       (logging/info "Account already exists")
       {:body "Account already exists"
        :status 409}))))
+
+(defn get-user-darg-list
+  "/api/v1/darg/user
+
+  Takes the user the email in the session cookie to return a user's darg"
+
+  [request-map]
+  (let [email (-> request-map :session :email)]
+    (if (nil? email)
+    {:body "User not authenticated"
+     :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
+     :session {:authenticated false}
+     :status 403}
+     {:body (tasks/get-all-tasks-for-user-by-email)
+      :status 200})))
 
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
