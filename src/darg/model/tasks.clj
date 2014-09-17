@@ -43,11 +43,17 @@
 
 ;; User Tasks
 
-(defn get-all-tasks-for-user
+(defn get-all-tasks-for-user-by-id
   [id]
-  (select db/tasks
-    (with db/users
-      (where {:id id}))))
+  (select db/users
+    (where {:id id})
+    (with db/tasks)))
+
+(defn get-all-tasks-for-user-by-email
+  [email]
+  (dissoc (first (select db/users
+    (where{:email email})
+    (with db/tasks))) :id))
 
 (defn get-tasks-for-user-daterange
   [id minDate maxDate]
@@ -67,7 +73,7 @@
 (defn get-tasks-for-team-daterange
   [id minDate maxDate]
   (select db/tasks
-    (with db/users
+    (with db/teams
       (where (and {:id id}
              (between :date [minDate maxDate]))))))
 
