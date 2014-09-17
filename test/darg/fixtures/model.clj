@@ -20,10 +20,16 @@
    :name "arrigato"
    :admin false})
 
+(def test-user-4
+  {:email "test-user2@darg.io"
+   :first_name "LSP"
+   :admin false})
+
 (def test-users
   [test-user-1
    test-user-2
-   test-user-3])
+   test-user-3
+   test-user-4])
 
 (def test-team-1
   {:name "darg"
@@ -44,7 +50,7 @@
 
 (def test-task-1
   {:date (c/to-sql-date (t/date-time 2012 2 16))
-   :users_id 1
+   :users_id 4
    :teams_id 1
    :task "Do a good deed everyday"})
 
@@ -56,7 +62,7 @@
 
 (def test-task-3
   {:date (c/to-sql-date (t/date-time 2012 5 17))
-   :users_id 3
+   :users_id 4
    :teams_id 1
    :task "Salute the shorts"})
 
