@@ -67,6 +67,7 @@
                    (get (:headers auth-response) "Set-Cookie"))))))
   ; (stormpath/delete-account-by-email (:email stormpath-test/quasi-user))))
 
+<<<<<<< HEAD
 ;GET v1/user/darg
 
 (deftest authenticated-user-can-view-their-darg
@@ -88,7 +89,6 @@
          auth-response (api/get-user-darg-list sample-request)]
     (is (= (:status auth-response) 403))
     (is (= (:body auth-response) "User not authenticated"))))
-
 
 ;; /api/v1/logout
 
