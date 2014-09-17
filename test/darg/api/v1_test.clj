@@ -141,6 +141,9 @@
     (is (= (:body response) "Tasks Created Successfully"))
     (is (= (count (:tasks (tasks/get-all-tasks-for-user-by-email "test-user2@darg.io"))) 5))))
 
+;; /api/v1/logout
+
+; TODO - TEST HERE WITH A HEADLESS BROWSER
 
 ;; api/v1/email
 
