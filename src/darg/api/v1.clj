@@ -102,6 +102,6 @@ Body -> Each newline in the body is parsed as a separate :task"
                     (str/split #"\n")
                     (->> (map str/trim)))
         email-metadata {:users_id (users/get-userid {:email (:from email)})
-                        :teams_id (teams/get-teamid {:email (:recipient email)}) 
+                        :teams_id (teams/get-teamid {:email (:recipient email)})
                         :date (dbutil/sql-date-from-subject (:subject email))}]
     (tasks/create-task-list task-list email-metadata)))
