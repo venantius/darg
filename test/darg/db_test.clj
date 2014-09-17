@@ -1,4 +1,4 @@
-(ns darg.db-test
+-(ns darg.db-test
   (:use darg.fixtures)
   (:require [clojure.test :refer :all]
             [korma.db :as korma]
@@ -34,7 +34,7 @@
   (is (= 1 (users/get-userid {:id 1}))))
 
 (deftest we-can-get-user-tasks
-  (is (not (empty? (tasks/get-all-tasks-for-user 1)))))
+  (is (not (empty? (tasks/get-all-tasks-for-user-by-id 1)))))
 
 (deftest we-can-check-a-user-is-in-a-team
   (is (users/is-user-in-team 3 1))
