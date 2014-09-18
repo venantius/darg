@@ -83,16 +83,27 @@
                    (get (:headers auth-response) "Set-Cookie"))))))
   ; (stormpath/delete-account-by-email (:email stormpath-test/quasi-user))))
 
+;GET v1/user/darg
+
 (deftest authenticated-user-can-view-their-darg
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io"}}
-         auth-request (api/get-user-darg-list sample-request)]
-  (is (= (:status auth-request) 200))))
+         auth-response (api/get-user-darg-list sample-request)]
+    (is (= (:status auth-response) 200))
+    (is (-> auth-response
+            :body
+            (contains? :tasks)))))
 
 (deftest unauthenticated-user-cant-view-a-darg
-  (let [sample-request {:session {:authenticated true :email nil}}
-    auth-response (api/get-user-darg-list sample-request)]
-  (is (= (:status auth-response 403)))
-  (is (= (:body auth-response "User not authenticated")))))
+  (let [sample-request {:session {:authenticated false :email "test-user2@darg.io"}}
+         auth-response (api/get-user-darg-list sample-request)]
+    (is (= (:status auth-response) 403))
+    (is (= (:body auth-response) "User not authenticated"))))
+
+(deftest user-cant-view-a-darg-without-an-email
+  (let [sample-request {:session {:authenticated true}}
+         auth-response (api/get-user-darg-list sample-request)]
+    (is (= (:status auth-response) 403))
+    (is (= (:body auth-response) "User not authenticated"))))
 
 
 ;; api/v1/email
@@ -104,7 +115,6 @@
 
 (deftest we-can-get-a-users-task-list
   (api/parse-email f-email/test-email-2)
-  (println (tasks/get-all-tasks-for-user-by-email "domo@darg.io"))
   (is (= (count (tasks/get-all-tasks-for-user-by-email "domo@darg.io")) 5)))
 
 (deftest we-can-get-a-teams-task-list
