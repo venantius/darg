@@ -140,7 +140,6 @@
     (is (= (:body response) "Tasks Created Successfully"))
     (is (= (count (:tasks (tasks/get-all-tasks-for-user-by-email "test-user2@darg.io"))) 5))))
 
-
 ;; api/v1/email
 
 (deftest parsed-email-is-written-to-db
@@ -150,10 +149,9 @@
 
 (deftest we-can-get-a-users-task-list
   (api/parse-email f-email/test-email-2)
-  (println (tasks/get-all-tasks-for-user-by-email "domo@darg.io"))
   (is (= (count (tasks/get-all-tasks-for-user-by-email "domo@darg.io")) 5)))
 
 (deftest we-can-get-a-teams-task-list
   (api/parse-email f-email/test-email-2)
-  (let [test-team-id (teams/get-teamid {:email "test.api@darg.io"})]
-    (is (= (count (tasks/get-all-tasks-for-team test-team-id)) 5))))
+  (def test-team-id (teams/get-teamid {:email "test.api@darg.io"}))
+  (is (= (count (tasks/get-all-tasks-for-team test-team-id)) 5)))
