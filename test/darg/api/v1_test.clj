@@ -115,7 +115,6 @@
 
 (deftest we-can-get-a-users-task-list
   (api/parse-email f-email/test-email-2)
-  (println (tasks/get-all-tasks-for-user-by-email "domo@darg.io"))
   (is (= (count (tasks/get-all-tasks-for-user-by-email "domo@darg.io")) 5)))
 
 (deftest we-can-get-a-teams-task-list
