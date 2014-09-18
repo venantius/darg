@@ -155,5 +155,5 @@
 
 (deftest we-can-get-a-teams-task-list
   (api/parse-email f-email/test-email-2)
-  (let [test-team-id (teams/get-teamid {:email "test.api@darg.io"})]
-    (is (= (count (tasks/get-all-tasks-for-team test-team-id)) 5))))
+  (def test-team-id (teams/get-teamid {:email "test.api@darg.io"}))
+  (is (= (count (tasks/get-all-tasks-for-team test-team-id)) 5)))
