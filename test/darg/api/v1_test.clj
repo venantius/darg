@@ -67,7 +67,6 @@
                    (get (:headers auth-response) "Set-Cookie"))))))
   ; (stormpath/delete-account-by-email (:email stormpath-test/quasi-user))))
 
-<<<<<<< HEAD
 ;GET v1/user/darg
 
 (deftest authenticated-user-can-view-their-darg
