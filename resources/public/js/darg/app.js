@@ -29,8 +29,8 @@ app.controller('DargLoginCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
         }}
 
     $scope.LoginForm = {
-      email: "test-user2@darg.io",
-      password: "samurai"
+      email: "",
+      password: ""
     };
 
     $scope.Login = function() {
