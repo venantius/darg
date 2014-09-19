@@ -7,17 +7,17 @@
 
 (def test-user-1
   {:email "savelago@gmail.com"
-   :first_name "yawn"
+   :name "yawn"
    :admin true })
 
 (def test-user-2
   {:email "domo@darg.io"
-   :first_name "domodomo"
+   :name "domodomo"
    :admin false})
 
 (def test-user-3
   {:email "arrigato@darg.io"
-   :first_name "arrigato"
+   :name "arrigato"
    :admin false})
 
 (def test-users

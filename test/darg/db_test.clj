@@ -19,12 +19,12 @@
 ; User Tests
 
 (deftest we-can-insert-user-into-the-db
-  (users/create-user {:email "haruko@test.com" :first_name "haruko"})
+  (users/create-user {:email "haruko@test.com" :name "haruko"})
   (is (users/get-user-by-field {:email "haruko@test.com"})))
 
 (deftest we-can-update-user-in-the-db
-  (users/update-user 3 {:first_name "irrashaimase"})
-  (is (= "irrashaimase" (:first_name (users/get-user-by-id 3)))))
+  (users/update-user 3 {:name "irrashaimase"})
+  (is (= "irrashaimase" (:name (users/get-user-by-id 3)))))
 
 (deftest we-can-delete-user-from-the-db
   (users/delete-user {:id 3})
@@ -86,4 +86,4 @@
 
 (deftest we-can-get-a-taskid
   (is (= 1 (tasks/get-taskid {:id 1}))))
- 
+

@@ -27,14 +27,14 @@
   "Takes a Darg user and converts it into a Stormpath account"
   [user]
   (-> user
-      (assoc :givenName (:first_name user) :surname (:last_name user))
-      (dissoc :first_name :last_name)))
+      (assoc :givenName (:name user) :surname "Smith")
+      (dissoc :name)))
 
 (defn account->user
   "Takes a Stormpath account and converts it to a Darg user"
   [account]
   (-> account
-      (assoc :first_name (:givenName account) :last_name (:surname account))
+      (assoc :name (:givenName account))
       (dissoc :givenName :surname)))
 
 (defn get-search-results
@@ -58,13 +58,13 @@
   not implemented:
   optional fields: username, middleName, status, customData
   status is either 'ENABLED' or 'DISABLED'"
-  [{:keys [email password givenName surname]}]
+  [{:keys [email password givenName]}]
   (format-stormpath-response
     (let [{:keys [api-key secret-key]} settings/stormpath-credentials
           body (json/encode {:email email
                              :password password
                              :givenName givenName
-                             :surname surname})]
+                             :surname "Smith"})]
       (client/post -directory-account-endpoint {:basic-auth [api-key secret-key]
                                                 :content-type :json
                                                 :accept :json

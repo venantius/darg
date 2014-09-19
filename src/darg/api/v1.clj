@@ -52,27 +52,26 @@
 (defn signup
   "/api/v1/signup
 
-  TODO"
+  Signs a user up. This creates an account in Stormpath, creates a user
+  record in our database, and authenticates the user."
   [request-map]
   (let [request (-> request-map :params)]
-  (try+
-    (stormpath/create-account request)
-    (logging/info "Successfully created account" (:email request))
-    ;On success, write the request map to the database
-    (users/create-stormpath-account-as-user request)
-    ;Create a response
-    {:body "Account successfully created"
-     :cookies {"logged-in" {:value true :path "/"}}
-     :session {:authenticated true :email (get request-map :email)}
-     :status 200}
-    (catch [:status 400] response
-      (logging/info "Failed to create account")
-      {:body "Failed to create account"
-       :status 401})
-    (catch [:status 409] response
-      (logging/info "Account already exists")
-      {:body "Account already exists"
-       :status 409}))))
+    (try+
+      (stormpath/create-account request)
+      (logging/info "Successfully created account" (:email request))
+      (users/create-user-from-signup-form request)
+      {:body "Account successfully created"
+       :cookies {"logged-in" {:value true :path "/"}}
+       :session {:authenticated true :email (:email request)}
+       :status 200}
+      (catch [:status 400] response
+        (logging/info "Failed to create Stormpath account with response" response)
+        {:body "Failed to create account"
+         :status 401})
+      (catch [:status 409] response
+        (logging/info "Account already exists")
+        {:body "Account already exists"
+         :status 409}))))
 
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
@@ -89,14 +88,16 @@
     (str params)))
 
 (defn parse-email
-"/api/v1/parse-email
+  "/api/v1/parse-email
 
-Recieves a darg email from a user, parses tasklist, and inserts the tasks into the database.
-email mapping to task metadata is:
-From -> uses email address to lookup :users_id
-Recipient -> uses email address to lookup :teams_id
-Subject -> parses out date in format 'MMM dd YYYY' and converts to sqldate for :date
-Body -> Each newline in the body is parsed as a separate :task"
+  Recieves a darg email from a user, parses tasklist, and inserts the tasks into
+  the database.
+
+  Email mapping to task metadata is:
+    - From -> uses email address to lookup :users_id
+    - Recipient -> uses email address to lookup :teams_id
+    - Subject -> parses out date in format 'MMM dd YYYY' and converts to sqldate for :date
+    - Body -> Each newline in the body is parsed as a separate :task"
   [email]
   (let [task-list (-> email
                     (get :body-plain)
