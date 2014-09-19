@@ -7,7 +7,7 @@
 (def user-1 {:email "test-user@darg.io"
              :password "ohmyglob"
              :givenName "LSP"
-             :surname "lumpy space?"})
+             :surname "Smith"})
 
 ;; for authentication -- already seeded in Stormpath, do not delete
 (def user-2 {:email "test-user2@darg.io"
@@ -17,21 +17,19 @@
 
 ;; Malformed/incomplete user -- to test failures
 (def quasi-user {:email "quasi-user@darg.io"
-             :givenName "Cinnamon Bun"})
+                 :givenName "Cinnamon Bun"})
 
 (deftest we-can-convert-a-darg-user-to-a-stormpath-user
   (is (= (stormpath/user->account {:email "test-user@darg.io"
                                    :password "ohmyglob"
-                                   :first_name "LSP"
-                                   :last_name "lumpy space?"})
+                                   :name "LSP"})
          user-1)))
 
 (deftest we-can-convert-a-stormpath-user-to-a-darg-user
   (is (= (stormpath/account->user user-1)
          {:email "test-user@darg.io"
           :password "ohmyglob"
-          :first_name "LSP"
-          :last_name "lumpy space?"})))
+          :name "LSP"})))
 
 (deftest we-can-create-and-delete-a-user-in-stormpath
   (is (stormpath/create-account user-1))

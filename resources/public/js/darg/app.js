@@ -70,3 +70,32 @@ app.controller('DargLoginCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
     };
 
 }]);
+
+app.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
+               function($scope, $http, $cookies, $cookieStore) {
+    $scope.SignupForm = {
+      givenName: "",
+      email: "",
+      password: ""
+    };
+
+    $scope.Signup = function() {
+        $http({
+            method: "post",
+            url: '/api/v1/signup', 
+            data: $.param($scope.SignupForm),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+            .success(function(data) {
+                console.log(data);
+                if (!data.success) {
+                    // if not successful, bind errors to error variables
+                    $scope.errorSuperhero = data.errors.superheroAlias;
+                } else {
+                    // if successful, bind success message to message
+                    console.log(data.message);
+                    $scope.message = data.message;
+                }
+            });
+    };
+}]);

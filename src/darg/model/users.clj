@@ -10,11 +10,11 @@
   [params]
   (insert db/users (values params)))
 
-(defn create-stormpath-account-as-user
+(defn create-user-from-signup-form
   "Convert a stormpath account to a user and write it to database"
   [account-map]
   (-> account-map
-    (select-keys [:surname :givenName :email])
+    (select-keys [:givenName :email])
       stormpath/account->user
       create-user))
 
@@ -61,6 +61,6 @@
 (defn get-user-teams
   "Gets the list of teams a user belongs to"
   [id]
-  (select db/users 
+  (select db/users
     (where {:id id})
     (with db/teams)))

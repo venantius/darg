@@ -13,8 +13,7 @@
            (table :users
                   (integer :id :auto-inc :primary-key)
                   (text :email :unique :not-null)
-                  (text :first_name)
-                  (text :last_name)
+                  (text :name)
                   (boolean :admin (default false)))))
   (down [] (drop (table :users))))
 
