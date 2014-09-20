@@ -51,9 +51,9 @@
 
 (defn get-all-tasks-for-user-by-email
   [email]
-  (dissoc (first (select db/users
+  (first (select db/users
     (where{:email email})
-    (with db/tasks))) :id))
+    (with db/tasks))))
 
 (defn get-tasks-for-user-daterange
   [id minDate maxDate]
