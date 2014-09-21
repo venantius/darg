@@ -2,7 +2,8 @@
   "Mailgun integration library"
   (:require [cheshire.core :as json]
             [clj-http.client :as client]
-            [darg.settings :as settings]))
+            [darg.settings :as settings]
+            [pandect.algo.sha256 :refer [sha256-hmac]]))
 
 ;; API endpoints
 (def -base-url "https://api.mailgun.net/v2")
@@ -23,3 +24,11 @@
                                              :form-params form-params})
         :body
         (json/parse-string true))))
+
+(defn authenticate
+  "Verify that this message was sent from Mailgun"
+  [{:keys [timestamp token signature]}]
+  (let [api-key (:api-key settings/mailgun-credentials)
+        computed-signature (-> (clojure.string/join [timestamp token])
+                               (sha256-hmac api-key))]
+    (if (= computed-signature signature) true false)))
