@@ -149,9 +149,10 @@
 
 (deftest we-can-get-a-users-task-list
   (api/parse-email f-email/test-email-2)
-  (is (= (count (tasks/get-all-tasks-for-user-by-email "domo@darg.io")) 5)))
+  (is (= (count (:tasks (tasks/get-all-tasks-for-user-by-email "domo@darg.io"))) 5)))
 
 (deftest we-can-get-a-teams-task-list
   (api/parse-email f-email/test-email-2)
   (def test-team-id (teams/get-teamid {:email "test.api@darg.io"}))
-  (is (= (count (tasks/get-all-tasks-for-team test-team-id)) 5)))
+  (println (tasks/get-all-tasks-for-team test-team-id))
+  (is (= (count (:tasks (tasks/get-all-tasks-for-team test-team-id))) 5)))

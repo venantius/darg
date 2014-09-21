@@ -88,8 +88,9 @@
       {:body "http://www.gravatar.com/avatar/?s=40"
        :status 200})))
 
+
 (defn get-user-darg-list
-  "/api/v1/darg/user
+  "/api/v1/darg/
 
   Takes the email in the session cookie to return a user's darg
 
@@ -141,7 +142,7 @@
        :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
        :session {:authenticated false}
        :status 403})))
-     
+
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
   "Parse an e-mail that has been forwarded by Mailgun"
