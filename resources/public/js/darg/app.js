@@ -23,7 +23,7 @@ app.controller('DargLoginCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
-            console.log(data);
+            console.log("Logged in.");
             $scope.Gravatar();
         });
     };
@@ -33,8 +33,11 @@ app.controller('DargLoginCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
             method: "get",
             url: "/api/v1/logout"
         })
-        .success(function() {
+        .success(function(data) {
             console.log("Logged out.");
+        })
+        .error(function(data) {
+            console.log("Error logging out.");
         });
     };
 

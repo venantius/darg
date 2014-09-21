@@ -45,7 +45,7 @@
   your session cookie and your plaintext cookie, logging you out both
   in practice and appearance"
   [request-map]
-  {:body (str request-map)
+  {:body ""
    :status 200
    :session nil
    :cookies {"logged-in" {:value false :max-age 0 :path "/"}}})

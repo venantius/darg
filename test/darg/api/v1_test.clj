@@ -47,9 +47,9 @@
 (deftest gravar-image-is-what-it-should-be
   (is (= (api/gravatar {:session {:email "venantius@gmail.com"}})
          {:body "http://www.gravatar.com/avatar/6b653616a592b8bdc296b0abf6207a71?s=40"
-          :status 200})
-      (= (api/gravatar {})
-         {:body "http://www.gravatar.com/avatar"
+          :status 200}))
+  (is (= (api/gravatar {})
+         {:body "http://www.gravatar.com/avatar/?s=40"
           :status 200})))
 
 ;; /api/v1/signup
