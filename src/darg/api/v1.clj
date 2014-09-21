@@ -143,7 +143,7 @@
        :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
        :session {:authenticated false}
        :status 403})))
-     
+
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
   "Parse an e-mail that has been forwarded by Mailgun"

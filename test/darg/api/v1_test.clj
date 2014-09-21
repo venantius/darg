@@ -55,7 +55,6 @@
 ;; /api/v1/signup
 
 (deftest i-can-register-and-it-wrote-to-the-database-and-cookies
-
   (let [auth-response (core/app (mock-request/request 
                                 :post "/api/v1/signup"
                                 stormpath-test/user-1))]
@@ -159,4 +158,5 @@
 (deftest we-can-get-a-teams-task-list
   (api/parse-email f-email/test-email-2)
   (def test-team-id (teams/get-teamid {:email "test.api@darg.io"}))
-  (is (= (count (tasks/get-all-tasks-for-team test-team-id)) 5)))
+  (println (tasks/get-all-tasks-for-team test-team-id))
+  (is (= (count (:tasks (tasks/get-all-tasks-for-team test-team-id))) 5)))
