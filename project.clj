@@ -3,6 +3,7 @@
   :min-lein-version "2.0.0"
   :url "http://darg.io"
 
+  :java-agents  [[com.newrelic.agent.java/newrelic-agent "2.19.0"]]
   :dependencies [[org.clojure/clojure "1.6.0"]
 
                  ;; repl
