@@ -17,76 +17,8 @@
     <link rel="shortcut icon" href="images/favicon.ico">
 
   </head>
-  <body>
-
-    <!-- top menu --> 
-    <div ng-controller="DargLoginCtrl"> 
-    <div class="row" >
-      <div class="col-xs-9">
-        <nav class="navbar-sm navbar-inverse navbar-fixed-top" role="navigation">
-          <div class="container">
-            <div class="collapse navbar-collapse" id="navbar-collapse-01"> 
-
-              <!-- Show this menu if logged in -->
-              <div ng-hide="LoggedIn()">
-                <ul class="nav navbar-nav navbar-left"> 
-                  <li>
-                    <a href="/">Home</a>
-                  </li>
-                  <li>
-                    <a href="/pricing">Pricing</a>
-                  </li>
-                  <li><a href="#fakelink">About</a></li>
-                </ul>
-              </div>
-              <div ng-show="LoggedIn()">
-                <ul class="nav navbar-nav navbar-left"> 
-                  <li>
-                    <a href="/">Home</a>
-                  </li>
-                </ul>
-              </div>
-
-              <!-- Show log in form in logged-in -->
-              <div> 
-                <div ng-hide="LoggedIn()">
-                  <ul class="nav navbar-nav navbar-right">
-                    <li>
-                      <form role="search" class="navbar-form navbar-left">
-                        <div class="form-group">
-                          <input type="text" placeholder="Email" class="form-control input-sm" ng-model="LoginForm.email">
-                        </div>
-                        <div class="form-group">
-                          <input type="password" size="8" placeholder="Password" class="form-control input-sm" ng-model="LoginForm.password">
-                        </div>
-                        <button class="btn btn-default" ng-click="Login()">Login</button>
-                      </form>
-                    </li>
-                  </ul>
-                </div>
-                <div ng-show="LoggedIn()">
-                  <ul class="nav navbar-nav navbar-right navbar-favicon">
-                    <li class="dropdown">
-                      <a href="/teams" class="dropdown-toggle" data-toggle="dropdown">
-                        <img ng-src="{{Gravatar_url}}" class="img-circle">
-                        <b class="caret"></b>
-                      </a>
-                      <span class="dropdown-arrow"></span>
-                      <ul class="dropdown-menu">
-                        <li><a href="#">Settings</a></li>
-                        <li class="divider"></li>
-                        <li><a ng-click="Logout()">Logout</a></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div><!--/.navbar-collapse -->
-          </div>
-        </nav>
-      </div><!-- /.navbar-collapse -->
-    </div>
-    <!-- / top menu --> 
+  <body ng-controller="DargPageCtrl">
+    <div ng-include src="header"></div>
 
     <div class="container">
 
@@ -120,7 +52,7 @@
       </div>
 
       <!-- definition and signup form -->
-      <div class="row ptl mtl">
+      <div class="row ptl mtl pbl mbl">
         <!-- definition -->
         <div class="col-xs-7 prl">
           <p><b>Say goodbye to status meetings.</b></p>
@@ -128,8 +60,6 @@
 
           <p>Don't want to reply to an e-mail? No problem! We've got integrations with GitHub, JIRA, and Phabricator that tie into your existing workflow.</p>
 
-
-          <!-- {{darg.products}} -->
         </div>
         <!-- /definition -->
         <!-- signup form -->
@@ -151,11 +81,7 @@
         </div>
       </div>
       <!-- end definition and signup form -->
-
-
-      <br>
-      <br>
-      <h2 class="demo-section-title">Features</h2>
+      <h2 class="demo-section-title ptl mtl">Features</h2>
       <br>
       <div class="row demo-tiles">
         <div class="col-xs-3">
@@ -191,43 +117,8 @@
 
         </div>
       </div> <!-- /tiles -->
-
-
-
-
-      <div class="row">
-        <div class="col-md-12">
-          <p>&nbsp;</p>
-        </div>
-      </div>
-
-
     </div>
-
-
-
-    <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-7">
-            <h3 class="footer-title">Darg.io</h3>
-              <p>About</p>
-              <p>Contact</p>
-              <p>Other</p>
-
-          </div> <!-- /col-xs-7 -->
-
-          <div class="col-xs-5">
-            <div class="footer-banner">
-              <h3 class="footer-title">Darg.io</h3>
-              <ul>
-                <li>Darg is an UrsaCorp product, built in collaboration between @venantius and @savelago.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <div ng-include src="footer" class="mtl ptl"></div>
     
     <!-- Load JS here for greater good =============================-->
     <!-- Angular JS -->

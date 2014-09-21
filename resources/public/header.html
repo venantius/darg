@@ -1,0 +1,66 @@
+<div ng-controller="DargLoginCtrl"> 
+  <div class="row" >
+    <div class="col-xs-9">
+      <nav class="navbar-sm navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="collapse navbar-collapse" id="navbar-collapse-01"> 
+
+            <!-- Show this menu if logged in -->
+            <div ng-hide="LoggedIn()">
+              <ul class="nav navbar-nav navbar-left"> 
+                <li>
+                  <a href="/">Home</a>
+                </li>
+                <li>
+                  <a href="/pricing">Pricing</a>
+                </li>
+                <li><a href="#fakelink">About</a></li>
+              </ul>
+            </div>
+            <div ng-show="LoggedIn()">
+              <ul class="nav navbar-nav navbar-left"> 
+                <li>
+                  <a href="/">Home</a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Show log in form if not logged-in -->
+            <div> 
+              <div ng-hide="LoggedIn()">
+                <ul class="nav navbar-nav navbar-right">
+                  <li>
+                    <form role="search" class="navbar-form navbar-left">
+                      <div class="form-group">
+                        <input type="text" placeholder="Email" class="form-control input-sm" ng-model="LoginForm.email">
+                      </div>
+                      <div class="form-group">
+                        <input type="password" size="8" placeholder="Password" class="form-control input-sm" ng-model="LoginForm.password">
+                      </div>
+                      <button class="btn btn-default" ng-click="Login()">Login</button>
+                    </form>
+                  </li>
+                </ul>
+              </div>
+              <div ng-show="LoggedIn()">
+                <ul class="nav navbar-nav navbar-right navbar-favicon">
+                  <li class="dropdown">
+                    <a href="/teams" class="dropdown-toggle" data-toggle="dropdown">
+                      <img ng-src="{{Gravatar_url}}" class="img-circle">
+                      <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="#">Settings</a></li>
+                      <li class="divider"></li>
+                      <li><a ng-click="Logout()">Logout</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+</div>

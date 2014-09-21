@@ -1,5 +1,12 @@
 var app = angular.module('darg', ['ngCookies']);
 
+app.controller('DargPageCtrl', ['$scope', '$http',
+               function($scope, $http) {
+    $scope.header = "header.html";
+    $scope.footer = "footer.html";
+   }
+]);
+
 app.controller('DargLoginCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
                function($scope, $http, $cookies, $cookieStore) {
     // Are we logged in?

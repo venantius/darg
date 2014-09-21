@@ -19,8 +19,11 @@
 ;; Pay attention to trailing slashes - right now the only thing that should end in a
 ;; slash is the root.
 (defroutes routes
-  (GET "/" request-map (do (logging/info request-map) (resp/resource-response "index.html" {:root "public"})))
+  ;; www
+  (GET "/" request-map (resp/resource-response "index.html" {:root "public"}))
   (GET "/debug" request-map (debug request-map))
+
+  ;; api
   (POST "/api/v1/email" request-map (api/parse-forwarded-email request-map))
   (GET "/api/v1/gravatar" request-map (api/gravatar request-map))
   (POST "/api/v1/login" request-map (api/login request-map))
