@@ -86,4 +86,3 @@
 
 (deftest we-can-get-a-taskid
   (is (= 1 (tasks/get-taskid {:id 1}))))
-
