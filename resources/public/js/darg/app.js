@@ -1,23 +1,5 @@
 var app = angular.module('darg', ['ngCookies']);
 
-app.controller('DargCtrl', function(){
-    this.products = gems;
-});
-
-var gems = [
-    {
-        name: "Dodecahedron",
-        price: 2.95,
-        description: ". . . ",
-        canPurchase: true,
-    },
-    {
-        name: "Pentagonal Gem",
-        price: 5.95,
-        description: ". . .",
-        canPurchase: false
-    }]
-
 app.controller('DargLoginCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
                function($scope, $http, $cookies, $cookieStore) {
     // Are we logged in?
@@ -68,6 +50,22 @@ app.controller('DargLoginCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
             }
         });
     };
+
+    $scope.Gravatar_url = "";
+    $scope.Gravatar = $http({
+        method: "get",
+        url: "/api/v1/gravatar"
+    })
+    .success(function(data) {
+        if (!data.success) {
+            console.log(data.errors);
+            $scope.Gravatar_url = data;
+        } else {
+            console.log(data.message);
+            console.log(data);
+            $scope.message = data.message;
+        }
+    });
 
 }]);
 

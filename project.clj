@@ -13,6 +13,9 @@
                  [clj-time "0.8.0"]
                  [slingshot "0.10.3"]
 
+                 ;; crypto
+                 [pandect "0.4.0"]
+
                  ;; logging
                  [org.clojure/tools.logging "0.3.0"]
                  [clj-logging-config "1.9.12"]
@@ -49,7 +52,7 @@
                           :database-url "postgres://localhost:5432/darg_test"}}
              :staging {:env {:darg-environment :staging}}
              :production {:env {:darg-environment :production}}}
-             
+
   :repl-options {:port 6001}
   :main darg.core
   )

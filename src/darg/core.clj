@@ -22,6 +22,7 @@
   (GET "/" request-map (do (logging/info request-map) (resp/resource-response "index.html" {:root "public"})))
   (GET "/debug" request-map (debug request-map))
   (POST "/api/v1/email" request-map (api/parse-forwarded-email request-map))
+  (GET "/api/v1/gravatar" request-map (api/gravatar request-map))
   (POST "/api/v1/login" request-map (api/login request-map))
   (GET "/api/v1/logout" request-map (api/logout request-map))
   (POST "/api/v1/signup" request-map (api/signup request-map))
