@@ -83,27 +83,62 @@
                    (get (:headers auth-response) "Set-Cookie"))))))
   ; (stormpath/delete-account-by-email (:email stormpath-test/quasi-user))))
 
-;GET v1/user/darg
+;GET v1/darg
 
 (deftest authenticated-user-can-view-their-darg
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io"}}
-         auth-response (api/get-user-darg-list sample-request)]
-    (is (= (:status auth-response) 200))
-    (is (-> auth-response
+         response (api/get-user-dargs sample-request)]
+    (is (= (:status response) 200))
+    (is (-> response
             :body
             (contains? :tasks)))))
 
 (deftest unauthenticated-user-cant-view-a-darg
   (let [sample-request {:session {:authenticated false :email "test-user2@darg.io"}}
-         auth-response (api/get-user-darg-list sample-request)]
-    (is (= (:status auth-response) 403))
-    (is (= (:body auth-response) "User not authenticated"))))
+         response (api/get-user-dargs sample-request)]
+    (is (= (:status response) 403))
+    (is (= (:body response) "User not authenticated"))))
 
 (deftest user-cant-view-a-darg-without-an-email
   (let [sample-request {:session {:authenticated true}}
-         auth-response (api/get-user-darg-list sample-request)]
-    (is (= (:status auth-response) 403))
-    (is (= (:body auth-response) "User not authenticated"))))
+         response (api/get-user-dargs sample-request)]
+    (is (= (:status response) 403))
+    (is (= (:body response) "User not authenticated"))))
+
+;POST v1/darg
+
+(deftest unauthenticated-user-cant-post-a-darg
+  (let [sample-request {:session {:authenticated false :email "test-user2@darg.io"}
+                                    :params {:email "test-user2@darg.io" 
+                                                   :team-name "Robotocorp" 
+                                                   :date "Mar 10 2014" 
+                                                   :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
+         response (api/add-dargs-for-user sample-request)]
+    (is (= (:status response) 403))
+    (is (= (:body response) "User not authenticated"))
+    (is (= (count (tasks/get-all-tasks-for-user-by-email "test-user2@darg.io")) 2))))
+
+(deftest user-cant-post-to-a-team-they-arent-on 
+  (let [sample-request {:session {:authenticated true :email "test-user2@darg.io"}
+                                    :params {:email "test-user2@darg.io" 
+                                                   :team-name "Jake n Cake" 
+                                                   :date "Mar 10 2014" 
+                                                   :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
+         response (api/add-dargs-for-user sample-request)]
+    (is (= (:status response) 403))
+    (is (= (:body response) "User is not a registered member of this team"))
+    (is (= (count (tasks/get-all-tasks-for-user-by-email "test-user2@darg.io")) 2))))
+
+(deftest authenticated-user-can-post-a-darg
+  (let [sample-request {:session {:authenticated true :email "test-user2@darg.io"}
+                                    :params {:email "test-user2@darg.io" 
+                                                   :team-name "Robotocorp" 
+                                                   :date "Mar 10 2014" 
+                                                   :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
+         response (api/add-dargs-for-user sample-request)]
+    (is (= (:status response) 200))
+    (is (= (:body response) "Tasks Created Successfully"))
+    (is (= (count (tasks/get-all-tasks-for-user-by-email "test-user2@darg.io")) 5))))
 
 
 ;; api/v1/email
