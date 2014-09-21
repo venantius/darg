@@ -1,23 +1,5 @@
 var app = angular.module('darg', ['ngCookies']);
 
-app.controller('DargCtrl', function(){
-    this.products = gems;
-});
-
-var gems = [
-    {
-        name: "Dodecahedron",
-        price: 2.95,
-        description: ". . . ",
-        canPurchase: true,
-    },
-    {
-        name: "Pentagonal Gem",
-        price: 5.95,
-        description: ". . .",
-        canPurchase: false
-    }]
-
 app.controller('DargLoginCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
                function($scope, $http, $cookies, $cookieStore) {
     // Are we logged in?
@@ -26,7 +8,7 @@ app.controller('DargLoginCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
             return true;
         } else {
             return false;
-        }}
+        }};
 
     $scope.LoginForm = {
       email: "",
@@ -40,17 +22,10 @@ app.controller('DargLoginCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
             data: $.param($scope.LoginForm),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
-            .success(function(data) {
-                console.log(data);
-                if (!data.success) {
-                    // if not successful, bind errors to error variables
-                    $scope.errorSuperhero = data.errors.superheroAlias;
-                } else {
-                    // if successful, bind success message to message
-                    console.log(data.message);
-                    $scope.message = data.message;
-                }
-            });
+        .success(function(data) {
+            console.log("Logged in.");
+            $scope.Gravatar();
+        });
     };
 
     $scope.Logout = function() {
@@ -60,19 +35,28 @@ app.controller('DargLoginCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
         })
         .success(function(data) {
             console.log("Logged out.");
-            if (!data.success) {
-                $scope.errorSuperhero = data.errors.superheroAlias;
-            } else {
-                console.log(data.message);
-                $scope.message = data.message;
-            }
+        })
+        .error(function(data) {
+            console.log("Error logging out.");
         });
     };
+
+    $scope.Gravatar = function() {
+        $http({
+            method: "get",
+            url: "/api/v1/gravatar"
+        })
+        .success(function(data, status) {
+            $scope.Gravatar_url = data;
+        });
+    };
+    $scope.Gravatar_url = $scope.Gravatar();
 
 }]);
 
 app.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
                function($scope, $http, $cookies, $cookieStore) {
+
     $scope.SignupForm = {
       givenName: "",
       email: "",
@@ -86,16 +70,11 @@ app.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
             data: $.param($scope.SignupForm),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
-            .success(function(data) {
-                console.log(data);
-                if (!data.success) {
-                    // if not successful, bind errors to error variables
-                    $scope.errorSuperhero = data.errors.superheroAlias;
-                } else {
-                    // if successful, bind success message to message
-                    console.log(data.message);
-                    $scope.message = data.message;
-                }
-            });
+        .success(function(data) {
+            $scope.Gravatar()
+        })
+        .error(function(data) {
+            console.log("Error signing up")
+        });
     };
 }]);

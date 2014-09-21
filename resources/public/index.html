@@ -17,13 +17,13 @@
     <link rel="shortcut icon" href="images/favicon.ico">
 
   </head>
-  <body ng-controller="DargCtrl as darg">
+  <body>
 
     <!-- top menu --> 
     <div ng-controller="DargLoginCtrl"> 
     <div class="row" >
       <div class="col-xs-9">
-        <nav class="navbar-sm navbar-inverse navbar-fixed-top navbar-embossed" role="navigation">
+        <nav class="navbar-sm navbar-inverse navbar-fixed-top" role="navigation">
           <div class="container">
             <div class="collapse navbar-collapse" id="navbar-collapse-01"> 
 
@@ -65,10 +65,10 @@
                   </ul>
                 </div>
                 <div ng-show="LoggedIn()">
-                  <ul class="nav navbar-nav navbar-right">
+                  <ul class="nav navbar-nav navbar-right navbar-favicon">
                     <li class="dropdown">
                       <a href="/teams" class="dropdown-toggle" data-toggle="dropdown">
-                        Placeholder 
+                        <img ng-src="{{Gravatar_url}}" class="img-circle">
                         <b class="caret"></b>
                       </a>
                       <span class="dropdown-arrow"></span>

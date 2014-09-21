@@ -38,6 +38,22 @@
     (is (not (some #{"logged-in=true;Path=/"}
                    (get (:headers auth-response) "Set-Cookie"))))))
 
+;; /api/v1/logout
+
+; TODO - TEST HERE WITH A HEADLESS BROWSER
+
+;; /api/v1/gravatar
+
+(deftest gravar-image-is-what-it-should-be
+  (is (= (api/gravatar {:session {:email "venantius@gmail.com"}})
+         {:body "http://www.gravatar.com/avatar/6b653616a592b8bdc296b0abf6207a71?s=40"
+          :status 200}))
+  (is (= (api/gravatar {})
+         {:body "http://www.gravatar.com/avatar/?s=40"
+          :status 200})))
+
+;; /api/v1/signup
+
 (deftest i-can-register-and-it-wrote-to-the-database-and-cookies
   (let [auth-response (core/app (mock-request/request
     :post "/api/v1/signup"
@@ -65,13 +81,7 @@
   (is (empty? (users/get-user-by-field {:email "quasi-user@darg.io"})))
   (is (not (some #{"logged-in=true;Path=/"}
                    (get (:headers auth-response) "Set-Cookie"))))))
-  ; (stormpath/delete-account-by-email (:email stormpath-test/quasi-user))))
 
-
-
-;; /api/v1/logout
-
-; TODO - TEST HERE WITH A HEADLESS BROWSER
 
 ;; api/v1/email
 

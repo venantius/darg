@@ -7,6 +7,7 @@
             [darg.db-util :as dbutil]
             [darg.services.stormpath :as stormpath]
             [korma.core :refer :all]
+            [pandect.algo.md5 :refer :all]
             [ring.middleware.session.cookie :as cookie-store]
             [ring.middleware.session.store :as session-store]
             [slingshot.slingshot :refer [try+]]))
@@ -28,7 +29,7 @@
       (logging/info "Successfully authenticated with email" email)
       {:body "Successfully authenticated"
        :cookies {"logged-in" {:value true :path "/"}}
-       :session {:authenticated true :email (get request-map :email)}
+       :session {:authenticated true :email email}
        :status 200}
       ;; Stormpath will return a 400 status code on failed auth
       (catch [:status 400] response
@@ -44,7 +45,7 @@
   your session cookie and your plaintext cookie, logging you out both
   in practice and appearance"
   [request-map]
-  {:body (str request-map)
+  {:body ""
    :status 200
    :session nil
    :cookies {"logged-in" {:value false :max-age 0 :path "/"}}})
@@ -72,6 +73,20 @@
         (logging/info "Account already exists")
         {:body "Account already exists"
          :status 409}))))
+
+;; utils
+
+(defn gravatar
+  "Get a given user's gravatar image URL"
+  [request-map]
+  (let [email (-> request-map :session :email)]
+    (if email
+      {:body (clojure.string/join "" ["http://www.gravatar.com/avatar/"
+                                      (md5 email)
+                                      "?s=40"])
+       :status 200}
+      {:body "http://www.gravatar.com/avatar/?s=40"
+       :status 200})))
 
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
