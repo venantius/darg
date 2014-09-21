@@ -40,7 +40,8 @@
                  [ring-mock "0.1.5"]]
 
   :plugins [[lein-lobos "1.0.0-beta1"]
-            [lein-environ "1.0.0"]]
+            [lein-environ "1.0.0"]
+            [jonase/eastwood "0.1.4"]]
 
   :profiles {:dev {:env {:darg-environment :dev
                          :database-url "postgres://localhost:5432/darg"
@@ -49,7 +50,7 @@
                           :database-url "postgres://localhost:5432/darg_test"}}
              :staging {:env {:darg-environment :staging}}
              :production {:env {:darg-environment :production}}}
-             
+
   :repl-options {:port 6001}
   :main darg.core
   )

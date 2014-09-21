@@ -1,6 +1,6 @@
 (ns darg.core
   (:gen-class)
-  (:use darg.injections)
+  (:require [darg.injections :refer :all])
   (:require [clojure.tools.logging :as logging]
             [compojure.core :refer [defroutes GET POST]]
             [compojure.route :as route]

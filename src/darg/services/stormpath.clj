@@ -44,10 +44,10 @@
   (-> response :body :items first))
 
 (defn format-stormpath-response
-  [response]
   "Stormpath responds with a JSON-formatted body. This function takes the entire
   response, and swaps the JSON-formatted body out with a parsed Clojure map of
   the same"
+  [response]
   (update-in response [:body] json/parse-string true))
 
 (defn create-account

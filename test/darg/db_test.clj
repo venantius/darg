@@ -1,9 +1,9 @@
 (ns darg.db-test
-  (:use darg.fixtures)
   (:require [clojure.test :refer :all]
             [korma.db :as korma]
             [korma.core :refer :all]
             [darg.db :as db]
+            [darg.fixtures :refer [with-db-fixtures]]
             [darg.model.users :as users]
             [darg.model.teams :as teams]
             [darg.model.tasks :as tasks]

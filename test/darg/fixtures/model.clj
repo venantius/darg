@@ -1,9 +1,9 @@
 (ns darg.fixtures.model
-  (:use [korma.core]
-        [clj-time.coerce :as c :only [to-sql-date]]
-        [darg.model])
   (:require [clj-time.core :as t]
-            [darg.db-util :as db-util]))
+            [clj-time.coerce :as c :only [to-sql-date]]
+            [darg.db-util :as db-util]
+            [darg.model :refer :all]
+            [korma.core :refer :all]))
 
 (def test-user-1
   {:email "savelago@gmail.com"

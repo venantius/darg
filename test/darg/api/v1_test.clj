@@ -1,18 +1,18 @@
 (ns darg.api.v1-test
-  (:use [darg.fixtures]
-        [korma.core])
   (:require [clojure.test :refer :all]
             [darg.api.v1 :as api]
             [darg.core :as core]
             [darg.db :as db]
-            [darg.services.stormpath-test :as stormpath-test]
-            [ring.mock.request :as mock-request]
+            [darg.fixtures :refer :all]
             [darg.fixtures.email :as f-email]
-            [darg.model.tasks :as tasks]
-            [darg.model.users :as users]
-            [darg.model.teams :as teams]
             [darg.model :as table]
-            [darg.services.stormpath :as stormpath]))
+            [darg.model.tasks :as tasks]
+            [darg.model.teams :as teams]
+            [darg.model.users :as users]
+            [darg.services.stormpath :as stormpath]
+            [darg.services.stormpath-test :as stormpath-test] ;; TODO: refactor this
+            [korma.core :refer :all]
+            [ring.mock.request :as mock-request]))
 
 (with-db-fixtures)
 
@@ -34,34 +34,34 @@
                                   {:email (:email stormpath-test/user-1)
                                    :password (:password stormpath-test/user-1)}))]
     (is (= (:body auth-response) "Failed to authenticate"))
-    (is (= (:status auth-response 401)))
+    (is (= (:status auth-response) 401))
     (is (not (some #{"logged-in=true;Path=/"}
                    (get (:headers auth-response) "Set-Cookie"))))))
 
 (deftest i-can-register-and-it-wrote-to-the-database-and-cookies
-  (let [auth-response (core/app (mock-request/request 
+  (let [auth-response (core/app (mock-request/request
     :post "/api/v1/signup"
     stormpath-test/user-1))]
   (is (= (:body auth-response) "Account successfully created"))
-  (is (= (:status auth-response 200)))
+  (is (= (:status auth-response) 200))
   (is (not (empty? (users/get-user-by-field {:email "test-user@darg.io"}))))
   (is (some #{"logged-in=true;Path=/"}
     (get (:headers auth-response) "Set-Cookie")))
   (stormpath/delete-account-by-email (:email stormpath-test/user-1))))
 
 (deftest i-cant-write-the-same-thing-twice
-  (let [auth-response (core/app (mock-request/request 
+  (let [auth-response (core/app (mock-request/request
     :post "/api/v1/signup"
     stormpath-test/user-2))]
   (is (= (:body auth-response) "Account already exists"))
-  (is (= (:status auth-response 409)))))
+  (is (= (:status auth-response) 409))))
 
 (deftest signup-failure-does-not-write-to-database-and-sets-no-cookies
-  (let [auth-response (core/app (mock-request/request 
+  (let [auth-response (core/app (mock-request/request
     :post "/api/v1/signup"
     stormpath-test/quasi-user))]
   (is (= (:body auth-response) "Failed to create account"))
-  (is (= (:status auth-response 400)))
+  (is (= (:status auth-response) 400))
   (is (empty? (users/get-user-by-field {:email "quasi-user@darg.io"})))
   (is (not (some #{"logged-in=true;Path=/"}
                    (get (:headers auth-response) "Set-Cookie"))))))
@@ -81,12 +81,10 @@
 
 (deftest we-can-get-a-users-task-list
   (api/parse-email f-email/test-email-2)
-  (def test-user-id (users/get-userid {:email "domo@darg.io"}))
-  (is (= (count (tasks/get-all-tasks-for-user test-user-id)) 5)))
+  (let [test-user-id (users/get-userid {:email "domo@darg.io"})]
+    (is (= (count (tasks/get-all-tasks-for-user test-user-id)) 5))))
 
 (deftest we-can-get-a-teams-task-list
   (api/parse-email f-email/test-email-2)
-  (def test-team-id (teams/get-teamid {:email "test.api@darg.io"}))
-  (is (= (count (tasks/get-all-tasks-for-team test-team-id)) 5)))
-  
-
+  (let [test-team-id (teams/get-teamid {:email "test.api@darg.io"})]
+    (is (= (count (tasks/get-all-tasks-for-team test-team-id)) 5))))

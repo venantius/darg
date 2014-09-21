@@ -11,12 +11,13 @@
 (defn -reload-db
   "Load test fixture data so that it's available in development"
   []
-  (logging/info "Rolling back the db...")
-  (fixtures/silent-rollback :all)
-  (logging/info "Migrating the db...")
-  (fixtures/silent-migrate)
-  (logging/info "Inserting test fixture data...")
-  (db-fixtures/insert-db-fixture-data))
+  (let [db (db/construct-db-map)]
+    (logging/info "Rolling back the db...")
+    (fixtures/silent-rollback db nil :all)
+    (logging/info "Migrating the db...")
+    (fixtures/silent-migrate db nil)
+    (logging/info "Inserting test fixture data...")
+    (db-fixtures/insert-db-fixture-data)))
 
 (defn configure
   "Do all the configuration that needs to happen.
@@ -30,6 +31,7 @@
   (db/set-korma-db)
   (cond (and (= (env/env :darg-environment) :dev)
              (env/env :reload-db-on-run)) (-reload-db)
-        (= (env/env :darg-environment) :production) (lobos/migrate))
+        (= (env/env :darg-environment) :production)
+          (lobos/migrate (db/construct-db-map) nil))
   (logging/info "Starting nREPL server on port" 6001)
   (nrepl/start-server :port 6001))

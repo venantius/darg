@@ -1,9 +1,11 @@
 (ns lobos.migrations
-  (:require [darg.db])
+  (:require [darg.db]
+            [lobos.config :refer :all]
+            [lobos.core :refer :all]
+            [lobos.migration :refer [defmigration]]
+            [lobos.schema :refer :all])
   (:refer-clojure
-    :exclude [alter drop bigint boolean char double float time])
-  (:use (lobos [migration :only [defmigration]] core schema
-               config)))
+    :exclude [alter drop bigint boolean char double float time]))
 
 ;; NOTE: Found this a handy reference on Lobos
 ;; http://vijaykiran.com/2012/01/web-application-development-with-clojure-part-2/

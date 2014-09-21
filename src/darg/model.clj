@@ -1,5 +1,5 @@
 (ns darg.model
-  (:use korma.core))
+  (:require [korma.core :refer :all]))
 
 (declare users teams tasks)
 
