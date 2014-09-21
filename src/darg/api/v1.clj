@@ -88,7 +88,6 @@
       {:body "http://www.gravatar.com/avatar/?s=40"
        :status 200})))
 
-
 (defn get-user-dargs
   "GET /api/v1/darg/
 
