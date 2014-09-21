@@ -93,17 +93,16 @@
 
   Takes the email in the session cookie to return a user's darg
 
- API should eventually take the following queries:
+  API should eventually take the following queries:
 
   ?from='MMM dd yyy' - set a minimum date for the user's darg 
   ?to='MMM dd yyy' - set a maximum date for the user's darg
   ?limit=10 - reduce the number of results (for pagination)
   ?offset=10 - send sets of information
   ?teams={teamids} - filter set to a specific team or group of teams"
-
   [request-map]
   (let [email (-> request-map :session :email)
-         authenticated (-> request-map :session :authenticated)]
+        authenticated (-> request-map :session :authenticated)]
     (if (and email authenticated)
       {:body (tasks/get-all-tasks-for-user-by-email email)
        :status 200}
@@ -113,44 +112,36 @@
        :status 403})))
 
 (defn add-dargs-for-user
-"POST /api/v1/darg/
-
-Adds dargs for the user. Expects the following:
-* email -> taken from session cookie
-* team-id -> specified by user in the body of the request, takes only one team and applies to the full darg
-* date -> specified by user in the body of the request, takes only one date and applies to the full darg
-* darg-list -> specified by user in the body of the request, expects an array of task strings"
-
-[request-map]
-(let [task-list (-> request-map :params :darg)
-       email (-> request-map :session :email)
-       authenticated (-> request-map :session :authenticated)
-       date (-> request-map 
-                    :params 
-                    :date
-                    dbutil/sql-date-from-subject)
-       team-name (-> request-map :params :team-name)
-       metadata {:users_id (users/get-userid {:email email})
-                        :teams_id (teams/get-teamid {:name team-name})
-                        :date date}]
+  "POST /api/v1/darg/
+  
+  Adds dargs for the user. Expects the following:
+  * email -> taken from session cookie
+  * team-id -> specified by user in the body of the request, takes only one team and applies to the full darg
+  * date -> specified by user in the body of the request, takes only one date and applies to the full darg
+  * darg-list -> specified by user in the body of the request, expects an array of task strings"
+  [request-map]
+  (let [task-list (-> request-map :params :darg)
+        email (-> request-map :session :email)
+        authenticated (-> request-map :session :authenticated)
+        date (-> request-map 
+               :params 
+               :date
+               dbutil/sql-date-from-subject)
+        team-name (-> request-map :params :team-name)
+        metadata {:users_id (users/get-userid {:email email})
+                  :teams_id (teams/get-teamid {:name team-name})
+                  :date date}]
     (if (and email authenticated)
       (if (users/is-user-in-team (:users_id metadata) (:teams_id metadata))
-        
-        (do 
-          (println "I am in the do loop")
-          (tasks/create-task-list task-list metadata)
-              {:body "Tasks Created Successfully" :status 200})
-
+        (do (tasks/create-task-list task-list metadata)
+          {:body "Tasks Created Successfully"
+           :status 200})
         {:body "User is not a registered member of this team"
          :status 403})
-
        {:body "User not authenticated"
        :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
        :session {:authenticated false}
        :status 403})))
-
-
-
 
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
