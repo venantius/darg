@@ -94,7 +94,6 @@
   Takes the email in the session cookie to return a user's darg
 
   API should eventually take the following queries:
-
   ?from='MMM dd yyy' - set a minimum date for the user's darg 
   ?to='MMM dd yyy' - set a maximum date for the user's darg
   ?limit=10 - reduce the number of results (for pagination)
