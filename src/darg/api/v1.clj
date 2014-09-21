@@ -7,6 +7,7 @@
             [darg.db-util :as dbutil]
             [darg.services.stormpath :as stormpath]
             [korma.core :refer :all]
+            [pandect.algo.md5 :refer :all]
             [ring.middleware.session.cookie :as cookie-store]
             [ring.middleware.session.store :as session-store]
             [slingshot.slingshot :refer [try+]]))
@@ -72,6 +73,18 @@
         (logging/info "Account already exists")
         {:body "Account already exists"
          :status 409}))))
+
+;; utils
+
+(defn gravatar
+  "Get a given user's gravatar image URL"
+  [request-map]
+  (let [email (-> request-map :session :email)]
+    (if email
+      {:body (clojure.string/join "" ["http://www.gravatar.com/avatar/" (md5 email)])
+       :status 200}
+      {:body "http://www.gravatar.com/avatar/"
+       :status 200})))
 
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
