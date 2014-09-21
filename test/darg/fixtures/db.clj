@@ -1,7 +1,7 @@
 (ns darg.fixtures.db
-  (:use [korma.core :as korma]
-           [darg.model :refer :all])
-  (:require [darg.fixtures.model :as fmodel]))
+  (:require [darg.fixtures.model :as fmodel]
+            [darg.model :refer :all]
+            [korma.core :refer :all]))
 
 (defn insert-user-fixture-data
   [fixture]

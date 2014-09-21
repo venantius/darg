@@ -2,9 +2,9 @@
   (:require [clojure.test :refer [use-fixtures]]
             [darg.db :as db]
             [darg.fixtures.db :as db-fixtures]
-            [lobos.migration :as mig]
             [lobos.config :as lconfig]
-            [lobos.core :as lobos]))
+            [lobos.core :as lobos]
+            [lobos.migration :as mig]))
 
 (lobos/defcommand silent-migrate
   "Replicate lobos/migrate with silent on"
@@ -34,11 +34,12 @@
   "Migrates the database using Lobos, and inserts fixture data into
   the database before each test"
   [test-fn]
-  (silent-rollback :all)
-  (silent-migrate)
-  (db-fixtures/insert-db-fixture-data)
-  (test-fn)
-  (silent-rollback :all))
+  (let [db (db/construct-db-map)]
+    (silent-rollback db nil :all)
+    (silent-migrate db nil)
+    (db-fixtures/insert-db-fixture-data)
+    (test-fn)
+    (silent-rollback db nil :all)))
 
 (defn -initialize-db-connection-fixture
   "Initializes the DB connection for Lobos and Korma"

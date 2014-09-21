@@ -67,7 +67,7 @@
       (catch [:status 400] response
         (logging/info "Failed to create Stormpath account with response" response)
         {:body "Failed to create account"
-         :status 401})
+         :status 400})
       (catch [:status 409] response
         (logging/info "Account already exists")
         {:body "Account already exists"

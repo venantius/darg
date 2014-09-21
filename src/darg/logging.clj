@@ -1,5 +1,5 @@
 (ns darg.logging
-  (:use clj-logging-config.log4j))
+  (:require [clj-logging-config.log4j :refer [set-loggers!]]))
 
 (defn set-logging-defaults
   "Set the logging level for the application root"
