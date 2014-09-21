@@ -37,9 +37,9 @@
                         (:email user-1))))))
 
 (deftest we-can-find-a-user-in-stormpath
-  (is (stormpath/search-for-account-by-email "david@ursacorp.io"))
+  (is (stormpath/search-for-account-by-email "test-user2@darg.io"))
   (is (stormpath/get-search-results
-        (stormpath/search-for-account-by-email "david@ursacorp.io")))
+        (stormpath/search-for-account-by-email "test-user2@darg.io")))
   ;; Stormpath searches return maps with status 200
   (is (stormpath/search-for-account-by-email "test-user@darg.io"))
   (is (not (stormpath/get-search-results
