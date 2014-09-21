@@ -25,6 +25,11 @@
    :first_name "LSP"
    :admin false})
 
+(def test-user-4
+  {:email "test-user2@darg.io"
+   :first_name "LSP"
+   :admin false})
+
 (def test-users
   [test-user-1
    test-user-2

@@ -137,6 +137,22 @@ Adds dargs for the user. Expects the following:
 
 
 
+(defn get-user-darg-list
+  "/api/v1/darg/user
+
+  Takes the user the email in the session cookie to return a user's darg"
+
+  [request-map]
+  (let [email (-> request-map :session :email)
+         authenticated (-> request-map :session :authenticated)]
+    (if (and email authenticated)
+      {:body (tasks/get-all-tasks-for-user-by-email email)
+       :status 200}
+      {:body "User not authenticated"
+       :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
+       :session {:authenticated false}
+       :status 403})))
+     
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
   "Parse an e-mail that has been forwarded by Mailgun"
