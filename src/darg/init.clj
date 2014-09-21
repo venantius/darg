@@ -19,6 +19,13 @@
     (logging/info "Inserting test fixture data...")
     (db-fixtures/insert-db-fixture-data)))
 
+(defn -prod-migrate
+  "Migrate in production"
+  []
+  (let [db (db/construct-db-map)]
+    (logging/info "Migrating the db...")
+    (lobos/migrate db nil)))
+
 (defn configure
   "Do all the configuration that needs to happen.
 
@@ -32,6 +39,6 @@
   (cond (and (= (env/env :darg-environment) :dev)
              (env/env :reload-db-on-run)) (-reload-db)
         (= (env/env :darg-environment) :production)
-          (lobos/migrate (db/construct-db-map) nil))
+          (-prod-migrate))
   (logging/info "Starting nREPL server on port" 6001)
   (nrepl/start-server :port 6001))
