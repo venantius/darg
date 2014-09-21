@@ -1,5 +1,7 @@
 (ns darg.model.tasks
   (:require [darg.model :as db]
+            [darg.model.users :as users]
+            [darg.model.teams :as teams]
             [korma.core :refer :all]))
 
 ;; Create
@@ -24,12 +26,12 @@
 ;; Destroy
 
 (defn delete-task
-  [params]
-  (delete db/tasks (where params)))
+  [id]
+  (delete db/tasks (where {:id id})))
 
 ;; Retrieve
 
-(defn get-task-by-params
+(defn get-task-by-fields
   [params]
   (select db/tasks (where params)))
 
@@ -37,43 +39,30 @@
   [id]
   (first (select db/tasks (where {:id id}))))
 
-(defn get-taskid
+(defn get-task-id
   [params]
   (:id (first (select db/tasks (where params)))))
 
 ;; User Tasks
 
-(defn get-all-tasks-for-user-by-id
-  [id]
-  (first (select db/users
-    (where {:id id})
-    (with db/tasks))))
-
-(defn get-all-tasks-for-user-by-email
-  [email]
-  (first (select db/users
-    (where{:email email})
-    (with db/tasks))))
-
-(defn get-tasks-for-user-daterange
-  [id minDate maxDate]
+(defn get-tasks-by-user-id
+  [user-id]
   (select db/tasks
-    (with db/users
-      (where {:id id
-              :date ['between [minDate maxDate]]}))))
+    (where {:users_id user-id})))
+
+(defn get-tasks-by-user-email
+  [email]
+  (let [uid (users/get-user-id {:email email})]
+    (get-tasks-by-user-id uid)))
 
 ;; Team Tasks
 
-(defn get-all-tasks-for-team
-  [id]
-  (first (select db/teams
-    (where {:id id})
-    (with db/tasks))))
-
-(defn get-tasks-for-team-daterange
-  [id minDate maxDate]
+(defn get-tasks-by-team-id
+  [team-id]
   (select db/tasks
-    (with db/teams
-      (where (and {:id id}
-                  (between :date [minDate maxDate]))))))
+    (where {:teams_id team-id})))
 
+(defn get-tasks-by-team-email
+  [email]
+  (let [tid (teams/get-team-id {:email email})]
+    (get-tasks-by-team-id tid)))

@@ -21,7 +21,6 @@
   authentication; if successful, we set auth in their session and
   update the cookie to indicate that they're now logged in."
   [request-map]
-  (logging/info request-map)
   (let [email (-> request-map :params :email)
         password (-> request-map :params :password)]
     (try+
@@ -93,18 +92,13 @@
 
   Takes the email in the session cookie to return a user's darg
 
-  API should eventually take the following queries:
+  API should eventually take the following queries:"
 
-  ?from='MMM dd yyy' - set a minimum date for the user's darg 
-  ?to='MMM dd yyy' - set a maximum date for the user's darg
-  ?limit=10 - reduce the number of results (for pagination)
-  ?offset=10 - send sets of information
-  ?teams={teamids} - filter set to a specific team or group of teams"
   [request-map]
   (let [email (-> request-map :session :email)
         authenticated (-> request-map :session :authenticated)]
     (if (and email authenticated)
-      {:body (tasks/get-all-tasks-for-user-by-email email)
+      {:body (tasks/get-tasks-by-user-email email)
        :status 200}
       {:body "User not authenticated"
        :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
@@ -127,9 +121,9 @@
                :params 
                :date
                dbutil/sql-date-from-subject)
-        team-name (-> request-map :params :team-name)
-        metadata {:users_id (users/get-userid {:email email})
-                  :teams_id (teams/get-teamid {:name team-name})
+        team-id (-> request-map :params :team-id)
+        metadata {:users_id (users/get-user-id {:email email})
+                  :teams_id team-id
                   :date date}]
     (if (and email authenticated)
       (if (users/is-user-in-team (:users_id metadata) (:teams_id metadata))
@@ -173,7 +167,7 @@
                     (get :body-plain)
                     (str/split #"\n")
                     (->> (map str/trim)))
-        email-metadata {:users_id (users/get-userid {:email (:from email)})
-                        :teams_id (teams/get-teamid {:email (:recipient email)})
+        email-metadata {:users_id (users/get-user-id {:email (:from email)})
+                        :teams_id (teams/get-team-id {:email (:recipient email)})
                         :date (dbutil/sql-date-from-subject (:subject email))}]
     (tasks/create-task-list task-list email-metadata)))

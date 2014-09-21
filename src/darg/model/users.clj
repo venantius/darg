@@ -6,12 +6,17 @@
 ; Create
 
 (defn create-user
-  "Insert a user into the database"
+  "Insert a user into the database
+  Takes a map of fields to insert into db
+  Required fields:
+  :email - user's unique email (string)
+  :user "
   [params]
   (insert db/users (values params)))
 
 (defn create-user-from-signup-form
-  "Convert a stormpath account to a user and write it to database"
+  "Convert a stormpath account to a user and write it to database
+  Takes an account-map of a stormpath user."
   [account-map]
   (-> account-map
     (select-keys [:givenName :email])
@@ -19,48 +24,58 @@
       create-user))
 
 (defn add-user-to-team
-  [userid teamid]
-  (insert db/team-users (values {:teams_id teamid :users_id userid})))
+  "Adds a user-team relationship
+  Takes a user-id (integer) and team-id (integer)"
+  [user-id team-id]
+  (insert db/team-users (values {:teams_id team-id :users_id user-id})))
 
 ; Update
 
 (defn update-user
+  "Updates the fields for a user. 
+  Takes a user-id as an integer and a map of fields + values to update."
   [id params]
   (update db/users (where {:id id}) (set-fields params)))
 
 ; Lookups
 
-(defn get-user-by-field
-  "Find a user in the db based on a field + value"
+(defn get-user-by-fields
+  "returns a user map from the db 
+  Takes a map of fields for use in db lookup"
   [params]
   (select db/users (where params)))
 
-(defn get-userid
-  "Find just the user's id based on other information"
+(defn get-user-id
+  "Returns a user-id (integer)
+  Takes a map of fields for use in db lookup"
   [params]
   (:id (first (select db/users (fields :id) (where params)))))
 
 (defn get-user-by-id
-  "Find a user in the db based on their unique id"
+"Returns a user map from the db
+  Takes a user-id as an integer"
   [id]
   (first (select db/users (where {:id id}))))
 
 ; Destroy
 
 (defn delete-user
-  "Delete a user from the database"
-  [params]
-  (delete db/users (where params)))
+  "Deletes a user from the database
+  Takes a user-id as an integer"
+  [id]
+  (delete db/users (where {:id id})))
 
 ; User Team Membership
 
 (defn is-user-in-team
+  "Returns boolean true/false based on whether the use is a member of a given team
+  Takes a user-id (integer) and team-id (integer)"
   [userid teamid]
   (if (not (empty? (select db/team-users (where {:users_id userid :teams_id teamid})))) true false))
 
 (defn get-user-teams
-  "Gets the list of teams a user belongs to"
-  [id]
-  (select db/users
-    (where {:id id})
-    (with db/teams)))
+  "Returns the map of teams that a user belongs to
+  Takes a user-id (integer)"
+  [user-id]
+  (first (select db/teams
+    (where {:users_id user-id}))))
