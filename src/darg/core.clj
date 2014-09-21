@@ -18,6 +18,11 @@
 
 ;; Pay attention to trailing slashes - right now the only thing that should end in a
 ;; slash is the root.
+
+;; /v1/darg endpoint is for a user to read/write their own dargs.
+;; /v1/user/darg will get the darg for a user other than the currently logged in user (provided user's share a team)
+;; /v1/team/darg will get the darg for a team (provided user has access to the team)
+
 (defroutes routes
   (GET "/" request-map (do (logging/info request-map) (resp/resource-response "index.html" {:root "public"})))
   (GET "/debug" request-map (debug request-map))
@@ -26,7 +31,10 @@
   (POST "/api/v1/login" request-map (api/login request-map))
   (GET "/api/v1/logout" request-map (api/logout request-map))
   (POST "/api/v1/signup" request-map (api/signup request-map))
-  (GET "/api/v1/darg/user" request-map (api/get-user-darg-list request-map))
+  (GET "/api/v1/darg" request-map (api/get-user-dargs request-map))
+  ; (PUT "/api/v1/darg" request-map (api/add-dargs-for-user request-map))
+  (POST "/api/v1/darg" request-map (api/add-dargs-for-user request-map))
+  ; (DELETE "/api/v1/darg" request-map (api/delete-dargs-for-user request-map))
   (route/resources "/"))
 
 (def app (-> routes
