@@ -36,9 +36,9 @@
   []
   (lconfig/init)
   (db/set-korma-db)
-  (cond (and (= (env/env :darg-environment) :dev)
+  (cond (and (= (env/env :darg-environment) "dev")
              (env/env :reload-db-on-run)) (-reload-db)
-        (= (env/env :darg-environment) :production)
+        (= (env/env :darg-environment) "production")
           (-prod-migrate))
   (logging/info "Starting nREPL server on port" 6001)
   (nrepl/start-server :port 6001))
