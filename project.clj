@@ -14,7 +14,8 @@
                  [slingshot "0.10.3"]
 
                  ;; crypto
-                 [pandect "0.4.0"]
+                 [potemkin "0.3.8"]
+                 [pandect "0.4.0" :exclusions [potemkin]]
 
                  ;; logging
                  [org.clojure/tools.logging "0.3.0"]
