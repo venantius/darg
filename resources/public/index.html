@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app='darg'>
+<html lang="en" ng-app="darg">
   <head>
     <meta charset="utf-8">
     <title>Darg.io</title>
@@ -19,112 +19,15 @@
   </head>
   <body ng-controller="DargPageCtrl">
     <div ng-include src="header"></div>
-
-    <div class="container">
-
-      <div class="row ptl pbl">
-        <div class="col-xs-12 ptl">
-        </div>
-      </div>
-
-    <!-- {{darg.gems}} -->
-
-    <div class="row ptl">
-      <div class="col-xs-1">
-      </div>
-        <div class="col-xs-3">
-          <h2 class="dictionary-header">Darg</h2>
-        </div>
-        <div class="col-xs-8 ptl">
-            /dɑːɡ/  <b>noun</b><br>
-            <p class="dictionary-text">1. <i>Scot. and North English.</i> a day's work</p>
-            <p class="dictionary-text">2. <i>Australian.</i> a fixed or definite amount of work; a work quota.</p>
-        </div>
-      </div>
-  
-      <br>
-      <div class="row ptl pbl">
-        <div class="col-xs-12 text-center">
-          <h4> 
-            What's your Darg?
-          </h4>
-        </div>
-      </div>
-
-      <!-- definition and signup form -->
-      <div class="row ptl mtl pbl mbl">
-        <!-- definition -->
-        <div class="col-xs-7 prl">
-          <p><b>Say goodbye to status meetings.</b></p>
-          <p>With Darg.io, we send you an e-mail once a day asking what you did that day - all you have to do is reply, and a copy of your Dargs are collated and sent to everybody on your team.</p>
-
-          <p>Don't want to reply to an e-mail? No problem! We've got integrations with GitHub, JIRA, and Phabricator that tie into your existing workflow.</p>
-
-        </div>
-        <!-- /definition -->
-        <!-- signup form -->
-        <div class="col-xs-5 pll" ng-controller="DargSignupCtrl">
-          <form class="login-form">
-            <div class="form-group">
-              <input type="text" class="form-control login-field" placeholder="Your name" ng-model="SignupForm.givenName"/>
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-control login-field" placeholder="Your e-mail" ng-model="SignupForm.email"/>
-            </div>
-            <div class="form-group">
-              <input type="password" class="form-control login-field" placeholder="Your password" ng-model="SignupForm.password"/>
-            </div>
-            <button class="btn btn-primary btn-lg btn-block" ng-click="Signup()"> 
-              Sign Up 
-            </button>
-          </form>
-        </div>
-      </div>
-      <!-- end definition and signup form -->
-      <h2 class="demo-section-title ptl mtl">Features</h2>
-      <br>
-      <div class="row demo-tiles">
-        <div class="col-xs-3">
-          <div class="tile">
-            <img src="images/icons/svg/mail.svg" alt="Compas" class="tile-image big-illustration">
-            <h3 class="tile-title">Daily E-mails</h3>
-            <p>Lorem ipsum</p>
-          </div>
-        </div>
-
-        <div class="col-xs-3">
-          <div class="tile">
-            <img src="images/icons/png/Github.png" alt="GitHub" class="tile-image">
-            <h3 class="tile-title">GitHub Integration</h3>
-            <p>Keep track of commits, issues, and pull requests</p>
-          </div>
-        </div>
-
-        <div class="col-xs-3">
-          <div class="tile">
-            <img src="images/icons/svg/pencils.svg" alt="Pensils" class="tile-image">
-            <h3 class="tile-title">Color Swatches</h3>
-            <p>Easy to add or change elements. </p>
-          </div>
-        </div>
-
-        <div class="col-xs-3">
-          <div class="tile">
-            <img src="images/icons/svg/chat.svg" alt="Chat" class="tile-image">
-            <h3 class="tile-title">Free for Share</h3>
-            <p>Your likes, shares and comments helps us.</p>
-          </div>
-
-        </div>
-      </div> <!-- /tiles -->
-    </div>
+    <div ng-view></div>
     <div ng-include src="footer" class="mtl ptl"></div>
     
     <!-- Load JS here for greater good =============================-->
     <!-- Angular JS -->
     <script src="js/angular/angular.min.js"></script>
-    <script src="js/angular/angular-resource.min.js"></script>
     <script src="js/angular/angular-cookies.min.js"></script>
+    <script src="js/angular/angular-resource.min.js"></script>
+    <script src="js/angular/angular-route.min.js"></script>
 
     <!-- Darg JS -->
     <script src="js/darg/app.js"></script>

@@ -21,6 +21,10 @@
 (defroutes routes
   ;; www
   (GET "/" request-map (resp/resource-response "index.html" {:root "public"}))
+  (GET "/about" request-map (resp/resource-response "index.html" {:root "public"}))
+  (GET "/faq" request-map (resp/resource-response "index.html" {:root "public"}))
+  (GET "/settings" request-map (resp/resource-response "index.html" {:root "public"}))
+
   (GET "/debug" request-map (debug request-map))
 
   ;; api

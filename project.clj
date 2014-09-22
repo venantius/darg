@@ -3,7 +3,6 @@
   :min-lein-version "2.0.0"
   :url "http://darg.io"
 
-  :java-agents  [[com.newrelic.agent.java/newrelic-agent "2.19.0"]]
   :dependencies [[org.clojure/clojure "1.6.0"]
 
                  ;; repl
@@ -54,7 +53,8 @@
              :test {:env {:darg-environment "test"
                           :database-url "postgres://localhost:5432/darg_test"}}
              :staging {:env {:darg-environment "staging"}}
-             :production {:env {:darg-environment "production"}}}
+             :production {:env {:darg-environment "production"}
+                          :java-agents [[com.newrelic.agent.java/newrelic-agent "2.19.0"]]}}
 
   :repl-options {:port 6001}
   :main darg.core
