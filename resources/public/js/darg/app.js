@@ -1,9 +1,40 @@
-var app = angular.module('darg', ['ngCookies']);
+var app = angular.module('darg', ['ngCookies', 'ngRoute']);
 
-app.controller('DargPageCtrl', ['$scope', '$http',
-               function($scope, $http) {
-    $scope.header = "header.html";
-    $scope.footer = "footer.html";
+app.config(['$routeProvider', '$locationProvider', 
+           function AppConfig($routeProvider, $locationProvider) {
+
+    $routeProvider
+        .when('/', {
+            templateUrl: 'templates/home.html'
+        })
+        .when('/about', {
+            templateUrl: 'templates/about.html'
+        })
+        .when('/faq', {
+            templateUrl: 'templates/faq.html'
+        })
+        .when('/settings', {
+            templateUrl: 'templates/settings.html'
+        })
+        .otherwise({
+            redirectTo: '/'
+        });
+
+    $locationProvider.html5Mode(true);
+    $locationProvider.hashPrefix('!');
+   }
+]);
+
+app.controller('DargPageCtrl', ['$scope', '$http', '$location', 
+               function($scope, $http, $location) {
+    $scope.header = "templates/header.html";
+    $scope.footer = "templates/footer.html";
+
+    $scope.inner = "templates/timeline.html";
+    $scope.outer = "templates/outer.html";
+
+    // $locationProvider();
+    $scope.location = $location.path();
    }
 ]);
 
@@ -18,8 +49,8 @@ app.controller('DargLoginCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
         }};
 
     $scope.LoginForm = {
-      email: "",
-      password: ""
+        email: "",
+        password: ""
     };
 
     $scope.Login = function() {
@@ -65,9 +96,9 @@ app.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
                function($scope, $http, $cookies, $cookieStore) {
 
     $scope.SignupForm = {
-      givenName: "",
-      email: "",
-      password: ""
+        givenName: "",
+        email: "",
+        password: ""
     };
 
     $scope.Signup = function() {

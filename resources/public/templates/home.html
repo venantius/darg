@@ -1,0 +1,9 @@
+<div ng-controller="DargLoginCtrl">
+  <div class="container" ng-hide="LoggedIn()">
+    <div ng-include src="outer"></div>
+  </div>
+
+  <div class="container" ng-show="LoggedIn()">
+    <div ng-include src="inner"></div>
+  </div>
+</div>

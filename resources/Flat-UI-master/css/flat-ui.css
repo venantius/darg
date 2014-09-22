@@ -3649,6 +3649,9 @@ fieldset[disabled] .twitter-typeahead .tt-hint {
 .dictionary-header {
   margin-top: 10;
 }
+.footer-banner li > a {
+  text-decoration: none;
+}
 .navbar-favicon {
   padding-right: 15px;
 }
@@ -4463,7 +4466,6 @@ footer {
 }
 footer a {
   color: #9aa4af;
-  font-weight: 700;
 }
 footer p {
   font-size: 15px;
