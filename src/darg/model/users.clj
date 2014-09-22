@@ -10,7 +10,8 @@
   Takes a map of fields to insert into db
   Required fields:
   :email - user's unique email (string)
-  :user "
+  :name - user's name, for display and for stormpath authentication
+  :admin (optional) - identifies the user as a darg.io admin"
   [params]
   (insert db/users (values params)))
 

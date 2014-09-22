@@ -6,10 +6,19 @@
 
 ;; Create
 (defn create-task
+  "Creates a task in the database
+  Takes a map of fields to insert into the db
+  Required Fields:
+  :task - string that describes the actual completed task
+  :users_id - integer that identifies the user who completed the task
+  :teams_id - integer that identifies the team associated with the task
+  :date - date the task was completed"
   [params]
   (insert db/tasks (values params)))
 
 (defn create-task-list
+  "Used to insert multiple tasks into the db with matching metadata
+  Takes a vector of tasks and a map of metadata {:users_id :teams_id :date} to apply to the tasklist"
   [tasks-list metadata]
   (dorun (map (fn 
                 [task] 
@@ -20,37 +29,51 @@
 ;; Update
 
 (defn update-task
-  [id params]
-  (update db/tasks (where {:id id}) (set-fields params)))
+  "Updates the fields for a task. 
+  Takes an id as an integer and a map of fields + values to update."
+  [id fields]
+  (update db/tasks (where {:id id}) (set-fields fields)))
 
 ;; Destroy
 
 (defn delete-task
+  "Deletes a task from the database
+  Takes an id as an integer"
   [id]
   (delete db/tasks (where {:id id})))
 
 ;; Retrieve
 
 (defn get-task-by-fields
-  [params]
-  (select db/tasks (where params)))
+  "Returns tasks that match a set of fields, may return multiple tasks depending on the fields passed.
+  Takes a map of fields for use in db lookup"
+  [fields]
+  (select db/tasks (where fields)))
 
 (defn get-task-by-id
+  "Returns a task based on a unique id
+  Takes an id as an integer"
   [id]
   (first (select db/tasks (where {:id id}))))
 
 (defn get-task-id
-  [params]
-  (:id (first (select db/tasks (where params)))))
+  "Returns id for a task based on a set of fields
+  Will return the first id for a task that matches"
+  [fields]
+  (:id (first (select db/tasks (where fields)))))
 
 ;; User Tasks
 
 (defn get-tasks-by-user-id
+  "Returns a map of tasks which are associated with a specific user-id.
+  Takes a user-id as an integer"
   [user-id]
   (select db/tasks
     (where {:users_id user-id})))
 
 (defn get-tasks-by-user-email
+  "Returns a map of tasks based on a user's email. Note that this will not work if a team email is provided (clients should use get-task-by-team-email for this)
+  Takes an email as a string"
   [email]
   (let [uid (users/get-user-id {:email email})]
     (get-tasks-by-user-id uid)))
@@ -58,11 +81,15 @@
 ;; Team Tasks
 
 (defn get-tasks-by-team-id
+  "Returns a map of tasks which are associated with a specific team-id.
+  Takes a team-id as an integer"
   [team-id]
   (select db/tasks
     (where {:teams_id team-id})))
 
 (defn get-tasks-by-team-email
+  "Returns a map of tasks which are associated with a specific team-email.
+  Takes an email as a string"
   [email]
   (let [tid (teams/get-team-id {:email email})]
     (get-tasks-by-team-id tid)))
