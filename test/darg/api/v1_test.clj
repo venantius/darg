@@ -20,9 +20,9 @@
 
 (deftest i-can-login-and-it-set-my-cookies
   (let [auth-response (core/app (mock-request/request
-                                :post "/api/v1/login"
-                                {:email (:email stormpath-test/user-2)
-                                :password (:password stormpath-test/user-2)}))]
+                                  :post "/api/v1/login"
+                                  {:email (:email stormpath-test/user-2)
+                                   :password (:password stormpath-test/user-2)}))]
     (is (= (:body auth-response) "Successfully authenticated"))
     (is (= (:status auth-response) 200))
     (is (some #{"logged-in=true;Path=/"}
@@ -30,9 +30,9 @@
 
 (deftest i-can't-login-and-it-don't-set-no-cookies
   (let [auth-response (core/app (mock-request/request
-                                :post "/api/v1/login"
-                                {:email (:email stormpath-test/user-1)
-                                :password (:password stormpath-test/user-1)}))]
+                                  :post "/api/v1/login"
+                                  {:email (:email stormpath-test/user-1)
+                                   :password (:password stormpath-test/user-1)}))]
     (is (= (:body auth-response) "Failed to authenticate"))
     (is (= (:status auth-response) 401))
     (is (not (some #{"logged-in=true;Path=/"}
