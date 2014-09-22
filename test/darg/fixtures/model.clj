@@ -20,17 +20,23 @@
    :name "arrigato"
    :admin false})
 
+(def test-user-4
+  {:email "test-user2@darg.io"
+   :first_name "LSP"
+   :admin false})
+
 (def test-users
   [test-user-1
    test-user-2
-   test-user-3])
+   test-user-3
+   test-user-4])
 
 (def test-team-1
   {:name "darg"
    :email "test.api@darg.io"})
 
 (def test-team-2
-  {:name "Robtocorp"
+  {:name "Robotocorp"
    :email "rcorp@darg.io"})
 
 (def test-team-3
@@ -44,7 +50,7 @@
 
 (def test-task-1
   {:date (c/to-sql-date (t/date-time 2012 2 16))
-   :users_id 1
+   :users_id 4
    :teams_id 1
    :task "Do a good deed everyday"})
 
@@ -56,7 +62,7 @@
 
 (def test-task-3
   {:date (c/to-sql-date (t/date-time 2012 5 17))
-   :users_id 3
+   :users_id 4
    :teams_id 1
    :task "Salute the shorts"})
 
@@ -86,12 +92,18 @@
    :teams_id 2})
 
 (def test-team-user-pair-4
- {  :users_id 2
+ {  :users_id 4
   :teams_id 2
   :admin true})
+
+(def test-team-user-pair-5
+  {:users_id 4
+    :teams_id 1
+    :admin true})
 
 (def test-team-user-pairs
   [test-team-user-pair-1
    test-team-user-pair-2
    test-team-user-pair-3
-   test-team-user-pair-4])
+   test-team-user-pair-4
+   test-team-user-pair-5])
