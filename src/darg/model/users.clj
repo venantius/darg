@@ -12,6 +12,7 @@
   Required fields:
   :email - user's unique email (string)
   :name - user's name, for display and for stormpath authentication
+  :active - boolean value that determines if a user is active or inactive
   :admin (optional) - identifies the user as a darg.io admin"
   [params]
   (insert db/users (values params)))
@@ -23,6 +24,7 @@
   (-> account-map
     (select-keys [:givenName :email])
       stormpath/account->user
+      (assoc :active true)
       create-user))
 
 (defn add-user-to-team

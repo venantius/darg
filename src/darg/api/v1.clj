@@ -29,7 +29,7 @@
     (try+
       (stormpath/authenticate email password)
       (logging/info "Successfully authenticated with email" email)
-      (let [id (:id (users/get-user {:email email}))]
+      (let [id (:id (first (users/get-user {:email email})))]
         {:body "Successfully authenticated"
          :cookies {"logged-in" {:value true :path "/"}}
          :session {:authenticated true :id id :email email}
@@ -187,6 +187,29 @@
         :else {:body "Method not allowed"
                :status 405}))))
 
+;; v1/users
+
+(defn get-user-profile
+  "Allows a user to view the user profile of someone else on their team.
+  Profile returns the user's name, email address, and admin status"
+  [request-map]
+  {:body "User Profile Goes Here"
+   :status 200})
+
+(defn get-user-darg
+  "Allows a user to view the user profile of someone else on their team.
+  Profile returns the user's name, email address, and admin status"
+  [request-map]
+  {:body request-map
+   :status 200})
+
+(defn get-user-teams
+  "Allows a user to view the user profile of someone else on their team.
+  Profile returns the user's name, email address, and admin status"
+  [request-map]
+  {:body request-map
+   :status 200})
+     
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 
 (defn email
