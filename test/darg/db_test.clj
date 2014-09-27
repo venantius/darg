@@ -19,7 +19,7 @@
 ; User Tests
 
 (deftest we-can-insert-user-into-the-db
-  (users/create-user {:email "haruko@test.com" :name "haruko"})
+  (users/create-user {:email "haruko@test.com" :name "haruko" :active true})
   (is (users/get-user {:email "haruko@test.com"})))
 
 (deftest we-can-update-user-in-the-db
