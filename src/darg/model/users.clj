@@ -40,7 +40,7 @@
 
 ; Lookups
 
-(defn get-user-by-fields
+(defn get-user
   "returns a user map from the db 
   Takes a map of fields for use in db lookup"
   [fields]
@@ -68,7 +68,7 @@
 
 ; User Team Membership
 
-(defn is-user-in-team
+(defn user-in-team?
   "Returns boolean true/false based on whether the use is a member of a given team
   Takes a user-id (integer) and team-id (integer)"
   [userid teamid]

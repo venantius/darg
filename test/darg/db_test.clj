@@ -20,7 +20,7 @@
 
 (deftest we-can-insert-user-into-the-db
   (users/create-user {:email "haruko@test.com" :name "haruko"})
-  (is (users/get-user-by-fields {:email "haruko@test.com"})))
+  (is (users/get-user {:email "haruko@test.com"})))
 
 (deftest we-can-update-user-in-the-db
   (users/update-user 3 {:name "irrashaimase"})
@@ -37,18 +37,18 @@
   (is (not (empty? (tasks/get-tasks-by-user-id 2)))))
 
 (deftest we-can-check-a-user-is-in-a-team
-  (is (users/is-user-in-team 3 1))
-  (is (not (users/is-user-in-team 3 2))))
+  (is (users/user-in-team? 3 1))
+  (is (not (users/user-in-team? 3 2))))
 
 (deftest we-can-add-user-to-team
   (users/add-user-to-team 3 2)
-  (is (users/is-user-in-team 3 2)))
+  (is (users/user-in-team? 3 2)))
 
 ;Team Tests
 
 (deftest we-can-insert-team-into-db
   (teams/create-team {:name "krogancorp" :email "kcorp@darg.io"})
-  (is (teams/get-team-by-fields {:name "krogancorp"})))
+  (is (teams/get-team {:name "krogancorp"})))
 
 (deftest we-can-update-team-in-db
   (teams/update-team 1 {:name "Drake v. Weezy"})
@@ -74,7 +74,7 @@
                       :users_id 2
                       :teams_id 3
                       :task "Interrupt the Cellular Mitosis"})
-  (is (tasks/get-task-by-fields {:task "Interrupt the Cellular Mitosis"})))
+  (is (tasks/get-task {:task "Interrupt the Cellular Mitosis"})))
 
 (deftest we-can-delete-task-from-db
   (tasks/delete-task 1)
