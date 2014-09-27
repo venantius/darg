@@ -8,21 +8,25 @@
 (def test-user-1
   {:email "savelago@gmail.com"
    :name "yawn"
+   :active true
    :admin true })
 
 (def test-user-2
   {:email "domo@darg.io"
    :name "domodomo"
+   :active true
    :admin false})
 
 (def test-user-3
   {:email "arrigato@darg.io"
    :name "arrigato"
+   :active true
    :admin false})
 
 (def test-user-4
   {:email "test-user2@darg.io"
    :name "LSP"
+   :active true
    :admin false})
 
 (def test-users
