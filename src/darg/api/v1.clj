@@ -96,9 +96,10 @@
 
   [request-map]
   (let [email (-> request-map :session :email)
+        user (users/get-user-by-fields {:email email})
         authenticated (-> request-map :session :authenticated)]
     (if (and email authenticated)
-      {:body (tasks/get-tasks-by-user-email email)
+      {:body (tasks/get-tasks-by-user-id (:id user))
        :status 200}
       {:body "User not authenticated"
        :cookies {"logged-in" {:value false :max-age 0 :path"/"}}

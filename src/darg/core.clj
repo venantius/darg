@@ -19,10 +19,6 @@
 ;; Pay attention to trailing slashes - right now the only thing that should end in a
 ;; slash is the root.
 
-;; /v1/darg endpoint is for a user to read/write their own dargs.
-;; /v1/user/darg will get the darg for a user other than the currently logged in user (provided user's share a team)
-;; /v1/team/darg will get the darg for a team (provided user has access to the team)
-
 (defroutes routes
   ;; www
   (GET "/" request-map (resp/resource-response "index.html" {:root "public"}))

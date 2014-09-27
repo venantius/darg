@@ -47,8 +47,8 @@
 (defn get-task-by-fields
   "Returns tasks that match a set of fields, may return multiple tasks depending on the fields passed.
   Takes a map of fields for use in db lookup"
-  [fields]
-  (select db/tasks (where fields)))
+  [params]
+  (select db/tasks (where params)))
 
 (defn get-task-by-id
   "Returns a task based on a unique id
@@ -59,8 +59,8 @@
 (defn get-task-id
   "Returns id for a task based on a set of fields
   Will return the first id for a task that matches"
-  [fields]
-  (:id (first (select db/tasks (where fields)))))
+  [params]
+  (:id (first (select db/users (fields :id) (where params)))))
 
 ;; User Tasks
 
@@ -71,13 +71,6 @@
   (select db/tasks
     (where {:users_id user-id})))
 
-(defn get-tasks-by-user-email
-  "Returns a map of tasks based on a user's email. Note that this will not work if a team email is provided (clients should use get-task-by-team-email for this)
-  Takes an email as a string"
-  [email]
-  (let [uid (users/get-user-id {:email email})]
-    (get-tasks-by-user-id uid)))
-
 ;; Team Tasks
 
 (defn get-tasks-by-team-id
@@ -86,10 +79,3 @@
   [team-id]
   (select db/tasks
     (where {:teams_id team-id})))
-
-(defn get-tasks-by-team-email
-  "Returns a map of tasks which are associated with a specific team-email.
-  Takes an email as a string"
-  [email]
-  (let [tid (teams/get-team-id {:email email})]
-    (get-tasks-by-team-id tid)))

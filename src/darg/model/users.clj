@@ -43,8 +43,8 @@
 (defn get-user-by-fields
   "returns a user map from the db 
   Takes a map of fields for use in db lookup"
-  [params]
-  (select db/users (where params)))
+  [fields]
+  (select db/users (where fields)))
 
 (defn get-user-id
   "Returns a user-id (integer)

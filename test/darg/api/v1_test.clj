@@ -81,7 +81,6 @@
   (is (empty? (users/get-user-by-fields {:email "quasi-user@darg.io"})))
   (is (not (some #{"logged-in=true;Path=/"}
                  (get (:headers auth-response) "Set-Cookie"))))))
-  ; (stormpath/delete-account-by-email (:email stormpath-test/quasi-user))))
 
 ;GET v1/darg
 
@@ -110,10 +109,11 @@
                                            :team-id 2 
                                            :date "Mar 10 2014" 
                                            :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
-        response (api/add-dargs-for-user sample-request)]
+        response (api/add-dargs-for-user sample-request)
+        test-user-id (users/get-user-id {:email "test-user2@darg.io"})]
     (is (= (:status response) 403))
     (is (= (:body response) "User not authenticated"))
-    (is (= (count (tasks/get-tasks-by-user-email "test-user2@darg.io")) 2))))
+    (is (= (count (tasks/get-tasks-by-user-id test-user-id)) 2))))
 
 (deftest user-cant-post-to-a-team-they-arent-on 
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io"}
@@ -121,10 +121,11 @@
                                            :team-id 3 
                                            :date "Mar 10 2014" 
                                            :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
-        response (api/add-dargs-for-user sample-request)]
+        response (api/add-dargs-for-user sample-request)
+        test-user-id (users/get-user-id {:email "test-user2@darg.io"})]
     (is (= (:status response) 403))
     (is (= (:body response) "User is not a registered member of this team"))
-    (is (= (count (tasks/get-tasks-by-user-email "test-user2@darg.io")) 2))))
+    (is (= (count (tasks/get-tasks-by-user-id test-user-id)) 2))))
 
 (deftest authenticated-user-can-post-a-darg
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io"}
@@ -132,10 +133,11 @@
                                            :team-id 2
                                            :date "Mar 10 2014" 
                                            :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
-        response (api/add-dargs-for-user sample-request)]
+        response (api/add-dargs-for-user sample-request)
+        test-user-id (users/get-user-id {:email "test-user2@darg.io"})]
     (is (= (:status response) 200))
     (is (= (:body response) "Tasks Created Successfully"))
-    (is (= (count (tasks/get-tasks-by-user-email "test-user2@darg.io")) 5))))
+    (is (= (count (tasks/get-tasks-by-user-id test-user-id)) 5))))
 
 ;; api/v1/email
 
@@ -146,8 +148,8 @@
 
 (deftest we-can-get-a-users-task-list
   (api/parse-email f-email/test-email-2)
-  (println (tasks/get-tasks-by-user-email "domo@darg.io"))
-  (is (= (count (tasks/get-tasks-by-user-email "domo@darg.io")) 5)))
+  (let [test-user-id (users/get-user-id {:email "domo@darg.io"})]
+  (is (= (count (tasks/get-tasks-by-user-id test-user-id)) 5))))
 
 (deftest we-can-get-a-teams-task-list
   (api/parse-email f-email/test-email-2)
