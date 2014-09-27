@@ -116,7 +116,7 @@
         metadata {:users_id (users/get-user-id {:email email})
                   :teams_id team-id
                   :date date}]
-    (if (users/user-in-team? (:users_id metadata) (team_id))
+    (if (users/user-in-team? (:users_id metadata) team-id)
       (do (tasks/create-task-list task-list metadata)
         {:body "Tasks Created Successfully"
          :status 200})
