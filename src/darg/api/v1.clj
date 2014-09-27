@@ -21,7 +21,6 @@
   authentication; if successful, we set auth in their session and
   update the cookie to indicate that they're now logged in."
   [request-map]
-  (logging/info request-map)
   (let [email (-> request-map :params :email)
         password (-> request-map :params :password)]
     (try+
@@ -88,6 +87,57 @@
       {:body "http://www.gravatar.com/avatar/?s=40"
        :status 200})))
 
+(defn get-user-dargs
+  "GET /api/v1/darg/
+
+  Takes the email in the session cookie to return a user's darg
+
+  API should eventually take the following queries:"
+
+  [request-map]
+  (let [email (-> request-map :session :email)
+        user (users/get-user-by-fields {:email email})
+        authenticated (-> request-map :session :authenticated)]
+    (if (and email authenticated)
+      {:body (tasks/get-tasks-by-user-id (:id user))
+       :status 200}
+      {:body "User not authenticated"
+       :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
+       :session {:authenticated false}
+       :status 403})))
+
+(defn add-dargs-for-user
+  "POST /api/v1/darg/
+  
+  Adds dargs for the user. Expects the following:
+  * email -> taken from session cookie
+  * team-id -> specified by user in the body of the request, takes only one team and applies to the full darg
+  * date -> specified by user in the body of the request, takes only one date and applies to the full darg
+  * darg-list -> specified by user in the body of the request, expects an array of task strings"
+  [request-map]
+  (let [task-list (-> request-map :params :darg)
+        email (-> request-map :session :email)
+        authenticated (-> request-map :session :authenticated)
+        date (-> request-map 
+               :params 
+               :date
+               dbutil/sql-date-from-subject)
+        team-id (-> request-map :params :team-id)
+        metadata {:users_id (users/get-user-id {:email email})
+                  :teams_id team-id
+                  :date date}]
+    (if (and email authenticated)
+      (if (users/is-user-in-team (:users_id metadata) (:teams_id metadata))
+        (do (tasks/create-task-list task-list metadata)
+          {:body "Tasks Created Successfully"
+           :status 200})
+        {:body "User is not a registered member of this team"
+         :status 403})
+       {:body "User not authenticated"
+       :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
+       :session {:authenticated false}
+       :status 403})))
+     
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
   "Parse an e-mail that has been forwarded by Mailgun"
@@ -118,7 +168,7 @@
                     (get :body-plain)
                     (str/split #"\n")
                     (->> (map str/trim)))
-        email-metadata {:users_id (users/get-userid {:email (:from email)})
-                        :teams_id (teams/get-teamid {:email (:recipient email)})
+        email-metadata {:users_id (users/get-user-id {:email (:from email)})
+                        :teams_id (teams/get-team-id {:email (:recipient email)})
                         :date (dbutil/sql-date-from-subject (:subject email))}]
     (tasks/create-task-list task-list email-metadata)))

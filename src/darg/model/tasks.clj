@@ -1,13 +1,24 @@
 (ns darg.model.tasks
   (:require [darg.model :as db]
+            [darg.model.users :as users]
+            [darg.model.teams :as teams]
             [korma.core :refer :all]))
 
 ;; Create
 (defn create-task
+  "Creates a task in the database
+  Takes a map of fields to insert into the db
+  Required Fields:
+  :task - string that describes the actual completed task
+  :users_id - integer that identifies the user who completed the task
+  :teams_id - integer that identifies the team associated with the task
+  :date - date the task was completed"
   [params]
   (insert db/tasks (values params)))
 
 (defn create-task-list
+  "Used to insert multiple tasks into the db with matching metadata
+  Takes a vector of tasks and a map of metadata {:users_id :teams_id :date} to apply to the tasklist"
   [tasks-list metadata]
   (dorun (map (fn 
                 [task] 
@@ -18,56 +29,53 @@
 ;; Update
 
 (defn update-task
-  [id params]
-  (update db/tasks (where {:id id}) (set-fields params)))
+  "Updates the fields for a task. 
+  Takes an id as an integer and a map of fields + values to update."
+  [id fields]
+  (update db/tasks (where {:id id}) (set-fields fields)))
 
 ;; Destroy
 
 (defn delete-task
-  [params]
-  (delete db/tasks (where params)))
+  "Deletes a task from the database
+  Takes an id as an integer"
+  [id]
+  (delete db/tasks (where {:id id})))
 
 ;; Retrieve
 
-(defn get-task-by-params
+(defn get-task-by-fields
+  "Returns tasks that match a set of fields, may return multiple tasks depending on the fields passed.
+  Takes a map of fields for use in db lookup"
   [params]
   (select db/tasks (where params)))
 
 (defn get-task-by-id
+  "Returns a task based on a unique id
+  Takes an id as an integer"
   [id]
   (first (select db/tasks (where {:id id}))))
 
-(defn get-taskid
+(defn get-task-id
+  "Returns id for a task based on a set of fields
+  Will return the first id for a task that matches"
   [params]
-  (:id (first (select db/tasks (where params)))))
+  (:id (first (select db/users (fields :id) (where params)))))
 
 ;; User Tasks
 
-(defn get-all-tasks-for-user
-  [id]
+(defn get-tasks-by-user-id
+  "Returns a map of tasks which are associated with a specific user-id.
+  Takes a user-id as an integer"
+  [user-id]
   (select db/tasks
-    (with db/users
-      (where {:id id}))))
-
-(defn get-tasks-for-user-daterange
-  [id minDate maxDate]
-  (select db/tasks
-    (with db/users
-      (where {:id id
-              :date ['between [minDate maxDate]]}))))
+    (where {:users_id user-id})))
 
 ;; Team Tasks
 
-(defn get-all-tasks-for-team
-  [id]
+(defn get-tasks-by-team-id
+  "Returns a map of tasks which are associated with a specific team-id.
+  Takes a team-id as an integer"
+  [team-id]
   (select db/tasks
-    (with db/teams
-      (where {:id id}))))
-
-(defn get-tasks-for-team-daterange
-  [id minDate maxDate]
-  (select db/tasks
-    (with db/users
-      (where (and {:id id}
-             (between :date [minDate maxDate]))))))
-
+    (where {:teams_id team-id})))

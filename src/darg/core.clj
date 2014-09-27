@@ -18,6 +18,7 @@
 
 ;; Pay attention to trailing slashes - right now the only thing that should end in a
 ;; slash is the root.
+
 (defroutes routes
   ;; www
   (GET "/" request-map (resp/resource-response "index.html" {:root "public"}))
@@ -33,6 +34,10 @@
   (POST "/api/v1/login" request-map (api/login request-map))
   (GET "/api/v1/logout" request-map (api/logout request-map))
   (POST "/api/v1/signup" request-map (api/signup request-map))
+  (GET "/api/v1/darg" request-map (api/get-user-dargs request-map))
+  ; (PUT "/api/v1/darg" request-map (api/add-dargs-for-user request-map))
+  (POST "/api/v1/darg" request-map (api/add-dargs-for-user request-map))
+  ; (DELETE "/api/v1/darg" request-map (api/delete-dargs-for-user request-map))
   (route/resources "/"))
 
 (def app (-> routes
