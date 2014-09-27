@@ -44,7 +44,7 @@
 
 ;; Retrieve
 
-(defn get-task-by-fields
+(defn get-task
   "Returns tasks that match a set of fields, may return multiple tasks depending on the fields passed.
   Takes a map of fields for use in db lookup"
   [params]

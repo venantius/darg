@@ -15,7 +15,7 @@
 
 ; Getters
 
-(defn get-team-by-fields
+(defn get-team
   "Returns a vector containing matching teams from the db
   Takes a map of fields to use in db lookup"
   [params]
