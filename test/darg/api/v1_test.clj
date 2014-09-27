@@ -85,7 +85,7 @@
 ;ANY v1/darg
 
 (deftest we-can-handle-disallowed-get-methods
-  (let [sample-request {:session {:authenticated true :email "test-user2@darg.io"}
+  (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
                         :request-method :patch}
           response (api/darg sample-request)]
      (is (= (:status response) 405))
@@ -94,13 +94,13 @@
 ;GET v1/darg
 
 (deftest authenticated-user-can-view-their-darg
-  (let [sample-request {:session {:authenticated true :email "test-user2@darg.io"}
+  (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
                         :request-method :get}
         response (api/darg sample-request)]
     (is (= (:status response) 200))))
 
 (deftest unauthenticated-user-cant-view-a-darg
-  (let [sample-request {:session {:authenticated false :email "test-user2@darg.io"}
+  (let [sample-request {:session {:authenticated false :email "test-user2@darg.io" :id 4}
                         :request-method :get}
         response (api/darg sample-request)]
     (is (= (:status response) 403))
@@ -116,7 +116,7 @@
 ;POST v1/darg
 
 (deftest unauthenticated-user-cant-post-a-darg
-  (let [sample-request {:session {:authenticated false :email "test-user2@darg.io"}
+  (let [sample-request {:session {:authenticated false :email "test-user2@darg.io" :id 4}
                         :request-method :post
                         :params {:email "test-user2@darg.io" 
                                  :team-id 2 
@@ -129,7 +129,7 @@
     (is (= (count (tasks/get-tasks-by-user-id test-user-id)) 2))))
 
 (deftest user-cant-post-to-a-team-they-arent-on 
-  (let [sample-request {:session {:authenticated true :email "test-user2@darg.io"}
+  (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
                         :request-method :post
                         :params {:email "test-user2@darg.io" 
                                  :team-id 3 
@@ -142,7 +142,7 @@
     (is (= (count (tasks/get-tasks-by-user-id test-user-id)) 2))))
 
 (deftest authenticated-user-can-post-a-darg
-  (let [sample-request {:session {:authenticated true :email "test-user2@darg.io"}
+  (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
                         :request-method :post
                         :params {:email "test-user2@darg.io" 
                                  :team-id 2

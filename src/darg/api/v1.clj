@@ -26,10 +26,11 @@
     (try+
       (stormpath/authenticate email password)
       (logging/info "Successfully authenticated with email" email)
-      {:body "Successfully authenticated"
-       :cookies {"logged-in" {:value true :path "/"}}
-       :session {:authenticated true :email email}
-       :status 200}
+      (let [id (users/get-user {:email email})]
+        {:body "Successfully authenticated"
+         :cookies {"logged-in" {:value true :path "/"}}
+         :session {:authenticated true :id id :email email}
+         :status 200})
       ;; Stormpath will return a 400 status code on failed auth
       (catch [:status 400] response
         (logging/info "Failed to authenticate with email " email)
@@ -59,11 +60,11 @@
     (try+
       (stormpath/create-account request)
       (logging/info "Successfully created account" (:email request))
-      (users/create-user-from-signup-form request)
-      {:body "Account successfully created"
-       :cookies {"logged-in" {:value true :path "/"}}
-       :session {:authenticated true :email (:email request)}
-       :status 200}
+      (let [user (users/create-user-from-signup-form request)]
+        {:body "Account successfully created"
+         :cookies {"logged-in" {:value true :path "/"}}
+         :session {:authenticated true :email (:email request) :id (:id user)}
+         :status 200})
       (catch [:status 400] response
         (logging/info "Failed to create Stormpath account with response" response)
         {:body "Failed to create account"
@@ -89,24 +90,23 @@
 
 (defn get-darg
   [request-map]
-  (let [email (-> request-map :session :email)
-        user (users/get-user {:email email})]
-    {:body (tasks/get-tasks-by-user-id (:id user))
+  (let [id (-> request-map :session :id)]
+    {:body (tasks/get-tasks-by-user-id id)
      :status 200}))
 
 (defn post-darg
   [request-map]
   (let [task-list (-> request-map :params :darg)
-        email (-> request-map :session :email)
+        user-id (-> request-map :session :id)
+        team-id (-> request-map :params :team-id)
         date (-> request-map 
                :params 
                :date
                dbutil/sql-date-from-subject)
-        team-id (-> request-map :params :team-id)
-        metadata {:users_id (users/get-user-id {:email email})
+        metadata {:users_id user-id
                   :teams_id team-id
                   :date date}]
-    (if (users/user-in-team? (:users_id metadata) team-id)
+    (if (users/user-in-team? user-id team-id)
       (do (tasks/create-task-list task-list metadata)
         {:body "Tasks Created Successfully"
          :status 200})
@@ -134,8 +134,9 @@
   [request-map]
   (let [request-method (-> request-map :request-method)
         email (-> request-map :session :email)
+        id (-> request-map :session :id)
         authenticated (-> request-map :session :authenticated)]
-    (if (not (and email authenticated))
+    (if (not (and id email authenticated))
       {:body "User not authenticated"
        :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
        :status 403}
