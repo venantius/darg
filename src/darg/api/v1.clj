@@ -26,7 +26,7 @@
     (try+
       (stormpath/authenticate email password)
       (logging/info "Successfully authenticated with email" email)
-      (let [id (users/get-user {:email email})]
+      (let [id (:id (users/get-user {:email email}))]
         {:body "Successfully authenticated"
          :cookies {"logged-in" {:value true :path "/"}}
          :session {:authenticated true :id id :email email}
