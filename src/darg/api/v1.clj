@@ -141,8 +141,8 @@
   Takes a request, identifies the request method, and routes to the appropriate function"
   [request-map]
   (let [request-method (-> request-map :request-method)
-         email (-> request-map :session :email)
-         authenticated (-> request-map :session :authenticated)]
+        email (-> request-map :session :email)
+        authenticated (-> request-map :session :authenticated)]
     (if (not (and email authenticated))
       {:body "User not authenticated"
        :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
@@ -153,7 +153,7 @@
         (= request-method :post) (post-darg request-map)
         (= request-method :delete) (delete-darg request-map)
         :else {:body "Method not allowed"
-                  :status 405}))))
+               :status 405}))))
      
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email

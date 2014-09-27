@@ -86,7 +86,7 @@
 
 (deftest we-can-handle-disallowed-get-methods
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io"}
-                                    :request-method :patch}
+                        :request-method :patch}
           response (api/darg sample-request)]
      (is (= (:status response) 405))
      (is (= (:body response) "Method not allowed"))))
@@ -95,20 +95,20 @@
 
 (deftest authenticated-user-can-view-their-darg
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io"}
-                                    :request-method :get}
+                        :request-method :get}
         response (api/darg sample-request)]
     (is (= (:status response) 200))))
 
 (deftest unauthenticated-user-cant-view-a-darg
   (let [sample-request {:session {:authenticated false :email "test-user2@darg.io"}
-                                    :request-method :get}
+                        :request-method :get}
         response (api/darg sample-request)]
     (is (= (:status response) 403))
     (is (= (:body response) "User not authenticated"))))
 
 (deftest user-cant-view-a-darg-without-an-email
   (let [sample-request {:session {:authenticated true}
-                                    :request-method :get}
+                        :request-method :get}
         response (api/darg sample-request)]
     (is (= (:status response) 403))
     (is (= (:body response) "User not authenticated"))))
@@ -117,11 +117,11 @@
 
 (deftest unauthenticated-user-cant-post-a-darg
   (let [sample-request {:session {:authenticated false :email "test-user2@darg.io"}
-                                  :request-method :post
-                                  :params {:email "test-user2@darg.io" 
-                                           :team-id 2 
-                                           :date "Mar 10 2014" 
-                                           :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
+                        :request-method :post
+                        :params {:email "test-user2@darg.io" 
+                                 :team-id 2 
+                                 :date "Mar 10 2014" 
+                                 :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
         response (api/darg sample-request)
         test-user-id (users/get-user-id {:email "test-user2@darg.io"})]
     (is (= (:status response) 403))
@@ -130,11 +130,11 @@
 
 (deftest user-cant-post-to-a-team-they-arent-on 
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io"}
-                                  :request-method :post
-                                  :params {:email "test-user2@darg.io" 
-                                           :team-id 3 
-                                           :date "Mar 10 2014" 
-                                           :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
+                        :request-method :post
+                        :params {:email "test-user2@darg.io" 
+                                 :team-id 3 
+                                 :date "Mar 10 2014" 
+                                 :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
         response (api/darg sample-request)
         test-user-id (users/get-user-id {:email "test-user2@darg.io"})]
     (is (= (:status response) 403))
@@ -143,11 +143,11 @@
 
 (deftest authenticated-user-can-post-a-darg
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io"}
-                                  :request-method :post
-                                  :params {:email "test-user2@darg.io" 
-                                           :team-id 2
-                                           :date "Mar 10 2014" 
-                                           :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
+                        :request-method :post
+                        :params {:email "test-user2@darg.io" 
+                                 :team-id 2
+                                 :date "Mar 10 2014" 
+                                 :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
         response (api/darg sample-request)
         test-user-id (users/get-user-id {:email "test-user2@darg.io"})]
     (is (= (:status response) 200))
