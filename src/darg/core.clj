@@ -2,7 +2,7 @@
   (:gen-class)
   (:require [darg.injections :refer :all])
   (:require [clojure.tools.logging :as logging]
-            [compojure.core :refer [defroutes GET POST]]
+            [compojure.core :refer [defroutes GET POST ANY]]
             [compojure.route :as route]
             [compojure.handler :as handler]
             [darg.api.v1 :as api]
@@ -34,10 +34,7 @@
   (POST "/api/v1/login" request-map (api/login request-map))
   (GET "/api/v1/logout" request-map (api/logout request-map))
   (POST "/api/v1/signup" request-map (api/signup request-map))
-  (GET "/api/v1/darg" request-map (api/get-user-dargs request-map))
-  ; (PUT "/api/v1/darg" request-map (api/add-dargs-for-user request-map))
-  (POST "/api/v1/darg" request-map (api/add-dargs-for-user request-map))
-  ; (DELETE "/api/v1/darg" request-map (api/delete-dargs-for-user request-map))
+  (ANY "/api/v1/darg" request-map (api/darg request-map))
   (route/resources "/"))
 
 (def app (-> routes

@@ -87,7 +87,7 @@
       {:body "http://www.gravatar.com/avatar/?s=40"
        :status 200})))
 
-(defn get-user-dargs
+(defn get-darg
   "GET /api/v1/darg/
 
   Takes the email in the session cookie to return a user's darg
@@ -96,17 +96,11 @@
 
   [request-map]
   (let [email (-> request-map :session :email)
-        user (users/get-user-by-fields {:email email})
-        authenticated (-> request-map :session :authenticated)]
-    (if (and email authenticated)
-      {:body (tasks/get-tasks-by-user-id (:id user))
-       :status 200}
-      {:body "User not authenticated"
-       :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
-       :session {:authenticated false}
-       :status 403})))
+        user (users/get-user-by-fields {:email email})]
+    {:body (tasks/get-tasks-by-user-id (:id user))
+     :status 200}))
 
-(defn add-dargs-for-user
+(defn post-darg
   "POST /api/v1/darg/
   
   Adds dargs for the user. Expects the following:
@@ -117,7 +111,6 @@
   [request-map]
   (let [task-list (-> request-map :params :darg)
         email (-> request-map :session :email)
-        authenticated (-> request-map :session :authenticated)
         date (-> request-map 
                :params 
                :date
@@ -126,17 +119,41 @@
         metadata {:users_id (users/get-user-id {:email email})
                   :teams_id team-id
                   :date date}]
-    (if (and email authenticated)
-      (if (users/is-user-in-team (:users_id metadata) (:teams_id metadata))
-        (do (tasks/create-task-list task-list metadata)
-          {:body "Tasks Created Successfully"
-           :status 200})
-        {:body "User is not a registered member of this team"
-         :status 403})
-       {:body "User not authenticated"
+    (if (users/is-user-in-team (:users_id metadata) (:teams_id metadata))
+      (do (tasks/create-task-list task-list metadata)
+        {:body "Tasks Created Successfully"
+         :status 200})
+      {:body "User is not a registered member of this team"
+       :status 403})))
+       
+(defn delete-darg
+  "DELETE /api/v1/darg
+
+  Deletes one or more dargs for the user. Takes a vector or task id's"
+  [request-map]
+
+  {:body "Method not implemented yet"
+   :status 200})
+
+(defn darg
+  "ANY /api/v1/darg
+
+  Takes a request, identifies the request method, and routes to the appropriate function"
+  [request-map]
+  (let [request-method (-> request-map :request-method)
+         email (-> request-map :session :email)
+         authenticated (-> request-map :session :authenticated)]
+    (if (not (and email authenticated))
+      {:body "User not authenticated"
        :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
        :session {:authenticated false}
-       :status 403})))
+       :status 403}
+      (cond
+        (= request-method :get) (get-darg request-map)
+        (= request-method :post) (post-darg request-map)
+        (= request-method :delete) (delete-darg request-map)
+        :else {:body "Method not allowed"
+                  :status 405}))))
      
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
