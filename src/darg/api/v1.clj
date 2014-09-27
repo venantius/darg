@@ -88,9 +88,6 @@
        :status 200})))
 
 (defn get-darg
-  "GET /api/v1/darg/
-
-  Returns a user's darg. Expects an email set within the session "
   [request-map]
   (let [email (-> request-map :session :email)
         user (users/get-user {:email email})]
@@ -98,13 +95,6 @@
      :status 200}))
 
 (defn post-darg
-  "POST /api/v1/darg/
-  
-  Adds dargs for the user. Expects the following:
-  * :email - taken from session cookie
-  * :team-id - specified by user in the body of the request, takes only one team and applies to the full darg
-  * :date - specified by user in the body of the request, takes only one date and applies to the full darg
-  * :darg-list - specified by user in the body of the request, expects an array of task strings"
   [request-map]
   (let [task-list (-> request-map :params :darg)
         email (-> request-map :session :email)
@@ -128,19 +118,19 @@
 
   GET /api/v1/darg/
   Returns a user's darg. Expects the following 
-  * :email - taken from session cookie
+  :email - taken from session cookie
 
   POST /api/v1/darg/
   Adds dargs for the user. Expects the following:
-  * :email - taken from session cookie
-  * :team-id - specified by user in the body of the request, takes only one team and applies to the full darg
-  * :date - specified by user in the body of the request, takes only one date and applies to the full darg
-  * :darg-list - specified by user in the body of the request, expects an array of task strings
+  :email - taken from session cookie
+  :team-id - specified by user in the body of the request, takes only one team and applies to the full darg
+  :date - specified by user in the body of the request, takes only one date and applies to the full darg
+  :darg-list - specified by user in the body of the request, expects an array of task strings
 
   DELETE /api/v1/darg/
   Deletes items from a user's darg. Will only delete tasks related to the user set in the session cookie.
-  * :email - taken from session cookie
-  * :task-ids - passed as an array in the body of the request."
+  :email - taken from session cookie
+  :task-ids - passed as an array in the body of the request."
   [request-map]
   (let [request-method (-> request-map :request-method)
         email (-> request-map :session :email)
