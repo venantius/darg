@@ -49,14 +49,18 @@
 
   :profiles {:dev {:env {:darg-environment "dev"
                          :database-url "postgres://localhost:5432/darg"
-                         :reload-db-on-run true}}
+                         :reload-db-on-run true
+                         :port "8080"
+                         :session-key "california--bear"}}
              :test {:env {:darg-environment "test"
-                          :database-url "postgres://localhost:5432/darg_test"}}
+                          :database-url "postgres://localhost:5432/darg_test"
+                          :port "8080"
+                          :session-key "antarctica--bear"}}
              :staging {:env {:darg-environment "staging"}}
              :production {:env {:darg-environment "production"}
                           :java-agents [[com.newrelic.agent.java/newrelic-agent "2.19.0"]]}}
 
   :repl-options {:port 6001}
   :main darg.core
-  )
+)
 
