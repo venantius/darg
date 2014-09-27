@@ -22,7 +22,7 @@
 
 (def test-user-4
   {:email "test-user2@darg.io"
-   :first_name "LSP"
+   :name "LSP"
    :admin false})
 
 (def test-users
@@ -92,14 +92,14 @@
    :teams_id 2})
 
 (def test-team-user-pair-4
- {  :users_id 4
+ {:users_id 4
   :teams_id 2
   :admin true})
 
 (def test-team-user-pair-5
   {:users_id 4
-    :teams_id 1
-    :admin true})
+   :teams_id 1
+   :admin true})
 
 (def test-team-user-pairs
   [test-team-user-pair-1

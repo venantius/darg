@@ -116,3 +116,18 @@ app.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
         });
     };
 }]);
+
+app.controller('DargTimelineCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
+               function($scope, $http, $cookies, $cookieStore) {
+
+    $scope.Timeline = $http({
+            method: "get",
+            url: "/api/v1/darg",
+        })
+        .success(function(data) {
+            $scope.Timeline()
+        })
+        .error(function(data) {
+            console.log("Failed to retrieve timeline")
+        })
+}]);
