@@ -8,6 +8,7 @@
             [darg.api.v1 :as api]
             [darg.init :as init]
             [darg.middleware :as middleware]
+            [environ.core :as env]
             [org.httpkit.server :as server]
             [ring.middleware.session.cookie :as cookie]
             [ring.util.response :as resp]))
@@ -37,12 +38,13 @@
 
 (def app (-> routes
              (handler/site
-               {:session {:store (cookie/cookie-store {:key "california--bear"}) ;; TODO -- store in env
-                          :cookie-attrs {:max-age 259200}}})
+               {:session {:store (cookie/cookie-store {:key (env/env :session-key)})
+                          :cookie-attrs {;; :secure true -- requires https somewhere
+                                         }}})
              middleware/ignore-trailing-slash))
 
 (defn -main []
   (init/configure)
-  (let [port (Integer. (or (System/getenv "PORT") "8080"))] ;; TODO replace with env
+  (let [port (Integer. (env/env :port))]
     (logging/info "Starting Darg server on port" port)
     (server/run-server #'app {:port port :join? false})))
