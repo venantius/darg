@@ -156,8 +156,19 @@
   "Allows a user to view the user profile of someone else on their team.
   Profile returns the user's name, email address, and admin status"
   [request-map]
-  {:body "User Profile Goes Here"
-   :status 200})
+  (let [requestor-id (-> request-map :session :id)
+        target-id (-> request-map :params :user-id read-string)
+        email (-> request-map :session :email)
+        authenticated (-> request-map :session :authenticated)]
+  (if (not (and requestor-id email authenticated))
+      {:body "User not authenticated"
+       :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
+       :status 403}
+       (if (users/users-on-same-team? requestor-id target-id)
+          {:body (users/get-user-by-id target-id)
+           :status 200}
+          {:body "You do not have access to this user"
+           :status 403}))))
 
 (defn get-user-darg
   "Allows a user to view the user profile of someone else on their team.
