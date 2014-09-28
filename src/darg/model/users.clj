@@ -2,7 +2,8 @@
   (:require [clj-time.coerce :as c]
             [darg.model :as db]
             [korma.core :refer :all]
-            [darg.services.stormpath :as stormpath]))
+            [darg.services.stormpath :as stormpath]
+            [clojure.data :as data :only [diff]]))
 
 ; Create
 
@@ -81,8 +82,21 @@
   "Returns the map of teams that a user belongs to
   Takes a user-id (integer)"
   [user-id]
-  (first (select db/teams
-    (where {:users_id user-id}))))
+  (:teams (first (select db/users
+    (where {:id user-id})
+    (with db/teams)))))
+
+(defn users-on-same-team?
+  "Returns boolean true/false based on whether user's are on the same team
+  Takes 2 user-ids"
+  [userid1 userid2]
+  (if (= userid1 userid2)
+    true
+    (let [user1-teams (get-user-teams userid1)
+           user2-teams (get-user-teams userid2)]
+      (if (nth (data/diff user1-teams user2-teams) 2)
+        true
+        false))))
 
 ;; tasks
 
