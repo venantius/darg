@@ -86,17 +86,32 @@
     (where {:id user-id})
     (with db/teams)))))
 
+(defn team-overlap
+  "Returns a seq of team-maps that two users have in common
+  Will return an empty seq if the users do not share any teams.
+  Takes 2 user-id's (integer)"
+  [userid1 userid2]
+  (select db/teams 
+    (fields :id :name) 
+    (where (and {:id [in (subselect db/team-users 
+                           (fields :teams_id) 
+                           (where {:users_id userid1}))]}
+                {:id [in (subselect db/team-users 
+                           (fields :teams_id) 
+                           (where {:users_id userid2}))]}))))
+
 (defn users-on-same-team?
   "Returns boolean true/false based on whether user's are on the same team
-  Takes 2 user-ids"
+  Takes 2 user-ids (integers)"
   [userid1 userid2]
   (if (= userid1 userid2)
     true
-    (let [user1-teams (get-user-teams userid1)
-           user2-teams (get-user-teams userid2)]
-      (if (nth (data/diff user1-teams user2-teams) 2)
-        true
-        false))))
+    (let [teamlist (team-overlap userid1 userid2)]
+      (if (empty? teamlist)
+        false
+        true))))
+
+
 
 ;; tasks
 
