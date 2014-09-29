@@ -19,7 +19,12 @@
   "Returns a vector containing matching teams from the db
   Takes a map of fields to use in db lookup"
   [params]
-  (select db/teams (where params)))
+  (loop [base (select* db/teams)
+         keylist (keys params)]
+      (if (seq keylist)
+        (recur (-> base (where {(first keylist) [in ((first keylist) params)]}))
+          (rest keylist))
+        (-> base (select)))))
 
 (defn get-team-id
   "Returns the id of the user based on submitted fields

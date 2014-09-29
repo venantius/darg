@@ -46,13 +46,18 @@
 
 (defn get-task
   "Returns tasks that match a set of fields, may return multiple tasks depending on the fields passed.
-  Takes a map of fields for use in db lookup"
+  Takes a map, where the key represents the field and the value is a vector of values for that field"
   [params]
-  (select db/tasks (where params)))
+  (loop [base (select* db/tasks)
+         keylist (keys params)]
+      (if (seq keylist)
+        (recur (-> base (where {(first keylist) [in ((first keylist) params)]}))
+          (rest keylist))
+        (-> base (select)))))
 
 (defn get-task-by-id
   "Returns a task based on a unique id
-  Takes an id as an integer"
+  Takes an id as an integer or a vector of integer ids"
   [id]
   (first (select db/tasks (where {:id id}))))
 

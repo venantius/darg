@@ -47,8 +47,13 @@
 (defn get-user
   "returns a user map from the db
   Takes a map of fields for use in db lookup"
-  [fields]
-  (first (select db/users (where fields))))
+  [params]
+  (loop [base (select* db/users)
+         keylist (keys params)]
+      (if (seq keylist)
+        (recur (-> base (where {(first keylist) [in ((first keylist) params)]}))
+          (rest keylist))
+        (-> base (select)))))
 
 (defn get-user-id
   "Returns a user-id (integer)
@@ -76,7 +81,7 @@
   "Returns boolean true/false based on whether the use is a member of a given team
   Takes a user-id (integer) and team-id (integer)"
   [userid teamid]
-  (if (not (empty? (select db/team-users (where {:users_id userid :teams_id teamid})))) true false))
+  (if (empty? (select db/team-users (where {:users_id userid :teams_id teamid}))) false true))
 
 (defn get-user-teams
   "Returns the map of teams that a user belongs to
