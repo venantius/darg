@@ -20,7 +20,7 @@
 
 (deftest we-can-insert-user-into-the-db
   (users/create-user {:email "haruko@test.com" :name "haruko" :active true})
-  (is (users/get-user {:email "haruko@test.com"})))
+  (is (users/get-user {:email ["haruko@test.com"]})))
 
 (deftest we-can-update-user-in-the-db
   (users/update-user 3 {:name "irrashaimase"})
@@ -48,7 +48,7 @@
 
 (deftest we-can-insert-team-into-db
   (teams/create-team {:name "krogancorp" :email "kcorp@darg.io"})
-  (is (teams/get-team {:name "krogancorp"})))
+  (is (teams/get-team {:name ["krogancorp"]})))
 
 (deftest we-can-update-team-in-db
   (teams/update-team 1 {:name "Drake v. Weezy"})
@@ -74,7 +74,7 @@
                       :users_id 2
                       :teams_id 3
                       :task "Interrupt the Cellular Mitosis"})
-  (is (tasks/get-task {:task "Interrupt the Cellular Mitosis"})))
+  (is (tasks/get-task {:task ["Interrupt the Cellular Mitosis"]})))
 
 (deftest we-can-delete-task-from-db
   (tasks/delete-task 1)

@@ -62,7 +62,7 @@
                                   stormpath-test/user-1))]
   (is (= (:body auth-response) "Account successfully created"))
   (is (= (:status auth-response) 200))
-  (is (not (empty? (users/get-user {:email "test-user@darg.io"}))))
+  (is (not (empty? (users/get-user {:email ["test-user@darg.io"]}))))
   (is (some #{"logged-in=true;Path=/"}
     (get (:headers auth-response) "Set-Cookie")))
   (stormpath/delete-account-by-email (:email stormpath-test/user-1))))
@@ -80,7 +80,7 @@
                                   stormpath-test/quasi-user))]
   (is (= (:body auth-response) "Failed to create account"))
   (is (= (:status auth-response) 400))
-  (is (empty? (users/get-user {:email "quasi-user@darg.io"})))
+  (is (empty? (users/get-user {:email ["quasi-user@darg.io"]})))
   (is (not (some #{"logged-in=true;Path=/"}
                  (get (:headers auth-response) "Set-Cookie"))))))
 
@@ -168,3 +168,18 @@
            (json/encode {:message "E-mail successfully parsed."})))
     (is (not (empty? (tasks/get-task {:task "Dancing tiem!!"}))))
     (is (not (empty? (tasks/get-task {:task "Aint it a thing?"}))))))
+
+(deftest parsed-email-is-written-to-db
+  (api/parse-email f-email/test-email-2)
+  (is (not (empty? (tasks/get-task {:task ["Dancing tiem!!"]}))))
+  (is (not (empty? (tasks/get-task {:task ["Aint it a thing?"]})))))
+
+(deftest we-can-get-a-users-task-list
+  (api/parse-email f-email/test-email-2)
+  (let [test-user-id (users/get-user-id {:email "domo@darg.io"})]
+  (is (= (count (tasks/get-tasks-by-user-id test-user-id)) 5))))
+
+(deftest we-can-get-a-teams-task-list
+  (api/parse-email f-email/test-email-2)
+  (let [test-team-id (teams/get-team-id {:email "test.api@darg.io"})]
+    (is (= (count (tasks/get-tasks-by-team-id test-team-id)) 6))))
