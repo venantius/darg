@@ -170,7 +170,7 @@
                         :params {:user-id "4"}}
          response (api/get-user-darg sample-request)]
     (is (= (:status response) 200))
-    (is (= (:body response (tasks/get-task {:users_id [4]}))))))
+    (is (= (:body response) (tasks/get-task {:users_id [4]})))))
 
 (deftest user-cant-see-darg-for-non-teammate
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
