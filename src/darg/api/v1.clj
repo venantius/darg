@@ -21,6 +21,10 @@
    :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
    :status 403})
 
+(def access-denied-user
+  {:body "You do not have access to this user"
+   :status 403})
+
 ;; Utils
 
 (defn not-authenticated? 
@@ -32,6 +36,11 @@
      (if (not (and id email authenticated))
        true
        false)))
+
+(defn not-same-team?
+  "Returns true if the users do not share a team"
+  [userid1 userid2]
+  (not (users/users-on-same-team? userid1 userid2)))
 
 ;; Authentication
 
@@ -210,11 +219,10 @@
         target-id (-> request-map :params :user-id read-string)]
   (if (not-authenticated? request-map)
        no-auth-response
-       (if (users/users-on-same-team? requestor-id target-id)
+       (if (not-same-team? requestor-id target-id)
+          access-denied-user
           {:body (users/get-user-by-id target-id)
-           :status 200}
-          {:body "You do not have access to this user"
-           :status 403}))))
+           :status 200}))))
 
 (defn get-user-darg
   "Allows a user to view the user profile of someone else on their team.
@@ -224,9 +232,12 @@
         target-id (-> request-map :params :user-id read-string)]
     (if (not-authenticated? request-map)
          no-auth-response
-         (let [tids (mapv :id (users/team-overlap requestor-id target-id))
-                 uids (vector target-id)]
-           (tasks/get-task {:teams_id tids :users_id uids})))))
+         (if (not-same-team? requestor-id target-id)
+           access-denied-user
+           (let [tids (mapv :id (users/team-overlap requestor-id target-id))
+                   uids (vector target-id)]
+             {:body (tasks/get-task {:teams_id tids :users_id uids})
+              :status 200})))))
 
 
 (defn get-user-teams
@@ -237,11 +248,11 @@
         target-id (-> request-map :params :user-id read-string)]
   (if (not-authenticated? request-map)
        no-auth-response
-       (if (users/users-on-same-team? requestor-id target-id)
-          {:body (users/get-user-teams target-id)
-           :status 200}
-          {:body "You do not have access to this user"
-           :status 403}))))
+       (if (not-same-team? requestor-id target-id)
+          access-denied-user
+          (let [tids(mapv :id (users/team-overlap requestor-id target-id))]
+          {:body (teams/get-team {:id tids})
+           :status 200})))))
      
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 
