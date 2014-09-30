@@ -188,13 +188,9 @@
         target-id (-> request-map :params :user-id read-string)]
     (if (not-authenticated? request-map)
          no-auth-response
-         ((let [tids (vec (mapv :id (users/team-overlap requestor-id target-id)))
-                 uids (-> target-id vector)]
-           (logging/info (type tids))
-           (logging/info "Tids " tids)
-           (logging/info (type uids))
-           (logging/info "Uids " uids)
-           (tasks/get-task {:teams_id tids :users_id uids}))))))
+         (let [tids (mapv :id (users/team-overlap requestor-id target-id))
+                 uids (vector target-id)]
+           (tasks/get-task {:teams_id tids :users_id uids})))))
 
 
 (defn get-user-teams
