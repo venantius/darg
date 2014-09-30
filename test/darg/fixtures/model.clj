@@ -112,9 +112,15 @@
    :teams_id 1
    :admin true})
 
+(def test-team-user-pair-6
+  {:users_id 2
+   :teams_id 3
+   :admin false})
+
 (def test-team-user-pairs
   [test-team-user-pair-1
    test-team-user-pair-2
    test-team-user-pair-3
    test-team-user-pair-4
-   test-team-user-pair-5])
+   test-team-user-pair-5
+   test-team-user-pair-6])
