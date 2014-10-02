@@ -87,7 +87,7 @@
 (deftest we-can-handle-disallowed-get-methods
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
                         :request-method :patch}
-          response (api/darg sample-request)]
+        response (api/darg sample-request)]
      (is (= (:status response) 405))
      (is (= (:body response) "Method not allowed"))))
 
@@ -154,29 +154,47 @@
     (is (= (:body response) "Tasks Created Successfully"))
     (is (= (count (tasks/get-tasks-by-user-id test-user-id)) 6))))
 
+;; GET api/v1/user/:userid/
+(deftest unauthenticated-user-can't-make-user-api-call
+  (let [sample-request {:session {:authenticated false :email "test-user2@darg.io" :id 4}
+                        :request-method :get
+                        :params {:user-id "3" :function "darg"}}
+        response (api/get-user sample-request)]
+    (is (= (:status response) 403))
+    (is (= (:body response) "User not authenticated"))))
+
+(deftest user-recieves-404-when-submitting-invalid-function
+ (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
+                        :request-method :get
+                        :params {:user-id "3" :function "magic"}}
+       response (api/get-user sample-request)]
+    (is (= (:status response) 404))
+    (is (= (:body response) "Resource does not exist"))))
+
+
 ;; GET api/v1/user/:userid/darg
 
 (deftest user-can-get-teammates-darg
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
                         :request-method :get
-                        :params {:user-id "3"}}
-         response (api/get-user-darg sample-request)]
+                        :params {:user-id "3" :function "darg"}}
+        response (api/get-user sample-request)]
     (is (= (:status response) 200))
     (is (= (:body response) (tasks/get-task {:teams_id [1] :users_id [3]})))))
 
 (deftest user-can-get-their-own-darg
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
                         :request-method :get
-                        :params {:user-id "4"}}
-         response (api/get-user-darg sample-request)]
+                        :params {:user-id "4" :function "darg"}}
+        response (api/get-user sample-request)]
     (is (= (:status response) 200))
     (is (= (:body response) (tasks/get-task {:users_id [4]})))))
 
 (deftest user-cant-see-darg-for-non-teammate
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
                         :request-method :get
-                        :params {:user-id "2"}}
-         response (api/get-user-darg sample-request)]
+                        :params {:user-id "2" :function "darg"}}
+        response (api/get-user sample-request)]
      (is (= (:status response) 403))
      (is (= (:body response) "You do not have access to this user"))))
 
@@ -185,19 +203,36 @@
 (deftest user-can-get-teammates-teams
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
                         :request-method :get
-                        :params {:user-id "3"}}
-         response (api/get-user-teams sample-request)]
+                        :params {:user-id "3" :function "teams"}}
+        response (api/get-user sample-request)]
     (is (= (:status response) 200))
     (is (= (:body response) (teams/get-team {:id [1]})))))
 
 (deftest user-cant-see-teams-for-non-teammate
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
                         :request-method :get
-                        :params {:user-id "2"}}
-         response (api/get-user-teams sample-request)]
+                        :params {:user-id "2" :function "teams"}}
+        response (api/get-user sample-request)]
      (is (= (:status response) 403))
      (is (= (:body response) "You do not have access to this user"))))
 
+;; GET api/v1/user/:userid/profile
+
+(deftest user-can-get-teammates-profile
+  (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
+                        :request-method :get
+                        :params {:user-id "1" :function "profile"}}
+        response (api/get-user sample-request)]
+    (is (= (:status response) 200))
+    (is (= (:body response) (users/get-user {:id [1]})))))
+
+(deftest user-cant-see-profile-for-non-teammate
+  (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
+                        :request-method :get
+                        :params {:user-id "2" :function "profile"}}
+        response (api/get-user sample-request)]
+     (is (= (:status response) 403))
+     (is (= (:body response) "You do not have access to this user"))))
 
 ;; api/v1/email
 
