@@ -212,48 +212,53 @@
 ;; v1/users
 
 (defn get-user-profile
-  "Allows a user to view the user profile of someone else on their team.
-  Profile returns the user's name, email address, and admin status"
-  [request-map]
-  (let [requestor-id (-> request-map :session :id)
-        target-id (-> request-map :params :user-id read-string)]
-  (if (not-authenticated? request-map)
-       no-auth-response
-       (if (not-same-team? requestor-id target-id)
-          access-denied-user
-          {:body (users/get-user-by-id target-id)
-           :status 200}))))
+  [uids]
+  {:body (users/get-user {:id uids})
+   :status 200})
 
 (defn get-user-darg
-  "Allows a user to view the user profile of someone else on their team.
-  Profile returns the user's name, email address, and admin status"
-  [request-map]
-  (let [requestor-id (-> request-map :session :id)
-        target-id (-> request-map :params :user-id read-string)]
-    (if (not-authenticated? request-map)
-         no-auth-response
-         (if (not-same-team? requestor-id target-id)
-           access-denied-user
-           (let [tids (mapv :id (users/team-overlap requestor-id target-id))
-                   uids (vector target-id)]
-             {:body (tasks/get-task {:teams_id tids :users_id uids})
-              :status 200})))))
-
+  [tids uids]
+  {:body (tasks/get-task {:teams_id tids :users_id uids})
+   :status 200})
 
 (defn get-user-teams
-  "Allows a user to view the user profile of someone else on their team.
+  [tids]
+  {:body (teams/get-team {:id tids})
+   :status 200})
+
+(defn get-user
+  "Verifies that a user is authenticated and has permission to view the user resource, then routes to the appropriate function
+  The requesting user must share a team with the target user to see any information
+  Requires in URL
+  :user-id - the id of the target user for the request
+  :function - the target user resource being requested (profile, darg, teams)
+
+  :profile - Allows a user to view the user profile of someone else on their team.
+  Profile returns the user's name, email address, and admin status
+
+  :darg - Allows a user to view the user profile of someone else on their team.
+  Profile returns the user's name, email address, and admin status
+
+  :teams - Allows a user to view the user profile of someone else on their team.
   Profile returns the user's name, email address, and admin status"
   [request-map]
   (let [requestor-id (-> request-map :session :id)
-        target-id (-> request-map :params :user-id read-string)]
-  (if (not-authenticated? request-map)
-       no-auth-response
-       (if (not-same-team? requestor-id target-id)
-          access-denied-user
-          (let [tids(mapv :id (users/team-overlap requestor-id target-id))]
-          {:body (teams/get-team {:id tids})
-           :status 200})))))
-     
+         target-id (-> request-map :params :user-id read-string)
+         function (-> request-map :params :function)]
+    (if (not-authenticated? request-map)
+        no-auth-response
+        (let [tids (mapv :id (users/team-overlap requestor-id target-id))
+               uids (vector target-id)]
+           (if (empty? tids)
+               access-denied-user
+               (cond 
+                 (= function "profile") (get-user-profile uids)
+                 (= function "darg") (get-user-darg tids uids)
+                 (= function "teams") (get-user-teams tids)
+                  :else {:body "Resource does not exist"
+                            :status 404}))))))
+
+;; Email Parsing     
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 
 (defn email
