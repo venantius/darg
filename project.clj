@@ -48,6 +48,11 @@
             [lein-environ "1.0.0"]
             [jonase/eastwood "0.1.4"]]
 
+  :test-selectors {:default (complement :integration)
+                   :all (constantly true)
+                   :integration :integration
+                   :unit (complement :integration)}
+
   :profiles {:dev {:env {:darg-environment "dev"
                          :database-url "postgres://localhost:5432/darg"
                          :reload-db-on-run true

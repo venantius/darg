@@ -1,4 +1,4 @@
-(ns darg.services.mailgun-test
+(ns ^:integration darg.services.mailgun-test
   (:require [clojure.test :refer :all]
             [darg.fixtures.email :as email-fixtures]
             [darg.services.mailgun :as mailgun]))
