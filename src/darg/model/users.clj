@@ -1,5 +1,6 @@
 (ns darg.model.users
-  (:require [darg.model :as db]
+  (:require [clj-time.coerce :as c]
+            [darg.model :as db]
             [korma.core :refer :all]
             [darg.services.stormpath :as stormpath]))
 
@@ -33,7 +34,7 @@
 ; Update
 
 (defn update-user
-  "Updates the fields for a user. 
+  "Updates the fields for a user.
   Takes a user-id as an integer and a map of fields + values to update."
   [id params]
   (update db/users (where {:id id}) (set-fields params)))
@@ -41,10 +42,10 @@
 ; Lookups
 
 (defn get-user
-  "returns a user map from the db 
+  "returns a user map from the db
   Takes a map of fields for use in db lookup"
   [fields]
-  (select db/users (where fields)))
+  (first (select db/users (where fields))))
 
 (defn get-user-id
   "Returns a user-id (integer)
@@ -80,3 +81,12 @@
   [user-id]
   (first (select db/teams
     (where {:users_id user-id}))))
+
+;; tasks
+
+(defn get-tasks-by-date
+  "Find tasks for this user by date"
+  [user date]
+  (select db/tasks
+          (where {:users_id (:id user)
+                  :date (c/to-sql-date date)})))

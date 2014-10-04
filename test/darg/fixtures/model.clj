@@ -49,25 +49,25 @@
    test-team-3])
 
 (def test-task-1
-  {:date (c/to-sql-date (t/date-time 2012 2 16))
+  {:date (c/to-sql-time (t/local-date 2012 2 16))
    :users_id 4
    :teams_id 1
    :task "Do a good deed everyday"})
 
 (def test-task-2
-  {:date (c/to-sql-date (t/date-time 2012 2 16))
+  {:date (c/to-sql-time (t/local-date 2012 2 16))
    :users_id 2
    :teams_id 2
    :task "Destroy all humans"})
 
 (def test-task-3
-  {:date (c/to-sql-date (t/date-time 2012 5 17))
+  {:date (c/to-sql-time (t/local-date 2012 5 17))
    :users_id 4
    :teams_id 1
    :task "Salute the shorts"})
 
 (def test-task-4
- {:date (c/to-sql-date (t/date-time 2012 3 19))
+ {:date (c/to-sql-time (t/local-date 2012 3 19))
   :users_id 2
   :teams_id 3
   :task "Once more into the breach"})
