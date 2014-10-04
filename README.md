@@ -16,6 +16,15 @@ A Clojure clone of iDoneThis, designed to be better (and cheaper!) in all regard
 ### Grunt
 1. `npm install`
 
+## Development Flow
+This is just my (@venantius) flow, but I think it helps. I have many windows open at once, but the important windows are the following:
+1. `lein run` - the app
+2. `lein repl :connect` - a REPL, connected to the app
+3. `grunt watch` - watch the frontend less files, and recompile them into css when they change.
+
+For the future: 
+`lein test-refresh :growl` - watch the backend file system, running tests when things change, and send me growl notifications.
+
 ## Usage
 
 `lein run` to start a server running on localhost:8080

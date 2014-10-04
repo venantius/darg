@@ -120,14 +120,22 @@ app.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
 app.controller('DargTimelineCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
                function($scope, $http, $cookies, $cookieStore) {
 
-    $scope.Timeline = $http({
+    parseDates = function(timeline) {
+    }
+    $scope.GetTimeline = function() {
+        $http({
             method: "get",
-            url: "/api/v1/darg",
+            url: "/api/v1/darg"
         })
         .success(function(data) {
-            $scope.Timeline()
+            console.log("Successfully retrieved timeline");
+            $scope.Timeline = data;
+            return data;
         })
         .error(function(data) {
-            console.log("Failed to retrieve timeline")
-        })
+            $scope.Timeline = "Error: failed to retrieve timeline";
+            console.log("Failed to retrieve timeline");
+        });
+    }();
+
 }]);

@@ -1,10 +1,11 @@
 (ns darg.api.v1
   (:require [clojure.tools.logging :as logging]
             [clojure.string :as str :only [split trim]]
-            [darg.model.tasks :as tasks]
-            [darg.model.users :as users]
-            [darg.model.teams :as teams]
             [darg.db-util :as dbutil]
+            [darg.model.dargs :as dargs]
+            [darg.model.tasks :as tasks]
+            [darg.model.teams :as teams]
+            [darg.model.users :as users]
             [darg.services.stormpath :as stormpath]
             [korma.core :refer :all]
             [pandect.algo.md5 :refer :all]
@@ -90,8 +91,9 @@
 
 (defn get-darg
   [request-map]
+  (logging/info request-map)
   (let [id (-> request-map :session :id)]
-    {:body (tasks/get-tasks-by-user-id id)
+    {:body (dargs/timeline id)
      :status 200}))
 
 (defn post-darg
@@ -99,8 +101,8 @@
   (let [task-list (-> request-map :params :darg)
         user-id (-> request-map :session :id)
         team-id (-> request-map :params :team-id)
-        date (-> request-map 
-               :params 
+        date (-> request-map
+               :params
                :date
                dbutil/sql-date-from-subject)
         metadata {:users_id user-id
@@ -117,7 +119,7 @@
   "Takes a request, identifies the request method, and routes to the appropriate function.
 
   GET /api/v1/darg/
-  Returns a user's darg. Expects the following 
+  Returns a user's darg. Expects the following
   :email - taken from session cookie
 
   POST /api/v1/darg/
@@ -145,7 +147,7 @@
         (= request-method :post) (post-darg request-map)
         :else {:body "Method not allowed"
                :status 405}))))
-     
+
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
   "Parse an e-mail that has been forwarded by Mailgun"

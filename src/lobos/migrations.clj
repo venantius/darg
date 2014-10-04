@@ -40,7 +40,7 @@
   (up [] (create
            (table :tasks
                   (integer :id :auto-inc :primary-key)
-                  (date :date :not-null)
+                  (timestamp :date :not-null)
                   (integer :users_id [:refer :users :id :on-delete :set-null])
                   (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null)
                   (text :task))))

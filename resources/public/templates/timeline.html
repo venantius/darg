@@ -1,10 +1,15 @@
-<div class="container">
+<div class="container" ng-controller="DargTimelineCtrl as Timeline">
   <div class="row ptl pbl mtl mbl">
     <div clas="col-xs-12 ptl">
       <h2>
-        {{timeline}}
         Timeline goes here
       </h2>
+      <ul>
+        <li ng-repeat="event in Timeline">
+          {{event.task}}
+          {{event.date}}
+        </li>
+      </ul>
     </div>
   </div>
 </div>

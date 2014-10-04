@@ -20,16 +20,16 @@
   "Used to insert multiple tasks into the db with matching metadata
   Takes a vector of tasks and a map of metadata {:users_id :teams_id :date} to apply to the tasklist"
   [tasks-list metadata]
-  (dorun (map (fn 
-                [task] 
-                (create-task 
-                (assoc metadata :task task))) 
+  (dorun (map (fn
+                [task]
+                (create-task
+                (assoc metadata :task task)))
                tasks-list)))
 
 ;; Update
 
 (defn update-task
-  "Updates the fields for a task. 
+  "Updates the fields for a task.
   Takes an id as an integer and a map of fields + values to update."
   [id fields]
   (update db/tasks (where {:id id}) (set-fields fields)))
@@ -69,7 +69,19 @@
   Takes a user-id as an integer"
   [user-id]
   (select db/tasks
-    (where {:users_id user-id})))
+    (where {:users_id user-id})
+    (order :date :desc)))
+
+(defn fetch-active-dates
+  "Returns a list of dates that a user posted tasks. Useful for timeline
+  generation."
+  [user-id]
+  (let [db-results (select db/tasks
+                           (fields :date)
+                           (where {:users_id user-id})
+                           (order :date :desc)
+                           (group :date))]
+    (map :date db-results)))
 
 ;; Team Tasks
 

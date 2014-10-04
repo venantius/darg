@@ -1,6 +1,5 @@
 (ns darg.core
   (:gen-class)
-  (:require [darg.injections :refer :all])
   (:require [clojure.tools.logging :as logging]
             [compojure.core :refer [defroutes GET POST ANY]]
             [compojure.route :as route]
@@ -10,6 +9,7 @@
             [darg.middleware :as middleware]
             [environ.core :as env]
             [org.httpkit.server :as server]
+            [ring.middleware.json :refer [wrap-json-response]]
             [ring.middleware.session.cookie :as cookie]
             [ring.util.response :as resp]))
 
@@ -43,7 +43,8 @@
                {:session {:store (cookie/cookie-store {:key (env/env :session-key)})
                           :cookie-attrs {;; :secure true -- requires https somewhere
                                          }}})
-             middleware/ignore-trailing-slash))
+             middleware/ignore-trailing-slash
+             wrap-json-response))
 
 (defn -main []
   (init/configure)

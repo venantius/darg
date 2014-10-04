@@ -19,7 +19,6 @@
 
                  ;; logging
                  [org.clojure/tools.logging "0.3.0"]
-                 [clj-logging-config "1.9.12"]
                  [org.slf4j/slf4j-log4j12 "1.7.1"]
 
                  ;; HTTP client helpers
@@ -37,13 +36,15 @@
 
                  ;; webserver
                  [ring "1.3.1"]
+                 [ring/ring-json "0.3.1"]
                  [compojure "1.1.8"]
                  [http-kit "2.0.0"]
 
                  ;; testing
                  [ring-mock "0.1.5"]]
 
-  :plugins [[lein-lobos "1.0.0-beta1"]
+  :plugins [[com.jakemccrary/lein-test-refresh "0.5.1"]
+            [lein-lobos "1.0.0-beta1"]
             [lein-environ "1.0.0"]
             [jonase/eastwood "0.1.4"]]
 
