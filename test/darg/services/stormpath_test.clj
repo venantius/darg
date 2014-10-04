@@ -1,4 +1,4 @@
-(ns darg.services.stormpath-test
+(ns ^:integration darg.services.stormpath-test
   (:require [clojure.test :refer :all]
             [darg.services.stormpath :as stormpath]
             [slingshot.slingshot :refer [try+ throw+]]))

@@ -5,7 +5,7 @@ machine:
 test:
   override:
     - lein trampoline eastwood
-    - lein trampoline test
+    - lein trampoline test :all
 
 deployment:
   production:
