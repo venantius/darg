@@ -72,17 +72,6 @@
     (where {:users_id user-id})
     (order :date :desc)))
 
-(defn fetch-active-dates
-  "Returns a list of dates that a user posted tasks. Useful for timeline
-  generation."
-  [user-id]
-  (let [db-results (select db/tasks
-                           (fields :date)
-                           (where {:users_id user-id})
-                           (order :date :desc)
-                           (group :date))]
-    (map :date db-results)))
-
 ;; Team Tasks
 
 (defn get-tasks-by-team-id

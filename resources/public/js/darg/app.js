@@ -13,6 +13,9 @@ app.config(['$routeProvider', '$locationProvider',
         .when('/faq', {
             templateUrl: 'templates/faq.html'
         })
+        .when('/integrations', {
+            templateUrl: 'templates/integrations.html'
+        })
         .when('/settings', {
             templateUrl: 'templates/settings.html'
         })

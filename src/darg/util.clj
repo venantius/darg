@@ -1,6 +1,9 @@
 (ns darg.util
   (:import java.net.URI)
-  (:require [clojure.string :as str]))
+  (:require [clj-time.coerce :as c]
+            [clj-time.core :as t]
+            [clj-time.format :as f]
+            [clojure.string :as str]))
 
 (def default-subproto-map {"postgres" "postgresql"})
 (def default-classname-map
@@ -62,3 +65,10 @@
                     "localhost"
                     (:host uri-map))]
     (clojure.string/join ["//" host ":" (:port uri-map) (:path uri-map)])))
+
+(defn sql-datetime->date-str
+  "Take a SQL DateTime/Timestamp object and convert it to a Date string"
+  [datetime]
+  (f/unparse
+    (f/formatters :date)
+    (c/from-sql-date datetime)))
