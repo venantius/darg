@@ -4,8 +4,8 @@
             [darg.util :as util]))
 
 (defn active-dates
-  [user]
   "Figure out which dates have user activity"
+  [user]
   (users/fetch-task-dates (:id user)))
 
 (defn timeline
