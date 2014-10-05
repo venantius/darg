@@ -93,7 +93,7 @@
   [request-map]
   (logging/info request-map)
   (let [id (-> request-map :session :id)]
-    {:body (dargs/timeline id)
+    {:body {:dargs (dargs/timeline id)}
      :status 200}))
 
 (defn post-darg

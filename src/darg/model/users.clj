@@ -88,5 +88,18 @@
   "Find tasks for this user by date"
   [user date]
   (select db/tasks
+          (fields :date :users_id :teams_id :task)
           (where {:users_id (:id user)
-                  :date (c/to-sql-date date)})))
+                  :date (c/to-sql-time date)})))
+
+(defn fetch-task-dates
+  "Returns a list of dates that a user posted tasks. Useful for timeline
+  generation."
+  [user-id]
+  (let [db-results (select db/tasks
+                           (fields :date)
+                           (where {:users_id user-id})
+                           (order :date :desc)
+                           (group :date))]
+    (map :date db-results)))
+

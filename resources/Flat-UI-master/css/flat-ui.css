@@ -3654,11 +3654,17 @@ p.about {
   font-size: 16px;
   text-align: justify;
 }
-.about {
-  text-align: center;
+h4.about {
+  margin-bottom: 8px;
 }
 .about {
   text-align: center;
+}
+h6.about {
+  font-size: 20px;
+  padding-top: 0px;
+  margin-top: 0px;
+  margin-bottom: 20px;
 }
 .about-right {
   padding-left: 45px;
@@ -3681,8 +3687,8 @@ p.about {
   padding-right: 15px;
 }
 .navbar-favicon > li > a {
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 6px;
+  padding-bottom: 6px;
   padding-right: 15px;
   padding-left: 15px;
 }

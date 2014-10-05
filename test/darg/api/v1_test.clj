@@ -126,7 +126,7 @@
         test-user-id (users/get-user-id {:email "test-user2@darg.io"})]
     (is (= (:status response) 403))
     (is (= (:body response) "User not authenticated"))
-    (is (= (count (tasks/get-tasks-by-user-id test-user-id)) 2))))
+    (is (= (count (tasks/get-tasks-by-user-id test-user-id)) 3))))
 
 (deftest user-cant-post-to-a-team-they-arent-on
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
@@ -139,7 +139,7 @@
         test-user-id (users/get-user-id {:email "test-user2@darg.io"})]
     (is (= (:status response) 403))
     (is (= (:body response) "User is not a registered member of this team"))
-    (is (= (count (tasks/get-tasks-by-user-id test-user-id)) 2))))
+    (is (= (count (tasks/get-tasks-by-user-id test-user-id)) 3))))
 
 (deftest authenticated-user-can-post-a-darg
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
@@ -152,7 +152,7 @@
         test-user-id (users/get-user-id {:email "test-user2@darg.io"})]
     (is (= (:status response) 200))
     (is (= (:body response) "Tasks Created Successfully"))
-    (is (= (count (tasks/get-tasks-by-user-id test-user-id)) 5))))
+    (is (= (count (tasks/get-tasks-by-user-id test-user-id)) 6))))
 
 ;; api/v1/email
 
@@ -169,4 +169,4 @@
 (deftest we-can-get-a-teams-task-list
   (api/parse-email f-email/test-email-2)
   (let [test-team-id (teams/get-team-id {:email "test.api@darg.io"})]
-    (is (= (count (tasks/get-tasks-by-team-id test-team-id)) 5))))
+    (is (= (count (tasks/get-tasks-by-team-id test-team-id)) 6))))

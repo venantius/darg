@@ -20,7 +20,7 @@ A Clojure clone of iDoneThis, designed to be better (and cheaper!) in all regard
 This is just my (@venantius) flow, but I think it's informative. I have many windows open at once, but the important windows are the following:
 1. `lein run` - the app
 2. `lein repl :connect` - a REPL, connected to the app
-3. `lein test-refresh :growl` - watch the backend file system, running tests when things change, and send me [growl](http://growl.info/) notifications. If you don't have growl installed then just leave off that keyword.
+3. `lein with-profile test test-refresh :growl` - watch the backend file system, running tests when things change, and send me [growl](http://growl.info/) notifications. If you don't have growl installed then just leave off that keyword.
 4. `grunt watch` - watch the frontend less files, and recompile them into css when they change.
 
 ## Usage

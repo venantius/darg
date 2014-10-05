@@ -72,11 +72,18 @@
   :teams_id 3
   :task "Once more into the breach"})
 
+(def test-task-5
+  {:date (c/to-sql-time (t/local-date 2012 5 17))
+   :users_id 4
+   :teams_id 1
+   :task "Some folks call it a kaiser blade, me I call it a sling blade"})
+
 (def test-tasks
   [test-task-1
    test-task-2
    test-task-3
-   test-task-4])
+   test-task-4
+   test-task-5])
 
 (def test-team-user-pair-1
   {:users_id 1

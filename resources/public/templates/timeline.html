@@ -1,15 +1,35 @@
 <div class="container" ng-controller="DargTimelineCtrl as Timeline">
   <div class="row ptl pbl mtl mbl">
-    <div clas="col-xs-12 ptl">
-      <h2>
-        Timeline goes here
-      </h2>
-      <ul>
-        <li ng-repeat="event in Timeline">
-          {{event.task}}
-          {{event.date}}
-        </li>
-      </ul>
+  </div>
+  <div class="row ptl pbl mtl mbl">
+    <!-- menu --> 
+    <div class="col-xs-3">
+      <div class="btn-group-vertical">
+        <div class="btn btn-primary btn-group">
+          Timeline
+        </div>
+        <button class="btn btn-inverse" type="button">My Dargs</button><!-- #TODO -->
+        <button class="btn btn-inverse" type="button">Team Dargs <br> (dropdown?)</button>
+        <div class="btn-group">
+          <button data-toggle="dropdown" class="btn btn-inverse dropdown-toggle" type="button" id="btnGroupVerticalDrop2">
+            Dropdown
+            <span class="caret"></span>
+          </button>
+          <ul aria-labelledby="btnGroupVerticalDrop2" role="menu" class="dropdown-menu">
+            <li><a href="#">Dropdown link</a></li>
+            <li><a href="#">Dropdown link</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-9 ptl">
+      <div ng-repeat="darg in Timeline.dargs">
+        <h4>{{darg.date}}</h4>
+        <ul>
+          <li ng-repeat="task in darg.tasks">
+            {{task.task}}
+        </ul>
+      </div>
     </div>
   </div>
 </div>
