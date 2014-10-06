@@ -1,0 +1,31 @@
+div.timeline-darg {
+  padding-bottom: 30px;
+}
+
+h4.timeline-date {
+  padding-left: 50px;
+  padding-bottom: 10px;
+}
+
+img.timeline-section {
+  width: 50px;
+  height: 50px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 12px;
+}
+
+li.timeline-section {
+  font-size: floor(@component-font-size-base * 1.6); // ~24px
+  line-height: 1.042;  // ~25px
+  font-weight: 700;
+  position: relative;
+  display: block;
+  padding: ((@navbar-height-base - 25px) / 2) 21px;
+  
+  > [class*="fui-"] {
+    font-size: floor(@component-font-size-base * 1.267); // ~19px
+    line-height: 1.263; // ~24px
+    vertical-align: top;
+  }
+}

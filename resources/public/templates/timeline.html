@@ -1,34 +1,37 @@
 <div class="container" ng-controller="DargTimelineCtrl as Timeline">
   <div class="row ptl pbl mtl mbl">
   </div>
-  <div class="row ptl pbl mtl mbl">
+  <div class="row">
     <!-- menu --> 
-    <div class="col-xs-3">
+    <div class="col-xs-3 ptl">
       <div class="btn-group-vertical">
-        <div class="btn btn-primary btn-group">
-          Timeline
-        </div>
         <button class="btn btn-inverse" type="button">My Dargs</button><!-- #TODO -->
-        <button class="btn btn-inverse" type="button">Team Dargs <br> (dropdown?)</button>
-        <div class="btn-group">
-          <button data-toggle="dropdown" class="btn btn-inverse dropdown-toggle" type="button" id="btnGroupVerticalDrop2">
-            Dropdown
-            <span class="caret"></span>
-          </button>
-          <ul aria-labelledby="btnGroupVerticalDrop2" role="menu" class="dropdown-menu">
-            <li><a href="#">Dropdown link</a></li>
-            <li><a href="#">Dropdown link</a></li>
-          </ul>
-        </div>
+        <button class="btn btn-primary" type="button">Standard Treasury</button>
+        <button class="btn btn-inverse" type="button">eBay</button>
       </div>
     </div>
-    <div class="col-xs-9 ptl">
-      <div ng-repeat="darg in Timeline.dargs">
-        <h4>{{darg.date}}</h4>
-        <ul>
-          <li ng-repeat="task in darg.tasks">
-            {{task.task}}
-        </ul>
+    <div class="col-xs-9">
+      <div class="timeline-darg" ng-repeat="darg in Timeline.dargs">
+        <h4 class="timeline-date">
+          {{formatDateString(darg.date) | date: 'fullDate'}}
+        </h4>
+        <div>
+          <nav class="navbar navbar-default">
+            <ul class="nav navbar-nav">
+              <li>
+                <img class="timeline-section" src="../images/icons/svg/clipboard.svg">
+              </li>
+              <li class="timeline-section">
+                Tasks
+              </li>
+            </ul>
+          </nav>
+          <ul>
+            <li ng-repeat="task in darg.tasks">
+              {{task.task}}
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
   </div>
