@@ -10,6 +10,9 @@ app.config(['$routeProvider', '$locationProvider',
         .when('/about', {
             templateUrl: 'templates/about.html'
         })
+        .when('/api', {
+            templateUrl: 'templates/api.html'
+        })
         .when('/faq', {
             templateUrl: 'templates/faq.html'
         })
@@ -123,7 +126,8 @@ app.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
 app.controller('DargTimelineCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
                function($scope, $http, $cookies, $cookieStore) {
 
-    parseDates = function(timeline) {
+    $scope.formatDateString = function(date) {
+        return Date.parse(date);
     }
     $scope.GetTimeline = function() {
         $http({
