@@ -13,6 +13,34 @@
             [ring.middleware.session.store :as session-store]
             [slingshot.slingshot :refer [try+]]))
 
+;; Reponses
+
+(def no-auth-response
+  {:body "User not authenticated"
+   :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
+   :status 403})
+
+(def access-denied-user
+  {:body "You do not have access to this user"
+   :status 403})
+
+;; Utils
+
+(defn not-authenticated? 
+  "Returns true if the user is not authenticated, and false if the user is authenticated"
+  [request-map]
+  (let [email (-> request-map :session :email)
+         authenticated (-> request-map :session :authenticated)
+         id (-> request-map :session :id)]
+     (if (not (and id email authenticated))
+       true
+       false)))
+
+(defn not-same-team?
+  "Returns true if the users do not share a team"
+  [userid1 userid2]
+  (not (users/users-on-same-team? userid1 userid2)))
+
 ;; Authentication
 
 (defn login
@@ -27,7 +55,7 @@
     (try+
       (stormpath/authenticate email password)
       (logging/info "Successfully authenticated with email" email)
-      (let [id (:id (users/get-user {:email email}))]
+      (let [id (:id (first (users/get-user {:email [email]})))]
         {:body "Successfully authenticated"
          :cookies {"logged-in" {:value true :path "/"}}
          :session {:authenticated true :id id :email email}
@@ -89,9 +117,11 @@
       {:body "http://www.gravatar.com/avatar/?s=40"
        :status 200})))
 
+;; /v1/darg
+
 (defn get-darg
   [request-map]
-  (logging/info request-map)
+  ; (logging/info request-map)
   (let [id (-> request-map :session :id)]
     {:body {:dargs (dargs/timeline id)}
      :status 200}))
@@ -134,20 +164,65 @@
   :email - taken from session cookie
   :task-ids - passed as an array in the body of the request."
   [request-map]
-  (let [request-method (-> request-map :request-method)
-        email (-> request-map :session :email)
-        id (-> request-map :session :id)
-        authenticated (-> request-map :session :authenticated)]
-    (if (not (and id email authenticated))
-      {:body "User not authenticated"
-       :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
-       :status 403}
+  (let [request-method (-> request-map :request-method)]
+    (if (not-authenticated? request-map)
+      no-auth-response
       (cond
         (= request-method :get) (get-darg request-map)
         (= request-method :post) (post-darg request-map)
         :else {:body "Method not allowed"
                :status 405}))))
 
+;; v1/users
+
+(defn get-user-profile
+  [uids]
+  {:body (users/get-user {:id uids})
+   :status 200})
+
+(defn get-user-darg
+  [tids uids]
+  {:body (tasks/get-task {:teams_id tids :users_id uids})
+   :status 200})
+
+(defn get-user-teams
+  [tids]
+  {:body (teams/get-team {:id tids})
+   :status 200})
+
+(defn get-user
+  "Verifies that a user is authenticated and has permission to view the user resource, then routes to the appropriate function
+  The requesting user must share a team with the target user to see any information
+  Requires in URL
+  :user-id - the id of the target user for the request
+  :function - the target user resource being requested (profile, darg, teams)
+
+  :profile - Allows a user to view the user profile of someone else on their team.
+  Profile returns the user's name, email address, and admin status
+
+  :darg - Allows a user to view the user profile of someone else on their team.
+  Profile returns the user's name, email address, and admin status
+
+  :teams - Allows a user to view the user profile of someone else on their team.
+  Profile returns the user's name, email address, and admin status"
+  [request-map]
+  (let [requestor-id (-> request-map :session :id)
+         target-id (-> request-map :params :user-id read-string)
+         function (-> request-map :params :function)]
+    (if (not-authenticated? request-map)
+        no-auth-response
+        (let [tids (mapv :id (users/team-overlap requestor-id target-id))
+               uids (vector target-id)]
+           (if (empty? tids)
+               access-denied-user
+               (cond 
+                 (= function "profile") (get-user-profile uids)
+                 (= function "darg") (get-user-darg tids uids)
+                 (= function "teams") (get-user-teams tids)
+                  :else {:body "Resource does not exist"
+                            :status 404}))))))
+
+;; Email Parsing     
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 (defn parse-forwarded-email
   "Parse an e-mail that has been forwarded by Mailgun"

@@ -16,6 +16,7 @@
                   (integer :id :auto-inc :primary-key)
                   (text :email :unique :not-null)
                   (text :name)
+                  (boolean :active :not-null)
                   (boolean :admin (default false)))))
   (down [] (drop (table :users))))
 

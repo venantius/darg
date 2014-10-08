@@ -2,7 +2,8 @@
   (:require [clj-time.coerce :as c]
             [darg.model :as db]
             [korma.core :refer :all]
-            [darg.services.stormpath :as stormpath]))
+            [darg.services.stormpath :as stormpath]
+            [clojure.data :as data :only [diff]]))
 
 ; Create
 
@@ -12,6 +13,7 @@
   Required fields:
   :email - user's unique email (string)
   :name - user's name, for display and for stormpath authentication
+  :active - boolean value that determines if a user is active or inactive
   :admin (optional) - identifies the user as a darg.io admin"
   [params]
   (insert db/users (values params)))
@@ -23,6 +25,7 @@
   (-> account-map
     (select-keys [:givenName :email])
       stormpath/account->user
+      (assoc :active true)
       create-user))
 
 (defn add-user-to-team
@@ -44,8 +47,13 @@
 (defn get-user
   "returns a user map from the db
   Takes a map of fields for use in db lookup"
-  [fields]
-  (first (select db/users (where fields))))
+  [params]
+  (loop [base (select* db/users)
+         keylist (keys params)]
+      (if (seq keylist)
+        (recur (-> base (where {(first keylist) [in ((first keylist) params)]}))
+          (rest keylist))
+        (-> base (select)))))
 
 (defn get-user-id
   "Returns a user-id (integer)
@@ -73,14 +81,40 @@
   "Returns boolean true/false based on whether the use is a member of a given team
   Takes a user-id (integer) and team-id (integer)"
   [userid teamid]
-  (if (not (empty? (select db/team-users (where {:users_id userid :teams_id teamid})))) true false))
+  (if (empty? (select db/team-users (where {:users_id userid :teams_id teamid}))) false true))
 
 (defn get-user-teams
   "Returns the map of teams that a user belongs to
   Takes a user-id (integer)"
   [user-id]
-  (first (select db/teams
-    (where {:users_id user-id}))))
+  (:teams (first (select db/users
+    (where {:id user-id})
+    (with db/teams)))))
+
+(defn team-overlap
+  "Returns a seq of team-maps that two users have in common
+  Will return an empty seq if the users do not share any teams.
+  Takes 2 user-id's (integer)"
+  [userid1 userid2]
+  (select db/teams 
+    (fields :id :name) 
+    (where (and {:id [in (subselect db/team-users 
+                           (fields :teams_id) 
+                           (where {:users_id userid1}))]}
+                {:id [in (subselect db/team-users 
+                           (fields :teams_id) 
+                           (where {:users_id userid2}))]}))))
+
+(defn users-on-same-team?
+  "Returns boolean true/false based on whether user's are on the same team
+  Takes 2 user-ids (integers)"
+  [userid1 userid2]
+  (if (= userid1 userid2)
+    true
+    (let [teamlist (team-overlap userid1 userid2)]
+      (if (empty? teamlist)
+        false
+        true))))
 
 ;; tasks
 
