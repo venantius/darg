@@ -121,7 +121,7 @@
 
 (defn get-darg
   [request-map]
-  (logging/info request-map)
+  ; (logging/info request-map)
   (let [id (-> request-map :session :id)]
     {:body {:dargs (dargs/timeline id)}
      :status 200}))
