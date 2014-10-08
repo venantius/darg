@@ -18,7 +18,6 @@
   (let [user (users/get-user-by-id 4)
         date (t/local-date 2012 02 16)
         date_2 (t/local-date 2012 02 17)]
-<<<<<<< HEAD
     (is (= (dissoc (first (users/get-tasks-by-date user date)) :id)
            {:task "Do a good deed everyday"
             :teams_id 1
