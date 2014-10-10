@@ -1,4 +1,46 @@
-var app = angular.module('darg', ['ngCookies', 'ngRoute']);
+/* 
+* This little bit of code is needed in order to load Javascript within "partials"
+* - the html templates we use that get loaded by Angular's ng-include directive.
+*
+* At some point I'll refactor it out into its own file (which should generally
+* happen with all of the Angular code), but I'm not yet certain how to do that.
+*/
+
+(function (ng) {
+  'use strict';
+
+  var app = ng.module('ngLoadScript', []);
+
+  app.directive('script', function() {
+    return {
+      restrict: 'E',
+      scope: false,
+      link: function(scope, elem, attr) {
+        if (attr.type==='text/javascript-lazy') {
+          var s = document.createElement("script");
+          s.type = "text/javascript";
+          var src = elem.attr('src');
+          if(src!==undefined) {
+              s.src = src;
+          }
+          else {
+              var code = elem.text();
+              s.text = code;
+          }
+          document.head.appendChild(s);
+          elem.remove();
+        }
+      }
+    };
+  });
+}(angular));
+
+/* Darg application code begins here */
+var app = angular.module('darg', ['ngCookies', 'ngRoute', 'ngLoadScript']);
+
+/*
+ * AngularJS routing code goes here
+ */
 
 app.config(['$routeProvider', '$locationProvider', 
            function AppConfig($routeProvider, $locationProvider) {
@@ -19,6 +61,9 @@ app.config(['$routeProvider', '$locationProvider',
         .when('/integrations', {
             templateUrl: 'templates/integrations.html'
         })
+        .when('/password_reset', {
+            templateUrl: 'templates/password_reset.html'
+        })
         .when('/settings', {
             templateUrl: 'templates/settings.html'
         })
@@ -31,6 +76,28 @@ app.config(['$routeProvider', '$locationProvider',
    }
 ]);
 
+/*
+ * AngularJS services go here
+ */
+
+app.factory('user', function($cookieStore) {
+    var service = {};
+
+    service.loggedIn = function() {
+        if ($cookieStore.get('logged-in') == true) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    return service;
+});
+
+/*
+ * AngularJS controllers go here
+ */
+
 app.controller('DargPageCtrl', ['$scope', '$http', '$location', 
                function($scope, $http, $location) {
     $scope.header = "templates/header.html";
@@ -38,22 +105,14 @@ app.controller('DargPageCtrl', ['$scope', '$http', '$location',
 
     $scope.inner = "templates/timeline.html";
     $scope.outer = "templates/outer.html";
-
-    // $locationProvider();
-    $scope.location = $location.path();
    }
 ]);
 
-app.controller('DargLoginCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
-               function($scope, $http, $cookies, $cookieStore) {
-    // Are we logged in?
-    $scope.LoggedIn = function() {
-        if ($cookieStore.get('logged-in') == true) {
-            return true;
-        } else {
-            return false;
-        }};
+app.controller('DargLoginCtrl',
+       ['$scope', '$http', '$cookies', '$cookieStore', '$location', 'user',
+       function($scope, $http, $cookies, $cookieStore, $location, user) {
 
+    $scope.loggedIn = user.loggedIn;
     $scope.LoginForm = {
         email: "",
         password: ""
@@ -67,7 +126,6 @@ app.controller('DargLoginCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
-            console.log("Logged in.");
             $scope.Gravatar();
         });
     };
@@ -78,10 +136,35 @@ app.controller('DargLoginCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
             url: "/api/v1/logout"
         })
         .success(function(data) {
-            console.log("Logged out.");
         })
         .error(function(data) {
             console.log("Error logging out.");
+            console.log(data);
+        });
+    };
+
+    $scope.ResetForm = {
+        "email": ""
+    }
+
+    $scope.LoadPasswordResetPage = function() {
+        $location.path('/password_reset');
+    };
+
+    $scope.resetPassword = function() {
+        $http({
+            method: "post",
+            url: "/api/v1/password_reset",
+            data: $.param($scope.ResetForm),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+            // TODO: Provide a tooltip or something on success?
+            // No, replace the entire speech bubble
+        })
+        .error(function(data) {
+            console.log("Failed to reset password");
+            console.log(data);
         });
     };
 
@@ -118,31 +201,45 @@ app.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
             $scope.Gravatar()
         })
         .error(function(data) {
-            console.log("Error signing up")
+            console.log("Error signing up");
+            console.log(data);
         });
     };
 }]);
 
-app.controller('DargTimelineCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
-               function($scope, $http, $cookies, $cookieStore) {
+app.controller('DargTimelineCtrl', ['$scope', '$http', '$cookies', '$cookieStore', 'user',
+               function($scope, $http, $cookies, $cookieStore, user) {
+
+    /*
+     * This is totally an anti-pattern but I'm just learning how services work.
+     */
+    $scope.loggedIn = user.loggedIn;
 
     $scope.formatDateString = function(date) {
         return Date.parse(date);
     }
+
     $scope.GetTimeline = function() {
         $http({
             method: "get",
             url: "/api/v1/darg"
         })
         .success(function(data) {
-            console.log("Successfully retrieved timeline");
             $scope.Timeline = data;
-            return data;
         })
         .error(function(data) {
             $scope.Timeline = "Error: failed to retrieve timeline";
             console.log("Failed to retrieve timeline");
+            console.log(data);
         });
-    }();
+    };
+
+    // I am ashamed to say that this took me way longer to figure out than
+    // it should have :(
+    $scope.$watch('loggedIn()', function(oldValue, newValue) {
+        if ($scope.loggedIn() == true) {
+            $scope.GetTimeline();
+        }
+    });
 
 }]);

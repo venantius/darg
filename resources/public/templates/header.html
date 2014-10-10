@@ -1,3 +1,6 @@
+
+<script src="../js/flatui/flat-ui.min.js" type="text/javascript-lazy"></script>
+
 <div ng-controller="DargLoginCtrl"> 
   <div class="row" >
     <div class="col-xs-9">
@@ -22,7 +25,7 @@
 
             <!-- Show log in form if not logged-in -->
             <div> 
-              <div ng-hide="LoggedIn()">
+              <div ng-hide="loggedIn()">
                 <ul class="nav navbar-nav navbar-right">
                   <li>
                     <form role="search" class="navbar-form navbar-left">
@@ -32,12 +35,13 @@
                       <div class="form-group">
                         <input type="password" size="8" placeholder="Password" class="form-control input-sm" ng-model="LoginForm.password">
                       </div>
-                      <button class="btn btn-default" ng-click="Login()">Login</button>
+                      <button class="btn btn-primary" ng-click="Login()">Login</button>
+                      <button class="btn btn-danger" data-toggle="tooltip" title="Forgot your password?" data-placement="bottom" type="button" ng-click="LoadPasswordResetPage()">!</button>
                     </form>
                   </li>
                 </ul>
               </div>
-              <div ng-show="LoggedIn()">
+              <div ng-show="loggedIn()">
                 <ul class="nav navbar-nav navbar-right navbar-favicon">
                   <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown">
@@ -59,3 +63,10 @@
     </div>
   </div>
 </div>
+
+<!-- This has to get re-loaded because of Angular's way of handling scripts inside templates -->
+<script type="text/javascript-lazy">
+  $(function () {
+    $('[data-toggle=tooltip]').tooltip();
+  });
+</script>
