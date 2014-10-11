@@ -27,6 +27,7 @@
   (GET "/api" request-map (resp/resource-response "index.html" {:root "public"}))
   (GET "/faq" request-map (resp/resource-response "index.html" {:root "public"}))
   (GET "/integrations" request-map (resp/resource-response "index.html" {:root "public"}))
+  (GET "/password_reset" request-map (resp/resource-response "index.html" {:root "public"}))
   (GET "/settings" request-map (resp/resource-response "index.html" {:root "public"}))
 
   (GET "/debug" request-map (debug request-map))
@@ -36,6 +37,7 @@
   (GET "/api/v1/gravatar" request-map (api/gravatar request-map))
   (POST "/api/v1/login" request-map (api/login request-map))
   (GET "/api/v1/logout" request-map (api/logout request-map))
+  (POST "/api/v1/password_reset" request-map (api/password-reset request-map))
   (POST "/api/v1/signup" request-map (api/signup request-map))
   (ANY "/api/v1/darg" request-map (api/darg request-map))
   (route/resources "/"))

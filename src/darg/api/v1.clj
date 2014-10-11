@@ -51,6 +51,24 @@
    :session nil
    :cookies {"logged-in" {:value false :max-age 0 :path "/"}}})
 
+(defn password-reset
+  "/api/v1/password_reset
+
+  Methods: POST
+  Initiates the password reset workflow. Details and customization options on
+  the password reset workflow can be found here:
+  https://api.stormpath.com/ui/directories/425932/workflows"
+  [request-map]
+  (let [email (-> request-map :params :email)]
+    (try
+      (stormpath/reset-account-password email)
+      {:body "Success!"
+       :status 200}
+      (catch Exception e
+        (logging/error "Failed to reset user password with email:" email)
+        {:body "Password reset failed."
+         :status 400}))))
+
 (defn signup
   "/api/v1/signup
 
@@ -91,7 +109,6 @@
 
 (defn get-darg
   [request-map]
-  (logging/info request-map)
   (let [id (-> request-map :session :id)]
     {:body {:dargs (dargs/timeline id)}
      :status 200}))

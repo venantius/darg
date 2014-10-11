@@ -2520,43 +2520,6 @@ select[multiple].navbar-form .btn {
   border-color: none;
   color: #ECF0F1;
 }
-.navbar-inverse .navbar-form .btn {
-  color: #ffffff;
-  background-color: #1abc9c;
-}
-.navbar-inverse .navbar-form .btn:hover,
-.navbar-inverse .navbar-form .btn:focus,
-.navbar-inverse .navbar-form .btn:active,
-.navbar-inverse .navbar-form .btn.active,
-.open .dropdown-toggle.navbar-inverse .navbar-form .btn {
-  color: #ffffff;
-  background-color: #48c9b0;
-  border-color: #48c9b0;
-}
-.navbar-inverse .navbar-form .btn:active,
-.navbar-inverse .navbar-form .btn.active,
-.open .dropdown-toggle.navbar-inverse .navbar-form .btn {
-  background: #16a085;
-  border-color: #16a085;
-}
-.navbar-inverse .navbar-form .btn.disabled,
-.navbar-inverse .navbar-form .btn[disabled],
-fieldset[disabled] .navbar-inverse .navbar-form .btn,
-.navbar-inverse .navbar-form .btn.disabled:hover,
-.navbar-inverse .navbar-form .btn[disabled]:hover,
-fieldset[disabled] .navbar-inverse .navbar-form .btn:hover,
-.navbar-inverse .navbar-form .btn.disabled:focus,
-.navbar-inverse .navbar-form .btn[disabled]:focus,
-fieldset[disabled] .navbar-inverse .navbar-form .btn:focus,
-.navbar-inverse .navbar-form .btn.disabled:active,
-.navbar-inverse .navbar-form .btn[disabled]:active,
-fieldset[disabled] .navbar-inverse .navbar-form .btn:active,
-.navbar-inverse .navbar-form .btn.disabled.active,
-.navbar-inverse .navbar-form .btn[disabled].active,
-fieldset[disabled] .navbar-inverse .navbar-form .btn.active {
-  background-color: #1abc9c;
-  border-color: #1abc9c;
-}
 .navbar-inverse .navbar-form .input-group-btn .btn {
   border-color: transparent;
   background-color: #293a4a;
@@ -3642,6 +3605,15 @@ fieldset[disabled] .twitter-typeahead .tt-hint {
   width: 50%;
 }
 img.about-profile {
+  width: 200px;
+  height: 200px;
+  border: 5px solid #34495E;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 25px;
+}
+img.pawnstars {
   width: 200px;
   height: 200px;
   border: 5px solid #34495E;
