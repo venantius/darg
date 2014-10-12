@@ -25,7 +25,7 @@
   (let [email (-> request-map :params :email)
         password (-> request-map :params :password)]
     (try+
-      ;; (stormpath/authenticate email password)
+      (stormpath/authenticate email password)
       (logging/info "Successfully authenticated with email" email)
       (let [id (:id (users/get-user {:email email}))]
         {:body "Successfully authenticated"
