@@ -39,12 +39,15 @@
         <form class="login-form">
           <div class="form-group">
             <input type="text" class="form-control login-field" placeholder="Your name" ng-model="SignupForm.givenName"/>
+            <label class="login-field-icon fui-user" for="signup-name"></label>
           </div>
           <div class="form-group">
             <input type="text" class="form-control login-field" placeholder="Your e-mail" ng-model="SignupForm.email"/>
+            <label class="login-field-icon fui-mail" for="signup-email"></label>
           </div>
           <div class="form-group">
             <input type="password" class="form-control login-field" placeholder="Your password" ng-model="SignupForm.password"/>
+            <label class="login-field-icon fui-lock" for="signup-pass"></label>
           </div>
           <button class="btn btn-primary btn-lg btn-block" ng-click="Signup()"> 
             Sign Up 

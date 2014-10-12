@@ -88,7 +88,7 @@
   "Find tasks for this user by date"
   [user date]
   (select db/tasks
-          (fields :date :users_id :teams_id :task)
+          (fields :id :date :users_id :teams_id :task)
           (where {:users_id (:id user)
                   :date (c/to-sql-time date)})))
 

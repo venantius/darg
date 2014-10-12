@@ -27,6 +27,7 @@
 
                  ;; services / integrations
                  [abengoa/clj-stripe "1.0.4"]
+                 [tentacles "0.2.5"]
 
                  ;; db
                  [korma "0.4.0"]

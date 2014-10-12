@@ -1,31 +1,77 @@
+/*
+
+The Timeline is divided into the following hierarchy:
+ 1. timeline-section
+    a. timeline-section-icon
+    b. timeline-section-date
+ 2. timeline-type-header
+ 3. timeline-header
+
+*/
+
+@timeline-indent: 50px;
+
+/* Profile image at the top */
+img.timeline-profile {
+  border: 5px solid #34495E;
+  margin-bottom: 25px;
+}
+
+/* Darg */
+
 div.timeline-darg {
   padding-bottom: 30px;
 }
 
-h4.timeline-date {
-  padding-left: 50px;
-  padding-bottom: 10px;
-}
-
-img.timeline-section {
-  width: 50px;
-  height: 50px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  padding-left: 12px;
-}
+/* timeline-section */
 
 li.timeline-section {
   font-size: floor(@component-font-size-base * 1.6); // ~24px
-  line-height: 1.042;  // ~25px
-  font-weight: 700;
-  position: relative;
-  display: block;
+  line-height: 0.99;  // ~25px
   padding: ((@navbar-height-base - 25px) / 2) 21px;
-  
   > [class*="fui-"] {
-    font-size: floor(@component-font-size-base * 1.267); // ~19px
-    line-height: 1.263; // ~24px
+    font-size: floor(@component-font-size-base * 1.2); // ~19px
     vertical-align: top;
+  }
+}
+
+span.timeline-section-date {
+  font-size: 19px;
+  font-weight: 700; // bold
+  padding-left: 13px;
+}
+
+/* timeline-type-header */
+
+li.timeline-type-header {
+  margin-left: @timeline-indent;
+  background-color: @navbar-default-bg;
+  font-size: @font-size-timeline;
+}
+
+span.timeline-type {
+  margin-left: 12px;
+}
+
+span.timeline-type-icon {
+  font-size: 14px;
+}
+
+/* timeline-item */
+
+li.timeline-item {
+  margin-left: @timeline-indent;
+  font-size: @font-size-timeline;
+}
+
+span.timeline-item-edit-icon {
+  right: 15px;
+  position: absolute;
+  color: @silver;
+  transition: .25s linear;
+  
+  &:hover {
+    transition: .25s linear;
+    color: @wet-asphalt;
   }
 }

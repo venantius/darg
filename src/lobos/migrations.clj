@@ -31,6 +31,7 @@
   (up [] (create
            (table :team_users
                   (integer :id :auto-inc :primary-key)
+                  (text :role)
                   (integer :users_id [:refer :users :id :on-delete :cascade] :not-null)
                   (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null)
                   (boolean :admin (default false)))))
@@ -45,3 +46,11 @@
                   (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null)
                   (text :task))))
   (down [] (drop (table :tasks))))
+
+(defmigration add-api-keys-table
+  (up [] (create
+           (table :api_keys
+                  (integer :id :auto-inc :primary-key)
+                  (text :api-key :unique :not-null)
+                  (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null))))
+  (down [] (drop (table :api_keys))))

@@ -18,10 +18,10 @@
   (let [user (users/get-user-by-id 4)
         date (t/local-date 2012 02 16)
         date_2 (t/local-date 2012 02 17)]
-    (is (= (users/get-tasks-by-date user date)
-           (list {:task "Do a good deed everyday"
-                  :teams_id 1
-                  :users_id 4
-                  :date (c/to-sql-time (t/local-date 2012 02 16))})))
+    (is (= (dissoc (first (users/get-tasks-by-date user date)) :id)
+           {:task "Do a good deed everyday"
+            :teams_id 1
+            :users_id 4
+            :date (c/to-sql-time (t/local-date 2012 02 16))}))
     (is (= (users/get-tasks-by-date user date_2)
            (list)))))

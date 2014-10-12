@@ -19,8 +19,8 @@
 (deftest timeline-works
   (is (= (dargs/timeline 4)
          [{:date "2012-05-17"
-           :tasks (list fixture-data/test-task-3
-                        fixture-data/test-task-5)}
+           :tasks (list (assoc fixture-data/test-task-3 :id 3)
+                        (assoc fixture-data/test-task-5 :id 5))}
           {:date "2012-02-16"
-           :tasks (list fixture-data/test-task-1)}]
+           :tasks (list (assoc fixture-data/test-task-1 :id 1))}]
          )))
