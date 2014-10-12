@@ -25,7 +25,7 @@
   (let [email (-> request-map :params :email)
         password (-> request-map :params :password)]
     (try+
-      (stormpath/authenticate email password)
+      ;; (stormpath/authenticate email password)
       (logging/info "Successfully authenticated with email" email)
       (let [id (:id (users/get-user {:email email}))]
         {:body "Successfully authenticated"
@@ -98,14 +98,34 @@
 (defn gravatar
   "Get a given user's gravatar image URL"
   [request-map]
-  (let [email (-> request-map :session :email)]
+  (let [email (-> request-map :session :email)
+        size (-> request-map :params :size)]
     (if email
       {:body (clojure.string/join "" ["http://www.gravatar.com/avatar/"
                                       (md5 email)
-                                      "?s=40"])
+                                      "?s="
+                                      size])
        :status 200}
-      {:body "http://www.gravatar.com/avatar/?s=40"
+      {:body (format "http://www.gravatar.com/avatar/?s=%s" size)
        :status 200})))
+
+;; tasks
+
+(defn post-task
+  [request-map]
+  (let [task (-> request-map :params :task)
+        user-id (-> request-map :session :id)
+        team-id (-> request-map :params :team-id)
+        date (-> request-map :params :date dbutil/sql-date-from-subject)]
+    (if (not (users/user-in-team? user-id team-id))
+      {:body "User is not a registered member of this team."
+       :status 403}
+      (tasks/create-task {:task task
+                          :user_id user-id
+                          :team_id team-id
+                          :date date}))))
+
+;; dargs
 
 (defn get-darg
   [request-map]

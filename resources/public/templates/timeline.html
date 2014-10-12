@@ -10,27 +10,49 @@
         <button class="btn btn-inverse" type="button">eBay</button>
       </div>
     </div>
+
     <div class="col-xs-9">
+      <div class="col-xs-3">
+      </div>
+      
+      <!-- profile -->
+      <div class="timeline-header" ng-controller="DargLoginCtrl">
+        <img ng-src="{{gravatars.timeline}}" class="img-circle timeline-profile">
+      </div>
+
+      <!-- timeline -->
       <div class="timeline-darg" ng-repeat="darg in Timeline.dargs">
-        <h4 class="timeline-date">
-          {{formatDateString(darg.date) | date: 'fullDate'}}
-        </h4>
-        <div>
-          <nav class="navbar navbar-default">
-            <ul class="nav navbar-nav">
-              <li>
-                <img class="timeline-section" src="../images/icons/svg/clipboard.svg">
-              </li>
-              <li class="timeline-section">
+        <nav class="navbar navbar-default">
+          <ul class="nav navbar-nav navbar-left">
+            <li class="timeline-section">
+              <span class="fui-calendar timeline-section-icon"></span>
+              <span class="timeline-section-date">
+                {{formatDateString(darg.date) | date: 'fullDate'}}
+              </span>
+            </li>
+          </ul>
+        </nav>
+          <ul class="list-group">
+            <li class="timeline-type-header list-group-item">
+              <span class="fui-list-numbered timeline-type-icon"></span>
+              <span class="timeline-type">
                 Tasks
-              </li>
-            </ul>
-          </nav>
-          <ul>
-            <li ng-repeat="task in darg.tasks">
-              {{task.task}}
-            </ul>
-          </nav>
+              </span>
+            </li>
+            <li class="timeline-item list-group-item" ng-repeat="task in darg.tasks">
+              <span class="timeline-item-edit-icon fui-new"></span>
+              <span class="timeline-item">
+                {{task.task}}
+              </span>
+            </li>
+
+            <!-- Enter new tasks -->
+            <div class="ptl mtl">
+              <form class="task-form">
+                <input type="text" placeholder="Left something out? Enter it here!" class="form-control" />
+              </form>
+            </div>
+          </ul>
         </div>
       </div>
     </div>

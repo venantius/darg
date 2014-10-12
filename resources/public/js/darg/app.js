@@ -126,7 +126,7 @@ app.controller('DargLoginCtrl',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
-            $scope.Gravatar();
+            $scope.Gravatar("40");
         });
     };
 
@@ -168,16 +168,24 @@ app.controller('DargLoginCtrl',
         });
     };
 
-    $scope.Gravatar = function() {
+    $scope.gravatars = {
+        "navbar": "",
+        "timeline": ""
+    }
+    $scope.loadGravatar = function(target, size) {
+        console.log(size);
         $http({
-            method: "get",
-            url: "/api/v1/gravatar"
+            method: "post",
+            data: $.param({"size": size}),
+            url: "/api/v1/gravatar",
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data, status) {
-            $scope.Gravatar_url = data;
+            $scope.gravatars[target] = data;
         });
     };
-    $scope.Gravatar_url = $scope.Gravatar();
+    $scope.loadGravatar("navbar", 40);
+    $scope.loadGravatar("timeline", 100);
 
 }]);
 
@@ -198,7 +206,7 @@ app.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
-            $scope.Gravatar()
+            $scope.Gravatar("40")
         })
         .error(function(data) {
             console.log("Error signing up");
@@ -214,7 +222,6 @@ app.controller('DargTimelineCtrl', ['$scope', '$http', '$cookies', '$cookieStore
      * This is totally an anti-pattern but I'm just learning how services work.
      */
     $scope.loggedIn = user.loggedIn;
-
     $scope.formatDateString = function(date) {
         return Date.parse(date);
     }

@@ -34,7 +34,7 @@
 
   ;; api
   (POST "/api/v1/email" request-map (api/parse-forwarded-email request-map))
-  (GET "/api/v1/gravatar" request-map (api/gravatar request-map))
+  (POST "/api/v1/gravatar" request-map (api/gravatar request-map))
   (POST "/api/v1/login" request-map (api/login request-map))
   (GET "/api/v1/logout" request-map (api/logout request-map))
   (POST "/api/v1/password_reset" request-map (api/password-reset request-map))
