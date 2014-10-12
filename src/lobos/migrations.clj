@@ -52,8 +52,5 @@
            (table :api_keys
                   (integer :id :auto-inc :primary-key)
                   (text :api-key :unique :not-null)
-                  (integer :users_id [:refer :users :id :on-delete :cascade] :not-null)
-                  (integer :teams_id [:refer :teams :id :on-delete :cascade])
-                  )
-           ))
-  )
+                  (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null))))
+  (down [] (drop (table :api_keys))))
