@@ -4,6 +4,7 @@
 /checkouts
 pom.xml
 pom.xml.asc
+TODO.txt
 *.jar
 *.class
 /.lein*
