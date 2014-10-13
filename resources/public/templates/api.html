@@ -10,7 +10,51 @@
       <p>This is what you have to do to generate an API key: stuff a cucumber down your pants</p>
 
       <h4>Dargs</h4>
-      <p>Echo Park 8-bit fanny pack squid semiotics. 8-bit pug DIY biodiesel, before they sold out mustache trust fund authentic. Hella next level VHS heirloom literally art party. Keytar sriracha tote bag, retro sustainable craft beer irony Banksy authentic Wes Anderson yr. Fingerstache sriracha Schlitz, selfies literally disrupt lo-fi street art organic chia next level four loko keffiyeh. Marfa freegan Portland locavore, jean shorts selvage master cleanse polaroid seitan bespoke artisan mixtape fashion axe Helvetica. Salvia PBR&B tousled master cleanse, VHS hashtag locavore post-ironic vegan biodiesel.</p>
+      <p>The Dargs endpoint can be used to obtain a comprehensive Darg, including any asssociated tasks, events and comments from other team members.</p>
+      <h6>Resource</h6>
+      <code>GET /api/v1/darg</code>
+      <h6>Authorization</h6>
+      API key
+      <h6>Query Parameters</h6>
+      Some table thing goes here
+      <h6>Response</h6>
+      <pre>Status-Code: 200 OK</pre>
+      <pre><code class="javascript ">{
+  "dargs":[
+    {
+      "date":"2012-05-17",
+      "tasks":[
+        {
+          "task":"Salute the shorts",
+          "teams_id":1,
+          "users_id":4,
+          "date":"2012-05-17T00:00:00Z",
+          "id":3
+        },
+        {
+          "task":"Some folks call it a kaiser blade, me I call it a sling blade",
+          "teams_id":1,
+          "users_id":4,
+          "date":"2012-05-17T00:00:00Z",
+          "id":5
+        }
+      ]
+    },
+    {
+      "date":"2012-02-16",
+      "tasks":[
+        {
+          "task":"Do a good deed everyday",
+          "teams_id":1,
+          "users_id":4,
+          "date":
+          "2012-02-16T00:00:00Z",
+          "id":1
+        }
+      ]
+    }
+  ]
+}</code></pre>
 
       <h4>Users</h4>
       <p>Truffaut culpa fanny pack normcore, Carles direct trade kale chips excepteur elit anim mumblecore nisi Pitchfork. American Apparel forage pariatur DIY Etsy, ennui Neutra four loko drinking vinegar. Tote bag raw denim elit cupidatat photo booth occaecat. Freegan assumenda farm-to-table, Kickstarter voluptate occupy banjo fanny pack DIY swag mustache. Sapiente Banksy fap, sustainable Helvetica ex ennui. Tousled enim velit Vice nulla actually. Butcher cray ennui try-hard meh pop-up.</p>
@@ -19,3 +63,12 @@
     </div>
   </div>
 </div>
+
+<!-- Code highlighting...uses jQuery -->
+<script type="text/javascript-lazy">
+  $(document).ready(function() {
+    $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+  });
+</script>
