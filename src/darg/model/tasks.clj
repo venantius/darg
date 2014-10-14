@@ -48,12 +48,12 @@
   "Returns tasks that match a set of fields, may return multiple tasks depending on the fields passed.
   Takes a map, where the key represents the field and the value is a vector of values for that field"
   [params]
-  (loop [base (select* db/tasks)
-         keylist (keys params)]
-      (if (seq keylist)
-        (recur (-> base (where {(first keylist) [in ((first keylist) params)]}))
-          (rest keylist))
-        (-> base (select)))))
+  (select db/tasks (where params)))
+
+(defn get-one-task
+  "Returns the first task returned by get-task"
+  [params]
+  (first (get-task params)))
 
 (defn get-task-by-id
   "Returns a task based on a unique id

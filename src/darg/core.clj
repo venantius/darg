@@ -39,7 +39,7 @@
   (POST "/api/v1/password_reset" request-map (api/password-reset request-map))
   (POST "/api/v1/signup" request-map (api/signup request-map))
   (ANY "/api/v1/darg" request-map (api/darg request-map))
-  (GET  "/api/v1/user/:user-id/:function" request-map (api/get-user request-map))
+  (GET  "/api/v1/user/:user-id/:resource" request-map (api/get-user request-map))
   (route/resources "/"))
 
 (def app (-> routes

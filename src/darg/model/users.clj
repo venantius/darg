@@ -48,12 +48,12 @@
   "returns a user map from the db
   Takes a map of fields for use in db lookup"
   [params]
-  (loop [base (select* db/users)
-         keylist (keys params)]
-      (if (seq keylist)
-        (recur (-> base (where {(first keylist) [in ((first keylist) params)]}))
-          (rest keylist))
-        (-> base (select)))))
+  (select db/users (where params)))
+
+(defn get-one-user
+  "Returns the first user from get-user"
+  [params]
+  (first (get-user params)))
 
 (defn get-user-id
   "Returns a user-id (integer)

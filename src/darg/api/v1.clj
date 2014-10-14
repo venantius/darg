@@ -10,6 +10,7 @@
             [darg.services.mailgun :as mailgun]
             [darg.services.stormpath :as stormpath]
             [korma.core :refer :all]
+            [korma.sql.fns :as ksql]
             [pandect.algo.md5 :refer :all]
             [ring.middleware.session.cookie :as cookie-store]
             [ring.middleware.session.store :as session-store]
@@ -213,18 +214,18 @@
 ;; v1/users
 
 (defn get-user-profile
-  [uids]
-  {:body (users/get-user {:id uids})
+  [user-ids]
+  {:body (users/get-user {:id user-ids})
    :status 200})
 
 (defn get-user-darg
-  [tids uids]
-  {:body (tasks/get-task {:teams_id tids :users_id uids})
+  [team-ids user-ids]
+  {:body (tasks/get-task {(ksql/pred-in :teams_id team-ids) :users_id user-ids})
    :status 200})
 
 (defn get-user-teams
-  [tids]
-  {:body (teams/get-team {:id tids})
+  [team-ids]
+  {:body (teams/get-team {(ksql/pred-in :teams_id team-ids)})
    :status 200})
 
 (defn get-user
@@ -232,7 +233,7 @@
   The requesting user must share a team with the target user to see any information
   Requires in URL
   :user-id - the id of the target user for the request
-  :function - the target user resource being requested (profile, darg, teams)
+  :resource - the target user resource being requested (profile, darg, teams)
 
   :profile - Allows a user to view the user profile of someone else on their team.
   Profile returns the user's name, email address, and admin status
@@ -245,17 +246,17 @@
   [request-map]
   (let [requestor-id (-> request-map :session :id)
          target-id (-> request-map :params :user-id read-string)
-         function (-> request-map :params :function)]
+         function (-> request-map :params :resource)]
     (if (not-authenticated? request-map)
         no-auth-response
-        (let [tids (mapv :id (users/team-overlap requestor-id target-id))
-               uids (vector target-id)]
-           (if (empty? tids)
+        (let [team-ids (mapv :id (users/team-overlap requestor-id target-id))
+               user-id target-id]
+           (if (empty? team-ids)
                access-denied-user
                (cond 
-                 (= function "profile") (get-user-profile uids)
-                 (= function "darg") (get-user-darg tids uids)
-                 (= function "teams") (get-user-teams tids)
+                 (= function "profile") (get-user-profile user-id)
+                 (= function "darg") (get-user-darg team-ids user-id)
+                 (= function "teams") (get-user-teams team-ids)
                   :else {:body "Resource does not exist"
                             :status 404}))))))
 
