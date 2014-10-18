@@ -219,12 +219,12 @@
 
 (defn get-user-darg
   [team-ids user-ids]
-  {:body (tasks/get-task {(ksql/pred-in :teams_id team-ids) :users_id user-ids})
+  {:body (tasks/get-task {:teams_id [ksql/pred-in team-ids] :users_id user-ids})
    :status 200})
 
 (defn get-user-teams
   [team-ids]
-  {:body (teams/get-team {(ksql/pred-in :teams_id team-ids)})
+  {:body (teams/get-team {:id [ksql/pred-in team-ids]})
    :status 200})
 
 (defn get-user
