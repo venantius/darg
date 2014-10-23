@@ -3,6 +3,7 @@
             [clojure.string :as str :only [split trim]]
             [darg.db-util :as dbutil]
             [darg.model.dargs :as dargs]
+            [darg.model.email :as email]
             [darg.model.tasks :as tasks]
             [darg.model.teams :as teams]
             [darg.model.users :as users]
@@ -186,36 +187,24 @@
                :status 405}))))
 
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
-(defn parse-forwarded-email
-  "Parse an e-mail that has been forwarded by Mailgun"
-  [body]
-  (let [params (:params body)
+
+(defn email
+  "/api/v1/email
+
+  E-mail parsing endpoint; only for use with Mailgun. Authenticates the e-mail
+  from Mailgun, and adds a task for each newline in the :stripped-text field."
+  [request-map]
+  (let [params (:params request-map)
         {:keys [recipient sender From subject
                 body-plain stripped-text stripped-signature
                 body-html stripped-html attachment-count
                 attachment-x timestamp token signature
-                message-headers content-id-map]} params]
-    (logging/info "Mailgun Params: " params)
-    (logging/info "Full Mailgun POST: " body)
-    (str params)))
-
-(defn parse-email
-  "/api/v1/parse-email
-
-  Recieves a darg email from a user, parses tasklist, and inserts the tasks into
-  the database.
-
-  Email mapping to task metadata is:
-    - From -> uses email address to lookup :users_id
-    - Recipient -> uses email address to lookup :teams_id
-    - Subject -> parses out date in format 'MMM dd YYYY' and converts to sqldate for :date
-    - Body -> Each newline in the body is parsed as a separate :task"
-  [email]
-  (let [task-list (-> email
-                    (get :body-plain)
-                    (str/split #"\n")
-                    (->> (map str/trim)))
-        email-metadata {:users_id (users/get-user-id {:email (:from email)})
-                        :teams_id (teams/get-team-id {:email (:recipient email)})
-                        :date (dbutil/sql-date-from-subject (:subject email))}]
-    (tasks/create-task-list task-list email-metadata)))
+                message-headers content-id-map] :as email} params]
+    (try
+      (email/parse-email email)
+      {:status 200
+       :body {:message "E-mail successfully parsed."}}
+      (catch Exception e
+       (logging/errorf "Failed to parse email with exception: %s" e)
+       {:status 400
+        :body {:message "Failed to parse e-mail"}}))))
