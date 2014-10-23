@@ -1,10 +1,11 @@
 (ns darg.api.v1-test
-  (:require [clojure.test :refer :all]
+  (:require [cheshire.core :as json]
+            [clojure.test :refer :all]
             [darg.api.v1 :as api]
             [darg.core :as core]
             [darg.db :as db]
             [darg.fixtures :refer :all]
-            [darg.fixtures.email :as f-email]
+            [darg.fixtures.email :as email-fixtures]
             [darg.model :as table]
             [darg.model.tasks :as tasks]
             [darg.model.teams :as teams]
@@ -157,17 +158,13 @@
 
 ;; api/v1/email
 
-(deftest parsed-email-is-written-to-db
-  (api/parse-email f-email/test-email-2)
-  (is (not (empty? (tasks/get-task {:task "Dancing tiem!!"}))))
-  (is (not (empty? (tasks/get-task {:task "Aint it a thing?"})))))
-
-(deftest we-can-get-a-users-task-list
-  (api/parse-email f-email/test-email-2)
-  (let [test-user-id (users/get-user-id {:email "domo@darg.io"})]
-  (is (= (count (tasks/get-tasks-by-user-id test-user-id)) 5))))
-
-(deftest we-can-get-a-teams-task-list
-  (api/parse-email f-email/test-email-2)
-  (let [test-team-id (teams/get-team-id {:email "test.api@darg.io"})]
-    (is (= (count (tasks/get-tasks-by-team-id test-team-id)) 6))))
+(deftest we-can-successfully-parse-a-posted-email
+  (let [response (core/app (mock-request/request
+                             :post
+                             "/api/v1/email"
+                             email-fixtures/test-email-2))]
+    (is (= (:status response) 200))
+    (is (= (:body response)
+           (json/encode {:message "E-mail successfully parsed."})))
+    (is (not (empty? (tasks/get-task {:task "Dancing tiem!!"}))))
+    (is (not (empty? (tasks/get-task {:task "Aint it a thing?"}))))))
