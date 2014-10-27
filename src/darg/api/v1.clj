@@ -29,20 +29,20 @@
 
 ;; Utils
 
-(defn not-authenticated? 
+(defn authenticated? 
   "Returns true if the user is not authenticated, and false if the user is authenticated"
   [request-map]
   (let [email (-> request-map :session :email)
          authenticated (-> request-map :session :authenticated)
          id (-> request-map :session :id)]
-     (if (not (and id email authenticated))
+     (if (and id email authenticated))
        true
        false)))
 
-(defn not-same-team?
+(defn same-team?
   "Returns true if the users do not share a team"
   [userid1 userid2]
-  (not (users/users-on-same-team? userid1 userid2)))
+  (users/users-on-same-team? userid1 userid2))
 
 ;; Authentication
 
@@ -203,7 +203,7 @@
   :task-ids - passed as an array in the body of the request."
   [request-map]
   (let [request-method (-> request-map :request-method)]
-    (if (not-authenticated? request-map)
+    (if (not (authenticated? request-map))
       no-auth-response
       (cond
         (= request-method :get) (get-darg request-map)
@@ -247,7 +247,7 @@
   (let [requestor-id (-> request-map :session :id)
          target-id (-> request-map :params :user-id read-string)
          function (-> request-map :params :resource)]
-    (if (not-authenticated? request-map)
+    (if (not (authenticated? request-map))
         no-auth-response
         (let [team-ids (mapv :id (users/team-overlap requestor-id target-id))
                user-id target-id]
