@@ -1,9 +1,12 @@
-(ns darg.model.users-test
+(ns darg.model.teams-test
   (:require [clojure.test :refer :all]
             [darg.db-util :as dbutil]
             [darg.fixtures :refer [with-db-fixtures]]
             [darg.model.teams :as teams]
+            [darg.model.tasks :as tasks]
             [korma.core :as korma]))
+
+(with-db-fixtures)
 
 (deftest we-can-insert-team-into-db
   (teams/create-team {:name "krogancorp" :email "kcorp@darg.io"})
