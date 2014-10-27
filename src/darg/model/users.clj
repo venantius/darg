@@ -44,24 +44,24 @@
 
 ; Lookups
 
-(defn get-user
+(defn fetch-user
   "returns a user map from the db
   Takes a map of fields for use in db lookup"
   [params]
   (select db/users (where params)))
 
-(defn get-one-user
-  "Returns the first user from get-user"
+(defn fetch-one-user
+  "Returns the first user from fetch-user"
   [params]
-  (first (get-user params)))
+  (first (fetch-user params)))
 
-(defn get-user-id
+(defn fetch-user-id
   "Returns a user-id (integer)
   Takes a map of fields for use in db lookup"
   [params]
   (:id (first (select db/users (fields :id) (where params)))))
 
-(defn get-user-by-id
+(defn fetch-user-by-id
 "Returns a user map from the db
   Takes a user-id as an integer"
   [id]
@@ -83,7 +83,7 @@
   [userid teamid]
   (if (empty? (select db/team-users (where {:users_id userid :teams_id teamid}))) false true))
 
-(defn get-user-teams
+(defn fetch-user-teams
   "Returns the map of teams that a user belongs to
   Takes a user-id (integer)"
   [user-id]
@@ -118,7 +118,7 @@
 
 ;; tasks
 
-(defn get-tasks-by-date
+(defn fetch-tasks-by-date
   "Find tasks for this user by date"
   [user date]
   (select db/tasks
@@ -139,7 +139,7 @@
 
 ;; tasks
 
-(defn get-tasks-by-date
+(defn fetch-tasks-by-date
   "Find tasks for this user by date"
   [user date]
   (select db/tasks

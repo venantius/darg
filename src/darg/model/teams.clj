@@ -15,24 +15,24 @@
 
 ; Getters
 
-(defn get-team
+(defn fetch-team
   "Returns a vector containing matching teams from the db
   Takes a map of fields to use in db lookup"
   [params]
   (select db/teams (where params)))
 
-(defn get-one-team
-  "Returns the first team returned by get-team"
+(defn fetch-one-team
+  "Returns the first team returned by fetch-team"
   [params]
-  (first (get-team params)))
+  (first (fetch-team params)))
 
-(defn get-team-id
+(defn fetch-team-id
   "Returns the id of the user based on submitted fields
   Takes a map of fields for use in db lookup"
   [params]
   (:id (first (select db/teams (fields :id) (where params)))))
 
-(defn get-team-by-id
+(defn fetch-team-by-id
   "Returns a team map from the db
   Takes a team id as an integer"
   [id]
@@ -55,7 +55,7 @@
   (delete db/teams (where {:id id})))
 
 ; Team Membership
-(defn get-team-users
+(defn fetch-team-users
   "Gets the list of users for a given team"
   [id]
   (:users (first (select db/teams 
