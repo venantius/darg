@@ -10,7 +10,7 @@
 (with-db-fixtures)
 
 (deftest active-dates-works
-  (let [user (users/get-user-by-id 4)]
+  (let [user (users/fetch-user-by-id 4)]
     (is (= (dargs/active-dates user)
            (list
              (c/to-sql-time (t/local-date 2012 05 17))

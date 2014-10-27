@@ -17,7 +17,7 @@
                   (text :email :unique :not-null)
                   (text :name)
                   (boolean :admin (default false))
-                  (boolean :bot (default false)))))
+                  (boolean :active (default false)))))
   (down [] (drop (table :users))))
 
 (defmigration add-teams-table

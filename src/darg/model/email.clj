@@ -21,8 +21,8 @@
                       :stripped-text
                       (str/split #"\n")
                       (->> (map str/trim)))
-        email-metadata {:users_id (users/get-user-id {:email (:from email)})
-                        :teams_id (teams/get-team-id {:email (:recipient email)})
+        email-metadata {:users_id (users/fetch-user-id {:email (:from email)})
+                        :teams_id (teams/fetch-team-id {:email (:recipient email)})
                         :date (dbutil/sql-date-from-subject (:subject email))}]
     (tasks/create-task-list task-list email-metadata)))
 

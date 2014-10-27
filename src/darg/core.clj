@@ -1,7 +1,7 @@
 (ns darg.core
   (:gen-class)
   (:require [clojure.tools.logging :as logging]
-            [compojure.core :refer [defroutes GET POST ANY]]
+            [compojure.core :refer [defroutes context GET POST ANY]]
             [compojure.route :as route]
             [compojure.handler :as handler]
             [darg.api.v1 :as api]
@@ -29,7 +29,6 @@
   (GET "/integrations" request-map (resp/resource-response "index.html" {:root "public"}))
   (GET "/password_reset" request-map (resp/resource-response "index.html" {:root "public"}))
   (GET "/settings" request-map (resp/resource-response "index.html" {:root "public"}))
-
   (GET "/debug" request-map (debug request-map))
 
   ;; api
@@ -40,6 +39,7 @@
   (POST "/api/v1/password_reset" request-map (api/password-reset request-map))
   (POST "/api/v1/signup" request-map (api/signup request-map))
   (ANY "/api/v1/darg" request-map (api/darg request-map))
+  (GET  "/api/v1/user/:user-id/:resource" request-map (api/get-user request-map))
   (route/resources "/"))
 
 (def app (-> routes
