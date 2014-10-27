@@ -168,3 +168,15 @@
            (json/encode {:message "E-mail successfully parsed."})))
     (is (not (empty? (tasks/get-task {:task "Dancing tiem!!"}))))
     (is (not (empty? (tasks/get-task {:task "Aint it a thing?"}))))))
+
+(deftest unauthenticated-emails-return-401
+  (let [email (assoc email-fixtures/test-email-2
+                     :token
+                     "neener")
+        response (core/app (mock-request/request
+                             :post
+                             "/api/v1/email"
+                             email))]
+    (is (= (:status response) 401))
+    (is (= (:body response)
+           (json/encode {:message "Failed to authenticate email"})))))

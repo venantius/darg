@@ -7,6 +7,7 @@
             [darg.model.tasks :as tasks]
             [darg.model.teams :as teams]
             [darg.model.users :as users]
+            [darg.services.mailgun :as mailgun]
             [darg.services.stormpath :as stormpath]
             [korma.core :refer :all]
             [pandect.algo.md5 :refer :all]
@@ -201,9 +202,15 @@
                 attachment-x timestamp token signature
                 message-headers content-id-map] :as email} params]
     (try
-      (email/parse-email email)
-      {:status 200
-       :body {:message "E-mail successfully parsed."}}
+      (if (mailgun/authenticate email)
+        (do
+          (email/parse-email email)
+          {:status 200
+           :body {:message "E-mail successfully parsed."}})
+        (do
+          (logging/warn "Failed to authenticate e-mail")
+          {:status 401
+           :body {:message "Failed to authenticate email"}}))
       (catch Exception e
        (logging/errorf "Failed to parse email with exception: %s" e)
        {:status 400
