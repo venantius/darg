@@ -12,9 +12,9 @@
   "Build a darg timeline. This is a naive implementation for now that can be
   expanded to include other darg subtypes as we go."
   [user-id]
-  (let [user (users/get-user-by-id user-id)
+  (let [user (users/fetch-user-by-id user-id)
         dates (active-dates user)
-        tasks-by-date (map (partial users/get-tasks-by-date user) dates)]
+        tasks-by-date (map (partial users/fetch-tasks-by-date user) dates)]
     (reduce conj []
       (map (fn [k t] {:date (util/sql-datetime->date-str k)
                       :tasks t})

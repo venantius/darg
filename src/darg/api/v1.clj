@@ -34,7 +34,7 @@
   (let [email (-> request-map :session :email)
          authenticated (-> request-map :session :authenticated)
          id (-> request-map :session :id)]
-     (if (and id email authenticated))
+     (if (and id email authenticated)
        true
        false)))
 
@@ -57,7 +57,7 @@
     (try+
       (stormpath/authenticate email password)
       (logging/info "Successfully authenticated with email" email)
-      (let [id (:id (first (users/get-user {:email [email]})))]
+      (let [id (:id (first (users/fetch-user {:email [email]})))]
         {:body "Successfully authenticated"
          :cookies {"logged-in" {:value true :path "/"}}
          :session {:authenticated true :id id :email email}
@@ -214,34 +214,36 @@
 
 (defn get-user-profile
   [user-ids]
-  {:body (users/get-user {:id user-ids})
+  {:body (users/fetch-user {:id user-ids})
    :status 200})
 
 (defn get-user-darg
   [team-ids user-ids]
-  {:body (tasks/get-task {:teams_id [ksql/pred-in team-ids] :users_id user-ids})
+  {:body (tasks/fetch-task {:teams_id [ksql/pred-in team-ids] :users_id user-ids})
    :status 200})
 
 (defn get-user-teams
   [team-ids]
-  {:body (teams/get-team {:id [ksql/pred-in team-ids]})
+  {:body (teams/fetch-team {:id [ksql/pred-in team-ids]})
    :status 200})
 
 (defn get-user
   "Verifies that a user is authenticated and has permission to view the user resource, then routes to the appropriate function
   The requesting user must share a team with the target user to see any information
+  
   Requires in URL
   :user-id - the id of the target user for the request
   :resource - the target user resource being requested (profile, darg, teams)
 
+  Functions are mapped as follows:
+  
   :profile - Allows a user to view the user profile of someone else on their team.
   Profile returns the user's name, email address, and admin status
 
-  :darg - Allows a user to view the user profile of someone else on their team.
-  Profile returns the user's name, email address, and admin status
+  :darg - Allows a user to view the darg list of a user on their team. They can only see dargs for teams that both users share
 
-  :teams - Allows a user to view the user profile of someone else on their team.
-  Profile returns the user's name, email address, and admin status"
+  :teams - Allows a user to view the list of teams they share with another user"
+
   [request-map]
   (let [requestor-id (-> request-map :session :id)
          target-id (-> request-map :params :user-id read-string)
