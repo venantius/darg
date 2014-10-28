@@ -10,8 +10,8 @@
 
   In other words, is this user a member of the team that owns this e-mail address?"
   [user-email team-email]
-  (let [user-id (users/get-user-id {:email user-email})
-        team-id (teams/get-team-id {:email team-email})]
+  (let [user-id (users/fetch-user-id {:email user-email})
+        team-id (teams/fetch-team-id {:email team-email})]
     (users/user-in-team? user-id team-id)))
 
 (defn parse-email
