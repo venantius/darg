@@ -17,6 +17,7 @@
                   (text :email :unique :not-null)
                   (text :name)
                   (boolean :admin (default false))
+                  (boolean :bot (default true))
                   (boolean :active (default false)))))
   (down [] (drop (table :users))))
 

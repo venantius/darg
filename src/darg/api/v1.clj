@@ -33,16 +33,11 @@
   "Returns true if the user is not authenticated, and false if the user is authenticated"
   [request-map]
   (let [email (-> request-map :session :email)
-         authenticated (-> request-map :session :authenticated)
-         id (-> request-map :session :id)]
+        authenticated (-> request-map :session :authenticated)
+        id (-> request-map :session :id)]
      (if (and id email authenticated)
        true
        false)))
-
-(defn same-team?
-  "Returns true if the users do not share a team"
-  [userid1 userid2]
-  (users/users-on-same-team? userid1 userid2))
 
 ;; Authentication
 
@@ -247,20 +242,20 @@
 
   [request-map]
   (let [requestor-id (-> request-map :session :id)
-         target-id (-> request-map :params :user-id read-string)
-         function (-> request-map :params :resource)]
+        target-id (-> request-map :params :user-id read-string)
+        function (-> request-map :params :resource)]
     (if (not (authenticated? request-map))
         no-auth-response
         (let [team-ids (mapv :id (users/team-overlap requestor-id target-id))
-               user-id target-id]
-           (if (empty? team-ids)
-               access-denied-user
-               (cond 
-                 (= function "profile") (get-user-profile user-id)
-                 (= function "darg") (get-user-darg team-ids user-id)
-                 (= function "teams") (get-user-teams team-ids)
-                  :else {:body "Resource does not exist"
-                            :status 404}))))))
+              user-id target-id]
+          (if (empty? team-ids)
+              access-denied-user
+              (cond 
+                (= function "profile") (get-user-profile user-id)
+                (= function "darg") (get-user-darg team-ids user-id)
+                (= function "teams") (get-user-teams team-ids)
+                :else {:body "Resource does not exist"
+                       :status 404}))))))
 
 ;; Email Parsing     
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
