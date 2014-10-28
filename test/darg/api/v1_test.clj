@@ -4,7 +4,7 @@
             [darg.api.v1 :as api]
             [darg.core :as core]
             [darg.db :as db]
-            [darg.fixtures :refer :all]
+            [darg.fixtures :refer [with-db-fixtures]]
             [darg.fixtures.email :as email-fixtures]
             [darg.fixtures.model :as model-fixtures]
             [darg.model :as table]
@@ -270,3 +270,31 @@
     (is (= (:status response) 401))
     (is (= (:body response)
            (json/encode {:message "Failed to authenticate email"})))))
+
+(deftest a-user-can-only-post-via-email-to-a-team-they-belong-to
+  (testing "a user on the team returns true"
+    (let [email (assoc email-fixtures/test-email-2
+                       :from
+                       (:email model-fixtures/test-user-1)
+                       :recipient
+                       (:email model-fixtures/test-team-1))
+          response (core/app (mock-request/request
+                               :post
+                               "/api/v1/email"
+                               email))]
+      (is (= (:status response) 200))
+      (is (= (:body response)
+             (json/encode {:message "E-mail successfully parsed."})))))
+  (testing "a user not on the team returns false"
+    (let [email (assoc email-fixtures/test-email-2
+                       :from
+                       (:email model-fixtures/test-user-1)
+                       :recipient
+                       (:email model-fixtures/test-team-3))
+          response (core/app (mock-request/request
+                               :post
+                               "/api/v1/email"
+                               email))]
+      (is (= (:status response) 401))
+      (is (= (:body response)
+             (json/encode {:message "E-mails from this address <savelago@gmail.com> are not authorized to post to this team address <jncake@darg.io>."}))))))

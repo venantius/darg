@@ -5,10 +5,17 @@
             [darg.model.teams :as teams]
             [darg.model.users :as users]))
 
-(defn parse-email
-  "/api/v1/parse-email
+(defn user-can-email-this-team?
+  "Is the user who owns this e-mail authorized to post to this e-mail address?
 
-  Recieves a darg email from a user, parses tasklist, and inserts the tasks into
+  In other words, is this user a member of the team that owns this e-mail address?"
+  [user-email team-email]
+  (let [user-id (users/get-user-id {:email user-email})
+        team-id (teams/get-team-id {:email team-email})]
+    (users/user-in-team? user-id team-id)))
+
+(defn parse-email
+  "Recieves a darg email from a user, parses tasklist, and inserts the tasks into
   the database.
 
   Email mapping to task metadata is:

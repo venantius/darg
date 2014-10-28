@@ -259,21 +259,24 @@
   from Mailgun, and adds a task for each newline in the :stripped-text field."
   [request-map]
   (let [params (:params request-map)
-        {:keys [recipient sender From subject
+        {:keys [recipient sender from subject
                 body-plain stripped-text stripped-signature
                 body-html stripped-html attachment-count
                 attachment-x timestamp token signature
                 message-headers content-id-map] :as email} params]
     (try
-      (if (mailgun/authenticate email)
-        (do
-          (email/parse-email email)
-          {:status 200
-           :body {:message "E-mail successfully parsed."}})
-        (do
-          (logging/warn "Failed to authenticate e-mail")
+      (cond
+        (not (mailgun/authenticate email))
           {:status 401
-           :body {:message "Failed to authenticate email"}}))
+           :body {:message "Failed to authenticate email"}}
+        (not (email/user-can-email-this-team? from recipient))
+          {:status 401
+           :body {:message (format "E-mails from this address <%s> are not authorized to post to this team address <%s>." from recipient)}}
+        :else
+          (do
+            (email/parse-email email)
+            {:status 200
+             :body {:message "E-mail successfully parsed."}}))
       (catch Exception e
        (logging/errorf "Failed to parse email with exception: %s" e)
        {:status 400
