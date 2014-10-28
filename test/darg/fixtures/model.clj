@@ -8,21 +8,25 @@
 (def test-user-1
   {:email "savelago@gmail.com"
    :name "yawn"
+   :active true
    :admin true })
 
 (def test-user-2
   {:email "domo@darg.io"
    :name "domodomo"
+   :active true
    :admin false})
 
 (def test-user-3
   {:email "arrigato@darg.io"
    :name "arrigato"
+   :active true
    :admin false})
 
 (def test-user-4
   {:email "test-user2@darg.io"
    :name "LSP"
+   :active true
    :admin false})
 
 (def test-users
@@ -108,9 +112,15 @@
    :teams_id 1
    :admin true})
 
+(def test-team-user-pair-6
+  {:users_id 2
+   :teams_id 3
+   :admin false})
+
 (def test-team-user-pairs
   [test-team-user-pair-1
    test-team-user-pair-2
    test-team-user-pair-3
    test-team-user-pair-4
-   test-team-user-pair-5])
+   test-team-user-pair-5
+   test-team-user-pair-6])

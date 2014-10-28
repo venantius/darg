@@ -44,19 +44,24 @@
 
 ;; Retrieve
 
-(defn get-task
+(defn fetch-task
   "Returns tasks that match a set of fields, may return multiple tasks depending on the fields passed.
-  Takes a map of fields for use in db lookup"
+  Takes a map, where the key represents the field and the value is a vector of values for that field"
   [params]
   (select db/tasks (where params)))
 
-(defn get-task-by-id
+(defn fetch-one-task
+  "Returns the first task returned by fetch-task"
+  [params]
+  (first (fetch-task params)))
+
+(defn fetch-task-by-id
   "Returns a task based on a unique id
-  Takes an id as an integer"
+  Takes an id as an integer or a vector of integer ids"
   [id]
   (first (select db/tasks (where {:id id}))))
 
-(defn get-task-id
+(defn fetch-task-id
   "Returns id for a task based on a set of fields
   Will return the first id for a task that matches"
   [params]
@@ -64,7 +69,7 @@
 
 ;; User Tasks
 
-(defn get-tasks-by-user-id
+(defn fetch-tasks-by-user-id
   "Returns a map of tasks which are associated with a specific user-id.
   Takes a user-id as an integer"
   [user-id]
@@ -74,7 +79,7 @@
 
 ;; Team Tasks
 
-(defn get-tasks-by-team-id
+(defn fetch-tasks-by-team-id
   "Returns a map of tasks which are associated with a specific team-id.
   Takes a team-id as an integer"
   [team-id]
