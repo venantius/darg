@@ -246,8 +246,8 @@
     (is (= (:status response) 200))
     (is (= (:body response)
            (json/encode {:message "E-mail successfully parsed."})))
-    (is (not (empty? (tasks/get-task {:task "Dancing tiem!!"}))))
-    (is (not (empty? (tasks/get-task {:task "Aint it a thing?"}))))))
+    (is (not (empty? (tasks/fetch-task {:task "Dancing tiem!!"}))))
+    (is (not (empty? (tasks/fetch-task {:task "Aint it a thing?"}))))))
 
 (deftest unauthenticated-emails-return-401
   (let [email (assoc email-fixtures/test-email-2
