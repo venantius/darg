@@ -8,7 +8,6 @@
             [darg.model.teams :as teams]
             [darg.model.users :as users]
             [darg.services.mailgun :as mailgun]
-            [darg.services.stormpath :as stormpath]
             [korma.core :refer :all]
             [korma.sql.fns :as ksql]
             [pandect.algo.md5 :refer :all]
@@ -29,7 +28,7 @@
 
 ;; Utils
 
-(defn authenticated? 
+(defn authenticated?
   "Returns true if the user is not authenticated, and false if the user is authenticated"
   [request-map]
   (let [email (-> request-map :session :email)
@@ -44,26 +43,22 @@
 (defn login
   "/v1/api/login
 
-  Authentication endpoint. Routes input parameters to Stormpath for
-  authentication; if successful, we set auth in their session and
+  Authentication endpoint. if successful, we set auth in their session and
   update the cookie to indicate that they're now logged in."
   [request-map]
   (let [email (-> request-map :params :email)
         password (-> request-map :params :password)]
-    (try+
-      (stormpath/authenticate email password)
-      (logging/info "Successfully authenticated with email" email)
-      (let [id (:id (first (users/fetch-user {:email email})))]
-        {:body "Successfully authenticated"
-         :cookies {"logged-in" {:value true :path "/"}}
-         :session {:authenticated true :id id :email email}
-         :status 200})
-      ;; Stormpath will return a 400 status code on failed auth
-      (catch [:status 400] response
-        (logging/info "Failed to authenticate with email " email)
+    (cond
+      (not (users/authenticate email password))
         {:body "Failed to authenticate"
          :session {:authenticated false}
-         :status 401}))))
+         :status 401}
+      :else
+        (let [id (:id (first (users/fetch-user {:email email})))]
+          {:body "Successfully authenticated"
+           :cookies {"logged-in" {:value true :path "/"}}
+           :session {:authenticated true :id id :email email}
+           :status 200}))))
 
 (defn logout
   "/api/v1/logout
@@ -81,43 +76,40 @@
   "/api/v1/password_reset
 
   Methods: POST
-  Initiates the password reset workflow. Details and customization options on
-  the password reset workflow can be found here:
-  https://api.stormpath.com/ui/directories/425932/workflows"
+  Initiates the password reset workflow. This will send an e-mail to the user
+  with a special link that they can use to reset their password. The link will
+  only remain valid for "
   [request-map]
   (let [email (-> request-map :params :email)]
     (try
-      (stormpath/reset-account-password email)
+      (users/send-password-reset-email email)
       {:body "Success!"
        :status 200}
       (catch Exception e
-        (logging/error "Failed to reset user password with email:" email)
         {:body "Password reset failed."
          :status 400}))))
 
 (defn signup
   "/api/v1/signup
 
-  Signs a user up. This creates an account in Stormpath, creates a user
-  record in our database, and authenticates the user."
+  Signs a user up. This creates an account in our db and authenticates
+  the user."
   [request-map]
-  (let [request (-> request-map :params)]
-    (try+
-      (stormpath/create-account request)
-      (logging/info "Successfully created account" (:email request))
-      (let [user (users/create-user-from-signup-form request)]
-        {:body "Account successfully created"
-         :cookies {"logged-in" {:value true :path "/"}}
-         :session {:authenticated true :email (:email request) :id (:id user)}
-         :status 200})
-      (catch [:status 400] response
-        (logging/info "Failed to create Stormpath account with response" response)
-        {:body "Failed to create account"
-         :status 400})
-      (catch [:status 409] response
-        (logging/info "Account already exists")
-        {:body "Account already exists"
-         :status 409}))))
+  (let [params (:params request-map)
+        email (:email params)]
+    (cond
+      (some? (users/fetch-one-user {:email email}))
+        {:status 409
+         :body {:message "A user with that e-mail already exists."}}
+      (not (every? params [:email :name :password]))
+        {:status 400
+         :body {:message "The signup form needs an e-mail, a name, and a password."}}
+      :else
+        (let [user (users/create-user-from-signup-form params)]
+          {:body {:message "Account successfully created"}
+           :cookies {"logged-in" {:value true :path "/"}}
+           :session {:authenticated true :email (:email params) :id (:id user)}
+           :status 200}))))
 
 ;; utils
 
@@ -226,13 +218,13 @@
 (defn get-user
   "Verifies that a user is authenticated and has permission to view the user resource, then routes to the appropriate function
   The requesting user must share a team with the target user to see any information
-  
+
   Requires in URL
   :user-id - the id of the target user for the request
   :resource - the target user resource being requested (profile, darg, teams)
 
   Functions are mapped as follows:
-  
+
   :profile - Allows a user to view the user profile of someone else on their team.
   Profile returns the user's name, email address, and admin status
 
@@ -250,14 +242,14 @@
               user-id target-id]
           (if (empty? team-ids)
               access-denied-user
-              (cond 
+              (cond
                 (= function "profile") (get-user-profile user-id)
                 (= function "darg") (get-user-darg team-ids user-id)
                 (= function "teams") (get-user-teams team-ids)
                 :else {:body "Resource does not exist"
                        :status 404}))))))
 
-;; Email Parsing     
+;; Email Parsing
 ;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
 
 (defn email

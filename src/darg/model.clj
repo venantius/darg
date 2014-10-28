@@ -19,3 +19,7 @@
 (defentity tasks
   (belongs-to users {:FK :users_id})
   (belongs-to teams {:FK :teams_id}))
+
+(defentity password-reset-tokens
+  (table :password_reset_tokens)
+  (belongs-to users {:FK :users_id}))

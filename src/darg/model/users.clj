@@ -1,30 +1,41 @@
 (ns darg.model.users
-  (:require [clj-time.coerce :as c]
+  (:require [cemerick.url :as url]
+            [clj-time.coerce :as c]
             [darg.model :as db]
+            [darg.model.password-reset-tokens :as password-reset-tokens]
+            [darg.services.mailgun :as mailgun]
             [korma.core :refer :all]
-            [darg.services.stormpath :as stormpath]
-            [clojure.data :as data :only [diff]]))
+            [net.cgrand.enlive-html :as html])
+  (:import [org.mindrot.jbcrypt BCrypt]))
 
-; Create
+(defn encrypt-password
+  "Perform BCrypt hash of password"
+  [password]
+  (BCrypt/hashpw password (BCrypt/gensalt)))
+
+(defn valid-password?
+  "Verify that candidate password matches the hashed bcrypted password"
+  [candidate hashed]
+  (BCrypt/checkpw candidate hashed))
 
 (defn create-user
-  "Insert a user into the database
-  Takes a map of fields to insert into db
+  "Insert a user into the database.
+
   Required fields:
   :email - user's unique email (string)
-  :name - user's name, for display and for stormpath authentication
+  :name - user's name for display
   :active - boolean value that determines if a user is active or inactive
+  :password - user's password, in plaintext.
   :admin (optional) - identifies the user as a darg.io admin"
   [params]
-  (insert db/users (values params)))
+  (let [params (update-in params [:password] encrypt-password)]
+    (insert db/users (values params))))
 
 (defn create-user-from-signup-form
-  "Convert a stormpath account to a user and write it to database
-  Takes an account-map of a stormpath user."
+  "Create a user from the signup form"
   [account-map]
   (-> account-map
-    (select-keys [:givenName :email])
-      stormpath/account->user
+    (select-keys [:name :email :password])
       (assoc :active true)
       create-user))
 
@@ -34,15 +45,11 @@
   [user-id team-id]
   (insert db/team-users (values {:teams_id team-id :users_id user-id})))
 
-; Update
-
 (defn update-user
   "Updates the fields for a user.
   Takes a user-id as an integer and a map of fields + values to update."
   [id params]
   (update db/users (where {:id id}) (set-fields params)))
-
-; Lookups
 
 (defn fetch-user
   "returns a user map from the db
@@ -66,8 +73,6 @@
   Takes a user-id as an integer"
   [id]
   (first (select db/users (where {:id id}))))
-
-; Destroy
 
 (defn delete-user
   "Deletes a user from the database
@@ -96,13 +101,13 @@
   Will return an empty seq if the users do not share any teams.
   Takes 2 user-id's (integer)"
   [userid1 userid2]
-  (select db/teams 
-    (fields :id :name) 
-    (where (and {:id [in (subselect db/team-users 
-                           (fields :teams_id) 
+  (select db/teams
+    (fields :id :name)
+    (where (and {:id [in (subselect db/team-users
+                           (fields :teams_id)
                            (where {:users_id userid1}))]}
-                {:id [in (subselect db/team-users 
-                           (fields :teams_id) 
+                {:id [in (subselect db/team-users
+                           (fields :teams_id)
                            (where {:users_id userid2}))]}))))
 
 (defn users-on-same-team?
@@ -137,3 +142,41 @@
                            (group :date))]
     (map :date db-results)))
 
+(defn authenticate
+  "Authenticate this user. Returns true if password is valid, else nil"
+  [email password]
+  (if-let [user (fetch-one-user {:email email})]
+    (valid-password? password (:password user))))
+
+;; TODO - change the hardcoded URL here
+;; https://github.com/ursacorp/darg/issues/159
+(defn build-password-reset-link
+  "Actually build a password reset link. Note that this is really the only time
+  we should actually be creating a password reset token."
+  [{:keys [id] :as user}]
+  (let [base-reset-url (url/url "http://darg.herokuapp.com/new_password")
+        token (:token (password-reset-tokens/create! {:users_id id}))]
+    (str (assoc
+           base-reset-url
+           :query {:token token}))))
+
+(html/deftemplate password-reset-template "email/templates/password_reset.html"
+  [{:keys [name] :as user}]
+  [:span.name] (html/content name)
+  [:span.password-reset-link] (html/content (build-password-reset-link user)))
+
+(defn build-password-reset-email
+  "Composes a password reset e-mail."
+  [user]
+  (reduce str (password-reset-template user)))
+
+(defn send-password-reset-email
+  "This initiates the password reset workflow."
+  [email]
+  (let [user (fetch-one-user {:email email})
+        email-content (build-password-reset-email user)]
+    (mailgun/send-message {:from "support@darg.io"
+                           :to email
+                           :subject "Darg.io Password Reset Requested"
+                           :text email-content
+                           :html email-content})))

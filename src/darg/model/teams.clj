@@ -1,6 +1,6 @@
 (ns darg.model.teams
-  (:require [darg.model :as db :only teams]
-                [korma.core :refer :all]))
+  (:require [darg.model :as db]
+            [korma.core :refer :all]))
 
 ; Create
 
@@ -41,7 +41,7 @@
 ; Update
 
 (defn update-team
-  "Updates the fields for a team. 
+  "Updates the fields for a team.
   Takes a team-id as an integer and a map of fields + values to update."
   [id params]
   (update db/teams (where {:id id}) (set-fields params)))
@@ -58,7 +58,7 @@
 (defn fetch-team-users
   "Gets the list of users for a given team"
   [id]
-  (:users (first (select db/teams 
+  (:users (first (select db/teams
                    (where {:id id})
                    (with db/users)))))
 

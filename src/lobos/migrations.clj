@@ -15,7 +15,8 @@
            (table :users
                   (integer :id :auto-inc :primary-key)
                   (text :email :unique :not-null)
-                  (text :name)
+                  (text :password :not-null)
+                  (text :name :not-null)
                   (boolean :admin (default false))
                   (boolean :bot (default true))
                   (boolean :active (default false)))))
@@ -56,3 +57,12 @@
                   (text :api-key :unique :not-null)
                   (integer :users_id [:refer :users :id :on-delete :cascade] :not-null))))
   (down [] (drop (table :api_keys))))
+
+(defmigration add-password-reset-tokens-table
+  (up [] (create
+           (table :password_reset_tokens
+                  (integer :id :auto-inc :primary-key)
+                  (text :token :unique :not-null)
+                  (integer :users_id [:refer :users :id :on-delete :cascade] :not-null)
+                  (timestamp :expires_at :not-null (default (now))))))
+  (down [] (drop (table :password_reset_tokens))))
