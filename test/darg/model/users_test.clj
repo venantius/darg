@@ -72,7 +72,7 @@
 (deftest build-password-reset-link-works
   (let [user (users/fetch-user-by-id 4)
         link (users/build-password-reset-link user)
-        token (:token (password-reset-tokens/fetch-one {:users_id (:id user)}))]
+        token (:token (password-reset-tokens/fetch-one-valid {:users_id (:id user)}))]
     (is (= link
            (clojure.string/join ["http://darg.herokuapp.com/new_password?token="
                                  token])))))

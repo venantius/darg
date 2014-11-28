@@ -21,11 +21,6 @@
                    :expires_at (c/to-sql-time (t/plus (t/now) (t/days 1)))
                    :token (generate-token)))))
 
-(defn fetch-one
-  "Fetch a single password reset token."
-  [params]
-  (first (select password-reset-tokens (where params))))
-
 (defn fetch-one-valid
   "Fetch a single valid (non-expired) password reset token"
   [params]
