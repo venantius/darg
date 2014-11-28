@@ -22,6 +22,14 @@
                   (boolean :active (default false)))))
   (down [] (drop (table :users))))
 
+(defmigration add-github-token-table
+  (up [] (create
+            (table :github_token
+              (integer :id :auto-inc :primary-key)
+              (integer :users_id [:refer :users :id :on-delete :cascade] :not-null)
+              (text :gh_access_token :not-null))))
+  (down [] (drop (table :github_token))))
+
 (defmigration add-teams-table
   (up [] (create
            (table :teams
@@ -29,6 +37,25 @@
                   (text :name :not-null)
                   (text :email :not-null :unique))))
   (down [] (drop (table :teams))))
+
+(defmigration add-tasks-table
+  (up [] (create
+           (table :tasks
+                  (integer :id :auto-inc :primary-key)
+                  (timestamp :date :not-null)
+                  (integer :users_id [:refer :users :id :on-delete :set-null])
+                  (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null)
+                  (text :task))))
+  (down [] (drop (table :tasks))))
+
+(defmigration add-github-repos-table
+  (up [] (create 
+             (table :github_repos
+                (integer :id :auto-inc :primary-key)
+                (text :name :not-null)
+                (text :description)
+                (text :html-url :not-null))))
+  (down [] (drop (table :github_repos))))
 
 (defmigration add-team-users-table
   (up [] (create
@@ -40,15 +67,13 @@
                   (boolean :admin (default false)))))
   (down [] (drop (table :team_users))))
 
-(defmigration add-tasks-table
+(defmigration add-team-repos-table
   (up [] (create
-           (table :tasks
-                  (integer :id :auto-inc :primary-key)
-                  (timestamp :date :not-null)
-                  (integer :users_id [:refer :users :id :on-delete :set-null])
-                  (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null)
-                  (text :task))))
-  (down [] (drop (table :tasks))))
+             (table :team_repos
+                (integer :id :auto-inc :primary-key)
+                (integer :github_repos_id [:refer :github_repos :id :on-delete :cascade] :not-null)
+                (integer :teams_id [:refer :teams :id :on-delete :cascade]))))
+  (down [] (drop (table :team_repos))))
 
 (defmigration add-api-keys-table
   (up [] (create
