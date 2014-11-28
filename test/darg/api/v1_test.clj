@@ -6,12 +6,11 @@
             [darg.db :as db]
             [darg.fixtures :refer :all]
             [darg.fixtures.email :as email-fixtures]
+            [darg.fixtures.model :as model-fixtures]
             [darg.model :as table]
             [darg.model.tasks :as tasks]
             [darg.model.teams :as teams]
             [darg.model.users :as users]
-            [darg.services.stormpath :as stormpath]
-            [darg.services.stormpath-test :as stormpath-test]
             [korma.core :refer :all]
             [ring.mock.request :as mock-request]))
 
@@ -19,21 +18,21 @@
 
 ;; /api/v1/login
 
-(deftest ^:integration i-can-login-and-it-set-my-cookies
+(deftest i-can-login-and-it-set-my-cookies
   (let [auth-response (core/app (mock-request/request
                                   :post "/api/v1/login"
-                                  {:email (:email stormpath-test/user-2)
-                                   :password (:password stormpath-test/user-2)}))]
+                                  {:email (:email model-fixtures/test-user-4)
+                                   :password "samurai"}))]
     (is (= (:body auth-response) "Successfully authenticated"))
     (is (= (:status auth-response) 200))
     (is (some #{"logged-in=true;Path=/"}
               (get (:headers auth-response) "Set-Cookie")))))
 
-(deftest ^:integration i-can't-login-and-it-don't-set-no-cookies
+(deftest i-can't-login-and-it-don't-set-no-cookies
   (let [auth-response (core/app (mock-request/request
                                   :post "/api/v1/login"
-                                  {:email (:email stormpath-test/user-1)
-                                   :password (:password stormpath-test/user-1)}))]
+                                  {:email (:email model-fixtures/test-user-5)
+                                   :password (:password model-fixtures/test-user-5)}))]
     (is (= (:body auth-response) "Failed to authenticate"))
     (is (= (:status auth-response) 401))
     (is (not (some #{"logged-in=true;Path=/"}
@@ -42,6 +41,7 @@
 ;; /api/v1/logout
 
 ; TODO - TEST HERE WITH A HEADLESS BROWSER
+; https://github.com/ursacorp/darg/issues/161
 
 ;; /api/v1/gravatar
 
@@ -54,31 +54,41 @@
          {:body "http://www.gravatar.com/avatar/?s=40"
           :status 200})))
 
+;; /api/v1/password_reset
+
+;; TODO - I've validated this manually for right now and will add tests later.
+;; https://github.com/ursacorp/darg/issues/162
+(deftest the-password-reset-api-sends-a-reset-email)
+
 ;; /api/v1/signup
 
-(deftest ^:integration i-can-register-and-it-wrote-to-the-database-and-cookies
+(deftest i-can-register-and-it-wrote-to-the-database-and-cookies
   (let [auth-response (core/app (mock-request/request
                                   :post "/api/v1/signup"
-                                  stormpath-test/user-1))]
-  (is (= (:body auth-response) "Account successfully created"))
-  (is (= (:status auth-response) 200))
-  (is (not (empty? (users/fetch-user {:email "test-user@darg.io"}))))
-  (is (some #{"logged-in=true;Path=/"}
-    (get (:headers auth-response) "Set-Cookie")))
-  (stormpath/delete-account-by-email (:email stormpath-test/user-1))))
+                                  {:email "dummy@darg.io"
+                                   :password "test"
+                                   :name "Crash dummy"}))]
+    (is (= (json/parse-string (:body auth-response) true)
+           {:message "Account successfully created"}))
+    (is (= (:status auth-response) 200))
+    (is (not (empty? (users/fetch-user {:email "dummy@darg.io"}))))
+    (is (some #{"logged-in=true;Path=/"}
+    (get (:headers auth-response) "Set-Cookie")))))
 
-(deftest ^:integration i-cant-write-the-same-thing-twice
+(deftest i-cant-write-the-same-thing-twice
   (let [auth-response (core/app (mock-request/request
                                   :post "/api/v1/signup"
-                                  stormpath-test/user-2))]
-  (is (= (:body auth-response) "Account already exists"))
-  (is (= (:status auth-response) 409))))
+                                  model-fixtures/test-user-4))]
+    (is (= (json/parse-string (:body auth-response) true)
+           {:message "A user with that e-mail already exists."}))
+    (is (= (:status auth-response) 409))))
 
-(deftest ^:integration signup-failure-does-not-write-to-database-and-sets-no-cookies
+(deftest signup-failure-does-not-write-to-database-and-sets-no-cookies
   (let [auth-response (core/app (mock-request/request
                                   :post "/api/v1/signup"
-                                  stormpath-test/quasi-user))]
-  (is (= (:body auth-response) "Failed to create account"))
+                                  {:email "quasi-user@darg.io"}))]
+  (is (= (json/parse-string (:body auth-response) true)
+         {:message "The signup form needs an e-mail, a name, and a password."}))
   (is (= (:status auth-response) 400))
   (is (empty? (users/fetch-user {:email "quasi-user@darg.io"})))
   (is (not (some #{"logged-in=true;Path=/"}

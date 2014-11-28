@@ -14,14 +14,17 @@
                  [slingshot "0.10.3"]
 
                  ;; crypto
+                 [crypto-random "1.1.0"]
                  [potemkin "0.3.8"]
                  [pandect "0.4.0" :exclusions [potemkin]]
+                 [org.mindrot/jbcrypt "0.3m"]
 
                  ;; logging
                  [org.clojure/tools.logging "0.3.0"]
                  [org.slf4j/slf4j-log4j12 "1.7.1"]
 
                  ;; HTTP client helpers
+                 [com.cemerick/url "0.1.1"]
                  [cheshire "5.3.1"]
                  [clj-http "1.0.0"]
 
@@ -40,6 +43,9 @@
                  [ring/ring-json "0.3.1"]
                  [compojure "1.1.8"]
                  [http-kit "2.0.0"]
+
+                 ;; templating
+                 [enlive "1.1.5"]
 
                  ;; testing
                  [ring-mock "0.1.5"]]

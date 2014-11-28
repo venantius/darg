@@ -18,7 +18,8 @@
                      :to to
                      :subject subject
                      :text text
-                     :html html}
+                     :html html
+                     :o:dkim "yes"}
         api-key (:api-key settings/mailgun-credentials)]
     (-> (client/post -post-message-endpoint {:basic-auth ["api" api-key]
                                              :form-params form-params})

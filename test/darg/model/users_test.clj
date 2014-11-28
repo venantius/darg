@@ -3,6 +3,7 @@
             [clj-time.core :as t]
             [clojure.test :refer :all]
             [darg.fixtures :refer [with-db-fixtures]]
+            [darg.model.password-reset-tokens :as password-reset-tokens]
             [darg.model.users :as users]
             [darg.model.tasks :as tasks]
             [korma.core :as korma]))
@@ -63,3 +64,20 @@
             :date (c/to-sql-time (t/local-date 2012 02 16))}))
     (is (= (users/fetch-tasks-by-date user date_2)
            (list)))))
+
+(deftest we-can-authenticate-a-user
+  (let [user (users/fetch-user-by-id 4)]
+    (is (true? (users/authenticate (:email user) "samurai")))))
+
+(deftest build-password-reset-link-works
+  (let [user (users/fetch-user-by-id 4)
+        link (users/build-password-reset-link user)
+        token (:token (password-reset-tokens/fetch-one-valid {:users_id (:id user)}))]
+    (is (= link
+           (clojure.string/join ["http://darg.herokuapp.com/new_password?token="
+                                 token])))))
+
+(deftest ^:integration send-password-reset-email-works
+  ;; This is the standard "successfully sent" response from Mailgun.
+  (is (= "Queued. Thank you."
+         (:message (users/send-password-reset-email "test@darg.io")))))

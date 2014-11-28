@@ -193,7 +193,7 @@ app.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
                function($scope, $http, $cookies, $cookieStore) {
 
     $scope.SignupForm = {
-        givenName: "",
+        name: "",
         email: "",
         password: ""
     };
