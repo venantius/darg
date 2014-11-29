@@ -101,7 +101,8 @@
                         :request-method :patch}
         response (api/darg sample-request)]
      (is (= (:status response) 405))
-     (is (= (:body response) "Method not allowed"))))
+     (is (= (:body response)
+            {:message "Method not allowed."}))))
 
 ;GET v1/darg
 
@@ -115,15 +116,17 @@
   (let [sample-request {:session {:authenticated false :email "test-user2@darg.io" :id 4}
                         :request-method :get}
         response (api/darg sample-request)]
-    (is (= (:status response) 403))
-    (is (= (:body response) "User not authenticated"))))
+    (is (= (:status response) 401))
+    (is (= (:body response)
+           {:message "User not authenticated."}))))
 
 (deftest user-cant-view-a-darg-without-an-email
   (let [sample-request {:session {:authenticated true}
                         :request-method :get}
         response (api/darg sample-request)]
-    (is (= (:status response) 403))
-    (is (= (:body response) "User not authenticated"))))
+    (is (= (:status response) 401))
+    (is (= (:body response)
+           {:message "User not authenticated."}))))
 
 ;POST v1/darg
 
@@ -136,8 +139,9 @@
                                  :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
         response (api/darg sample-request)
         test-user-id (users/fetch-user-id {:email "test-user2@darg.io"})]
-    (is (= (:status response) 403))
-    (is (= (:body response) "User not authenticated"))
+    (is (= (:status response) 401))
+    (is (= (:body response)
+           {:message "User not authenticated."}))
     (is (= (count (tasks/fetch-tasks-by-user-id test-user-id)) 3))))
 
 (deftest user-cant-post-to-a-team-they-arent-on
@@ -149,8 +153,9 @@
                                  :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
         response (api/darg sample-request)
         test-user-id (users/fetch-user-id {:email "test-user2@darg.io"})]
-    (is (= (:status response) 403))
-    (is (= (:body response) "User is not a registered member of this team"))
+    (is (= (:status response) 401))
+    (is (= (:body response)
+           {:message "User is not a registered member of this team"}))
     (is (= (count (tasks/fetch-tasks-by-user-id test-user-id)) 3))))
 
 (deftest authenticated-user-can-post-a-darg
@@ -163,7 +168,7 @@
         response (api/darg sample-request)
         test-user-id (users/fetch-user-id {:email "test-user2@darg.io"})]
     (is (= (:status response) 200))
-    (is (= (:body response) "Tasks Created Successfully"))
+    (is (= (:body response) "Tasks created successfully."))
     (is (= (count (tasks/fetch-tasks-by-user-id test-user-id)) 6))))
 
 ;; GET api/v1/user/:userid/
@@ -172,8 +177,9 @@
                         :request-method :get
                         :params {:user-id "3" :resource "darg"}}
         response (api/get-user sample-request)]
-    (is (= (:status response) 403))
-    (is (= (:body response) "User not authenticated"))))
+    (is (= (:status response) 401))
+    (is (= (:body response)
+           {:message "User not authenticated."}))))
 
 (deftest user-recieves-404-when-submitting-invalid-function
  (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
@@ -181,7 +187,8 @@
                         :params {:user-id "3" :resource "magic"}}
        response (api/get-user sample-request)]
     (is (= (:status response) 404))
-    (is (= (:body response) "Resource does not exist"))))
+    (is (= (:body response)
+           {:message "Resource does not exist."}))))
 
 
 ;; GET api/v1/user/:userid/darg
@@ -207,8 +214,9 @@
                         :request-method :get
                         :params {:user-id "2" :resource "darg"}}
         response (api/get-user sample-request)]
-     (is (= (:status response) 403))
-     (is (= (:body response) "You do not have access to this user"))))
+     (is (= (:status response) 401))
+     (is (= (:body response)
+            {:message "Not authorized."}))))
 
  ;; GET api/v1/user/:userid/teams
 
@@ -225,8 +233,9 @@
                         :request-method :get
                         :params {:user-id "2" :resource "teams"}}
         response (api/get-user sample-request)]
-     (is (= (:status response) 403))
-     (is (= (:body response) "You do not have access to this user"))))
+     (is (= (:status response) 401))
+     (is (= (:body response)
+            {:message "Not authorized."}))))
 
 ;; GET api/v1/user/:userid/profile
 
@@ -243,8 +252,9 @@
                         :request-method :get
                         :params {:user-id "2" :resource "profile"}}
         response (api/get-user sample-request)]
-     (is (= (:status response) 403))
-     (is (= (:body response) "You do not have access to this user"))))
+     (is (= (:status response) 401))
+     (is (= (:body response)
+            {:message "Not authorized."}))))
 
 ;; api/v1/email
 
@@ -269,7 +279,7 @@
                              email))]
     (is (= (:status response) 401))
     (is (= (:body response)
-           (json/encode {:message "Failed to authenticate email"})))))
+           (json/encode {:message "Failed to authenticate email."})))))
 
 (deftest a-user-can-only-post-via-email-to-a-team-they-belong-to
   (testing "a user on the team returns true"

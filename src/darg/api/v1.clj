@@ -1,6 +1,7 @@
 (ns darg.api.v1
   (:require [clojure.tools.logging :as logging]
             [clojure.string :as str :only [split trim]]
+            [darg.api.responses :as responses]
             [darg.db-util :as dbutil]
             [darg.model.dargs :as dargs]
             [darg.model.email :as email]
@@ -15,25 +16,12 @@
             [ring.middleware.session.store :as session-store]
             [slingshot.slingshot :refer [try+]]))
 
-;; Reponses
-
-(def no-auth-response
-  {:body "User not authenticated"
-   :cookies {"logged-in" {:value false :max-age 0 :path"/"}}
-   :status 403})
-
-(def access-denied-user
-  {:body "You do not have access to this user"
-   :status 403})
-
 ;; Utils
 
 (defn authenticated?
   "Returns true if the user is not authenticated, and false if the user is authenticated"
-  [request-map]
-  (let [email (-> request-map :session :email)
-        authenticated (-> request-map :session :authenticated)
-        id (-> request-map :session :id)]
+  [{:keys [session] :as request-map}]
+  (let [{:keys [email authenticated id]} session]
      (if (and id email authenticated)
        true
        false)))
@@ -45,9 +33,8 @@
 
   Authentication endpoint. if successful, we set auth in their session and
   update the cookie to indicate that they're now logged in."
-  [request-map]
-  (let [email (-> request-map :params :email)
-        password (-> request-map :params :password)]
+  [{:keys [params] :as request}]
+  (let [{:keys [email password]} params]
     (cond
       (not (users/authenticate email password))
         {:body "Failed to authenticate"
@@ -83,11 +70,9 @@
   (let [email (-> request-map :params :email)]
     (try
       (users/send-password-reset-email email)
-      {:body "Success!"
-       :status 200}
+      (responses/ok "Success!")
       (catch Exception e
-        {:body "Password reset failed."
-         :status 400}))))
+        (responses/bad-request "Password reset failed.")))))
 
 (defn signup
   "/api/v1/signup
@@ -99,11 +84,10 @@
         email (:email params)]
     (cond
       (some? (users/fetch-one-user {:email email}))
-        {:status 409
-         :body {:message "A user with that e-mail already exists."}}
+        (responses/conflict "A user with that e-mail already exists.")
       (not (every? params [:email :name :password]))
-        {:status 400
-         :body {:message "The signup form needs an e-mail, a name, and a password."}}
+        (responses/bad-request
+          "The signup form needs an e-mail, a name, and a password.")
       :else
         (let [user (users/create-user-from-signup-form params)]
           {:body {:message "Account successfully created"}
@@ -115,29 +99,28 @@
 
 (defn gravatar
   "Get a given user's gravatar image URL"
-  [request-map]
-  (let [email (-> request-map :session :email)
-        size (-> request-map :params :size)]
+  [request]
+  (let [email (-> request :session :email)
+        size (-> request :params :size)]
     (if email
-      {:body (clojure.string/join "" ["http://www.gravatar.com/avatar/"
-                                      (md5 email)
-                                      "?s="
-                                      size])
-       :status 200}
-      {:body (format "http://www.gravatar.com/avatar/?s=%s" size)
-       :status 200})))
+      (responses/ok
+        (clojure.string/join "" ["http://www.gravatar.com/avatar/"
+                                 (md5 email)
+                                 "?s="
+                                 size]))
+      (responses/ok
+        (format "http://www.gravatar.com/avatar/?s=%s" size)))))
 
 ;; tasks
 
 (defn post-task
-  [request-map]
-  (let [task (-> request-map :params :task)
-        user-id (-> request-map :session :id)
-        team-id (-> request-map :params :team-id)
-        date (-> request-map :params :date dbutil/sql-date-from-subject)]
+  [request]
+  (let [task (-> request :params :task)
+        user-id (-> request :session :id)
+        team-id (-> request :params :team-id)
+        date (-> request :params :date dbutil/sql-date-from-subject)]
     (if (not (users/user-in-team? user-id team-id))
-      {:body "User is not a registered member of this team."
-       :status 403}
+      (responses/unauthorized "Not authorized.")
       (tasks/create-task {:task task
                           :user_id user-id
                           :team_id team-id
@@ -146,29 +129,27 @@
 ;; dargs
 
 (defn get-darg
-  [request-map]
-  (let [id (-> request-map :session :id)]
-    {:body {:dargs (dargs/timeline id)}
-     :status 200}))
+  [request]
+  (let [id (-> request :session :id)]
+    (responses/ok
+      {:dargs (dargs/timeline id)})))
 
 (defn post-darg
-  [request-map]
-  (let [task-list (-> request-map :params :darg)
-        user-id (-> request-map :session :id)
-        team-id (-> request-map :params :team-id)
-        date (-> request-map
-               :params
-               :date
-               dbutil/sql-date-from-subject)
+  [{:keys [params session] :as request}]
+  (let [task-list (:darg params)
+        user-id (:id session)
+        team-id (:team-id params)
+        date (-> params
+                 :date
+                 dbutil/sql-date-from-subject)
         metadata {:users_id user-id
                   :teams_id team-id
                   :date date}]
     (if (users/user-in-team? user-id team-id)
-      (do (tasks/create-task-list task-list metadata)
-        {:body "Tasks Created Successfully"
-         :status 200})
-      {:body "User is not a registered member of this team"
-       :status 403})))
+      (do
+        (tasks/create-task-list task-list metadata)
+        (responses/ok "Tasks created successfully."))
+      (responses/unauthorized "User is not a registered member of this team"))))
 
 (defn darg
   "Takes a request, identifies the request method, and routes to the appropriate function.
@@ -188,32 +169,32 @@
   Deletes items from a user's darg. Will only delete tasks related to the user set in the session cookie.
   :email - taken from session cookie
   :task-ids - passed as an array in the body of the request."
-  [request-map]
-  (let [request-method (-> request-map :request-method)]
-    (if (not (authenticated? request-map))
-      no-auth-response
-      (cond
-        (= request-method :get) (get-darg request-map)
-        (= request-method :post) (post-darg request-map)
-        :else {:body "Method not allowed"
-               :status 405}))))
+  [{:keys [request-method] :as request}]
+  (if (not (authenticated? request))
+    (responses/unauthorized "User not authenticated.")
+    (cond
+      (= request-method :get) (get-darg request)
+      (= request-method :post) (post-darg request)
+      :else (responses/method-not-allowed "Method not allowed."))))
 
 ;; v1/users
 
 (defn get-user-profile
   [user-ids]
-  {:body (users/fetch-user {:id user-ids})
-   :status 200})
+  (responses/ok (users/fetch-user {:id user-ids})))
 
 (defn get-user-darg
   [team-ids user-ids]
-  {:body (tasks/fetch-task {:teams_id [ksql/pred-in team-ids] :users_id user-ids})
-   :status 200})
+  (responses/ok
+    (tasks/fetch-task
+      {:teams_id [ksql/pred-in team-ids]
+       :users_id user-ids})))
 
 (defn get-user-teams
   [team-ids]
-  {:body (teams/fetch-team {:id [ksql/pred-in team-ids]})
-   :status 200})
+  (responses/ok
+    (teams/fetch-team
+      {:id [ksql/pred-in team-ids]})))
 
 (defn get-user
   "Verifies that a user is authenticated and has permission to view the user resource, then routes to the appropriate function
@@ -232,34 +213,30 @@
 
   :teams - Allows a user to view the list of teams they share with another user"
 
-  [request-map]
-  (let [requestor-id (-> request-map :session :id)
-        target-id (-> request-map :params :user-id read-string)
-        function (-> request-map :params :resource)]
-    (if (not (authenticated? request-map))
-        no-auth-response
-        (let [team-ids (mapv :id (users/team-overlap requestor-id target-id))
-              user-id target-id]
-          (if (empty? team-ids)
-              access-denied-user
-              (cond
-                (= function "profile") (get-user-profile user-id)
-                (= function "darg") (get-user-darg team-ids user-id)
-                (= function "teams") (get-user-teams team-ids)
-                :else {:body "Resource does not exist"
-                       :status 404}))))))
-
-;; Email Parsing
-;; our logging problem is very similar to https://github.com/iphoting/heroku-buildpack-php-tyler/issues/17
+  [{:keys [session params] :as request}]
+  (let [requestor-id (:id session)
+        target-id (-> params :user-id read-string)
+        function (:resource params)]
+    (if (not (authenticated? request))
+      (responses/unauthorized "User not authenticated.")
+      (let [team-ids (mapv :id (users/team-overlap requestor-id target-id))
+            user-id target-id]
+        (if (empty? team-ids)
+          (responses/unauthorized "Not authorized.")
+          (cond
+            (= function "profile") (get-user-profile user-id)
+            (= function "darg") (get-user-darg team-ids user-id)
+            (= function "teams") (get-user-teams team-ids)
+            :else
+              (responses/not-found "Resource does not exist.")))))))
 
 (defn email
   "/api/v1/email
 
   E-mail parsing endpoint; only for use with Mailgun. Authenticates the e-mail
   from Mailgun, and adds a task for each newline in the :stripped-text field."
-  [request-map]
-  (let [params (:params request-map)
-        {:keys [recipient sender from subject
+  [{:keys [params] :as request}]
+  (let [{:keys [recipient sender from subject
                 body-plain stripped-text stripped-signature
                 body-html stripped-html attachment-count
                 attachment-x timestamp token signature
@@ -267,17 +244,13 @@
     (try
       (cond
         (not (mailgun/authenticate email))
-          {:status 401
-           :body {:message "Failed to authenticate email"}}
+          (responses/unauthorized "Failed to authenticate email.")
         (not (email/user-can-email-this-team? from recipient))
-          {:status 401
-           :body {:message (format "E-mails from this address <%s> are not authorized to post to this team address <%s>." from recipient)}}
+          (responses/unauthorized (format "E-mails from this address <%s> are not authorized to post to this team address <%s>." from recipient))
         :else
           (do
             (email/parse-email email)
-            {:status 200
-             :body {:message "E-mail successfully parsed."}}))
+            (responses/ok {:message "E-mail successfully parsed."})))
       (catch Exception e
-       (logging/errorf "Failed to parse email with exception: %s" e)
-       {:status 400
-        :body {:message "Failed to parse e-mail"}}))))
+        (logging/errorf "Failed to parse email with exception: %s" e)
+        (responses/bad-request "Failed to parse e-mail.")))))
