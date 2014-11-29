@@ -25,10 +25,9 @@
 (defmigration add-github-users-table
   (up [] (create
             (table :github_users
-              (integer :id :auto-inc :primary-key)
+              (integer :id :primary-key)
               (integer :users_id [:refer :users :id :on-delete :cascade] :not-null)
               (text :gh_access_token :not-null)
-              (text :gh_username :not-null)
               (boolean :repo_scope (default false)))))
   (down [] (drop (table :github_users))))
 
@@ -53,7 +52,7 @@
 (defmigration add-github-repos-table
   (up [] (create 
              (table :github_repos
-                (integer :id :auto-inc :primary-key)
+                (integer :id :primary-key)
                 (text :name :not-null)
                 (text :description)
                 (text :html-url :not-null))))
@@ -74,7 +73,8 @@
              (table :team_repos
                 (integer :id :auto-inc :primary-key)
                 (integer :github_repos_id [:refer :github_repos :id :on-delete :cascade] :not-null)
-                (integer :teams_id [:refer :teams :id :on-delete :cascade]))))
+                (integer :teams_id [:refer :teams :id :on-delete :cascade])
+                (text :status (default "active") :not-null))))
   (down [] (drop (table :team_repos))))
 
 (defmigration add-gh-push-table
@@ -82,7 +82,7 @@
   (up [] (create
              (table :gh_push
                 (integer :id :auto-inc :primary-key)
-                (integer :github_users_id [:refer :github_users :id :on-delete :set-null])
+                (integer :users_id [:refer :users :id :on-delete :set-null])
                 (integer :github_repos_id [:refer :github_repos :id :on-delete :cascade] :not-null)
                 (integer :size :not-null)
                 (text :ref :not-null)
@@ -95,7 +95,7 @@
   (up [] (create
              (table :gh_issue
                 (integer :id :auto-inc :primary-key)
-                (integer :github_users_id [:refer :github_users :id :on-delete :set-null])
+                (integer :users_id [:refer :users :id :on-delete :set-null])
                 (integer :github_repos_id [:refer :github_repos :id :on-delete :cascade] :not-null)
                 (text :action :not-null)
                 (integer :number :not-null)
@@ -108,7 +108,7 @@
   (up [] (create 
               (table :gh_pullrequest
                 (integer :id :auto-inc :primary-key)
-                (integer :github_users_id [:refer :github_users :id :on-delete :set-null])
+                (integer :users_id [:refer :users :id :on-delete :set-null])
                 (integer :github_repos_id [:refer :github_repos :id :on-delete :cascade] :not-null)
                 (text :action :not-null)
                 (integer :number :not-null)
