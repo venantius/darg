@@ -22,13 +22,15 @@
                   (boolean :active (default false)))))
   (down [] (drop (table :users))))
 
-(defmigration add-github-token-table
+(defmigration add-github-users-table
   (up [] (create
-            (table :github_token
+            (table :github_users
               (integer :id :auto-inc :primary-key)
               (integer :users_id [:refer :users :id :on-delete :cascade] :not-null)
-              (text :gh_access_token :not-null))))
-  (down [] (drop (table :github_token))))
+              (text :gh_access_token :not-null)
+              (text :gh_username :not-null)
+              (boolean :repo_scope (default false)))))
+  (down [] (drop (table :github_users))))
 
 (defmigration add-teams-table
   (up [] (create
@@ -74,6 +76,46 @@
                 (integer :github_repos_id [:refer :github_repos :id :on-delete :cascade] :not-null)
                 (integer :teams_id [:refer :teams :id :on-delete :cascade]))))
   (down [] (drop (table :team_repos))))
+
+(defmigration add-gh-push-table
+  ; see https://developer.github.com/v3/activity/events/types/#pushevent
+  (up [] (create
+             (table :gh_push
+                (integer :id :auto-inc :primary-key)
+                (integer :github_users_id [:refer :github_users :id :on-delete :set-null])
+                (integer :github_repos_id [:refer :github_repos :id :on-delete :cascade] :not-null)
+                (integer :size :not-null)
+                (text :ref :not-null)
+                (text :head-commit-message :not-null)
+                (text :compare-url :not-null)
+                (timestamp :timestamp :not-null))))
+  (down [] (drop (table :gh_push))))
+
+(defmigration add-gh-issue-table
+  (up [] (create
+             (table :gh_issue
+                (integer :id :auto-inc :primary-key)
+                (integer :github_users_id [:refer :github_users :id :on-delete :set-null])
+                (integer :github_repos_id [:refer :github_repos :id :on-delete :cascade] :not-null)
+                (text :action :not-null)
+                (integer :number :not-null)
+                (text :title :not-null)
+                (text :url :not-null)
+                (timestamp :timestamp :not-null))))
+  (down [] (drop (table :gh_issue))))
+
+(defmigration add-gh-pullrequest-table
+  (up [] (create 
+              (table :gh_pullrequest
+                (integer :id :auto-inc :primary-key)
+                (integer :github_users_id [:refer :github_users :id :on-delete :set-null])
+                (integer :github_repos_id [:refer :github_repos :id :on-delete :cascade] :not-null)
+                (text :action :not-null)
+                (integer :number :not-null)
+                (text :title :not-null)
+                (text :url :not-null)
+                (timestamp :timestamp :not-null))))
+  (down [] (drop (table :gh_pullrequest))))
 
 (defmigration add-api-keys-table
   (up [] (create

@@ -1,11 +1,11 @@
 (ns darg.model
   (:require [korma.core :refer :all]))
 
-(declare users teams tasks repos github-token)
+(declare users teams tasks repos github-users gh-issue gh-push gh-pullrequest)
 
 (defentity users
   (has-many tasks)
-  (has-one github-token)
+  (has-one github-users)
   (many-to-many teams :team_users))
 
 (defentity teams
@@ -26,12 +26,30 @@
   (table :password_reset_tokens)
   (belongs-to users {:FK :users_id}))
 
-(defentity repos 
-  (many-to-many teams :team_repos))
+(defentity github-repos 
+  (many-to-many teams :team_repos)
+  (has-many gh-issue)
+  (has-many gh-push)
+  (has-many gh-pullrequest))
 
-(defentity github-token
-  (belongs-to users))
+(defentity github-users
+  (belongs-to users)
+  (has-many gh-issue)
+  (has-many gh-push)
+  (has-many gh-pullrequest))
 
 (defentity team-repos
   (table :team_repos)
   (has-many teams {:FK :teams_id}))
+
+(defentity gh-issue
+  (belongs-to github-users {:FK :github_users_id})
+  (belongs-to github-repos {:FK :github_repos_id}))
+
+(defentity gh-push
+  (belongs-to github-users {:FK :github_users_id})
+  (belongs-to github-repos {:FK :github_repos_id}))
+
+(defentity gh-pullrequest
+  (belongs-to github-users {:FK :github_users_id})
+  (belongs-to github-repos {:FK :github_repos_id}))
