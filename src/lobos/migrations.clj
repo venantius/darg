@@ -41,13 +41,15 @@
              (boolean :active (default false)))))
   (down [] (drop (table :users))))
 
-(defmigration add-github-token-table
+(defmigration add-github-users-table
   (up [] (create
-            (table :github_token
+            (table :github_users
               (integer :id :auto-inc :primary-key)
               (integer :users_id [:refer :users :id :on-delete :cascade] :not-null)
-              (text :gh_access_token :not-null))))
-  (down [] (drop (table :github_token))))
+              (text :gh_access_token :not-null)
+              (text :gh_username :not-null)
+              (boolean :repo_scope (default false)))))
+  (down [] (drop (table :github_users))))
 
 (defmigration add-teams-table
   (up [] (create

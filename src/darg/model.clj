@@ -28,6 +28,7 @@
 
 (defentity github-repos 
   (many-to-many teams :team_repos)
+<<<<<<< HEAD
   (has-many github-issues)
   (has-many github-pushes)
   (has-many github-pullrequests))
