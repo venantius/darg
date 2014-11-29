@@ -43,12 +43,26 @@
 
 (defmigration add-github-users-table
   (up [] (create
-            (table :github_users
-              (integer :id :primary-key)
-              (integer :users_id [:refer :users :id :on-delete :cascade] :not-null)
-              (text :gh_access_token :not-null)
-              (boolean :repo_scope (default false)))))
+           (table :github_users
+             (integer :id :primary-key)
+             (text :github_username)
+             (text :github_email)
+             (text :github_gravatar_url)
+             (integer :github_tokens_id [:refer :github_tokens :id :on-delete :set-null]))))
   (down [] (drop (table :github_users))))
+
+(defmigration add-users-table
+  (up [] (create
+           (table :users
+             (integer :id :auto-inc :primary-key)
+             (text :email :unique :not-null)
+             (text :password :not-null)
+             (text :name :not-null)
+             (boolean :admin (default false))
+             (boolean :bot (default true))
+             (integer :github_users_id [:refer :github_users :id])
+             (boolean :active (default false)))))
+  (down [] (drop (table :users))))
 
 (defmigration add-teams-table
   (up [] (create
@@ -61,11 +75,11 @@
 (defmigration add-tasks-table
   (up [] (create
            (table :tasks
-                  (integer :id :auto-inc :primary-key)
-                  (timestamp :date :not-null)
-                  (integer :users_id [:refer :users :id :on-delete :set-null])
-                  (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null)
-                  (text :task))))
+             (integer :id :auto-inc :primary-key)
+             (timestamp :date :not-null)
+             (integer :users_id [:refer :users :id :on-delete :set-null])
+             (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null)
+             (text :task))))
   (down [] (drop (table :tasks))))
 
 (defmigration add-github-repos-table
