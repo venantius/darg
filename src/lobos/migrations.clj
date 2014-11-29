@@ -44,10 +44,9 @@
 (defmigration add-github-users-table
   (up [] (create
             (table :github_users
-              (integer :id :auto-inc :primary-key)
+              (integer :id :primary-key)
               (integer :users_id [:refer :users :id :on-delete :cascade] :not-null)
               (text :gh_access_token :not-null)
-              (text :gh_username :not-null)
               (boolean :repo_scope (default false)))))
   (down [] (drop (table :github_users))))
 
