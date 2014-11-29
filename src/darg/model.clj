@@ -6,6 +6,9 @@
 (defentity users
   (has-many tasks)
   (has-one github-users)
+  (has-many gh-issue)
+  (has-many gh-push)
+  (has-many gh-pullrequest)
   (many-to-many teams :team_users))
 
 (defentity teams
@@ -33,23 +36,20 @@
   (has-many gh-pullrequest))
 
 (defentity github-users
-  (belongs-to users)
-  (has-many gh-issue)
-  (has-many gh-push)
-  (has-many gh-pullrequest))
+  (belongs-to users))
 
 (defentity team-repos
   (table :team_repos)
   (has-many teams {:FK :teams_id}))
 
 (defentity gh-issue
-  (belongs-to github-users {:FK :github_users_id})
+  (belongs-to users {:FK :users_id})
   (belongs-to github-repos {:FK :github_repos_id}))
 
 (defentity gh-push
-  (belongs-to github-users {:FK :github_users_id})
+  (belongs-to users {:FK :users_id})
   (belongs-to github-repos {:FK :github_repos_id}))
 
 (defentity gh-pullrequest
-  (belongs-to github-users {:FK :github_users_id})
+  (belongs-to users {:FK :users_id})
   (belongs-to github-repos {:FK :github_repos_id}))
