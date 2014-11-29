@@ -126,7 +126,8 @@ app.controller('DargLoginCtrl',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
-            $scope.Gravatar("40");
+            $scope.loadGravatar("navbar", 40);
+            $scope.loadGravatar("timeline", 100);
         });
     };
 
@@ -169,11 +170,10 @@ app.controller('DargLoginCtrl',
     };
 
     $scope.gravatars = {
-        "navbar": "",
-        "timeline": ""
+        "navbar": null,
+        "timeline": null
     }
     $scope.loadGravatar = function(target, size) {
-        console.log(size);
         $http({
             method: "post",
             data: $.param({"size": size}),
@@ -206,7 +206,8 @@ app.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
-            $scope.Gravatar("40")
+            $scope.loadGravatar("navbar", 40)
+            $scope.loadGravatar("timeline", 100)
         })
         .error(function(data) {
             console.log("Error signing up");
