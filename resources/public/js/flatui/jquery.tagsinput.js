@@ -1,1 +1,1 @@
-../../../Flat-UI-master/js/jquery.tagsinput.js
+../../../dependencies/Flat-UI-master/js/jquery.tagsinput.js

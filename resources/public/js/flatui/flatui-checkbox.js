@@ -1,1 +1,1 @@
-../../../Flat-UI-master/js/flatui-checkbox.js
+../../../dependencies/Flat-UI-master/js/flatui-checkbox.js

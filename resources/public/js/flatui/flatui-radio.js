@@ -1,1 +1,1 @@
-../../../Flat-UI-master/js/flatui-radio.js
+../../../dependencies/Flat-UI-master/js/flatui-radio.js

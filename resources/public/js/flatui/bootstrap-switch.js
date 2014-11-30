@@ -1,1 +1,1 @@
-../../../Flat-UI-master/js/bootstrap-switch.js
+../../../dependencies/Flat-UI-master/js/bootstrap-switch.js

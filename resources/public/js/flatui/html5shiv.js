@@ -1,1 +1,1 @@
-../../../Flat-UI-master/js/html5shiv.js
+../../../dependencies/Flat-UI-master/js/html5shiv.js

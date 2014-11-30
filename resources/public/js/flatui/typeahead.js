@@ -1,1 +1,1 @@
-../../../Flat-UI-master/js/typeahead.js
+../../../dependencies/Flat-UI-master/js/typeahead.js
