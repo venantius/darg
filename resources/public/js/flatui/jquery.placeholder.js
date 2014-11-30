@@ -1,1 +1,1 @@
-../../../Flat-UI-master/js/jquery.placeholder.js
+../../../dependencies/Flat-UI-master/js/jquery.placeholder.js

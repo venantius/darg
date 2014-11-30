@@ -1,1 +1,1 @@
-../../../Flat-UI-master/js/application.js
+../../../dependencies/Flat-UI-master/js/application.js

@@ -1,1 +1,1 @@
-../../../Flat-UI-master/js/icon-font-ie7.js
+../../../dependencies/Flat-UI-master/js/icon-font-ie7.js
