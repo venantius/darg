@@ -41,29 +41,6 @@
                   (boolean :active (default false)))))
   (down [] (drop (table :users))))
 
-(defmigration add-github-users-table
-  (up [] (create
-           (table :github_users
-             (integer :id :primary-key)
-             (text :github_username)
-             (text :github_email)
-             (text :github_gravatar_url)
-             (integer :github_tokens_id [:refer :github_tokens :id :on-delete :set-null]))))
-  (down [] (drop (table :github_users))))
-
-(defmigration add-users-table
-  (up [] (create
-           (table :users
-             (integer :id :auto-inc :primary-key)
-             (text :email :unique :not-null)
-             (text :password :not-null)
-             (text :name :not-null)
-             (boolean :admin (default false))
-             (boolean :bot (default true))
-             (integer :github_users_id [:refer :github_users :id])
-             (boolean :active (default false)))))
-  (down [] (drop (table :users))))
-
 (defmigration add-teams-table
   (up [] (create
            (table :teams
@@ -107,7 +84,7 @@
                   (integer :id :auto-inc :primary-key)
                   (integer :github_repos_id [:refer :github_repos :id :on-delete :cascade] :not-null)
                   (integer :teams_id [:refer :teams :id :on-delete :cascade])
-                  (text :status (default "active") :not-null))))
+                  (boolean :active (default "false")))))
   (down [] (drop (table :team_repos))))
 
 (defmigration add-github-pushes-table
