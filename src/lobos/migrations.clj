@@ -44,9 +44,9 @@
 (defmigration add-teams-table
   (up [] (create
            (table :teams
-                  (integer :id :auto-inc :primary-key)
-                  (text :name :not-null)
-                  (text :email :not-null :unique))))
+             (integer :id :auto-inc :primary-key)
+             (text :name :not-null)
+             (text :email :not-null :unique))))
   (down [] (drop (table :teams))))
 
 (defmigration add-tasks-table
@@ -71,11 +71,11 @@
 (defmigration add-team-users-table
   (up [] (create
            (table :team_users
-                  (integer :id :auto-inc :primary-key)
-                  (text :role)
-                  (integer :users_id [:refer :users :id :on-delete :cascade] :not-null)
-                  (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null)
-                  (boolean :admin (default false)))))
+             (integer :id :auto-inc :primary-key)
+             (text :role)
+             (integer :users_id [:refer :users :id :on-delete :cascade] :not-null)
+             (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null)
+             (boolean :admin (default false)))))
   (down [] (drop (table :team_users))))
 
 (defmigration add-team-repos-table
