@@ -136,7 +136,7 @@
  (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
                        :request-method :get
                        :params {:user-id "3" :resource "magic"}}
-       response (api/get-user sample-request)]
+       response (api/get-user-stuff sample-request)]
     (is (= (:status response) 404))
     (is (= (:body response)
            {:message "Resource does not exist."}))))
@@ -148,7 +148,7 @@
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
                         :request-method :get
                         :params {:user-id "3" :resource "darg"}}
-        response (api/get-user sample-request)]
+        response (api/get-user-stuff sample-request)]
     (is (= (:status response) 200))
     (is (= (:body response) (tasks/fetch-task {:teams_id 1 :users_id 3})))))
 
@@ -156,7 +156,7 @@
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
                         :request-method :get
                         :params {:user-id "4" :resource "darg"}}
-        response (api/get-user sample-request)]
+        response (api/get-user-stuff sample-request)]
     (is (= (:status response) 200))
     (is (= (:body response) (tasks/fetch-task {:users_id 4})))))
 
@@ -164,7 +164,7 @@
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
                         :request-method :get
                         :params {:user-id "2" :resource "darg"}}
-        response (api/get-user sample-request)]
+        response (api/get-user-stuff sample-request)]
      (is (= (:status response) 401))
      (is (= (:body response)
             {:message "Not authorized."}))))
@@ -175,7 +175,7 @@
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
                         :request-method :get
                         :params {:user-id "3" :resource "teams"}}
-        response (api/get-user sample-request)]
+        response (api/get-user-stuff sample-request)]
     (is (= (:status response) 200))
     (is (= (:body response) (teams/fetch-team {:id 1})))))
 
@@ -183,7 +183,7 @@
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
                         :request-method :get
                         :params {:user-id "2" :resource "teams"}}
-        response (api/get-user sample-request)]
+        response (api/get-user-stuff sample-request)]
      (is (= (:status response) 401))
      (is (= (:body response)
             {:message "Not authorized."}))))
@@ -194,7 +194,7 @@
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
                         :request-method :get
                         :params {:user-id "1" :resource "profile"}}
-        response (api/get-user sample-request)]
+        response (api/get-user-stuff sample-request)]
     (is (= (:status response) 200))
     (is (= (:body response) (users/fetch-user {:id 1})))))
 
@@ -202,7 +202,7 @@
   (let [sample-request {:user {:authenticated true :email "test-user2@darg.io" :id 4}
                         :request-method :get
                         :params {:user-id "2" :resource "profile"}}
-        response (api/get-user sample-request)]
+        response (api/get-user-stuff sample-request)]
      (is (= (:status response) 401))
      (is (= (:body response)
             {:message "Not authorized."}))))

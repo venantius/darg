@@ -55,7 +55,7 @@
   (POST   "/api/v1/task" request (api/post-task request))
 
   (GET    "/api/v1/user" request (api/get-user request))
-  (GET    "/api/v1/user/:user-id/:resource" request (api/get-user request))
+  (GET    "/api/v1/user/:user-id/:resource" request (api/get-user-stuff request))
   (route/resources "/"))
 
 (def app (-> routes

@@ -194,7 +194,7 @@
     (teams/fetch-team
       {:id [ksql/pred-in team-ids]})))
 
-(defn get-user
+(defn get-user-stuff
   "Verifies that a user is authenticated and has permission to view the user resource, then routes to the appropriate function
   The requesting user must share a team with the target user to see any information
 
