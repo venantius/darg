@@ -51,11 +51,12 @@
   ;; api - core
   (GET    "/api/v1/darg" request (api/get-darg request))
   (POST   "/api/v1/darg" request (api/post-darg request))
+  (GET    "/api/v1/darg/user/:user-id" request (api/get-user-darg request))
 
   (POST   "/api/v1/task" request (api/post-task request))
 
   (GET    "/api/v1/user" request (api/get-user request))
-  (GET    "/api/v1/user/:user-id/:resource" request (api/get-user-stuff request))
+  (GET    "/api/v1/user/:user-id" request (api/get-user-profile request))
   (route/resources "/"))
 
 (def app (-> routes

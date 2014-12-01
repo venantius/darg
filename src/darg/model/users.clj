@@ -51,11 +51,21 @@
   [id params]
   (update db/users (where {:id id}) (set-fields params)))
 
+(defn- fetch-one-credentialed-user
+  "Returns the user record WITH PASSWORD.
+
+  Only for use in authentication functions."
+  [params]
+  (first (select db/users (where params))))
+
 (defn fetch-user
-  "returns a user map from the db
+  "Returns a safe user record from the db.
+
   Takes a map of fields for use in db lookup"
   [params]
-  (select db/users (where params)))
+  (select db/users
+          (fields :id :active :bot :admin :name :email)
+          (where params)))
 
 (defn fetch-one-user
   "Returns the first user from fetch-user"
@@ -69,7 +79,7 @@
   (:id (first (select db/users (fields :id) (where params)))))
 
 (defn fetch-user-by-id
-"Returns a user map from the db
+  "Returns a user record from the db.
   Takes a user-id as an integer"
   [id]
   (first (select db/users (where {:id id}))))
@@ -145,7 +155,7 @@
 (defn authenticate
   "Authenticate this user. Returns true if password is valid, else nil"
   [email password]
-  (if-let [user (fetch-one-user {:email email})]
+  (if-let [user (fetch-one-credentialed-user {:email email})]
     (valid-password? password (:password user))))
 
 ;; TODO - change the hardcoded URL here
