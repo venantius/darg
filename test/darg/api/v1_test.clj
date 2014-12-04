@@ -98,7 +98,8 @@
 
 (deftest authenticated-user-can-view-their-darg
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
-                        :request-method :get}
+                        :request-method :get
+                        :params {:team-id "1"}}
         response (api/get-darg sample-request)]
     (is (= (:status response) 200))))
 
@@ -166,7 +167,8 @@
                         :params {:user-id "1"}}
         response (api/get-user-profile sample-request)]
     (is (= (:status response) 200))
-    (is (= (:body response) (users/fetch-one-user {:id 1})))))
+    (is (= (:body response)
+           (users/profile {:id 1})))))
 
 (deftest user-cant-see-profile-for-non-teammate
   (let [sample-request {:user {:authenticated true :email "test-user2@darg.io" :id 4}

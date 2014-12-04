@@ -26,6 +26,7 @@
 (defroutes routes
   ;; www
   (GET    "/"               [] darg-spa)
+  (GET    "/:team-id"       [] darg-spa)
   (GET    "/about"          [] darg-spa)
   (GET    "/api"            [] darg-spa)
   (GET    "/faq"            [] darg-spa)
@@ -49,7 +50,7 @@
   (POST   "/api/v1/gravatar" request (api/gravatar request))
 
   ;; api - core
-  (GET    "/api/v1/darg" request (api/get-darg request))
+  (GET    "/api/v1/darg/:team-id" request (api/get-darg request))
   (POST   "/api/v1/darg" request (api/post-darg request))
   (GET    "/api/v1/darg/user/:user-id" request (api/get-user-darg request))
 

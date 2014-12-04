@@ -139,13 +139,19 @@
    :teams_id 3
    :admin false})
 
+(def test-team-user-pair-7
+  {:users_id 3
+   :teams_id 3
+   :admin false})
+
 (def test-team-user-pairs
   [test-team-user-pair-1
    test-team-user-pair-2
    test-team-user-pair-3
    test-team-user-pair-4
    test-team-user-pair-5
-   test-team-user-pair-6])
+   test-team-user-pair-6
+   test-team-user-pair-7])
 
 (def test-password-reset-token-1
   {:token "XBT6XI7WAHPX4NQDHBWGXPP2YCJSXS7Q"

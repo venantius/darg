@@ -5,9 +5,11 @@
     <!-- menu --> 
     <div class="col-xs-3 ptl">
       <div class="btn-group-vertical">
-        <button class="btn btn-inverse" type="button">My Dargs</button><!-- #TODO -->
-        <button class="btn btn-primary" type="button">Standard Treasury</button>
-        <button class="btn btn-inverse" type="button">eBay</button>
+        <!-- TODO: Make current team light up with btn-primary instead --> 
+        <!-- https://github.com/ursacorp/darg/issues/179 -->
+        <button class="btn btn-inverse" type="button" ng-repeat="team in CurrentUser.teams">
+          {{team.name}}
+        </button>
       </div>
     </div>
 
@@ -48,9 +50,10 @@
 
             <!-- Enter new tasks -->
             <div class="ptl mtl">
-              <form class="task-form">
-                <input type="text" placeholder="Left something out? Enter it here!" class="form-control" />
+              <form class="task-form" ng-submit="PostTask()">
+                <input type="text" placeholder="Left something out? Enter it here!" class="form-control" ng-model="TaskForm.task"/>
               </form>
+              {{CurrentUser}}
             </div>
           </ul>
         </div>

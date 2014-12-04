@@ -11,7 +11,7 @@
 (defn timeline
   "Build a darg timeline. This is a naive implementation for now that can be
   expanded to include other darg subtypes as we go."
-  [user-id]
+  [user-id team-id]
   (let [user (users/fetch-user-by-id user-id)
         dates (active-dates user)
         tasks-by-date (map (partial users/fetch-tasks-by-date user) dates)]

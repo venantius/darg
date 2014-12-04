@@ -26,10 +26,12 @@
 
   </head>
   <body ng-controller="DargPageCtrl">
-    <div ng-controller="DargLoginCtrl">
-      <div ng-include src="header"></div>
-      <div ng-view></div>
-      <div ng-include src="footer" class="mtl ptl"></div>
+    <div ng-controller="DargUserCtrl">
+      <div ng-controller="DargLoginCtrl">
+        <div ng-include src="header"></div>
+        <div ng-view></div>
+        <div ng-include src="footer" class="mtl ptl"></div>
+      </div>
     </div>
     
     <!-- Load JS here for greater good =============================-->

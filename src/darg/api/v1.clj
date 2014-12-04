@@ -117,6 +117,7 @@
 
   Create a task."
   [{:keys [params user] :as request}]
+  (logging/info request)
   (let [task (:task params)
         user-id (:id user)
         team-id (:team-id params)
@@ -131,14 +132,15 @@
 ;; dargs
 
 (defn get-darg
-  "/api/v1/darg
+  "/api/v1/darg/:team-id
 
   Method: GET
 
-  Retrieve a Darg."
-  [{:keys [user] :as request}]
-  (responses/ok
-    {:dargs (dargs/timeline (:id user))}))
+  Retrieve all dargs for the current user for the target team"
+  [{:keys [params user] :as request}]
+  (let [team-id (-> params :team-id read-string)]
+    (responses/ok
+      {:dargs (dargs/timeline (:id user) team-id)})))
 
 (defn post-darg
   "/api/v1/darg
@@ -167,38 +169,6 @@
         (responses/ok "Tasks created successfully."))
       (responses/unauthorized "User not authorized."))))
 
-;; v1/users
-;; TODO: for both get-user and get-user-profile (which should probably be
-;; renamed to get-current-user and get-any-user) we should add in a list of
-;; teams that they're on (as well as some thinking around which of those teams
-;; they can actually see.
-;; https://github.com/ursacorp/darg/issues/178
-
-(defn get-user
-  "/api/v1/user
-
-  Method: GET
-
-  Retrieve info on the current user."
-  [{:keys [user] :as request}]
-  (responses/ok
-    (users/fetch-one-user {:id (:id user)})))
-
-(defn get-user-profile
-  "/api/v1/user/:user-id/profile
-
-  Method: GET
-
-  Retrieve info on the targeted user."
-  [{:keys [params user] :as request}]
-  (let [current-user-id (:id user)
-        target-user-id (-> params :user-id read-string)
-        team-ids (mapv :id (users/team-overlap current-user-id target-user-id))]
-    (if (empty? team-ids)
-      (responses/unauthorized "Not authorized.")
-      (responses/ok
-        (users/fetch-one-user {:id target-user-id})))))
-
 ;; TODO: Re-write this to include authorization re: teams
 ;; https://github.com/ursacorp/darg/issues/177
 (defn get-user-darg
@@ -217,6 +187,50 @@
         (tasks/fetch-task
           {:teams_id [ksql/pred-in team-ids]
            :users_id target-user-id})))))
+
+(defn get-team-darg
+  "/api/v1/darg/team/:team-id
+
+  Method: GET
+
+  Retrieve all dargs for a given team"
+  [{:keys [user] :as request}]
+  (responses/ok
+    {:dargs (dargs/timeline (:id user))}))
+
+;; v1/users
+;; TODO: for both get-user and get-user-profile (which should probably be
+;; renamed to get-current-user and get-any-user) we should add in a list of
+;; teams that they're on (as well as some thinking around which of those teams
+;; they can actually see.
+;; https://github.com/ursacorp/darg/issues/178
+
+(defn get-user
+  "/api/v1/user
+
+  Method: GET
+
+  Retrieve info on the current user."
+  [{:keys [user] :as request}]
+  (responses/ok
+    (users/profile {:id (:id user)})))
+
+(defn get-user-profile
+  "/api/v1/user/:user-id
+
+  Method: GET
+
+  Retrieve info on the targeted user."
+  [{:keys [params user] :as request}]
+  (let [current-user-id (:id user)
+        target-user-id (-> params :user-id read-string)
+        team-ids (mapv :id (users/team-overlap current-user-id target-user-id))]
+    (if (empty? team-ids)
+      (responses/unauthorized "Not authorized.")
+      (responses/ok
+        (users/profile
+          {:id target-user-id}
+          team-ids)))))
 
 (defn email
   "/api/v1/email

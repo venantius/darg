@@ -72,6 +72,25 @@
   [params]
   (first (fetch-user params)))
 
+(defn profile
+  "Returns the profile for a given user, including the teams that they're on.
+
+  If a list of team-ids is provided, only includes those teams. This is useful
+  for limiting the visibility into which teams a user is a member of."
+  ([params]
+   (first
+     (select db/users
+             (fields :id :active :bot :admin :name :email)
+             (with db/teams)
+             (where params))))
+  ([params team-ids]
+   (first
+     (select db/users
+             (fields :id :active :bot :admin :name :email)
+             (with db/teams
+               (where {:teams.id [in team-ids]}))
+             (where params)))))
+
 (defn fetch-user-id
   "Returns a user-id (integer)
   Takes a map of fields for use in db lookup"
