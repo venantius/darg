@@ -196,7 +196,7 @@
   Retrieve all dargs for a given team"
   [{:keys [user] :as request}]
   (responses/ok
-    {:dargs (dargs/timeline (:id user))}))
+    {:dargs (dargs/timeline (:id user) nil)}))
 
 ;; v1/users
 ;; TODO: for both get-user and get-user-profile (which should probably be
