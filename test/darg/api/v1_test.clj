@@ -98,7 +98,8 @@
 
 (deftest authenticated-user-can-view-their-darg
   (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
-                        :request-method :get}
+                        :request-method :get
+                        :params {:team-id "1"}}
         response (api/get-darg sample-request)]
     (is (= (:status response) 200))))
 
@@ -131,59 +132,29 @@
     (is (= (:body response) "Tasks created successfully."))
     (is (= (count (tasks/fetch-tasks-by-user-id test-user-id)) 6))))
 
-;; GET api/v1/user/:userid/
-(deftest user-recieves-404-when-submitting-invalid-function
- (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
-                       :request-method :get
-                       :params {:user-id "3" :resource "magic"}}
-       response (api/get-user-stuff sample-request)]
-    (is (= (:status response) 404))
-    (is (= (:body response)
-           {:message "Resource does not exist."}))))
-
-
 ;; GET api/v1/user/:userid/darg
 
 (deftest user-can-get-teammates-darg
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
                         :request-method :get
-                        :params {:user-id "3" :resource "darg"}}
-        response (api/get-user-stuff sample-request)]
+                        :params {:user-id "3"}}
+        response (api/get-user-darg sample-request)]
     (is (= (:status response) 200))
     (is (= (:body response) (tasks/fetch-task {:teams_id 1 :users_id 3})))))
 
 (deftest user-can-get-their-own-darg
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
                         :request-method :get
-                        :params {:user-id "4" :resource "darg"}}
-        response (api/get-user-stuff sample-request)]
+                        :params {:user-id "4"}}
+        response (api/get-user-darg sample-request)]
     (is (= (:status response) 200))
     (is (= (:body response) (tasks/fetch-task {:users_id 4})))))
 
 (deftest user-cant-see-darg-for-non-teammate
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
                         :request-method :get
-                        :params {:user-id "2" :resource "darg"}}
-        response (api/get-user-stuff sample-request)]
-     (is (= (:status response) 401))
-     (is (= (:body response)
-            {:message "Not authorized."}))))
-
- ;; GET api/v1/user/:userid/teams
-
-(deftest user-can-get-teammates-teams
-  (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
-                        :request-method :get
-                        :params {:user-id "3" :resource "teams"}}
-        response (api/get-user-stuff sample-request)]
-    (is (= (:status response) 200))
-    (is (= (:body response) (teams/fetch-team {:id 1})))))
-
-(deftest user-cant-see-teams-for-non-teammate
-  (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
-                        :request-method :get
-                        :params {:user-id "2" :resource "teams"}}
-        response (api/get-user-stuff sample-request)]
+                        :params {:user-id "2"}}
+        response (api/get-user-darg sample-request)]
      (is (= (:status response) 401))
      (is (= (:body response)
             {:message "Not authorized."}))))
@@ -193,16 +164,17 @@
 (deftest user-can-get-teammates-profile
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
                         :request-method :get
-                        :params {:user-id "1" :resource "profile"}}
-        response (api/get-user-stuff sample-request)]
+                        :params {:user-id "1"}}
+        response (api/get-user-profile sample-request)]
     (is (= (:status response) 200))
-    (is (= (:body response) (users/fetch-user {:id 1})))))
+    (is (= (:body response)
+           (users/profile {:id 1})))))
 
 (deftest user-cant-see-profile-for-non-teammate
   (let [sample-request {:user {:authenticated true :email "test-user2@darg.io" :id 4}
                         :request-method :get
                         :params {:user-id "2" :resource "profile"}}
-        response (api/get-user-stuff sample-request)]
+        response (api/get-user-profile sample-request)]
      (is (= (:status response) 401))
      (is (= (:body response)
             {:message "Not authorized."}))))

@@ -58,7 +58,7 @@
 
   Initiates the password reset workflow. This will send an e-mail to the user
   with a special link that they can use to reset their password. The link will
-  only remain valid for a finite amount of time"
+  only remain valid for a finite amount of time."
   [request-map]
   (let [email (-> request-map :params :email)]
     (try
@@ -95,7 +95,7 @@
 
   Supports: POST
 
-  Return a given user's gravatar image URL"
+  Return a given user's gravatar image URL."
   [request]
   (let [email (-> request :session :email)
         size (-> request :params :size)]
@@ -117,6 +117,7 @@
 
   Create a task."
   [{:keys [params user] :as request}]
+  (logging/info request)
   (let [task (:task params)
         user-id (:id user)
         team-id (:team-id params)
@@ -131,14 +132,15 @@
 ;; dargs
 
 (defn get-darg
-  "/api/v1/darg
+  "/api/v1/darg/:team-id
 
   Method: GET
 
-  Retrieve a Darg."
-  [{:keys [user] :as request}]
-  (responses/ok
-    {:dargs (dargs/timeline (:id user))}))
+  Retrieve all dargs for the current user for the target team"
+  [{:keys [params user] :as request}]
+  (let [team-id (-> params :team-id read-string)]
+    (responses/ok
+      {:dargs (dargs/timeline (:id user) team-id)})))
 
 (defn post-darg
   "/api/v1/darg
@@ -146,10 +148,11 @@
   Method: POST
 
   Creates a darg for the user. Expects the following:
-  :email - taken from user authentication map
-  :team-id - specified by user in the body of the request, takes only one team and applies to the full darg
-  :date - specified by user in the body of the request, takes only one date and applies to the full darg
-  :darg-list - specified by user in the body of the request, expects an array of task strings"
+
+    :email - taken from user authentication map
+    :team-id - specified by user in the body of the request, takes only one team and applies to the full darg
+    :date - specified by user in the body of the request, takes only one date and applies to the full darg
+    :darg - specified by user in the body of the request, expects an array of task strings"
   [{:keys [params user] :as request}]
   (let [task-list (:darg params)
         user-id (:id user)
@@ -166,65 +169,68 @@
         (responses/ok "Tasks created successfully."))
       (responses/unauthorized "User not authorized."))))
 
+;; TODO: Re-write this to include authorization re: teams
+;; https://github.com/ursacorp/darg/issues/177
+(defn get-user-darg
+  "/api/v1/darg/user/:user-id
+
+  Method: GET
+
+  Returns a darg for a given user"
+  [{:keys [params user] :as request}]
+  (let [current-user-id (:id user)
+        target-user-id (-> params :user-id read-string)
+        team-ids (mapv :id (users/team-overlap current-user-id target-user-id))]
+    (if (empty? team-ids)
+      (responses/unauthorized "Not authorized.")
+      (responses/ok
+        (tasks/fetch-task
+          {:teams_id [ksql/pred-in team-ids]
+           :users_id target-user-id})))))
+
+(defn get-team-darg
+  "/api/v1/darg/team/:team-id
+
+  Method: GET
+
+  Retrieve all dargs for a given team"
+  [{:keys [user] :as request}]
+  (responses/ok
+    {:dargs (dargs/timeline (:id user) nil)}))
+
 ;; v1/users
+;; TODO: for both get-user and get-user-profile (which should probably be
+;; renamed to get-current-user and get-any-user) we should add in a list of
+;; teams that they're on (as well as some thinking around which of those teams
+;; they can actually see.
+;; https://github.com/ursacorp/darg/issues/178
 
 (defn get-user
   "/api/v1/user
 
   Method: GET
 
-  Retrieve info on the current user"
+  Retrieve info on the current user."
   [{:keys [user] :as request}]
-  (responses/ok (users/fetch-user {:id (:id user)})))
+  (responses/ok
+    (users/profile {:id (:id user)})))
 
 (defn get-user-profile
-  [user-ids]
-  (responses/ok (users/fetch-user {:id user-ids})))
+  "/api/v1/user/:user-id
 
-(defn get-user-darg
-  [team-ids user-ids]
-  (responses/ok
-    (tasks/fetch-task
-      {:teams_id [ksql/pred-in team-ids]
-       :users_id user-ids})))
+  Method: GET
 
-(defn get-user-teams
-  [team-ids]
-  (responses/ok
-    (teams/fetch-team
-      {:id [ksql/pred-in team-ids]})))
-
-(defn get-user-stuff
-  "Verifies that a user is authenticated and has permission to view the user resource, then routes to the appropriate function
-  The requesting user must share a team with the target user to see any information
-
-  Requires in URL
-  :user-id - the id of the target user for the request
-  :resource - the target user resource being requested (profile, darg, teams)
-
-  Functions are mapped as follows:
-
-  :profile - Allows a user to view the user profile of someone else on their team.
-  Profile returns the user's name, email address, and admin status
-
-  :darg - Allows a user to view the darg list of a user on their team. They can only see dargs for teams that both users share
-
-  :teams - Allows a user to view the list of teams they share with another user"
-
+  Retrieve info on the targeted user."
   [{:keys [params user] :as request}]
-  (let [requestor-id (:id user)
-        target-id (-> params :user-id read-string)
-        function (:resource params)]
-    (let [team-ids (mapv :id (users/team-overlap requestor-id target-id))
-          user-id target-id]
-      (if (empty? team-ids)
-        (responses/unauthorized "Not authorized.")
-        (cond
-          (= function "profile") (get-user-profile user-id)
-          (= function "darg") (get-user-darg team-ids user-id)
-          (= function "teams") (get-user-teams team-ids)
-          :else
-          (responses/not-found "Resource does not exist."))))))
+  (let [current-user-id (:id user)
+        target-user-id (-> params :user-id read-string)
+        team-ids (mapv :id (users/team-overlap current-user-id target-user-id))]
+    (if (empty? team-ids)
+      (responses/unauthorized "Not authorized.")
+      (responses/ok
+        (users/profile
+          {:id target-user-id}
+          team-ids)))))
 
 (defn email
   "/api/v1/email
