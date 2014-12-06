@@ -1,55 +1,13 @@
-/* 
-* This little bit of code is needed in order to load Javascript within "partials"
-* - the html templates we use that get loaded by Angular's ng-include directive.
-*
-* At some point I'll refactor it out into its own file (which should generally
-* happen with all of the Angular code), but I'm not yet certain how to do that.
-*/
+var darg = angular.module('darg', ['ngCookies', 'ngRoute', 'ngLoadScript']);
 
-(function (ng) {
-  'use strict';
-
-  var app = ng.module('ngLoadScript', []);
-
-  app.directive('script', function() {
-    return {
-      restrict: 'E',
-      scope: false,
-      link: function(scope, elem, attr) {
-        if (attr.type==='text/javascript-lazy') {
-          var s = document.createElement("script");
-          s.type = "text/javascript";
-          var src = elem.attr('src');
-          if(src!==undefined) {
-              s.src = src;
-          }
-          else {
-              var code = elem.text();
-              s.text = code;
-          }
-          document.head.appendChild(s);
-          elem.remove();
-        }
-      }
-    };
-  });
-}(angular));
-
-/* Darg application code begins here */
-var app = angular.module('darg', ['ngCookies', 'ngRoute', 'ngLoadScript']);
-
-/*
- * AngularJS routing code goes here
- */
-
-app.config(['$routeProvider', '$locationProvider', 
+darg.config(['$routeProvider', '$locationProvider', 
            function AppConfig($routeProvider, $locationProvider) {
 
     $routeProvider
         .when('/', {
             templateUrl: 'templates/home.html'
         })
-        .when('/:teamId', {
+        .when('/timeline/:teamId', {
             templateUrl: 'templates/home.html'
         })
         .when('/about', {
@@ -79,70 +37,7 @@ app.config(['$routeProvider', '$locationProvider',
    }
 ]);
 
-/*
- * AngularJS services go here
- */
-
-app.factory('user', function($cookieStore) {
-    var service = {};
-
-    service.loggedIn = function() {
-        if ($cookieStore.get('logged-in') == true) {
-            return true;
-        } else {
-            return false;
-        }
-    };
-
-    return service;
-});
-
-/*
- * AngularJS controllers go here
- */
-
-app.controller('DargPageCtrl', ['$scope', '$http', '$location', 
-               function($scope, $http, $location) {
-    $scope.header = "templates/header.html";
-    $scope.footer = "templates/footer.html";
-
-    $scope.inner = "templates/timeline.html";
-    $scope.outer = "templates/outer.html";
-   }
-]);
-
-app.controller('DargUserCtrl', ['$scope', '$http', '$routeParams',
-               function($scope, $http, $routeParams) {
-    
-    $scope.CurrentUser = {};
-    $scope.CurrentTeam = null;
-
-    getDefaultTeam = function(user) {
-        if (user.teams.length == 0) {
-            return null; 
-        } else {
-            return user.teams[0].id;
-        }
-    };
-
-    $scope.getCurrentUser = function() {
-        $http({
-            method: "get",
-            url: "/api/v1/user"
-        })
-        .success(function(data) {
-            $scope.CurrentUser = data;
-            $scope.CurrentTeam = getDefaultTeam($scope.CurrentUser);
-        })
-        .error(function(data) {
-            console.log(data);
-        });
-    };
-
-    $scope.getCurrentUser();
-}]);
-
-app.controller('DargLoginCtrl',
+darg.controller('DargLoginCtrl',
        ['$scope', '$http', '$cookies', '$cookieStore', '$location', 'user',
        function($scope, $http, $cookies, $cookieStore, $location, user) {
 
@@ -224,7 +119,7 @@ app.controller('DargLoginCtrl',
 
 }]);
 
-app.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
+darg.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
                function($scope, $http, $cookies, $cookieStore) {
 
     $scope.SignupForm = {
@@ -252,7 +147,17 @@ app.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
     };
 }]);
 
-app.controller('DargTimelineCtrl', ['$scope', '$http', '$cookies', '$cookieStore', 'user',
+darg.controller('DargPageCtrl', ['$scope', '$http', '$location', 
+               function($scope, $http, $location) {
+    $scope.header = "templates/header.html";
+    $scope.footer = "templates/footer.html";
+
+    $scope.inner = "templates/timeline.html";
+    $scope.outer = "templates/outer.html";
+   }
+]);
+
+darg.controller('DargTimelineCtrl', ['$scope', '$http', '$cookies', '$cookieStore', 'user',
                function($scope, $http, $cookies, $cookieStore, user) {
 
     /*
@@ -312,3 +217,87 @@ app.controller('DargTimelineCtrl', ['$scope', '$http', '$cookies', '$cookieStore
     });
 
 }]);
+
+
+darg.controller('DargUserCtrl', ['$scope', '$http', '$routeParams',
+               function($scope, $http, $routeParams) {
+    
+    $scope.CurrentUser = {};
+    $scope.CurrentTeam = null;
+
+    getDefaultTeam = function(user) {
+        if (user.teams.length == 0) {
+            return null; 
+        } else {
+            return user.teams[0].id;
+        }
+    };
+
+    $scope.getCurrentUser = function() {
+        $http({
+            method: "get",
+            url: "/api/v1/user"
+        })
+        .success(function(data) {
+            $scope.CurrentUser = data;
+            $scope.CurrentTeam = getDefaultTeam($scope.CurrentUser);
+        })
+        .error(function(data) {
+            console.log(data);
+        });
+    };
+
+    $scope.getCurrentUser();
+}]);
+
+
+darg.factory('user', function($cookieStore) {
+    var service = {};
+
+    service.loggedIn = function() {
+        if ($cookieStore.get('logged-in') == true) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    return service;
+});
+
+/* 
+* This little bit of code is needed in order to load Javascript within "partials"
+* - the html templates we use that get loaded by Angular's ng-include directive.
+*
+* At some point I'll refactor it out into its own file (which should generally
+* happen with all of the Angular code), but I'm not yet certain how to do that.
+*/
+
+(function (ng) {
+  'use strict';
+
+  var darg = ng.module('ngLoadScript', []);
+
+  darg.directive('script', function() {
+    return {
+      restrict: 'E',
+      scope: false,
+      link: function(scope, elem, attr) {
+        if (attr.type==='text/javascript-lazy') {
+          var s = document.createElement("script");
+          s.type = "text/javascript";
+          var src = elem.attr('src');
+          if(src!==undefined) {
+              s.src = src;
+          }
+          else {
+              var code = elem.text();
+              s.text = code;
+          }
+          document.head.appendChild(s);
+          elem.remove();
+        }
+      }
+    };
+  });
+}(angular));
