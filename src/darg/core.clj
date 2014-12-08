@@ -8,6 +8,7 @@
             [darg.init :as init]
             [darg.middleware :as middleware]
             [darg.middleware.authentication :as authn]
+            [darg.oauth.github :as gh-oauth]
             [environ.core :as env]
             [org.httpkit.server :as server]
             [ring.middleware.json :refer [wrap-json-response]]
@@ -36,6 +37,9 @@
 
   ;; debug
   (GET    "/debug" request (debug request))
+
+  ;; callback
+  (GET "/oauth/github" request (gh-oauth/callback request))
 
   ;; api - auth
   (POST   "/api/v1/login" request (api/login request))

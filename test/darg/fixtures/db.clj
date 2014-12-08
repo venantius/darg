@@ -23,8 +23,13 @@
   []
   (insert password-reset-tokens (values fmodel/test-password-reset-tokens)))
 
+(defn insert-github-user-fixture-data
+  []
+  (insert github-users (values fmodel/test-github-users)))
+
 (defn insert-db-fixture-data
   []
+  (insert-github-user-fixture-data)
   (insert-user-fixture-data)
   (insert-team-fixture-data)
   (insert-task-fixture-data)

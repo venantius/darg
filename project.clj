@@ -30,7 +30,7 @@
 
                  ;; services / integrations
                  [abengoa/clj-stripe "1.0.4"]
-                 [tentacles "0.2.5"]
+                 [tentacles "0.2.7"]
 
                  ;; db
                  [korma "0.4.0"]
@@ -42,7 +42,7 @@
                  [ring "1.3.1"]
                  [ring/ring-json "0.3.1"]
                  [compojure "1.1.8"]
-                 [http-kit "2.0.0"]
+                 [http-kit "2.1.8"]
 
                  ;; templating
                  [enlive "1.1.5"]

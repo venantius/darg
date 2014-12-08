@@ -13,7 +13,7 @@
 (defmigration add-github-tokens-table
   (up [] (create
            (table :github_tokens
-                  (integer :id :primary-key)
+                  (integer :gh_token_id :auto-inc :primary-key)
                   (text :gh_token :not-null)
                   (boolean :repo_scope (default false)))))
   (down [] (drop (table :github_tokens))))
@@ -21,11 +21,11 @@
 (defmigration add-github-users-table
   (up [] (create
            (table :github_users
-                  (integer :id :primary-key)
-                  (text :github_username)
-                  (text :github_email)
-                  (text :github_gravatar_url)
-                  (integer :github_tokens_id [:refer :github_tokens :id :on-delete :set-null]))))
+                  (integer :gh_user_id :primary-key)
+                  (text :gh_login)
+                  (text :gh_email)
+                  (text :gh_avatar_url)
+                  (integer :github_tokens_id [:refer :github_tokens :gh_token_id :on-delete :set-null]))))
   (down [] (drop (table :github_users))))
 
 (defmigration add-users-table
@@ -37,7 +37,7 @@
                   (text :name :not-null)
                   (boolean :admin (default false))
                   (boolean :bot (default true))
-                  (integer :github_users_id [:refer :github_users :id])
+                  (integer :github_users_id [:refer :github_users :gh_user_id :on-delete :set-null])
                   (boolean :active (default false)))))
   (down [] (drop (table :users))))
 
@@ -91,7 +91,7 @@
   (up [] (create
            (table :github_pushes
                   (integer :id :auto-inc :primary-key)
-                  (integer :github_users_id [:refer :github_users :id :on-delete :set-null])
+                  (integer :github_users_id [:refer :github_users :gh_user_id :on-delete :set-null])
                   (integer :github_repos_id [:refer :github_repos :id :on-delete :cascade] :not-null)
                   (integer :size :not-null) ;number of commits in push
                   (text :ref :not-null) ;full git ref that was pushed (repo + branch)
@@ -104,7 +104,7 @@
   (up [] (create
            (table :github_issues
                   (integer :id :auto-inc :primary-key)
-                  (integer :github_users_id [:refer :github_users :id :on-delete :set-null])
+                  (integer :github_users_id [:refer :github_users :gh_user_id :on-delete :set-null])
                   (integer :github_repos_id [:refer :github_repos :id :on-delete :cascade] :not-null)
                   (text :action :not-null)
                   (integer :number :not-null)
@@ -117,7 +117,7 @@
   (up [] (create 
            (table :github_pull_requests
                   (integer :id :auto-inc :primary-key)
-                  (integer :github_users_id [:refer :github_users :id :on-delete :set-null])
+                  (integer :github_users_id [:refer :github_users :gh_user_id :on-delete :set-null])
                   (integer :github_repos_id [:refer :github_repos :id :on-delete :cascade] :not-null)
                   (text :action :not-null)
                   (integer :number :not-null)
