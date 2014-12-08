@@ -37,87 +37,15 @@ darg.config(['$routeProvider', '$locationProvider',
    }
 ]);
 
-darg.controller('DargLoginCtrl',
-       ['$scope', '$http', '$cookies', '$cookieStore', '$location', 'user',
-       function($scope, $http, $cookies, $cookieStore, $location, user) {
+darg.controller('DargPageCtrl', ['$scope', '$http', '$location', 
+               function($scope, $http, $location) {
+    $scope.header = "templates/header.html";
+    $scope.footer = "templates/footer.html";
 
-    $scope.loggedIn = user.loggedIn;
-    $scope.LoginForm = {
-        email: "",
-        password: ""
-    };
-
-    $scope.Login = function() {
-        $http({
-            method: "post",
-            url: '/api/v1/login', 
-            data: $.param($scope.LoginForm),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(data) {
-            $scope.loadGravatar("navbar", 40);
-            $scope.loadGravatar("timeline", 100);
-            $scope.getCurrentUser();
-        });
-    };
-
-    $scope.Logout = function() {
-        $http({
-            method: "get",
-            url: "/api/v1/logout"
-        })
-        .success(function(data) {
-        })
-        .error(function(data) {
-            console.log("Error logging out.");
-            console.log(data);
-        });
-    };
-
-    $scope.ResetForm = {
-        "email": ""
-    }
-
-    $scope.LoadPasswordResetPage = function() {
-        $location.path('/password_reset');
-    };
-
-    $scope.resetPassword = function() {
-        $http({
-            method: "post",
-            url: "/api/v1/password_reset",
-            data: $.param($scope.ResetForm),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(data) {
-            // TODO: Provide a tooltip or something on success?
-            // No, replace the entire speech bubble
-        })
-        .error(function(data) {
-            console.log("Failed to reset password");
-            console.log(data);
-        });
-    };
-
-    $scope.gravatars = {
-        "navbar": null,
-        "timeline": null
-    }
-    $scope.loadGravatar = function(target, size) {
-        $http({
-            method: "post",
-            data: $.param({"size": size}),
-            url: "/api/v1/gravatar",
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(data, status) {
-            $scope.gravatars[target] = data;
-        });
-    };
-    $scope.loadGravatar("navbar", 40);
-    $scope.loadGravatar("timeline", 100);
-
-}]);
+    $scope.inner = "templates/timeline.html";
+    $scope.outer = "templates/outer.html";
+   }
+]);
 
 darg.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
                function($scope, $http, $cookies, $cookieStore) {
@@ -147,44 +75,35 @@ darg.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore'
     };
 }]);
 
-darg.controller('DargPageCtrl', ['$scope', '$http', '$location', 
-               function($scope, $http, $location) {
-    $scope.header = "templates/header.html";
-    $scope.footer = "templates/footer.html";
+darg.controller('DargTimelineCtrl', 
+    ['$scope', 
+     '$http', 
+     '$cookies', 
+     '$cookieStore', 
+     'user',
+     function(
+         $scope, 
+         $http, 
+         $cookies, 
+         $cookieStore, 
+         user) {
 
-    $scope.inner = "templates/timeline.html";
-    $scope.outer = "templates/outer.html";
-   }
-]);
-
-darg.controller('DargTimelineCtrl', ['$scope', '$http', '$cookies', '$cookieStore', 'user',
-               function($scope, $http, $cookies, $cookieStore, user) {
-
-    /*
-     * This is totally an anti-pattern but I'm just learning how services work.
-     */
-    $scope.loggedIn = user.loggedIn;
     $scope.formatDateString = function(date) {
         return Date.parse(date);
     }
 
     $scope.GetTimeline = function() {
-        if ($scope.CurrentTeam == null) {
-            console.log("Null!");
-        } else if ($scope.CurrentTeam != null) {
-            $http({
-                method: "get",
-                url: "/api/v1/darg/1"
-            })
-            .success(function(data) {
-                $scope.Timeline = data;
-            })
-            .error(function(data) {
-                $scope.Timeline = "Error: failed to retrieve timeline";
-                console.log("Failed to retrieve timeline");
-                console.log(data);
-            });
-        };
+        $http({
+            method: "get",
+            url: "/api/v1/darg/1"
+        })
+        .success(function(data) {
+            $scope.Timeline = data;
+            console.log("Succeeded");
+        })
+        .error(function(data) {
+            console.log("Failed to get timeline");
+        });
     };
 
     $scope.TaskForm = {
@@ -201,17 +120,12 @@ darg.controller('DargTimelineCtrl', ['$scope', '$http', '$cookies', '$cookieStor
         .success(function(data) {
             console.log("Success!");
         })
-        .error(function(data) {
-            console.log("Failure!");
-        });
     }
 
-
-    // I am ashamed to say that this took me way longer to figure out than
-    // it should have :(
-    $scope.$watch('loggedIn()', function(oldValue, newValue) {
-        console.log($scope.CurrentTeam);
-        if ($scope.loggedIn() == true && $scope.CurrentTeam != null) {
+    $scope.$watch(function() {
+        return (user.team != null && user.loggedIn())
+    }, function(oldValue, newValue) {
+        if (user.loggedIn() == true && user.team != null) {
             $scope.GetTimeline();
         }
     });
@@ -219,17 +133,57 @@ darg.controller('DargTimelineCtrl', ['$scope', '$http', '$cookies', '$cookieStor
 }]);
 
 
-darg.controller('DargUserCtrl', ['$scope', '$http', '$routeParams',
-               function($scope, $http, $routeParams) {
-    
-    $scope.CurrentUser = {};
-    $scope.CurrentTeam = null;
+darg.controller('DargUserCtrl', 
+    ['$cookies',
+     '$cookieStore',
+     '$location',
+     '$scope', 
+     '$http',
+     '$routeParams',
+     'user',
+     function(
+         $cookies,
+         $cookieStore,
+         $location,
+         $scope, 
+         $http, 
+         $routeParams,
+         user) {
 
-    getDefaultTeam = function(user) {
-        if (user.teams.length == 0) {
+    $scope.loggedIn = user.loggedIn
+    $scope.CurrentUser = {};
+    $scope.LoginForm = {
+        email: "",
+        password: ""
+    };
+
+    $scope.Login = function() {
+        $http({
+            method: "post",
+            url: '/api/v1/login', 
+            data: $.param($scope.LoginForm),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+            $scope.getCurrentUser();
+        })
+    };
+
+    $scope.Logout = function() {
+        $http({
+            method: "get",
+            url: "/api/v1/logout"
+        })
+        .success(function(data) {
+            $location.path('/');
+        })
+    };
+
+    getDefaultTeam = function(current_user) {
+        if (current_user.teams.length == 0) {
             return null; 
         } else {
-            return user.teams[0].id;
+            return current_user.teams[0].id;
         }
     };
 
@@ -239,15 +193,68 @@ darg.controller('DargUserCtrl', ['$scope', '$http', '$routeParams',
             url: "/api/v1/user"
         })
         .success(function(data) {
+            user.info = data;
             $scope.CurrentUser = data;
-            $scope.CurrentTeam = getDefaultTeam($scope.CurrentUser);
+            user.team = getDefaultTeam(user.info);
         })
         .error(function(data) {
+            console.log("Failed to get current user!");
             console.log(data);
         });
     };
 
-    $scope.getCurrentUser();
+    $scope.gravatars = {
+        "navbar": null,
+        "timeline": null
+    }
+    $scope.loadGravatar = function(target, size) {
+        $http({
+            method: "post",
+            data: $.param({"size": size}),
+            url: "/api/v1/gravatar",
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data, status) {
+            $scope.gravatars[target] = data;
+        });
+    };
+
+
+    $scope.ResetForm = {
+        "email": ""
+    }
+
+    $scope.LoadPasswordResetPage = function() {
+        $location.path('/password_reset');
+    };
+
+    $scope.resetPassword = function() {
+        $http({
+            method: "post",
+            url: "/api/v1/password_reset",
+            data: $.param($scope.ResetForm),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+            // TODO: Provide a tooltip or something on success?
+            // No, replace the entire speech bubble
+        })
+        .error(function(data) {
+            console.log("Failed to reset password");
+            console.log(data);
+        });
+    };
+
+    /* Watchers */
+    $scope.$watch(function() {
+        return user.loggedIn()
+    }, function(oldValue, newValue) {
+        if ($scope.loggedIn() == true) {
+            $scope.getCurrentUser();
+            $scope.loadGravatar("navbar", 40);
+            $scope.loadGravatar("timeline", 100);
+        }
+    });
 }]);
 
 
