@@ -9,51 +9,51 @@
 
     <!-- Loading highlight.js -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
-    <link rel="stylesheet" title="Solarized - Dark" href="css/solarized_dark.css">
+    <link rel="stylesheet" title="Solarized - Dark" href="/css/solarized_dark.css">
 
     <!-- Loading Bootstrap -->
-    <link href="css/bootstrap-from-flatui.css" rel="stylesheet">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-from-flatui.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Loading Flat UI -->
-    <link href="css/flat-ui.css" rel="stylesheet">
-    <link href="css/demo.css" rel="stylesheet">
+    <link href="/css/flat-ui.css" rel="stylesheet">
+    <link href="/css/demo.css" rel="stylesheet">
 
 
 
     <!-- favicon -->
-    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="shortcut icon" href="/images/favicon.ico">
 
   </head>
-  <body ng-controller="DargPageCtrl">
+  <body>
     <div ng-controller="DargUserCtrl">
-      <div ng-include src="header"></div>
+      <div ng-include src='"/templates/header.html"'></div>
       <div ng-view></div>
-      <div ng-include src="footer" class="mtl ptl"></div>
+      <div ng-include src='"/templates/footer.html"' class="mtl ptl"></div>
     </div>
     
     <!-- Load JS here for greater good =============================-->
     <!-- Angular JS -->
-    <script src="js/angular/angular.min.js"></script>
-    <script src="js/angular/angular-cookies.min.js"></script>
-    <script src="js/angular/angular-resource.min.js"></script>
-    <script src="js/angular/angular-route.min.js"></script>
+    <script src="/js/angular/angular.min.js"></script>
+    <script src="/js/angular/angular-cookies.min.js"></script>
+    <script src="/js/angular/angular-resource.min.js"></script>
+    <script src="/js/angular/angular-route.min.js"></script>
 
     <!-- Darg JS -->
-    <script src="js/darg/app.js"></script>
+    <script src="/js/darg/app.js"></script>
 
     <!-- Flat UI JS -->
-    <script src="js/flatui/jquery-1.8.3.min.js"></script>
-    <script src="js/flatui/jquery-ui-1.10.3.custom.min.js"></script>
-    <script src="js/flatui/jquery.ui.touch-punch.min.js"></script>
-    <script src="js/flatui/bootstrap.min.js"></script>
-    <script src="js/flatui/bootstrap-select.js"></script>
-    <script src="js/flatui/bootstrap-switch.js"></script>
-    <script src="js/flatui/flat-ui.min.js"></script>
-    <script src="js/flatui/jquery.tagsinput.js"></script>
-    <script src="js/flatui/jquery.placeholder.js"></script>
-    <script src="js/flatui/jquery.stacktable.js"></script>
-    <script src="js/flatui/application.js"></script>
+    <script src="/js/flatui/jquery-1.8.3.min.js"></script>
+    <script src="/js/flatui/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="/js/flatui/jquery.ui.touch-punch.min.js"></script>
+    <script src="/js/flatui/bootstrap.min.js"></script>
+    <script src="/js/flatui/bootstrap-select.js"></script>
+    <script src="/js/flatui/bootstrap-switch.js"></script>
+    <script src="/js/flatui/flat-ui.min.js"></script>
+    <script src="/js/flatui/jquery.tagsinput.js"></script>
+    <script src="/js/flatui/jquery.placeholder.js"></script>
+    <script src="/js/flatui/jquery.stacktable.js"></script>
+    <script src="/js/flatui/application.js"></script>
 
     <!-- highlight.js -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>

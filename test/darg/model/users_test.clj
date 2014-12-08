@@ -29,7 +29,7 @@
   (is (not (empty? (tasks/fetch-tasks-by-user-id 2)))))
 
 (deftest we-can-get-a-users-teams
-  (is (= (first (users/fetch-user-teams 1)) {:email "test.api@darg.io", :name "darg", :id 1})))
+  (is (= (first (users/fetch-user-teams 1)) {:email "test.api@darg.io", :name "Darg", :id 1})))
 
 (deftest we-can-check-a-user-is-in-a-team
   (is (users/user-in-team? 3 1))
@@ -47,22 +47,22 @@
   (users/add-user-to-team 3 2)
   (is (users/user-in-team? 3 2)))
 
-(deftest fetch-dates-works
+#_(deftest fetch-dates-works
  (is (= (users/fetch-task-dates 4)
          (list
            (c/to-sql-time (t/local-date 2012 05 17))
            (c/to-sql-time (t/local-date 2012 02 16))))))
 
-(deftest fetch-tasks-by-date-works
+(deftest fetch-tasks-by-team-and-date-works
   (let [user (users/fetch-user-by-id 4)
         date (t/local-date 2012 02 16)
         date_2 (t/local-date 2012 02 17)]
-    (is (= (dissoc (first (users/fetch-tasks-by-date user date)) :id)
+    (is (= (dissoc (first (users/fetch-tasks-by-team-and-date user 1 date)) :id)
            {:task "Do a good deed everyday"
             :teams_id 1
             :users_id 4
             :date (c/to-sql-time (t/local-date 2012 02 16))}))
-    (is (= (users/fetch-tasks-by-date user date_2)
+    (is (= (users/fetch-tasks-by-team-and-date user 1 date_2)
            (list)))))
 
 (deftest we-can-authenticate-a-user

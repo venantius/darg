@@ -8,3 +8,9 @@
   (c/to-sql-date (f/parse
                  (f/formatter "MMM dd YYY")
                  (re-find (re-pattern "(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\s\\d{2}\\s\\d{4}") string))))
+
+(defn sql-date-from-task
+  "Convert a string into a SQL date."
+  [string]
+  (c/to-sql-date
+    (c/from-string string)))

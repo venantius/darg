@@ -7,7 +7,7 @@
       <div class="btn-group-vertical">
         <!-- TODO: Make current team light up with btn-primary instead --> 
         <!-- https://github.com/ursacorp/darg/issues/179 -->
-        <button class="btn btn-inverse" type="button" ng-repeat="team in CurrentUser.teams">
+        <button class="btn btn-inverse" type="button" ng-repeat="team in CurrentUser.teams" ng-click="loadNewTeamTimeline(team.id)">
           {{team.name}}
         </button>
       </div>
@@ -49,11 +49,10 @@
             </li>
 
             <!-- Enter new tasks -->
-            <div class="ptl mtl">
-              <form class="task-form" ng-submit="PostTask()">
+            <div class="ptl mtl" ng-controller="DargTaskCreationCtrl">
+              <form class="task-form" ng-submit="PostTask(darg)">
                 <input type="text" placeholder="Left something out? Enter it here!" class="form-control" ng-model="TaskForm.task"/>
               </form>
-              {{CurrentUser}}
             </div>
           </ul>
         </div>

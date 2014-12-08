@@ -5,28 +5,28 @@ darg.config(['$routeProvider', '$locationProvider',
 
     $routeProvider
         .when('/', {
-            templateUrl: 'templates/home.html'
+            templateUrl: '/templates/home.html'
         })
         .when('/timeline/:teamId', {
-            templateUrl: 'templates/home.html'
+            templateUrl: '/templates/home.html'
         })
         .when('/about', {
-            templateUrl: 'templates/about.html'
+            templateUrl: '/templates/about.html'
         })
         .when('/api', {
-            templateUrl: 'templates/api.html'
+            templateUrl: '/templates/api.html'
         })
         .when('/faq', {
-            templateUrl: 'templates/faq.html'
+            templateUrl: '/templates/faq.html'
         })
         .when('/integrations', {
-            templateUrl: 'templates/integrations.html'
+            templateUrl: '/templates/integrations.html'
         })
         .when('/password_reset', {
-            templateUrl: 'templates/password_reset.html'
+            templateUrl: '/templates/password_reset.html'
         })
         .when('/settings', {
-            templateUrl: 'templates/settings.html'
+            templateUrl: '/templates/settings.html'
         })
         .otherwise({
             redirectTo: '/'
@@ -34,16 +34,6 @@ darg.config(['$routeProvider', '$locationProvider',
 
     $locationProvider.html5Mode(true);
     $locationProvider.hashPrefix('!');
-   }
-]);
-
-darg.controller('DargPageCtrl', ['$scope', '$http', '$location', 
-               function($scope, $http, $location) {
-    $scope.header = "templates/header.html";
-    $scope.footer = "templates/footer.html";
-
-    $scope.inner = "templates/timeline.html";
-    $scope.outer = "templates/outer.html";
    }
 ]);
 
@@ -75,42 +65,30 @@ darg.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore'
     };
 }]);
 
-darg.controller('DargTimelineCtrl', 
+darg.controller('DargTaskCreationCtrl', 
     ['$scope', 
      '$http', 
+     '$routeParams',
      '$cookies', 
      '$cookieStore', 
      'user',
      function(
          $scope, 
          $http, 
+         $routeParams,
          $cookies, 
          $cookieStore, 
          user) {
 
-    $scope.formatDateString = function(date) {
-        return Date.parse(date);
-    }
-
-    $scope.GetTimeline = function() {
-        $http({
-            method: "get",
-            url: "/api/v1/darg/1"
-        })
-        .success(function(data) {
-            $scope.Timeline = data;
-            console.log("Succeeded");
-        })
-        .error(function(data) {
-            console.log("Failed to get timeline");
-        });
-    };
-
     $scope.TaskForm = {
-        "task": ""
+        "date": "",
+        "task": "",
+        "team_id": ""
     };
 
-    $scope.PostTask = function() {
+    $scope.PostTask = function(darg) {
+        $scope.TaskForm.date = darg.date;
+        $scope.TaskForm.team_id = $routeParams.teamId;
         $http({
             method: "post",
             url: "/api/v1/task",
@@ -118,12 +96,59 @@ darg.controller('DargTimelineCtrl',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
-            console.log("Success!");
+            console.log("Posted new task!");
+            $scope.GetTimeline();
         })
     }
 
+}]);
+
+darg.controller('DargTimelineCtrl', 
+    ['$cookies',
+     '$cookieStore',
+     '$http', 
+     '$location',
+     '$routeParams',
+     '$scope', 
+     'user',
+     function(
+         $cookies, 
+         $cookieStore, 
+         $http,
+         $location,
+         $routeParams,
+         $scope, 
+         user) {
+
+    $scope.formatDateString = function(date) {
+        return Date.parse(date);
+    }
+
+    $scope.GetTimeline = function() {
+        if (user.team != null) {
+            url = "/api/v1/darg/" + user.team
+            $http({
+                method: "get",
+                url: url
+            })
+            .success(function(data) {
+                $scope.Timeline = data;
+            })
+            .error(function(data) {
+                console.log("Failed to get timeline");
+            });
+        } else {
+            console.log("Something is fucked");
+        }
+    };
+
+    $scope.loadNewTeamTimeline = function(id) {
+        url = "/timeline/" + id;
+        $location.path(url);
+    }
+
     $scope.$watch(function() {
-        return (user.team != null && user.loggedIn())
+        return user.team
     }, function(oldValue, newValue) {
         if (user.loggedIn() == true && user.team != null) {
             $scope.GetTimeline();
@@ -179,12 +204,16 @@ darg.controller('DargUserCtrl',
         })
     };
 
-    getDefaultTeam = function(current_user) {
-        if (current_user.teams.length == 0) {
-            return null; 
-        } else {
-            return current_user.teams[0].id;
-        }
+    getDefaultTeam = function() {
+        if (user.info != null) {
+            if (user.info.teams.length == 0) {
+                return null; 
+            } else if ($routeParams.teamId != null) {
+                return $routeParams.teamId
+            } else {
+                return user.info.teams[0].id;
+            }
+        };
     };
 
     $scope.getCurrentUser = function() {
@@ -195,18 +224,15 @@ darg.controller('DargUserCtrl',
         .success(function(data) {
             user.info = data;
             $scope.CurrentUser = data;
-            user.team = getDefaultTeam(user.info);
+            user.team = getDefaultTeam();
         })
-        .error(function(data) {
-            console.log("Failed to get current user!");
-            console.log(data);
-        });
     };
 
     $scope.gravatars = {
         "navbar": null,
         "timeline": null
     }
+
     $scope.loadGravatar = function(target, size) {
         $http({
             method: "post",
@@ -218,7 +244,6 @@ darg.controller('DargUserCtrl',
             $scope.gravatars[target] = data;
         });
     };
-
 
     $scope.ResetForm = {
         "email": ""
@@ -245,21 +270,29 @@ darg.controller('DargUserCtrl',
         });
     };
 
-    /* Watchers */
+    /* watchers */
     $scope.$watch(function() {
         return user.loggedIn()
     }, function(oldValue, newValue) {
-        if ($scope.loggedIn() == true) {
+        if (user.loggedIn() == true) {
             $scope.getCurrentUser();
             $scope.loadGravatar("navbar", 40);
             $scope.loadGravatar("timeline", 100);
         }
+    });
+
+    $scope.$watch(function() {
+        return getDefaultTeam()
+    }, function(oldValue, newValue) {
+        user.team = getDefaultTeam();
     });
 }]);
 
 
 darg.factory('user', function($cookieStore) {
     var service = {};
+    var info = null;
+    var team = null;
 
     service.loggedIn = function() {
         if ($cookieStore.get('logged-in') == true) {

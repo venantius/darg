@@ -117,7 +117,7 @@
     (is (= (:status response) 401))
     (is (= (:body response)
            {:message "User not authorized."}))
-    (is (= (count (tasks/fetch-tasks-by-user-id test-user-id)) 3))))
+    (is (= (count (tasks/fetch-tasks-by-user-id test-user-id)) 4))))
 
 (deftest authenticated-user-can-post-a-darg
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
@@ -130,7 +130,7 @@
         test-user-id (users/fetch-user-id {:email "test-user2@darg.io"})]
     (is (= (:status response) 200))
     (is (= (:body response) "Tasks created successfully."))
-    (is (= (count (tasks/fetch-tasks-by-user-id test-user-id)) 6))))
+    (is (= (count (tasks/fetch-tasks-by-user-id test-user-id)) 7))))
 
 ;; GET api/v1/user/:userid/darg
 

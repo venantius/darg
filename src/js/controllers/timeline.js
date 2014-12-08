@@ -1,14 +1,18 @@
 darg.controller('DargTimelineCtrl', 
-    ['$scope', 
+    ['$cookies',
+     '$cookieStore',
      '$http', 
-     '$cookies', 
-     '$cookieStore', 
+     '$location',
+     '$routeParams',
+     '$scope', 
      'user',
      function(
-         $scope, 
-         $http, 
          $cookies, 
          $cookieStore, 
+         $http,
+         $location,
+         $routeParams,
+         $scope, 
          user) {
 
     $scope.formatDateString = function(date) {
@@ -16,37 +20,30 @@ darg.controller('DargTimelineCtrl',
     }
 
     $scope.GetTimeline = function() {
-        $http({
-            method: "get",
-            url: "/api/v1/darg/1"
-        })
-        .success(function(data) {
-            $scope.Timeline = data;
-            console.log("Succeeded");
-        })
-        .error(function(data) {
-            console.log("Failed to get timeline");
-        });
+        if (user.team != null) {
+            url = "/api/v1/darg/" + user.team
+            $http({
+                method: "get",
+                url: url
+            })
+            .success(function(data) {
+                $scope.Timeline = data;
+            })
+            .error(function(data) {
+                console.log("Failed to get timeline");
+            });
+        } else {
+            console.log("Something is fucked");
+        }
     };
 
-    $scope.TaskForm = {
-        "task": ""
-    };
-
-    $scope.PostTask = function() {
-        $http({
-            method: "post",
-            url: "/api/v1/task",
-            data: $.param($scope.TaskForm),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(data) {
-            console.log("Success!");
-        })
+    $scope.loadNewTeamTimeline = function(id) {
+        url = "/timeline/" + id;
+        $location.path(url);
     }
 
     $scope.$watch(function() {
-        return (user.team != null && user.loggedIn())
+        return user.team
     }, function(oldValue, newValue) {
         if (user.loggedIn() == true && user.team != null) {
             $scope.GetTimeline();
