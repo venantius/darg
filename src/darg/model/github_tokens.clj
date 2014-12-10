@@ -16,4 +16,4 @@
 
 (defn fetch-github-token-id
   [params]
-  (:gh_token_id (first (select db/github-tokens (fields :gh_token_id) (where params)))))	
+  (:id (first (select db/github-tokens (fields :id) (where params)))))

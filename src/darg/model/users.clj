@@ -120,9 +120,16 @@
 (defn fetch-user-github-account
   "Returns the associated github user"
   [userid]
-  (first (select db/users
-                 (where {:id userid})
-                 (with db/github-users))))
+  (let [usermap (first (select db/users
+                               (where {:id userid})
+                               (with db/github-users)
+                               ))]
+    {:user (merge (select-keys 
+                    usermap 
+                    [:id :email :name :admin :bot])
+                  {:github_account (select-keys 
+                                     usermap 
+                                     [:gh_user_id :gh_login :gh_email :gh_avatar_url])})}))
 
 ; User Team Membership
 
