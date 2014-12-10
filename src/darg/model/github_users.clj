@@ -8,7 +8,6 @@
 
 (def gh-user-fields `[:login :id :avatar_url])
 (def gh-user-fields-rename-map {:login :gh_login 
-                                :id :gh_user_id 
                                 :avatar_url :gh_avatar_url})
 
 (defn create-github-user
@@ -27,7 +26,7 @@
   "Updates the fields for a github-user.
   Takes a github-user-id as an integer and a map of fields + values to update."
   [id params]
-  (update db/github-users (where {:gh_user_id id}) (set-fields params)))
+  (update db/github-users (where {:id id}) (set-fields params)))
 
 (defn fetch-github-user
   "returns a github-user map from the db
@@ -44,18 +43,18 @@
   "Returns a github-user-id (integer)
   Takes a map of fields for use in db lookup"
   [params]
-  (:gh_user_id (first (select db/github-users (fields :gh_user_id) (where params)))))
+  (:id (first (select db/github-users (fields :id) (where params)))))
 
 (defn fetch-github-user-by-id
   "Returns the first github-user from fetch-github-user"
   [id]
-  (first (select db/github-users (where {:gh_user_id id}))))
+  (first (select db/github-users (where {:id id}))))
 
 (defn delete-user
   "Deletes a github-user from the database
   Takes a github-user-id as an integer"  
   [id]
-  (delete db/github-users (where {:gh_user_id id})))
+  (delete db/github-users (where {:id id})))
 
 ;; Link Github Token
 

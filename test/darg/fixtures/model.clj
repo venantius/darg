@@ -60,7 +60,7 @@
 
 (def test-github-user-1
   {:gh_login "dargtester1"
-   :gh_user_id 10094188
+   :id 10094188
    :gh_avatar_url "https://avatars.githubusercontent.com/u/10094188?v=3"})
 
 (def test-github-users

@@ -14,30 +14,33 @@
 
 (with-db-fixtures)
 
-(defn clear-test-tokens
-  [f]
-  (oauth-github/delete-all-authorizations (str (System/getenv "DARG_GH_USERNAME")) 
-                                          (str (System/getenv "DARG_GH_PASSWORD")))
-  (f))
-
-(use-fixtures :once clear-test-tokens)
-
 (def test-username (str (System/getenv "DARG_GH_USERNAME"))) ;Github username
 (def test-password (str (System/getenv "DARG_GH_PASSWORD"))) ;Github password
 (def test-github-oauth (oauth-github/create-authorization test-username test-password "Temp Token For Testing22"))
 (def access-token (:access_token (oauth-github/parse-oauth-response test-github-oauth)))
-  
-  (deftest we-can-successfully-get-an-oauth-token
-    (is access-token))
-  
-  (deftest we-can-insert-and-link-a-github-user
-    (let [userid 4]
-      (oauth-github/insert-and-link-github-user userid test-github-oauth)
-      ; Check that all links are created
-      ;; Github user is linked to user, and matches access-token's user id
-      (is (= (:gh_user_id (gh-users/fetch-one-github-user {:gh_login test-username}))
-             (:github_users_id (users/fetch-user-by-id 4))
-             (:id (tentacles.users/me {:oauth_token access-token}))))
-      ;; Github token is linked to github user
-      (is (= (:github_tokens_id (gh-users/fetch-github-user {:gh_login test-username})) 
-             (:gh_token_id (gh-tokens/fetch-github-token-id {:gh_token access-token}))))))
+
+(defn test-setup
+  [f]
+  (logging/info "Build Up")
+  (f)
+  (logging/info "Tear Down")
+  (oauth-github/delete-all-authorizations (str (System/getenv "DARG_GH_USERNAME")) 
+                                          (str (System/getenv "DARG_GH_PASSWORD"))))
+
+(use-fixtures :once test-setup)
+
+(deftest we-can-successfully-get-an-oauth-token
+  (is access-token))
+
+(deftest we-can-insert-and-link-a-github-user
+  (let [userid 3]
+    (oauth-github/insert-and-link-github-user userid test-github-oauth)
+    ; Check that all links are created
+    ;; Github user is linked to user, and matches access-token's user id
+    (is (= (:id (gh-users/fetch-one-github-user {:gh_login test-username}))
+           (:github_users_id (users/fetch-user-by-id 3))
+           (:id (tentacles.users/me {:oauth_token access-token}))))
+    ;; Github token is linked to github user
+    (is (= (:github_tokens_id (gh-users/fetch-one-github-user {:gh_login test-username})) 
+           (gh-tokens/fetch-github-token-id {:gh_token access-token})))))
+

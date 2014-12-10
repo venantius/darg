@@ -66,12 +66,12 @@
     (let [github-user (assoc-in (gh-users/github-api-get-current-user access-token)
                                 [:github_tokens_id]
                                 (gh-tokens/fetch-github-token-id {:gh_token access-token}))
-          github-user-id (:gh_user_id github-user)]
+          github-user-id (:id github-user)]
       ;if a github user already exists, update it if not, create it
-      (if (gh-users/fetch-github-user-by-id github-user-id)
-        (gh-users/update-github-user github-user-id github-user) 
-        (gh-users/create-github-user github-user))
-      (users/link-github-user userid (:gh_user_id github-user)))))
+      (if (empty? (gh-users/fetch-github-user-by-id github-user-id))
+        (gh-users/create-github-user github-user)
+        (gh-users/update-github-user github-user-id github-user))
+      (users/link-github-user userid (:id github-user)))))
 
 ;; Callback Function. Called after the user completes their github login.
 
@@ -88,13 +88,13 @@
             (insert-and-link-github-user userid resp)
             (responses/ok "Github integration successful!")
             (catch Exception e
-            (logging/errorf "Failed to save github user with exception: %s" e)
-            (responses/server-error "Unable to complete Github integration")))
+              (logging/errorf "Failed to save github user with exception: %s" e)
+              (responses/server-error "Unable to complete Github integration")))
           :else
           {:status (:status resp)
            :body (:error resp)})))
-          
-  
-  
-  
-  
+
+
+
+
+
