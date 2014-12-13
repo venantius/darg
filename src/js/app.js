@@ -28,6 +28,9 @@ darg.config(['$routeProvider', '$locationProvider',
         .when('/settings', {
             templateUrl: '/templates/settings.html'
         })
+        .when('/settings/:settingPage', {
+            templateUrl: '/templates/settings.html'
+        })
         .otherwise({
             redirectTo: '/'
         });

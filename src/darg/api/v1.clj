@@ -90,6 +90,24 @@
            :session {:authenticated true :email (:email params) :id (:id user)}
            :status 200}))))
 
+(defn update-user
+  "/api/v1/user
+
+  Method: POST
+
+  Update a user's profile."
+  [{:keys [user params session] :as request}]
+  (let [email (:email user)
+        current-user (users/fetch-one-user {:email email})]
+    (if (or (= email (:email params))
+            (nil? (users/fetch-one-user {:email (:email params)})))
+      (do
+        (users/update-user (:id current-user) params)
+        {:status 200
+         :session (assoc session :email (:email params))
+         :body current-user})
+      (responses/conflict "User with that e-mail already exists"))))
+
 (defn gravatar
   "/api/v1/gravatar
 
@@ -121,7 +139,6 @@
         user-id (:id user)
         team-id (read-string (:team_id params))
         date (-> params :date dbutil/sql-date-from-task)]
-    (logging/info task user-id team-id date)
     (cond
       (not (and task user-id team-id date))
         (responses/bad-request "Request needs to include 'task', 'team-id' and 'date'.")
