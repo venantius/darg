@@ -9,7 +9,7 @@
 
 (with-db-fixtures)
 
-(deftest active-dates-works
+#_(deftest active-dates-works
   (let [user (users/fetch-user-by-id 4)]
     (is (= (dargs/active-dates user)
            (list
@@ -17,7 +17,7 @@
              (c/to-sql-time (t/local-date 2012 02 16)))))))
 
 (deftest timeline-works
-  (is (= (dargs/timeline 4 nil)
+  (is (= (dargs/timeline 4 1)
          [{:date "2012-05-17"
            :tasks (list (assoc fixture-data/test-task-3 :id 3)
                         (assoc fixture-data/test-task-5 :id 5))}

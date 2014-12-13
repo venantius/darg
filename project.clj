@@ -60,6 +60,8 @@
                    :integration :integration
                    :unit (complement :integration)}
 
+  :jvm-opts  ["-Duser.timezone=UTC"]
+
   :profiles {:dev {:env {:darg-environment "dev"
                          :database-url "postgres://localhost:5432/darg"
                          :reload-db-on-run true

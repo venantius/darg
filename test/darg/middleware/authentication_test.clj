@@ -24,7 +24,7 @@
     (is (= (:status response) 401))
     (is (= (:body response)
            {:message "User not authenticated."}))
-    (is (= (count (tasks/fetch-tasks-by-user-id test-user-id)) 3))))
+    (is (= (count (tasks/fetch-tasks-by-user-id test-user-id)) 4))))
 
 (deftest user-cant-view-a-darg-without-an-email
   (let [sample-request {:session {:authenticated true}

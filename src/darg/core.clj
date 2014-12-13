@@ -26,7 +26,7 @@
 (defroutes routes
   ;; www
   (GET    "/"               [] darg-spa)
-  (GET    "/:team-id"       [] darg-spa)
+  (GET    "/timeline/:team-id"       [] darg-spa)
   (GET    "/about"          [] darg-spa)
   (GET    "/api"            [] darg-spa)
   (GET    "/faq"            [] darg-spa)

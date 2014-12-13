@@ -117,17 +117,21 @@
 
   Create a task."
   [{:keys [params user] :as request}]
-  (logging/info request)
   (let [task (:task params)
         user-id (:id user)
-        team-id (:team-id params)
-        date (-> params :date dbutil/sql-date-from-subject)]
-    (if (not (users/user-in-team? user-id team-id))
-      (responses/unauthorized "Not authorized.")
-      (tasks/create-task {:task task
-                          :user_id user-id
-                          :team_id team-id
-                          :date date}))))
+        team-id (read-string (:team_id params))
+        date (-> params :date dbutil/sql-date-from-task)]
+    (logging/info task user-id team-id date)
+    (cond
+      (not (and task user-id team-id date))
+        (responses/bad-request "Request needs to include 'task', 'team-id' and 'date'.")
+      (not (users/user-in-team? user-id team-id))
+        (responses/unauthorized "Not authorized.")
+      :else
+        (tasks/create-task {:task task
+                            :users_id user-id
+                            :teams_id team-id
+                            :date date}))))
 
 ;; dargs
 

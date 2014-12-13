@@ -5649,9 +5649,14 @@ li.timeline-item {
   margin-left: 50px;
   font-size: 16px;
 }
+span.timeline-item {
+  display: inline-block;
+  padding-right: 10px;
+}
 span.timeline-item-edit-icon {
   right: 15px;
   position: absolute;
+  display: block;
   color: #bdc3c7;
   transition: .25s linear;
 }

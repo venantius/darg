@@ -1,9 +1,9 @@
 <div>
   <div class="container" ng-hide="loggedIn()">
-    <div ng-include src="outer"></div>
+    <div ng-include src='"/templates/outer.html"'></div>
   </div>
 
   <div class="container" ng-show="loggedIn()">
-    <div ng-include src="inner"></div>
+    <div ng-include src='"/templates/timeline.html"'></div>
   </div>
 </div>

@@ -58,12 +58,12 @@
    test-user-6])
 
 (def test-team-1
-  {:name "darg"
+  {:name "Darg"
    :email "test.api@darg.io"})
 
 (def test-team-2
-  {:name "Robotocorp"
-   :email "rcorp@darg.io"})
+  {:name "Standard Treasury"
+   :email "st@darg.io"})
 
 (def test-team-3
   {:name "Jake n Cake"
@@ -104,12 +104,20 @@
    :teams_id 1
    :task "Some folks call it a kaiser blade, me I call it a sling blade"})
 
+(def test-task-6
+  {:date (c/to-sql-time (t/local-date 2012 5 18))
+   :users_id 4
+   :teams_id 2
+   :task "Got a banking charter!"})
+
 (def test-tasks
   [test-task-1
    test-task-2
    test-task-3
    test-task-4
-   test-task-5])
+   test-task-5
+   test-task-6
+   ])
 
 (def test-team-user-pair-1
   {:users_id 1

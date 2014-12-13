@@ -44,12 +44,16 @@ darg.controller('DargUserCtrl',
         })
     };
 
-    getDefaultTeam = function(current_user) {
-        if (current_user.teams.length == 0) {
-            return null; 
-        } else {
-            return current_user.teams[0].id;
-        }
+    getDefaultTeam = function() {
+        if (user.info != null) {
+            if (user.info.teams.length == 0) {
+                return null; 
+            } else if ($routeParams.teamId != null) {
+                return $routeParams.teamId
+            } else {
+                return user.info.teams[0].id;
+            }
+        };
     };
 
     $scope.getCurrentUser = function() {
@@ -60,18 +64,15 @@ darg.controller('DargUserCtrl',
         .success(function(data) {
             user.info = data;
             $scope.CurrentUser = data;
-            user.team = getDefaultTeam(user.info);
+            user.team = getDefaultTeam();
         })
-        .error(function(data) {
-            console.log("Failed to get current user!");
-            console.log(data);
-        });
     };
 
     $scope.gravatars = {
         "navbar": null,
         "timeline": null
     }
+
     $scope.loadGravatar = function(target, size) {
         $http({
             method: "post",
@@ -83,7 +84,6 @@ darg.controller('DargUserCtrl',
             $scope.gravatars[target] = data;
         });
     };
-
 
     $scope.ResetForm = {
         "email": ""
@@ -110,15 +110,21 @@ darg.controller('DargUserCtrl',
         });
     };
 
-    /* Watchers */
+    /* watchers */
     $scope.$watch(function() {
         return user.loggedIn()
     }, function(oldValue, newValue) {
-        if ($scope.loggedIn() == true) {
+        if (user.loggedIn() == true) {
             $scope.getCurrentUser();
             $scope.loadGravatar("navbar", 40);
             $scope.loadGravatar("timeline", 100);
         }
+    });
+
+    $scope.$watch(function() {
+        return getDefaultTeam()
+    }, function(oldValue, newValue) {
+        user.team = getDefaultTeam();
     });
 }]);
 

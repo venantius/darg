@@ -152,24 +152,35 @@
 
 ;; tasks
 
-(defn fetch-tasks-by-date
-  "Find tasks for this user by date"
-  [user date]
+(defn fetch-tasks-by-team-and-date
+  "Find tasks for this user by date and team"
+  [user team-id date]
   (select db/tasks
           (fields :id :date :users_id :teams_id :task)
           (where {:users_id (:id user)
-                  :date (c/to-sql-time date)})))
+                  :date (c/to-sql-time date)
+                  :teams_id team-id})))
 
+;; TODO: Fix this so that you can filter by team if you want
+;; https://github.com/ursacorp/darg/issues/184
 (defn fetch-task-dates
   "Returns a list of dates that a user posted tasks. Useful for timeline
   generation."
-  [user-id]
-  (let [db-results (select db/tasks
-                           (fields :date)
-                           (where {:users_id user-id})
-                           (order :date :desc)
-                           (group :date))]
-    (map :date db-results)))
+  ([user-id]
+   (let [db-results (select db/tasks
+                            (fields :date)
+                            (where {:users_id user-id})
+                            (order :date :desc)
+                            (group :date))]
+     (map :date db-results)))
+  ([user-id team-id]
+   (let [db-results (select db/tasks
+                            (fields :date)
+                            (where {:users_id user-id
+                                    :teams_id team-id})
+                            (order :date :desc)
+                            (group :date))]
+     (map :date db-results))))
 
 (defn authenticate
   "Authenticate this user. Returns true if password is valid, else nil"

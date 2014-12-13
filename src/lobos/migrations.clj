@@ -53,14 +53,14 @@
   (up [] (create
            (table :tasks
                   (integer :id :auto-inc :primary-key)
-                  (timestamp :date :not-null)
+                  (date :date :not-null)
                   (integer :users_id [:refer :users :id :on-delete :set-null])
                   (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null)
                   (text :task))))
   (down [] (drop (table :tasks))))
 
 (defmigration add-github-repos-table
-  (up [] (create 
+  (up [] (create
            (table :github_repos
                   (integer :id :primary-key)
                   (text :name :not-null)
@@ -114,7 +114,7 @@
   (down [] (drop (table :github_issues))))
 
 (defmigration add-github-pull_requests-table
-  (up [] (create 
+  (up [] (create
            (table :github_pull_requests
                   (integer :id :auto-inc :primary-key)
                   (integer :github_users_id [:refer :github_users :id :on-delete :set-null])
