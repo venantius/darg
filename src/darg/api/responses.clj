@@ -29,3 +29,8 @@
   [message]
   {:status 409
    :body {:message message}})
+
+(defn server-error
+  [message]
+  {:status 500
+   :body {:message message}})

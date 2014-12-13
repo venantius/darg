@@ -15,16 +15,16 @@
 
 (defentity team-users
   (table :team_users)
-  (has-many teams {:FK :teams_id})
-  (has-many users {:FK :users_id}))
+  (has-many teams {:fk :teams_id})
+  (has-many users {:fk :users_id}))
 
 (defentity tasks
-  (belongs-to users {:FK :users_id})
-  (belongs-to teams {:FK :teams_id}))
+  (belongs-to users {:fk :users_id})
+  (belongs-to teams {:fk :teams_id}))
 
 (defentity password-reset-tokens
   (table :password_reset_tokens)
-  (belongs-to users {:FK :users_id}))
+  (belongs-to users {:fk :users_id}))
 
 (defentity github-repos 
   (table :github_repos)
@@ -36,7 +36,7 @@
 (defentity github-users
   (table :github_users)
   (has-one users)
-  (belongs-to github-tokens)
+  (belongs-to github-tokens) 
   (has-many github-issues)
   (has-many github-pushes)
   (has-many github-pull-requests))
@@ -47,19 +47,19 @@
 
 (defentity team-repos
   (table :team_repos)
-  (has-many teams {:FK :teams_id}))
+  (has-many teams {:fk :teams_id}))
 
 (defentity github-issues
   (table :github_issues)
-  (belongs-to github-users {:FK :github_users_id})
-  (belongs-to github-repos {:FK :github_repos_id}))
+  (belongs-to github-users)
+  (belongs-to github-repos {:fk :github_repos_id}))
 
 (defentity github-pushes
   (table :github_pushes)
-  (belongs-to github-users {:FK :github_users_id})
-  (belongs-to github-repos {:FK :github_repos_id}))
+  (belongs-to github-users)
+  (belongs-to github-repos {:fk :github_repos_id}))
 
 (defentity github-pull-requests
   (table :github_pull_requests)
-  (belongs-to github-users {:FK :github_users_id})
-  (belongs-to github-repos {:FK :github_repos_id}))
+  (belongs-to github-users)
+  (belongs-to github-repos {:fk :github_repos_id}))

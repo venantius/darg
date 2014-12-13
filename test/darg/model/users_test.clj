@@ -48,7 +48,7 @@
   (is (users/user-in-team? 3 2)))
 
 (deftest fetch-dates-works
- (is (= (users/fetch-task-dates 4)
+  (is (= (users/fetch-task-dates 4)
          (list
            (c/to-sql-time (t/local-date 2012 05 17))
            (c/to-sql-time (t/local-date 2012 02 16))))))

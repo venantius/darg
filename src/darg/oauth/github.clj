@@ -1,0 +1,100 @@
+(ns darg.oauth.github
+  (:require [cheshire.core :refer [parse-string generate-string]]
+            [clojure.tools.logging :as logging]
+            [darg.model.users :as users]
+            [darg.model.github-users :as gh-users]
+            [darg.model.github-tokens :as gh-tokens]
+            [darg.api.responses :as responses]
+            [org.httpkit.client :as http]
+            [slingshot.slingshot :refer [try+]]
+            [tentacles.oauth :as t-oauth]))
+
+(def client-id (System/getenv "DARG_CLIENT_ID"))
+(def client-secret (System/getenv "DARG_CLIENT_SECRET"))
+
+;; Authorizations API, Used to create and manage OAuth authorization tokens for test cases
+
+(defn create-authorization
+  [username password note]
+  (let [options {:auth (str username ":" password)
+                 :client_id client-id
+                 :client_secret client-secret
+                 :note note
+                 :scopes "user:email"}]
+    ; Simulate web-flow OAuth response
+    {:body (-> (t-oauth/create-auth options)
+               (select-keys [:scopes :token :id])
+               (clojure.set/rename-keys {:token :access_token})
+               (cheshire.core/generate-string))}))
+
+(defn delete-authorization
+  [username password id]
+  (let [options {:auth (str username ":" password)}]
+    (t-oauth/delete-auth id options)))
+
+(defn list-authorizations
+  [username password]
+  (let [options {:auth (str username ":" password)}]
+    (t-oauth/authorizations options)))
+
+(defn list-authorization-ids
+  [username password]
+  (let [options {:auth (str username ":" password)}]
+    (map :id (t-oauth/authorizations options))))
+
+(defn delete-all-authorizations
+  [username password]
+  (let [token-ids (list-authorization-ids username password)]
+    (for [x token-ids] 
+      (delete-authorization username password x))))
+
+; Callback
+
+(defn parse-oauth-response
+  [resp]
+  (-> resp 
+      :body
+      (cheshire.core/parse-string true)))
+
+;; Parses Github OAuth response and updates tables
+
+(defn insert-and-link-github-user
+  [userid resp]
+  (let [access-token (:access_token (parse-oauth-response resp))]
+    (gh-tokens/insert-github-token {:gh_token access-token})
+    ;Link token to github user
+    (let [github-user (assoc-in (gh-users/github-api-get-current-user access-token)
+                                [:github_tokens_id]
+                                (gh-tokens/fetch-github-token-id {:gh_token access-token}))
+          github-user-id (:id github-user)]
+      ;if a github user already exists, update it if not, create it
+      (if (empty? (gh-users/fetch-github-user-by-id github-user-id))
+        (gh-users/create-github-user github-user)
+        (gh-users/update-github-user github-user-id github-user))
+      (users/link-github-user userid (:id github-user)))))
+
+;; Callback Function. Called after the user completes their github login.
+
+(defn callback
+  [request]
+  (let [userid (-> request :user :id)
+        options {:headers {"Accept" "application/json"}
+                 :query-params {:code (-> request :params :code)
+                                :client_id client-id
+                                :client_secret client-secret}}
+        {:keys [status body error] :as resp} @(http/post "https://github.com/login/oauth/access_token" options)]
+    (cond (= (:status resp) 200)
+          (try
+            (insert-and-link-github-user userid resp)
+            (responses/ok "Github integration successful!")
+            (catch Exception e
+              (logging/errorf "Failed to save github user with exception: %s" e)
+              (responses/server-error "Unable to complete Github integration")))
+          :else
+          {:status (:status resp)
+           :body (:error resp)})))
+
+
+
+
+

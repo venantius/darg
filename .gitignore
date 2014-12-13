@@ -8,3 +8,4 @@ TODO.txt
 *.jar
 *.class
 /.lein*
+.nrepl-port

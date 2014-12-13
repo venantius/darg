@@ -13,7 +13,7 @@
 (defmigration add-github-tokens-table
   (up [] (create
            (table :github_tokens
-                  (integer :id :primary-key)
+                  (integer :id :auto-inc :primary-key)
                   (text :gh_token :not-null)
                   (boolean :repo_scope (default false)))))
   (down [] (drop (table :github_tokens))))
@@ -22,9 +22,9 @@
   (up [] (create
            (table :github_users
                   (integer :id :primary-key)
-                  (text :github_username)
-                  (text :github_email)
-                  (text :github_gravatar_url)
+                  (text :gh_login)
+                  (text :gh_email)
+                  (text :gh_avatar_url)
                   (integer :github_tokens_id [:refer :github_tokens :id :on-delete :set-null]))))
   (down [] (drop (table :github_users))))
 
@@ -37,7 +37,7 @@
                   (text :name :not-null)
                   (boolean :admin (default false))
                   (boolean :bot (default true))
-                  (integer :github_users_id [:refer :github_users :id])
+                  (integer :github_users_id [:refer :github_users :id :on-delete :set-null])
                   (boolean :active (default false)))))
   (down [] (drop (table :users))))
 
