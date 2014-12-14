@@ -170,9 +170,32 @@ darg.controller('DargTimelineCtrl',
         return Date.parse(date);
     }
 
+    /* 
+     * Display this user if they have content, or if they're the currently
+     * logged-in user 
+     */
+    $scope.showUser = function(user) {
+        if ($scope.userHasTasks(user) || $scope.isCurrentUser(user.id)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /*
+     * Does this user have any tasks listed for today?
+     */
+    $scope.userHasTasks = function(user) {
+        if (user.tasks.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     $scope.GetTimeline = function() {
         if (user.team != null) {
-            url = "/api/v1/darg/" + user.team
+            url = "/api/v1/darg/team/" + user.team
             $http({
                 method: "get",
                 url: url
@@ -292,6 +315,14 @@ darg.controller('DargUserCtrl',
             $scope.UserSettingsProfile.email = data.email;
             user.team = getDefaultTeam();
         })
+    };
+
+    $scope.isCurrentUser = function(id) {
+        if (id == user.info.id) {
+            return true;
+        } else {
+            return false;
+        }
     };
 
     $scope.gravatars = {

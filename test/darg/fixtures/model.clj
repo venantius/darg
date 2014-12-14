@@ -8,21 +8,21 @@
 
 (def test-user-1
   {:email "savelago@gmail.com"
-   :name "yawn"
+   :name "John Lago"
    :active true
    :admin true
    :password (encrypt-password "butts")})
 
 (def test-user-2
   {:email "domo@darg.io"
-   :name "domodomo"
+   :name "Domo the Robot"
    :active true
    :admin false
    :password (encrypt-password "cigarettes")})
 
 (def test-user-3
   {:email "arrigato@darg.io"
-   :name "arrigato"
+   :name "The Couch"
    :active true
    :admin false
    :password (encrypt-password "nihon")})
@@ -84,38 +84,44 @@
    test-team-3])
 
 (def test-task-1
-  {:date (c/to-sql-time (t/local-date 2012 2 16))
+  {:date (c/to-sql-date (t/today))
    :users_id 4
    :teams_id 1
    :task "Do a good deed everyday"})
 
 (def test-task-2
-  {:date (c/to-sql-time (t/local-date 2012 2 16))
+  {:date (c/to-sql-date (t/today))
    :users_id 2
    :teams_id 2
    :task "Destroy all humans"})
 
 (def test-task-3
-  {:date (c/to-sql-time (t/local-date 2012 5 17))
+  {:date (c/to-sql-date (t/minus (t/today) (t/days 1)))
    :users_id 4
    :teams_id 1
    :task "Salute the shorts"})
 
 (def test-task-4
- {:date (c/to-sql-time (t/local-date 2012 3 19))
+ {:date (c/to-sql-date (t/today))
   :users_id 2
   :teams_id 3
   :task "Once more into the breach"})
 
 (def test-task-5
-  {:date (c/to-sql-time (t/local-date 2012 5 17))
+  {:date (c/to-sql-date (t/minus (t/today) (t/days 1)))
    :users_id 4
    :teams_id 1
    :task "Some folks call it a kaiser blade, me I call it a sling blade"})
 
 (def test-task-6
-  {:date (c/to-sql-time (t/local-date 2012 5 18))
+  {:date (c/to-sql-date (t/today))
    :users_id 4
+   :teams_id 2
+   :task "Defeated the ice king."})
+
+(def test-task-7
+  {:date (c/to-sql-date (t/today))
+   :users_id 6
    :teams_id 2
    :task "Got a banking charter!"})
 
@@ -126,6 +132,7 @@
    test-task-4
    test-task-5
    test-task-6
+   test-task-7
    ])
 
 (def test-team-user-pair-1
@@ -161,6 +168,16 @@
    :teams_id 3
    :admin false})
 
+(def test-team-user-pair-8
+  {:users_id 6
+   :teams_id 1
+   :admin true})
+
+(def test-team-user-pair-9
+  {:users_id 6
+   :teams_id 2
+   :admin true})
+
 (def test-team-user-pairs
   [test-team-user-pair-1
    test-team-user-pair-2
@@ -168,7 +185,9 @@
    test-team-user-pair-4
    test-team-user-pair-5
    test-team-user-pair-6
-   test-team-user-pair-7])
+   test-team-user-pair-7
+   test-team-user-pair-8
+   test-team-user-pair-9])
 
 (def test-password-reset-token-1
   {:token "XBT6XI7WAHPX4NQDHBWGXPP2YCJSXS7Q"

@@ -1,23 +1,47 @@
 (ns darg.model.dargs
-  (:require [darg.model.users :as users]
-            [darg.model.tasks :as tasks]
-            [darg.util :as util]
+  (:require [clj-time.coerce :as c]
             [clojure.tools.logging :as logging]
-            ))
+            [darg.model :as model]
+            [darg.model.users :as users]
+            [darg.model.tasks :as tasks]
+            [darg.model.teams :as teams]
+            [darg.util :as util]
+            [darg.util.date :as date-util]
+            [korma.core :refer [fields select with where]]))
 
-(defn active-dates
-  "Figure out which dates have user activity"
-  ([user-id]
-   (users/fetch-task-dates user-id))
-  ([user-id team-id]
-   (users/fetch-task-dates user-id team-id)))
+(defn team-darg-by-date
+  "Generate a darg for a specific team for a specific dates"
+  [team-id team-user-ids date]
+  (select model/users
+          (fields :id :name)
+          (with model/tasks
+            (where {:teams_id team-id
+                    :date (c/to-sql-date date)}))
+          (where {:id [in team-user-ids]})))
 
-(defn timeline
-  "Build a darg timeline. This is a naive implementation for now that can be
+(defn- formatted-team-darg-by-date
+  "A helper function for formatting team dargs."
+  [team-id team-user-ids date]
+  {:date (util/sql-datetime->date-str date)
+   :users (vec (team-darg-by-date team-id team-user-ids date))})
+
+(defn team-timeline
+  "Build a darg timeline for a given team."
+  [team-id]
+  (let [team-user-ids (map :id (teams/fetch-team-users team-id))
+        dates (map c/to-sql-date (date-util/date-range 5))
+        date (first dates)]
+    (map (partial
+           formatted-team-darg-by-date
+           team-id team-user-ids) dates)))
+
+(defn personal-timeline
+  "Build a darg timeline for a single person on a single team.
+  This is a naive implementation for now that can be
   expanded to include other darg subtypes as we go."
   [user-id team-id]
   (let [user (users/fetch-user-by-id user-id)
-        dates (active-dates user-id team-id)
+        dates (map c/to-sql-date (date-util/date-range 5))
         tasks-by-date (map (partial users/fetch-tasks-by-team-and-date user team-id) dates)]
     (reduce conj []
       (map (fn [k t] {:date (util/sql-datetime->date-str k)

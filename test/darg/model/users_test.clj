@@ -3,6 +3,7 @@
             [clj-time.core :as t]
             [clojure.test :refer :all]
             [darg.fixtures :refer [with-db-fixtures]]
+            [darg.fixtures.model :as fixtures]
             [darg.model.password-reset-tokens :as password-reset-tokens]
             [darg.model.users :as users]
             [darg.model.tasks :as tasks]
@@ -55,13 +56,10 @@
 
 (deftest fetch-tasks-by-team-and-date-works
   (let [user (users/fetch-user-by-id 4)
-        date (t/local-date 2012 02 16)
+        date (c/from-sql-date (:date fixtures/test-task-1))
         date_2 (t/local-date 2012 02 17)]
     (is (= (dissoc (first (users/fetch-tasks-by-team-and-date user 1 date)) :id)
-           {:task "Do a good deed everyday"
-            :teams_id 1
-            :users_id 4
-            :date (c/to-sql-time (t/local-date 2012 02 16))}))
+           fixtures/test-task-1))
     (is (= (users/fetch-tasks-by-team-and-date user 1 date_2)
            (list)))))
 

@@ -56,6 +56,7 @@
 
   ;; api - core
   (GET    "/api/v1/darg/:team-id" request (api/get-darg request))
+  (GET    "/api/v1/darg/team/:team-id" request (api/get-team-darg request))
   (POST   "/api/v1/darg" request (api/post-darg request))
   (GET    "/api/v1/darg/user/:user-id" request (api/get-user-darg request))
 
