@@ -6,10 +6,6 @@
             [org.httpkit.client :as http]
             [tentacles.users :as t-users]))
 
-(def gh-user-fields `[:login :id :avatar_url])
-(def gh-user-fields-rename-map {:login :gh_login 
-                                :avatar_url :gh_avatar_url})
-
 (defn create-github-user
   "Insert a user into the database.
   
@@ -50,7 +46,7 @@
   [id]
   (first (select db/github-users (where {:id id}))))
 
-(defn delete-user
+(defn delete-github-user
   "Deletes a github-user from the database
   Takes a github-user-id as an integer"  
   [id]
@@ -66,14 +62,21 @@
 
 ;; Github API - User
 
+(defn gh-api-user->github_user
+  "Renames github user api response for inclusion in database"
+  [api-response]
+  (let [gh-user-fields-rename-map {:login :gh_login 
+                                   :avatar_url :gh_avatar_url}
+        gh-user-fields `[:login :id :avatar_url]]
+    (clojure.set/rename-keys (select-keys api-response gh-user-fields) gh-user-fields-rename-map)))
+
 (defn github-api-get-current-user
   [access-token]
-  (let [options {:oauth_token access-token}]
-    (clojure.set/rename-keys (select-keys (t-users/me options) gh-user-fields) gh-user-fields-rename-map)))
+  (gh-api-user->github_user (t-users/me {:oauth_token access-token})))
 
 (defn github-api-get-user
   [github-username]
-  (clojure.set/rename-keys (select-keys (t-users/user github-username) gh-user-fields) gh-user-fields-rename-map))
+  (gh-api-user->github_user (t-users/user github-username)))
 
 
 

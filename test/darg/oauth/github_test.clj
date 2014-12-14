@@ -8,29 +8,30 @@
             [darg.model.github-tokens :as gh-tokens]
             [darg.model.users :as users]
             [darg.oauth.github :as oauth-github]
+            [environ.core :as env]
             [tentacles.users :as t-users]))
 
-; Note: We cannot test the full web oauth flow, so we will generate an oAuth token using the authroizations API. Production environments should use the web authorization flow and callback function.
+; Note: We cannot test the full web oauth flow, so we will generate an oAuth token using the authorizations API. Production environments should use the web authorization flow and callback function.
 
 (with-db-fixtures)
 
-(def test-username (str (System/getenv "DARG_GH_USERNAME"))) ;Github username
-(def test-password (str (System/getenv "DARG_GH_PASSWORD"))) ;Github password
-(def test-github-oauth (oauth-github/create-authorization test-username test-password "Temp Token For Testing22"))
+(def test-username (str (env/env :darg-gh-username))) ;Github username
+(def test-password (str (env/env :darg-gh-password))) ;Github password
+(def test-github-oauth (oauth-github/create-auth-token test-username test-password "Temp Token For Testing22"))
 (def access-token (:access_token (oauth-github/parse-oauth-response test-github-oauth)))
 
-(defn test-setup
+(defn cleanup-auth-tokens
   [f]
   (logging/info "Build Up")
   (f)
   (logging/info "Tear Down")
-  (oauth-github/delete-all-authorizations (str (System/getenv "DARG_GH_USERNAME")) 
-                                          (str (System/getenv "DARG_GH_PASSWORD"))))
+  (oauth-github/delete-all-auth-tokens (str (env/env :darg-gh-username)) 
+                                       (str (env/env :darg-gh-password))))
 
-(use-fixtures :once test-setup)
+(use-fixtures :once cleanup-auth-tokens)
 
 (deftest we-can-successfully-get-an-oauth-token
-  (is access-token))
+  (is (some? access-token)))
 
 (deftest we-can-insert-and-link-a-github-user
   (let [userid 3]
