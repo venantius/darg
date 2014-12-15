@@ -62,8 +62,8 @@
   (update-github-user github-users-id {:github_tokens_id github-tokens-id}))
 
 (defn fetch-github-user-token
-  [github-user-id]
   "Returns the access token for a given user"
+  [github-user-id]
   (:gh_token (first (select db/github-users (where {:id github-user-id}) 
                             (with db/github-tokens (fields :gh_token))))))
 
