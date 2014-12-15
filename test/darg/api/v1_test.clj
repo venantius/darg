@@ -73,7 +73,7 @@
     (is (= (:status auth-response) 200))
     (is (not (empty? (users/fetch-user {:email "dummy@darg.io"}))))
     (is (some #{"logged-in=true;Path=/"}
-    (get (:headers auth-response) "Set-Cookie")))))
+              (get (:headers auth-response) "Set-Cookie")))))
 
 (deftest i-cant-write-the-same-thing-twice
   (let [auth-response (core/app (mock-request/request
@@ -87,12 +87,12 @@
   (let [auth-response (core/app (mock-request/request
                                   :post "/api/v1/signup"
                                   {:email "quasi-user@darg.io"}))]
-  (is (= (json/parse-string (:body auth-response) true)
-         {:message "The signup form needs an e-mail, a name, and a password."}))
-  (is (= (:status auth-response) 400))
-  (is (empty? (users/fetch-user {:email "quasi-user@darg.io"})))
-  (is (not (some #{"logged-in=true;Path=/"}
-                 (get (:headers auth-response) "Set-Cookie"))))))
+    (is (= (json/parse-string (:body auth-response) true)
+           {:message "The signup form needs an e-mail, a name, and a password."}))
+    (is (= (:status auth-response) 400))
+    (is (empty? (users/fetch-user {:email "quasi-user@darg.io"})))
+    (is (not (some #{"logged-in=true;Path=/"}
+                   (get (:headers auth-response) "Set-Cookie"))))))
 
 ;GET v1/darg
 
@@ -155,9 +155,9 @@
                         :request-method :get
                         :params {:user-id "2"}}
         response (api/get-user-darg sample-request)]
-     (is (= (:status response) 401))
-     (is (= (:body response)
-            {:message "Not authorized."}))))
+    (is (= (:status response) 401))
+    (is (= (:body response)
+           {:message "Not authorized."}))))
 
 ;; GET api/v1/user/:userid/profile
 
@@ -175,9 +175,9 @@
                         :request-method :get
                         :params {:user-id "2" :resource "profile"}}
         response (api/get-user-profile sample-request)]
-     (is (= (:status response) 401))
-     (is (= (:body response)
-            {:message "Not authorized."}))))
+    (is (= (:status response) 401))
+    (is (= (:body response)
+           {:message "Not authorized."}))))
 
 ;; api/v1/email
 
@@ -194,8 +194,8 @@
 
 (deftest unauthenticated-emails-return-401
   (let [email (assoc email-fixtures/test-email-2
-                     :token
-                     "neener")
+                :token
+                "neener")
         response (core/app (mock-request/request
                              :post
                              "/api/v1/email"
@@ -207,10 +207,10 @@
 (deftest a-user-can-only-post-via-email-to-a-team-they-belong-to
   (testing "a user on the team returns true"
     (let [email (assoc email-fixtures/test-email-2
-                       :from
-                       (:email model-fixtures/test-user-1)
-                       :recipient
-                       (:email model-fixtures/test-team-1))
+                  :from
+                  (:email model-fixtures/test-user-1)
+                  :recipient
+                  (:email model-fixtures/test-team-1))
           response (core/app (mock-request/request
                                :post
                                "/api/v1/email"
@@ -220,10 +220,10 @@
              (json/encode {:message "E-mail successfully parsed."})))))
   (testing "a user not on the team returns false"
     (let [email (assoc email-fixtures/test-email-2
-                       :from
-                       (:email model-fixtures/test-user-1)
-                       :recipient
-                       (:email model-fixtures/test-team-3))
+                  :from
+                  (:email model-fixtures/test-user-1)
+                  :recipient
+                  (:email model-fixtures/test-team-3))
           response (core/app (mock-request/request
                                :post
                                "/api/v1/email"

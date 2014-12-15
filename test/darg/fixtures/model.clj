@@ -32,7 +32,8 @@
    :name "Finn the Human"
    :active true
    :admin false
-   :password (encrypt-password "samurai")})
+   :password (encrypt-password "samurai")
+   :github_users_id 10094188})
 
 (def test-user-5
   {:email "test@darg.io"
@@ -56,6 +57,14 @@
    test-user-4
    test-user-5
    test-user-6])
+
+(def test-github-user-1
+  {:gh_login "dargtester1"
+   :id 10094188
+   :gh_avatar_url "https://avatars.githubusercontent.com/u/10094188?v=3"})
+
+(def test-github-users
+  [test-github-user-1])
 
 (def test-team-1
   {:name "Darg"
