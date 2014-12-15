@@ -4,7 +4,8 @@
             [clojure.set :refer [rename-keys]]
             [korma.core :refer :all]
             [org.httpkit.client :as http]
-            [tentacles.users :as t-users]))
+            [tentacles.users :as t-users]
+            [tentacles.repos :as t-repos]))
 
 (defn create-github-user
   "Insert a user into the database.
@@ -60,13 +61,18 @@
   [github-users-id github-tokens-id]
   (update-github-user github-users-id {:github_tokens_id github-tokens-id}))
 
+(defn fetch-github-user-token
+  [github-user-id]
+  "Returns the access token for a given user"
+  (:gh_token (first (select db/github-users (where {:id github-user-id}) 
+                            (with db/github-tokens (fields :gh_token))))))
+
 ;; Github API - User
 
 (defn gh-api-user->github_user
   "Renames github user api response for inclusion in database"
   [api-response]
-  (let [gh-user-fields-rename-map {:login :gh_login 
-                                   :avatar_url :gh_avatar_url}
+  (let [gh-user-fields-rename-map {:login :gh_login :avatar_url :gh_avatar_url}
         gh-user-fields `[:login :id :avatar_url]]
     (clojure.set/rename-keys (select-keys api-response gh-user-fields) gh-user-fields-rename-map)))
 
@@ -78,6 +84,11 @@
   [github-username]
   (gh-api-user->github_user (t-users/user github-username)))
 
+;; Github API - Repos
+
+(defn github-api-get-current-user-repos
+  [github-userid]
+  (t-repos/repos {:oauth_token (fetch-github-user-token github-userid)}))
 
 
 

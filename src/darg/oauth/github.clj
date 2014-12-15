@@ -12,9 +12,8 @@
             [tentacles.oauth :as t-oauth]))
 
 
-
-(def client-id (env/env :darg-client-id))
-(def client-secret (env/env :darg-client-secret))
+(def client-id (env/env :darg-gh-client-id))
+(def client-secret (env/env :darg-gh-client-secret))
 
 ; Callback
 
@@ -29,7 +28,6 @@
 (defn insert-and-link-github-user
   "This function is usually called from darg.oauth.github/callback. Takes a Github OAuth response and darg userid, and updates the database with the access-token and related Github user information. The Github user and Github token are then linked to the provided userid"
   [userid body]
-  (logging/info body)
   (let [access-token (:access_token (parse-oauth-response body))]
     (gh-tokens/create-github-token {:gh_token access-token})
     ;Link token to github user
