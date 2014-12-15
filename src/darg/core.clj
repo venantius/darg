@@ -34,6 +34,7 @@
   (GET    "/integrations"   [] darg-spa)
   (GET    "/password_reset" [] darg-spa)
   (GET    "/settings"       [] darg-spa)
+  (GET    "/settings/:settings-page"       [] darg-spa)
 
   ;; debug
   (GET    "/debug" request (debug request))
@@ -61,6 +62,9 @@
   (POST   "/api/v1/task" request (api/post-task request))
 
   (GET    "/api/v1/user" request (api/get-user request))
+  (POST   "/api/v1/user" request (api/update-user request))
+
+
   (GET    "/api/v1/user/:user-id" request (api/get-user-profile request))
   (route/resources "/"))
 

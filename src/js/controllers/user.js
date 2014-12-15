@@ -44,6 +44,24 @@ darg.controller('DargUserCtrl',
         })
     };
 
+    $scope.UserSettingsProfile = {
+        "name": "",
+        "email": ""
+    };
+
+    $scope.updateUserProfile = function() {
+        $http({
+            method: "post",
+            url: "/api/v1/user",
+            data: $.param($scope.UserSettingsProfile),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+            $scope.loadGravatar("navbar", 40);
+            $scope.loadGravatar("timeline", 100);
+        })
+    };
+
     getDefaultTeam = function() {
         if (user.info != null) {
             if (user.info.teams.length == 0) {
@@ -64,6 +82,8 @@ darg.controller('DargUserCtrl',
         .success(function(data) {
             user.info = data;
             $scope.CurrentUser = data;
+            $scope.UserSettingsProfile.name = data.name;
+            $scope.UserSettingsProfile.email = data.email;
             user.team = getDefaultTeam();
         })
     };

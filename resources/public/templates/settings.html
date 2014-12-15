@@ -1,19 +1,21 @@
-<div class="container">
+<div class="container" ng-controller="DargSettingsCtrl">
   <div class="row ptl mtl pbl mbl">
   </div>
   <div class="row ptl mtl pbl mbl">
-    <div class="col-xs-3">
+    <div class="col-xs-2">
       <div class="btn-group-vertical">
+
+        <!-- Buttons reference is in /docs/examples/buttons.html for Flat-UI -->
+        <!-- 
         <div class="btn btn-primary btn-group">
-          <!-- Buttons reference is in /docs/examples/buttons.html for Flat-UI -->
           Settings
         </div>
-        <button class="btn btn-inverse" type="button">Profile</button><!-- #TODO -->
-        <button class="btn btn-inverse" type="button">Account</button>
-        <button class="btn btn-inverse" type="button">Export</button>
+        -->
+        <button class="btn btn-inverse" type="button" ng-click="gotoSettingsProfile()">Profile</button>
+        <button class="btn btn-inverse" type="button" ng-click="gotoSettingsAccount()">Account</button>
         <div class="btn-group">
           <button data-toggle="dropdown" class="btn btn-inverse dropdown-toggle" type="button" id="btnGroupVerticalDrop2">
-            Dropdown
+            Teams
             <span class="caret"></span>
           </button>
           <ul aria-labelledby="btnGroupVerticalDrop2" role="menu" class="dropdown-menu">
@@ -24,7 +26,16 @@
       </div>
     </div>
     <div class="col-xs-9 ptl">
-      settings go here
+      {{DargSettingsCtrl.isProfile()}}
+
+      <div class="container" ng-show="isSettingsProfile()">
+        <div ng-include src='"/templates/settings/profile.html"'></div>
+      </div>
+
+      <div class="container" ng-show="isSettingsAccount()">
+        <div ng-include src='"/templates/settings/account.html"'></div>
+      </div>
+
     </div>
   </div>
 
