@@ -2,7 +2,7 @@
   (:require [cheshire.core :as json]
             [clojure.test :refer :all]
             [darg.api.v1 :as api]
-            [darg.core :as core]
+            [darg.process.server :as server]
             [darg.db :as db]
             [darg.fixtures :refer [with-db-fixtures]]
             [darg.fixtures.email :as email-fixtures]
@@ -19,7 +19,7 @@
 ;; /api/v1/login
 
 (deftest i-can-login-and-it-set-my-cookies
-  (let [auth-response (core/app (mock-request/request
+  (let [auth-response (server/app (mock-request/request
                                   :post "/api/v1/login"
                                   {:email (:email model-fixtures/test-user-4)
                                    :password "samurai"}))]
@@ -29,7 +29,7 @@
               (get (:headers auth-response) "Set-Cookie")))))
 
 (deftest i-can't-login-and-it-don't-set-no-cookies
-  (let [auth-response (core/app (mock-request/request
+  (let [auth-response (server/app (mock-request/request
                                   :post "/api/v1/login"
                                   {:email (:email model-fixtures/test-user-5)
                                    :password (:password model-fixtures/test-user-5)}))]
@@ -85,7 +85,7 @@
 ;; /api/v1/signup
 
 (deftest i-can-register-and-it-wrote-to-the-database-and-cookies
-  (let [auth-response (core/app (mock-request/request
+  (let [auth-response (server/app (mock-request/request
                                   :post "/api/v1/signup"
                                   {:email "dummy@darg.io"
                                    :password "test"
@@ -98,7 +98,7 @@
               (get (:headers auth-response) "Set-Cookie")))))
 
 (deftest i-cant-write-the-same-thing-twice
-  (let [auth-response (core/app (mock-request/request
+  (let [auth-response (server/app (mock-request/request
                                   :post "/api/v1/signup"
                                   model-fixtures/test-user-4))]
     (is (= (json/parse-string (:body auth-response) true)
@@ -106,7 +106,7 @@
     (is (= (:status auth-response) 409))))
 
 (deftest signup-failure-does-not-write-to-database-and-sets-no-cookies
-  (let [auth-response (core/app (mock-request/request
+  (let [auth-response (server/app (mock-request/request
                                   :post "/api/v1/signup"
                                   {:email "quasi-user@darg.io"}))]
     (is (= (json/parse-string (:body auth-response) true)
@@ -204,7 +204,7 @@
 ;; api/v1/email
 
 (deftest we-can-successfully-parse-a-posted-email
-  (let [response (core/app (mock-request/request
+  (let [response (server/app (mock-request/request
                              :post
                              "/api/v1/email"
                              email-fixtures/test-email-2))]
@@ -218,7 +218,7 @@
   (let [email (assoc email-fixtures/test-email-2
                 :token
                 "neener")
-        response (core/app (mock-request/request
+        response (server/app (mock-request/request
                              :post
                              "/api/v1/email"
                              email))]
@@ -233,7 +233,7 @@
                   (:email model-fixtures/test-user-1)
                   :recipient
                   (:email model-fixtures/test-team-1))
-          response (core/app (mock-request/request
+          response (server/app (mock-request/request
                                :post
                                "/api/v1/email"
                                email))]
@@ -246,7 +246,7 @@
                   (:email model-fixtures/test-user-1)
                   :recipient
                   (:email model-fixtures/test-team-3))
-          response (core/app (mock-request/request
+          response (server/app (mock-request/request
                                :post
                                "/api/v1/email"
                                email))]
