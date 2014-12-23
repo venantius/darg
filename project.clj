@@ -7,6 +7,7 @@
 
                  ;; repl
                  [org.clojure/tools.nrepl "0.2.5"]
+                 [org.clojure/tools.cli "0.3.1"]
 
                  ;; util
                  [environ "1.0.0"]

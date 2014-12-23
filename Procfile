@@ -1,1 +1,1 @@
-web: lein clean; lein trampoline run
+web: lein clean; lein trampoline run server
