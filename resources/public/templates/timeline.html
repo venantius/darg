@@ -34,30 +34,35 @@
             </li>
           </ul>
         </nav>
-          <ul class="list-group">
+
+        <ul class="list-group" ng-repeat="user in darg.users" ng-show="showUser(user)">
+
+          {{user.name}}
+          <div ng-show="userHasTasks(user)">
+
             <li class="timeline-type-header list-group-item">
               <span class="fui-list-numbered timeline-type-icon"></span>
               <span class="timeline-type">
                 Tasks
               </span>
             </li>
-            <li class="timeline-item list-group-item" ng-repeat="task in darg.tasks">
+
+            <li class="timeline-item list-group-item" ng-repeat="task in user.tasks">
               <span class="timeline-item-edit-icon fui-new"></span>
               <span class="timeline-item">
                 {{task.task}}
               </span>
             </li>
+          </div>
 
-            <!-- Enter new tasks -->
-            <div class="ptl mtl" ng-controller="DargTaskCreationCtrl">
-              <form class="task-form" ng-submit="PostTask(darg)">
-                <input type="text" placeholder="Left something out? Enter it here!" class="form-control" ng-model="TaskForm.task"/>
-              </form>
-            </div>
-          </ul>
-        </div>
+          <!-- Enter new tasks -->
+          <div class="ptl mtl" ng-controller="DargTaskCreationCtrl" ng-show="isCurrentUser(user.id)">
+            <form class="task-form" ng-submit="PostTask(darg)">
+              <input type="text" placeholder="Left something out? Enter it here!" class="form-control" ng-model="TaskForm.task"/>
+            </form>
+          </div>
+        </ul>
       </div>
     </div>
   </div>
 </div>
-

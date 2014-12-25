@@ -5,22 +5,50 @@
             [darg.fixtures :refer [with-db-fixtures]]
             [darg.fixtures.model :as fixture-data]
             [darg.model.dargs :as dargs]
-            [darg.model.users :as users]))
+            [darg.model.users :as users]
+            [darg.util :as util]))
 
 (with-db-fixtures)
 
-#_(deftest active-dates-works
-  (let [user (users/fetch-user-by-id 4)]
-    (is (= (dargs/active-dates user)
-           (list
-             (c/to-sql-time (t/local-date 2012 05 17))
-             (c/to-sql-time (t/local-date 2012 02 16)))))))
-
 (deftest timeline-works
-  (is (= (dargs/timeline 4 1)
-         [{:date "2012-05-17"
+  (is (= (dargs/personal-timeline 4 1)
+         [{:date (util/sql-datetime->date-str (:date fixture-data/test-task-1))
+           :tasks (list (assoc fixture-data/test-task-1 :id 1))}
+          {:date (util/sql-datetime->date-str (:date fixture-data/test-task-3))
            :tasks (list (assoc fixture-data/test-task-3 :id 3)
                         (assoc fixture-data/test-task-5 :id 5))}
-          {:date "2012-02-16"
-           :tasks (list (assoc fixture-data/test-task-1 :id 1))}]
-         )))
+          {:date (util/sql-datetime->date-str
+                   (c/to-sql-date
+                     (t/minus (t/today) (t/days 2))))
+           :tasks (list)}
+          {:date (util/sql-datetime->date-str
+                   (c/to-sql-date
+                     (t/minus (t/today) (t/days 3))))
+           :tasks (list)}
+          {:date (util/sql-datetime->date-str
+                   (c/to-sql-date
+                     (t/minus (t/today) (t/days 4))))
+           :tasks (list)}
+          ])))
+
+(deftest team-timeline-works
+  (is (= (first (dargs/team-timeline 1))
+         {:users [{:tasks (list)
+                   :name "John Lago"
+                   :id 1}
+                  {:tasks (list)
+                   :name "The Couch"
+                   :id 3}
+                  {:tasks (list
+                            {:task "Do a good deed everyday"
+                             :teams_id 1
+                             :users_id 4
+                             :date (:date fixture-data/test-task-1)
+                             :id 1})
+                   :name "Finn the Human"
+                   :id 4}
+                  {:tasks (list)
+                   :name "David Jarvis"
+                   :id 6}]
+          :date (util/sql-datetime->date-str (:date fixture-data/test-task-1))
+          })))

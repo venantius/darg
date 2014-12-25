@@ -161,7 +161,7 @@
   [{:keys [params user] :as request}]
   (let [team-id (-> params :team-id read-string)]
     (responses/ok
-      {:dargs (dargs/timeline (:id user) team-id)})))
+      {:dargs (dargs/personal-timeline (:id user) team-id)})))
 
 (defn post-darg
   "/api/v1/darg
@@ -215,9 +215,10 @@
   Method: GET
 
   Retrieve all dargs for a given team"
-  [{:keys [user] :as request}]
-  (responses/ok
-    {:dargs (dargs/timeline (:id user) nil)}))
+  [{:keys [params user] :as request}]
+  (let [team-id (-> params :team-id read-string)]
+    (responses/ok
+      {:dargs (dargs/team-timeline team-id)})))
 
 ;; v1/users
 ;; TODO: for both get-user and get-user-profile (which should probably be

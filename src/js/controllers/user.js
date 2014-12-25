@@ -88,6 +88,14 @@ darg.controller('DargUserCtrl',
         })
     };
 
+    $scope.isCurrentUser = function(id) {
+        if (id == user.info.id) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     $scope.gravatars = {
         "navbar": null,
         "timeline": null
