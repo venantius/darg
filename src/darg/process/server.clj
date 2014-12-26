@@ -1,6 +1,5 @@
 (ns darg.process.server
   "The Darg web server process"
-
   (:require [clojure.tools.cli :refer [parse-opts]]
             [clojure.tools.logging :as logging]
             [compojure.core :refer [defroutes context GET POST ANY]]
@@ -61,6 +60,7 @@
   (GET    "/api/v1/darg/:team-id" request (api/get-darg request))
   (POST   "/api/v1/darg" request (api/post-darg request))
   (GET    "/api/v1/darg/user/:user-id" request (api/get-user-darg request))
+  (GET    "/api/v1/darg/team/:team-id" request (api/get-team-darg request))
 
   (POST   "/api/v1/task" request (api/post-task request))
 
