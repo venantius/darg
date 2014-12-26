@@ -8,7 +8,6 @@
 (defn -main [& args]
   (let [{:keys [options arguments errrors summary]} (parse-opts args []
                                                                 :in-order true)]
-    (init/configure)
     (case (first arguments)
       "server" (server/run-web-server (rest arguments))
       "email" (email/send-emails (rest arguments)))))
