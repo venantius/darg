@@ -7,6 +7,7 @@
             [compojure.route :as route]
             [compojure.handler :as handler]
             [darg.api.v1 :as api]
+            [darg.init :as init]
             [darg.middleware :as middleware]
             [darg.middleware.authentication :as authn]
             [darg.process.email :as email]
@@ -85,6 +86,7 @@
 (defn run-web-server
   "Run the Darg.io web server process."
   [& args]
+  (init/configure)
   (let [port (Integer. (env/env :port))]
     (logging/info "Starting Darg server on port" port)
     (server/run-server #'app {:port port :join? false})))
