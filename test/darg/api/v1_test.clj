@@ -2,7 +2,7 @@
   (:require [cheshire.core :as json]
             [clojure.test :refer :all]
             [darg.api.v1 :as api]
-            [darg.core :as core]
+            [darg.process.server :as server]
             [darg.db :as db]
             [darg.fixtures :refer [with-db-fixtures]]
             [darg.fixtures.email :as email-fixtures]
@@ -19,20 +19,20 @@
 ;; /api/v1/login
 
 (deftest i-can-login-and-it-set-my-cookies
-  (let [auth-response (core/app (mock-request/request
-                                  :post "/api/v1/login"
-                                  {:email (:email model-fixtures/test-user-4)
-                                   :password "samurai"}))]
+  (let [auth-response (server/app (mock-request/request
+                                    :post "/api/v1/login"
+                                    {:email (:email model-fixtures/test-user-4)
+                                     :password "samurai"}))]
     (is (= (:body auth-response) "Successfully authenticated"))
     (is (= (:status auth-response) 200))
     (is (some #{"logged-in=true;Path=/"}
               (get (:headers auth-response) "Set-Cookie")))))
 
 (deftest i-can't-login-and-it-don't-set-no-cookies
-  (let [auth-response (core/app (mock-request/request
-                                  :post "/api/v1/login"
-                                  {:email (:email model-fixtures/test-user-5)
-                                   :password (:password model-fixtures/test-user-5)}))]
+  (let [auth-response (server/app (mock-request/request
+                                    :post "/api/v1/login"
+                                    {:email (:email model-fixtures/test-user-5)
+                                     :password (:password model-fixtures/test-user-5)}))]
     (is (= (:body auth-response) "Failed to authenticate"))
     (is (= (:status auth-response) 401))
     (is (not (some #{"logged-in=true;Path=/"}
@@ -85,11 +85,11 @@
 ;; /api/v1/signup
 
 (deftest i-can-register-and-it-wrote-to-the-database-and-cookies
-  (let [auth-response (core/app (mock-request/request
-                                  :post "/api/v1/signup"
-                                  {:email "dummy@darg.io"
-                                   :password "test"
-                                   :name "Crash dummy"}))]
+  (let [auth-response (server/app (mock-request/request
+                                    :post "/api/v1/signup"
+                                    {:email "dummy@darg.io"
+                                     :password "test"
+                                     :name "Crash dummy"}))]
     (is (= (json/parse-string (:body auth-response) true)
            {:message "Account successfully created"}))
     (is (= (:status auth-response) 200))
@@ -98,17 +98,17 @@
               (get (:headers auth-response) "Set-Cookie")))))
 
 (deftest i-cant-write-the-same-thing-twice
-  (let [auth-response (core/app (mock-request/request
-                                  :post "/api/v1/signup"
-                                  model-fixtures/test-user-4))]
+  (let [auth-response (server/app (mock-request/request
+                                    :post "/api/v1/signup"
+                                    model-fixtures/test-user-4))]
     (is (= (json/parse-string (:body auth-response) true)
            {:message "A user with that e-mail already exists."}))
     (is (= (:status auth-response) 409))))
 
 (deftest signup-failure-does-not-write-to-database-and-sets-no-cookies
-  (let [auth-response (core/app (mock-request/request
-                                  :post "/api/v1/signup"
-                                  {:email "quasi-user@darg.io"}))]
+  (let [auth-response (server/app (mock-request/request
+                                    :post "/api/v1/signup"
+                                    {:email "quasi-user@darg.io"}))]
     (is (= (json/parse-string (:body auth-response) true)
            {:message "The signup form needs an e-mail, a name, and a password."}))
     (is (= (:status auth-response) 400))
@@ -204,10 +204,10 @@
 ;; api/v1/email
 
 (deftest we-can-successfully-parse-a-posted-email
-  (let [response (core/app (mock-request/request
-                             :post
-                             "/api/v1/email"
-                             email-fixtures/test-email-2))]
+  (let [response (server/app (mock-request/request
+                               :post
+                               "/api/v1/email"
+                               email-fixtures/test-email-2))]
     (is (= (:status response) 200))
     (is (= (:body response)
            (json/encode {:message "E-mail successfully parsed."})))
@@ -218,10 +218,10 @@
   (let [email (assoc email-fixtures/test-email-2
                 :token
                 "neener")
-        response (core/app (mock-request/request
-                             :post
-                             "/api/v1/email"
-                             email))]
+        response (server/app (mock-request/request
+                               :post
+                               "/api/v1/email"
+                               email))]
     (is (= (:status response) 401))
     (is (= (:body response)
            (json/encode {:message "Failed to authenticate email."})))))
@@ -233,10 +233,10 @@
                   (:email model-fixtures/test-user-1)
                   :recipient
                   (:email model-fixtures/test-team-1))
-          response (core/app (mock-request/request
-                               :post
-                               "/api/v1/email"
-                               email))]
+          response (server/app (mock-request/request
+                                 :post
+                                 "/api/v1/email"
+                                 email))]
       (is (= (:status response) 200))
       (is (= (:body response)
              (json/encode {:message "E-mail successfully parsed."})))))
@@ -246,10 +246,10 @@
                   (:email model-fixtures/test-user-1)
                   :recipient
                   (:email model-fixtures/test-team-3))
-          response (core/app (mock-request/request
-                               :post
-                               "/api/v1/email"
-                               email))]
+          response (server/app (mock-request/request
+                                 :post
+                                 "/api/v1/email"
+                                 email))]
       (is (= (:status response) 401))
       (is (= (:body response)
              (json/encode {:message "E-mails from this address <savelago@gmail.com> are not authorized to post to this team address <jncake@darg.io>."}))))))

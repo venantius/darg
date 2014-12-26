@@ -30,6 +30,7 @@
   "Verify that this message was sent from Mailgun"
   [{:keys [timestamp token signature]}]
   (let [api-key (:api-key settings/mailgun-credentials)
-        computed-signature (-> (clojure.string/join [timestamp token])
-                               (sha256-hmac api-key))]
+        computed-signature (sha256-hmac
+                             (clojure.string/join [timestamp token])
+                             api-key)]
     (if (= computed-signature signature) true false)))
