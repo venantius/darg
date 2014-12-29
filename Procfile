@@ -1,2 +1,2 @@
-web: lein clean; lein trampoline run server
-email: lein clean; lein trampoline run email
+web: lein trampoline run server
+email: lein trampoline run email

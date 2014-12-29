@@ -35,10 +35,12 @@
                   (text :email :unique :not-null)
                   (text :password :not-null)
                   (text :name :not-null)
+                  (text :timezone)
                   (boolean :admin (default false))
-                  (boolean :bot (default true))
+                  (boolean :bot (default false))
+                  (boolean :active (default false))
                   (integer :github_users_id [:refer :github_users :id :on-delete :set-null])
-                  (boolean :active (default false)))))
+                  )))
   (down [] (drop (table :users))))
 
 (defmigration add-teams-table
@@ -72,7 +74,6 @@
   (up [] (create
            (table :team_users
                   (integer :id :auto-inc :primary-key)
-                  (text :role)
                   (integer :users_id [:refer :users :id :on-delete :cascade] :not-null)
                   (integer :teams_id [:refer :teams :id :on-delete :cascade] :not-null)
                   (boolean :admin (default false)))))

@@ -39,7 +39,7 @@
   (GET    "/settings/:settings-page"       [] darg-spa)
 
   ;; debug
-  (GET    "/debug" request (debug request))
+  (ANY    "/debug" request (debug request))
 
   ;; callback
   (GET "/oauth/github" request (gh-oauth/callback request))

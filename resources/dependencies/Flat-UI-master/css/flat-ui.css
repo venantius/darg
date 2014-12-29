@@ -5579,6 +5579,11 @@ h6.about {
 .dictionary-header {
   margin-top: 10;
 }
+.scrollable-menu {
+  height: auto;
+  max-height: 200px;
+  overflow-x: hidden;
+}
 p.question {
   font-weight: bold;
   margin-bottom: 0px;
