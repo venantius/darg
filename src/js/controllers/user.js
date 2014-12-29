@@ -46,8 +46,13 @@ darg.controller('DargUserCtrl',
 
     $scope.UserSettingsProfile = {
         "name": "",
-        "email": ""
+        "email": "",
+        "timezone": ""
     };
+
+    $scope.updateTimezoneSetting = function(tz) {
+        $scope.UserSettingsProfile.timezone = tz;
+    }
 
     $scope.updateUserProfile = function() {
         $http({
@@ -82,8 +87,9 @@ darg.controller('DargUserCtrl',
         .success(function(data) {
             user.info = data;
             $scope.CurrentUser = data;
-            $scope.UserSettingsProfile.name = data.name;
-            $scope.UserSettingsProfile.email = data.email;
+            $scope.UserSettingsProfile.name = data.name
+            $scope.UserSettingsProfile.email = data.email
+            $scope.UserSettingsProfile.timezone = data.timezone
             user.team = getDefaultTeam();
         })
     };

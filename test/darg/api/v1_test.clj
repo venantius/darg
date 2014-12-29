@@ -98,9 +98,11 @@
               (get (:headers auth-response) "Set-Cookie")))))
 
 (deftest i-cant-write-the-same-thing-twice
-  (let [auth-response (server/app (mock-request/request
+  (let [user (select-keys model-fixtures/test-user-4
+                          [:email :name :password])
+        auth-response (server/app (mock-request/request
                                     :post "/api/v1/signup"
-                                    model-fixtures/test-user-4))]
+                                    user))]
     (is (= (json/parse-string (:body auth-response) true)
            {:message "A user with that e-mail already exists."}))
     (is (= (:status auth-response) 409))))

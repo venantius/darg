@@ -8,47 +8,63 @@
 
 (def test-user-1
   {:email "savelago@gmail.com"
+   :password (encrypt-password "butts")
    :name "John Lago"
-   :active true
+   :timezone nil
    :admin true
-   :password (encrypt-password "butts")})
+   :bot false
+   :active true
+   :github_users_id nil})
 
 (def test-user-2
   {:email "domo@darg.io"
+   :password (encrypt-password "cigarettes")
    :name "Domo the Robot"
-   :active true
+   :timezone nil
    :admin false
-   :password (encrypt-password "cigarettes")})
+   :bot false
+   :active true
+   :github_users_id nil})
 
 (def test-user-3
   {:email "arrigato@darg.io"
+   :password (encrypt-password "nihon")
    :name "The Couch"
-   :active true
+   :timezone nil
    :admin false
-   :password (encrypt-password "nihon")})
+   :bot false
+   :active true
+   :github_users_id nil})
 
 (def test-user-4
   {:email "test-user2@darg.io"
-   :name "Finn the Human"
-   :active true
-   :admin false
    :password (encrypt-password "samurai")
+   :name "Finn the Human"
+   :timezone "America/Los_Angeles"
+   :admin false
+   :bot false
+   :active true
    :github_users_id 10094188})
 
 (def test-user-5
   {:email "test@darg.io"
+   :password (encrypt-password "ohmyglob")
    :name "LSP"
-   :surname "Smith"
-   :active true
+   :timezone "America/Los_Angeles"
    :admin false
-   :password (encrypt-password "ohmyglob")})
+   :bot false
+   :active true
+   :github_users_id nil})
 
 (def test-user-6
   {:email "david@ursacorp.io"
+   :password (encrypt-password "bloodthirst")
    :name "David Jarvis"
-   :active true
+   :timezone nil
    :admin true
-   :password (encrypt-password "bloodthirst")})
+   :bot false
+   :active true
+   :github_users_id nil})
 
 (def test-users
   [test-user-1
@@ -61,7 +77,8 @@
 (def test-github-user-1
   {:gh_login "dargtester1"
    :id 10094188
-   :gh_avatar_url "https://avatars.githubusercontent.com/u/10094188?v=3"})
+   :gh_avatar_url "https://avatars.githubusercontent.com/u/10094188?v=3"
+   :github_tokens_id nil})
 
 (def test-github-users
   [test-github-user-1])

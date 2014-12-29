@@ -12,7 +12,7 @@ darg.controller('DargSettingsCtrl',
          $http,
          $location,
          $routeParams,
-         $scope, 
+         $scope,
          user) {
 
     $scope.isSettingsProfile = function() {
@@ -22,6 +22,8 @@ darg.controller('DargSettingsCtrl',
             return false;
         }
     }
+
+    $scope.timezones = moment.tz.names();
 
     $scope.gotoSettingsProfile = function() {
         $location.path("/settings/profile");

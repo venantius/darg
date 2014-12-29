@@ -1,4 +1,7 @@
-var darg = angular.module('darg', ['ngCookies', 'ngRoute', 'ngLoadScript']);
+var darg = angular.module('darg', 
+                          ['ngCookies', 
+                           'ngRoute', 
+                           'ngLoadScript']);
 
 darg.config(['$routeProvider', '$locationProvider', 
            function AppConfig($routeProvider, $locationProvider) {

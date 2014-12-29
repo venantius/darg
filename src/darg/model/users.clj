@@ -39,12 +39,6 @@
       (assoc :active true)
       create-user))
 
-(defn add-user-to-team
-  "Adds a user-team relationship
-  Takes a user-id (integer) and team-id (integer)"
-  [user-id team-id]
-  (insert db/team-users (values {:teams_id team-id :users_id user-id})))
-
 (defn update-user
   "Updates the fields for a user.
   Takes a user-id as an integer and a map of fields + values to update."
@@ -64,7 +58,7 @@
   Takes a map of fields for use in db lookup"
   [params]
   (select db/users
-          (fields :id :active :bot :admin :name :email)
+          (fields :id :active :bot :admin :name :email :timezone)
           (where params)))
 
 (defn fetch-one-user
@@ -80,13 +74,13 @@
   ([params]
    (first
      (select db/users
-             (fields :id :active :bot :admin :name :email)
+             (fields :id :active :bot :admin :name :email :timezone)
              (with db/teams)
              (where params))))
   ([params team-ids]
    (first
      (select db/users
-             (fields :id :active :bot :admin :name :email)
+             (fields :id :active :bot :admin :name :email :timezone)
              (with db/teams
                (where {:teams.id [in team-ids]}))
              (where params)))))
@@ -111,7 +105,7 @@
 
 ; Github Account
 
-(defn link-github-user 
+(defn link-github-user
   "Associates a github account with a darg user
   Takes a users.id as the first value, and a github_users.id as the second"
   [users-id github-users-id]
@@ -124,11 +118,11 @@
                                (where {:id userid})
                                (with db/github-users)
                                ))]
-    {:user (merge (select-keys 
-                    usermap 
+    {:user (merge (select-keys
+                    usermap
                     [:id :email :name :admin :bot])
-                  {:github_account (select-keys 
-                                     usermap 
+                  {:github_account (select-keys
+                                     usermap
                                      [:gh_user_id :gh_login :gh_email :gh_avatar_url])})}))
 
 ; User Team Membership

@@ -1,4 +1,7 @@
-var darg = angular.module('darg', ['ngCookies', 'ngRoute', 'ngLoadScript']);
+var darg = angular.module('darg', 
+                          ['ngCookies', 
+                           'ngRoute', 
+                           'ngLoadScript']);
 
 darg.config(['$routeProvider', '$locationProvider', 
            function AppConfig($routeProvider, $locationProvider) {
@@ -54,7 +57,7 @@ darg.controller('DargSettingsCtrl',
          $http,
          $location,
          $routeParams,
-         $scope, 
+         $scope,
          user) {
 
     $scope.isSettingsProfile = function() {
@@ -64,6 +67,8 @@ darg.controller('DargSettingsCtrl',
             return false;
         }
     }
+
+    $scope.timezones = moment.tz.names();
 
     $scope.gotoSettingsProfile = function() {
         $location.path("/settings/profile");
@@ -275,8 +280,13 @@ darg.controller('DargUserCtrl',
 
     $scope.UserSettingsProfile = {
         "name": "",
-        "email": ""
+        "email": "",
+        "timezone": ""
     };
+
+    $scope.updateTimezoneSetting = function(tz) {
+        $scope.UserSettingsProfile.timezone = tz;
+    }
 
     $scope.updateUserProfile = function() {
         $http({
@@ -311,8 +321,9 @@ darg.controller('DargUserCtrl',
         .success(function(data) {
             user.info = data;
             $scope.CurrentUser = data;
-            $scope.UserSettingsProfile.name = data.name;
-            $scope.UserSettingsProfile.email = data.email;
+            $scope.UserSettingsProfile.name = data.name
+            $scope.UserSettingsProfile.email = data.email
+            $scope.UserSettingsProfile.timezone = data.timezone
             user.team = getDefaultTeam();
         })
     };

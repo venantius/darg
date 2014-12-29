@@ -44,10 +44,6 @@
   (is (users/users-on-same-team? 3 1))
   (is (not (users/users-on-same-team? 2 1))))
 
-(deftest we-can-add-user-to-team
-  (users/add-user-to-team 3 2)
-  (is (users/user-in-team? 3 2)))
-
 #_(deftest fetch-dates-works
  (is (= (users/fetch-task-dates 4)
          (list
