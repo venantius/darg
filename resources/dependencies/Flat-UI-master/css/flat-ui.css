@@ -5581,7 +5581,7 @@ h6.about {
 }
 .scrollable-menu {
   height: auto;
-  max-height: 200px;
+  max-height: 300px;
   overflow-x: hidden;
 }
 p.question {

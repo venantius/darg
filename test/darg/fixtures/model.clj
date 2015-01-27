@@ -10,7 +10,7 @@
   {:email "savelago@gmail.com"
    :password (encrypt-password "butts")
    :name "John Lago"
-   :timezone nil
+   :timezone "UTC"
    :admin true
    :bot false
    :active true
@@ -20,17 +20,16 @@
   {:email "domo@darg.io"
    :password (encrypt-password "cigarettes")
    :name "Domo the Robot"
-   :timezone nil
+   :timezone "UTC"
    :admin false
    :bot false
-   :active true
-   :github_users_id nil})
+   :active true})
 
 (def test-user-3
   {:email "arrigato@darg.io"
    :password (encrypt-password "nihon")
    :name "The Couch"
-   :timezone nil
+   :timezone "UTC"
    :admin false
    :bot false
    :active true
@@ -50,7 +49,7 @@
   {:email "test@darg.io"
    :password (encrypt-password "ohmyglob")
    :name "LSP"
-   :timezone "America/Los_Angeles"
+   :timezone "America/New_York"
    :admin false
    :bot false
    :active true
@@ -60,7 +59,7 @@
   {:email "david@ursacorp.io"
    :password (encrypt-password "bloodthirst")
    :name "David Jarvis"
-   :timezone nil
+   :timezone "UTC"
    :admin true
    :bot false
    :active true
