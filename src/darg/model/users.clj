@@ -35,7 +35,7 @@
   "Create a user from the signup form"
   [account-map]
   (-> account-map
-    (select-keys [:name :email :password])
+      (select-keys [:name :email :password])
       (assoc :active true)
       create-user))
 
@@ -58,7 +58,7 @@
   Takes a map of fields for use in db lookup"
   [params]
   (select db/users
-          (fields :id :active :bot :admin :name :email :timezone)
+          (fields :id :active :bot :admin :name :email :timezone :email_hour)
           (where params)))
 
 (defn fetch-one-user
@@ -73,17 +73,17 @@
   for limiting the visibility into which teams a user is a member of."
   ([params]
    (first
-     (select db/users
-             (fields :id :active :bot :admin :name :email :timezone)
-             (with db/teams)
-             (where params))))
+    (select db/users
+            (fields :id :active :bot :admin :name :email :timezone :email_hour)
+            (with db/teams)
+            (where params))))
   ([params team-ids]
    (first
-     (select db/users
-             (fields :id :active :bot :admin :name :email :timezone)
-             (with db/teams
-               (where {:teams.id [in team-ids]}))
-             (where params)))))
+    (select db/users
+            (fields :id :active :bot :admin :name :email :timezone :email_hour)
+            (with db/teams
+                  (where {:teams.id [in team-ids]}))
+            (where params)))))
 
 (defn fetch-user-id
   "Returns a user-id (integer)
@@ -116,14 +116,13 @@
   [userid]
   (let [usermap (first (select db/users
                                (where {:id userid})
-                               (with db/github-users)
-                               ))]
+                               (with db/github-users)))]
     {:user (merge (select-keys
-                    usermap
-                    [:id :email :name :admin :bot])
+                   usermap
+                   [:id :email :name :admin :bot])
                   {:github_account (select-keys
-                                     usermap
-                                     [:gh_user_id :gh_login :gh_email :gh_avatar_url])})}))
+                                    usermap
+                                    [:gh_user_id :gh_login :gh_email :gh_avatar_url])})}))
 
 ; User Team Membership
 
@@ -138,8 +137,8 @@
   Takes a user-id (integer)"
   [user-id]
   (:teams (first (select db/users
-    (where {:id user-id})
-    (with db/teams)))))
+                         (where {:id user-id})
+                         (with db/teams)))))
 
 (defn team-overlap
   "Returns a seq of team-maps that two users have in common
@@ -147,13 +146,13 @@
   Takes 2 user-id's (integer)"
   [userid1 userid2]
   (select db/teams
-    (fields :id :name)
-    (where (and {:id [in (subselect db/team-users
-                           (fields :teams_id)
-                           (where {:users_id userid1}))]}
-                {:id [in (subselect db/team-users
-                           (fields :teams_id)
-                           (where {:users_id userid2}))]}))))
+          (fields :id :name)
+          (where (and {:id [in (subselect db/team-users
+                                          (fields :teams_id)
+                                          (where {:users_id userid1}))]}
+                      {:id [in (subselect db/team-users
+                                          (fields :teams_id)
+                                          (where {:users_id userid2}))]}))))
 
 (defn users-on-same-team?
   "Returns boolean true/false based on whether user's are on the same team
@@ -213,8 +212,8 @@
   (let [base-reset-url (url/url "http://darg.herokuapp.com/new_password")
         token (:token (password-reset-tokens/create! {:users_id id}))]
     (str (assoc
-           base-reset-url
-           :query {:token token}))))
+          base-reset-url
+          :query {:token token}))))
 
 (html/deftemplate password-reset-template "email/templates/password_reset.html"
   [{:keys [name] :as user}]

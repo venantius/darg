@@ -47,11 +47,43 @@ darg.controller('DargUserCtrl',
     $scope.UserSettingsProfile = {
         "name": "",
         "email": "",
-        "timezone": ""
+        "timezone": "",
+        "email_hour": ""
     };
+
+    $scope.times = [
+        "midnight",
+        "1am",
+        "2am",
+        "3am",
+        "4am",
+        "5am",
+        "6am",
+        "7am",
+        "8am",
+        "9am",
+        "10am",
+        "11am",
+        "noon",
+        "1pm",
+        "2pm",
+        "3pm",
+        "4pm",
+        "5pm",
+        "6pm",
+        "7pm",
+        "8pm",
+        "9pm",
+        "10pm",
+        "11pm"];
+
 
     $scope.updateTimezoneSetting = function(tz) {
         $scope.UserSettingsProfile.timezone = tz;
+    }
+
+    $scope.updateEmailHourSettings = function(hour) {
+        $scope.UserSettingsProfile.email_hour = hour;
     }
 
     $scope.updateUserProfile = function() {
@@ -87,9 +119,10 @@ darg.controller('DargUserCtrl',
         .success(function(data) {
             user.info = data;
             $scope.CurrentUser = data;
-            $scope.UserSettingsProfile.name = data.name
-            $scope.UserSettingsProfile.email = data.email
-            $scope.UserSettingsProfile.timezone = data.timezone
+            $scope.UserSettingsProfile.name = data.name;
+            $scope.UserSettingsProfile.email = data.email;
+            $scope.UserSettingsProfile.timezone = data.timezone;
+            $scope.UserSettingsProfile.email_hour = data.email_hour;
             user.team = getDefaultTeam();
         })
     };

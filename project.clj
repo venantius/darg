@@ -1,4 +1,4 @@
-(defproject darg "0.1.0-SNAPSHOT"
+(defproject darg "0.1.1-SNAPSHOT"
   :description "Simple Accomplishment Tracking for Teams"
   :min-lein-version "2.0.0"
   :url "http://darg.io"
@@ -15,8 +15,6 @@
                  [slingshot "0.10.3"]
 
                  ;; crypto
-                 [crypto-random "1.1.0"]
-                 [potemkin "0.3.8"]
                  [pandect "0.4.0" :exclusions [potemkin]]
                  [org.mindrot/jbcrypt "0.3m"]
 
@@ -73,9 +71,7 @@
                           :port "8080"
                           :session-key "antarctica--bear"}}
              :staging {:env {:darg-environment "staging"}}
-             :production {:env {:darg-environment "production"}
-                          :java-agents [[com.newrelic.agent.java/newrelic-agent "2.19.0"]]}}
-
+             :production {:env {:darg-environment "production"}}}
   :repl-options {:port 6001}
   :main darg.core
 )
