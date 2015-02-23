@@ -1,7 +1,26 @@
-(ns darg.util.date
-  "Helper functions for dealing with dates"
+(ns darg.util.datetime
+  "Helper functions for dealing with date and times."
   (:require [clj-time.coerce :as c]
             [clj-time.core :as t]))
+
+(defn current-local-time
+  [tz-string]
+  "Get the current time for the given timezone (in long form, e.g.
+  \"America/Los_Angeles\"."
+  (t/to-time-zone
+    (t/now)
+    (t/time-zone-for-id tz-string)))
+
+(defn nearest-hour
+  "Return a constructed date-time object for the nearest UTC hour (rounded
+  down)."
+  []
+  (let [now (t/now)
+        year (t/year now)
+        month (t/month now)
+        day (t/day now)
+        hour (t/hour now)]
+    (t/date-time year month day hour)))
 
 (defn- offset-date
   [start diff]

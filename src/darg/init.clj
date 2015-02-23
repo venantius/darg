@@ -11,6 +11,9 @@
 (defn -reload-db
   "Load test fixture data so that it's available in development"
   []
+  {:pre [(false?
+           (= (env/env :darg-environment)
+              "production"))]}
   (let [db (db/construct-db-map)]
     (logging/info "Rolling back the db...")
     (fixtures/silent-rollback db nil :all)
