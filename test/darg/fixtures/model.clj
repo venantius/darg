@@ -1,6 +1,6 @@
 (ns darg.fixtures.model
   (:require [clj-time.core :as t]
-            [clj-time.coerce :as c :only [to-sql-date]]
+            [clj-time.coerce :as c :refer [to-sql-date]]
             [darg.db-util :as db-util]
             [darg.model :refer :all]
             [darg.model.users :refer [encrypt-password]]
@@ -10,7 +10,8 @@
   {:email "savelago@gmail.com"
    :password (encrypt-password "butts")
    :name "John Lago"
-   :timezone nil
+   :timezone "UTC"
+   :email_hour "1pm"
    :admin true
    :bot false
    :active true
@@ -20,17 +21,18 @@
   {:email "domo@darg.io"
    :password (encrypt-password "cigarettes")
    :name "Domo the Robot"
-   :timezone nil
+   :timezone "UTC"
+   :email_hour "5pm"
    :admin false
    :bot false
-   :active true
-   :github_users_id nil})
+   :active true})
 
 (def test-user-3
   {:email "arrigato@darg.io"
    :password (encrypt-password "nihon")
    :name "The Couch"
-   :timezone nil
+   :timezone "UTC"
+   :email_hour "2pm"
    :admin false
    :bot false
    :active true
@@ -41,6 +43,7 @@
    :password (encrypt-password "samurai")
    :name "Finn the Human"
    :timezone "America/Los_Angeles"
+   :email_hour "7pm"
    :admin false
    :bot false
    :active true
@@ -50,7 +53,8 @@
   {:email "test@darg.io"
    :password (encrypt-password "ohmyglob")
    :name "LSP"
-   :timezone "America/Los_Angeles"
+   :timezone "America/New_York"
+   :email_hour "8pm"
    :admin false
    :bot false
    :active true
@@ -60,7 +64,8 @@
   {:email "david@ursacorp.io"
    :password (encrypt-password "bloodthirst")
    :name "David Jarvis"
-   :timezone nil
+   :timezone "UTC"
+   :email_hour "4pm"
    :admin true
    :bot false
    :active true
@@ -119,10 +124,10 @@
    :task "Salute the shorts"})
 
 (def test-task-4
- {:date (c/to-sql-date (t/today))
-  :users_id 2
-  :teams_id 3
-  :task "Once more into the breach"})
+  {:date (c/to-sql-date (t/today))
+   :users_id 2
+   :teams_id 3
+   :task "Once more into the breach"})
 
 (def test-task-5
   {:date (c/to-sql-date (t/minus (t/today) (t/days 1)))
@@ -149,8 +154,7 @@
    test-task-4
    test-task-5
    test-task-6
-   test-task-7
-   ])
+   test-task-7])
 
 (def test-team-user-pair-1
   {:users_id 1
@@ -166,9 +170,9 @@
    :teams_id 2})
 
 (def test-team-user-pair-4
- {:users_id 4
-  :teams_id 2
-  :admin true})
+  {:users_id 4
+   :teams_id 2
+   :admin true})
 
 (def test-team-user-pair-5
   {:users_id 4
@@ -209,8 +213,7 @@
 (def test-password-reset-token-1
   {:token "XBT6XI7WAHPX4NQDHBWGXPP2YCJSXS7Q"
    :users_id 1
-   :expires_at (c/to-sql-time (t/plus (t/now) (t/days 1)))
-   })
+   :expires_at (c/to-sql-time (t/plus (t/now) (t/days 1)))})
 
 (def test-password-reset-token-2
   ;; already expired

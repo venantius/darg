@@ -1,6 +1,6 @@
 (ns darg.api.v1
   (:require [clojure.tools.logging :as logging]
-            [clojure.string :as str :only [split trim]]
+            [clojure.string :as str :refer [split trim]]
             [darg.api.responses :as responses]
             [darg.db-util :as dbutil]
             [darg.model.dargs :as dargs]
@@ -27,15 +27,15 @@
   (let [{:keys [email password]} params]
     (cond
       (not (users/authenticate email password))
-        {:body "Failed to authenticate"
-         :session {:authenticated false}
-         :status 401}
+      {:body "Failed to authenticate"
+       :session {:authenticated false}
+       :status 401}
       :else
-        (let [id (:id (first (users/fetch-user {:email email})))]
-          {:body "Successfully authenticated"
-           :cookies {"logged-in" {:value true :path "/"}}
-           :session {:authenticated true :id id :email email}
-           :status 200}))))
+      (let [id (:id (first (users/fetch-user {:email email})))]
+        {:body "Successfully authenticated"
+         :cookies {"logged-in" {:value true :path "/"}}
+         :session {:authenticated true :id id :email email}
+         :status 200}))))
 
 (defn logout
   "/api/v1/logout
@@ -79,16 +79,16 @@
         email (:email params)]
     (cond
       (some? (users/fetch-one-user {:email email}))
-        (responses/conflict "A user with that e-mail already exists.")
+      (responses/conflict "A user with that e-mail already exists.")
       (not (every? params [:email :name :password]))
-        (responses/bad-request
-          "The signup form needs an e-mail, a name, and a password.")
+      (responses/bad-request
+       "The signup form needs an e-mail, a name, and a password.")
       :else
-        (let [user (users/create-user-from-signup-form params)]
-          {:body {:message "Account successfully created"}
-           :cookies {"logged-in" {:value true :path "/"}}
-           :session {:authenticated true :email (:email params) :id (:id user)}
-           :status 200}))))
+      (let [user (users/create-user-from-signup-form params)]
+        {:body {:message "Account successfully created"}
+         :cookies {"logged-in" {:value true :path "/"}}
+         :session {:authenticated true :email (:email params) :id (:id user)}
+         :status 200}))))
 
 (defn update-user
   "/api/v1/user
@@ -119,12 +119,12 @@
         size (-> request :params :size)]
     (if email
       (responses/ok
-        (clojure.string/join "" ["http://www.gravatar.com/avatar/"
-                                 (md5 email)
-                                 "?s="
-                                 size]))
+       (clojure.string/join "" ["http://www.gravatar.com/avatar/"
+                                (md5 email)
+                                "?s="
+                                size]))
       (responses/ok
-        (format "http://www.gravatar.com/avatar/?s=%s" size)))))
+       (format "http://www.gravatar.com/avatar/?s=%s" size)))))
 
 ;; tasks
 
@@ -141,14 +141,14 @@
         date (-> params :date dbutil/sql-date-from-task)]
     (cond
       (not (and task user-id team-id date))
-        (responses/bad-request "Request needs to include 'task', 'team-id' and 'date'.")
+      (responses/bad-request "Request needs to include 'task', 'team-id' and 'date'.")
       (not (users/user-in-team? user-id team-id))
-        (responses/unauthorized "Not authorized.")
+      (responses/unauthorized "Not authorized.")
       :else
-        (tasks/create-task {:task task
-                            :users_id user-id
-                            :teams_id team-id
-                            :date date}))))
+      (tasks/create-task {:task task
+                          :users_id user-id
+                          :teams_id team-id
+                          :date date}))))
 
 ;; dargs
 
@@ -161,7 +161,7 @@
   [{:keys [params user] :as request}]
   (let [team-id (-> params :team-id read-string)]
     (responses/ok
-      {:dargs (dargs/personal-timeline (:id user) team-id)})))
+     {:dargs (dargs/personal-timeline (:id user) team-id)})))
 
 (defn post-darg
   "/api/v1/darg
@@ -205,9 +205,9 @@
     (if (empty? team-ids)
       (responses/unauthorized "Not authorized.")
       (responses/ok
-        (tasks/fetch-task
-          {:teams_id [ksql/pred-in team-ids]
-           :users_id target-user-id})))))
+       (tasks/fetch-task
+        {:teams_id [ksql/pred-in team-ids]
+         :users_id target-user-id})))))
 
 (defn get-team-darg
   "/api/v1/darg/team/:team-id
@@ -218,7 +218,7 @@
   [{:keys [params user] :as request}]
   (let [team-id (-> params :team-id read-string)]
     (responses/ok
-      {:dargs (dargs/team-timeline team-id)})))
+     {:dargs (dargs/team-timeline team-id)})))
 
 ;; v1/users
 ;; TODO: for both get-user and get-user-profile (which should probably be
@@ -235,7 +235,7 @@
   Retrieve info on the current user."
   [{:keys [user] :as request}]
   (responses/ok
-    (users/profile {:id (:id user)})))
+   (users/profile {:id (:id user)})))
 
 (defn get-user-profile
   "/api/v1/user/:user-id
@@ -250,9 +250,9 @@
     (if (empty? team-ids)
       (responses/unauthorized "Not authorized.")
       (responses/ok
-        (users/profile
-          {:id target-user-id}
-          team-ids)))))
+       (users/profile
+        {:id target-user-id}
+        team-ids)))))
 
 (defn email
   "/api/v1/email
@@ -268,13 +268,13 @@
     (try
       (cond
         (not (mailgun/authenticate email))
-          (responses/unauthorized "Failed to authenticate email.")
+        (responses/unauthorized "Failed to authenticate email.")
         (not (email/user-can-email-this-team? from recipient))
-          (responses/unauthorized (format "E-mails from this address <%s> are not authorized to post to this team address <%s>." from recipient))
+        (responses/unauthorized (format "E-mails from this address <%s> are not authorized to post to this team address <%s>." from recipient))
         :else
-          (do
-            (email/parse-email email)
-            (responses/ok {:message "E-mail successfully parsed."})))
+        (do
+          (email/parse-email email)
+          (responses/ok {:message "E-mail successfully parsed."})))
       (catch Exception e
         (logging/errorf "Failed to parse email with exception: %s" e)
         (responses/bad-request "Failed to parse e-mail.")))))

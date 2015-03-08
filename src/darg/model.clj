@@ -1,10 +1,19 @@
 (ns darg.model
   (:require [korma.core :refer :all]))
 
-(declare users teams tasks repos github-users github-tokens github-issues github-pushes github-pull-requests)
+(declare
+ users
+ teams
+ tasks
+ repos
+ github-users
+ github-tokens
+ github-issues
+ github-pushes
+ github-pull-requests)
 
 (defentity users
-  (has-many tasks) 
+  (has-many tasks)
   (belongs-to github-users)
   (many-to-many teams :team_users))
 
@@ -26,7 +35,7 @@
   (table :password_reset_tokens)
   (belongs-to users {:fk :users_id}))
 
-(defentity github-repos 
+(defentity github-repos
   (table :github_repos)
   (many-to-many teams :team_repos)
   (has-many github-issues)
@@ -36,7 +45,7 @@
 (defentity github-users
   (table :github_users)
   (has-one users)
-  (belongs-to github-tokens) 
+  (belongs-to github-tokens)
   (has-many github-issues)
   (has-many github-pushes)
   (has-many github-pull-requests))

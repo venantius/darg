@@ -10,4 +10,5 @@
                                                                 :in-order true)]
     (case (first arguments)
       "server" (server/run-web-server (rest arguments))
-      "email" (email/send-emails (rest arguments)))))
+      "email" (email/send-emails (rest arguments))
+      (println "ERROR: `lein run` requires one of two arguments: `server` or `email`"))))
