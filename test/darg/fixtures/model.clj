@@ -1,6 +1,6 @@
 (ns darg.fixtures.model
   (:require [clj-time.core :as t]
-            [clj-time.coerce :as c :only [to-sql-date]]
+            [clj-time.coerce :as c :refer [to-sql-date]]
             [darg.db-util :as db-util]
             [darg.model :refer :all]
             [darg.model.users :refer [encrypt-password]]

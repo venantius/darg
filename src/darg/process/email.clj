@@ -20,5 +20,5 @@
   (let [start-time (t/now)]
     (println "Current JVM time" (t/now))
     (println "Current JVM hour" (dt/nearest-hour))
-    (doall (map println (map #(within-the-hour start-time %) (users/fetch-user {}))))
+    (dorun (map println (map #(within-the-hour start-time %) (users/fetch-user {}))))
     (println "Sent email!")))

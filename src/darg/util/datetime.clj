@@ -30,9 +30,9 @@
    "11pm" 23})
 
 (defn local-time
-  [dt tz-string]
   "Get the current time for the given timezone (in long form, e.g.
   \"America/Los_Angeles\"."
+  [dt tz-string]
   (t/to-time-zone
     (t/now)
     (t/time-zone-for-id tz-string)))
