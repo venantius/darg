@@ -33,6 +33,9 @@
 
                  ;; db
                  [korma "0.4.0"]
+                 [ragtime/ragtime.core "0.3.8"]
+                 [ragtime/ragtime.sql "0.3.8"]
+                 [ragtime/ragtime.sql.files "0.3.8"]
                  [lobos "1.0.0-beta3"]
                  [org.clojure/java.jdbc "0.3.5"]
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]
@@ -50,9 +53,7 @@
                  [ring-mock "0.1.5"]]
 
   :plugins [[com.jakemccrary/lein-test-refresh "0.5.1"]
-            [lein-lobos "1.0.0-beta1"]
-            [lein-environ "1.0.0"]
-            [jonase/eastwood "0.1.4"]]
+            [lein-environ "1.0.0"]]
 
   :test-selectors {:default (complement :integration)
                    :all (constantly true)
@@ -65,11 +66,14 @@
                          :database-url "postgres://localhost:5432/darg"
                          :reload-db-on-run true
                          :port "8080"
-                         :session-key "california--bear"}}
+                         :session-key "california--bear"}
+                   :plugins [[jonase/eastwood "0.1.4"]
+                             [lein-lobos "1.0.0-beta1"]]}
              :test {:env {:darg-environment "test"
                           :database-url "postgres://localhost:5432/darg_test"
                           :port "8080"
-                          :session-key "antarctica--bear"}}
+                          :session-key "antarctica--bear"}
+                    plugins [[jonase/eastwood "0.1.4"]]}
              :staging {:env {:darg-environment "staging"}}
              :production {:env {:darg-environment "production"}}}
   :repl-options {:port 6001}

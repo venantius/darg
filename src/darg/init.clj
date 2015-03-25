@@ -6,7 +6,17 @@
             [darg.fixtures.db :as db-fixtures]
             [environ.core :as env]
             [lobos.config :as lconfig]
-            [lobos.core :as lobos]))
+            [lobos.core :as lobos])
+  (:require [clojure.java.jdbc :as sql]
+            [ragtime.core :refer [connection migrate-all]]
+            [ragtime.sql.database] ;; import side effects
+            [ragtime.sql.files :refer [migrations]]))
+
+(defn ragtime-migrate
+  []
+  (let [db-str (:jdbc-url (db/construct-db-map))]
+    (sql/with-db-connection [db (connection db-str)]
+      (migrate-all db (migrations)))))
 
 (defn -reload-db
   "Load test fixture data so that it's available in development"
