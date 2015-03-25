@@ -19,10 +19,6 @@
   (users/update-user 3 {:name "irrashaimase"})
   (is (= "irrashaimase" (:name (users/fetch-user-by-id 3)))))
 
-(deftest we-can-delete-user-from-the-db
-  (users/delete-user 3)
-  (is (= nil (users/fetch-user-by-id 3))))
-
 (deftest we-can-fetch-userid
   (is (= 1 (users/fetch-user-id {:id 1}))))
 
@@ -43,12 +39,6 @@
 (deftest we-can-test-users-are-on-the-same-team
   (is (users/users-on-same-team? 3 1))
   (is (not (users/users-on-same-team? 2 1))))
-
-#_(deftest fetch-dates-works
- (is (= (users/fetch-task-dates 4)
-         (list
-           (c/to-sql-time (t/local-date 2012 05 17))
-           (c/to-sql-time (t/local-date 2012 02 16))))))
 
 (deftest fetch-tasks-by-team-and-date-works
   (let [user (users/fetch-user-by-id 4)

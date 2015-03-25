@@ -97,12 +97,6 @@
   [id]
   (first (select db/users (where {:id id}))))
 
-(defn delete-user
-  "Deletes a user from the database
-  Takes a user-id as an integer"
-  [id]
-  (delete db/users (where {:id id})))
-
 ; Github Account
 
 (defn link-github-user
@@ -175,27 +169,6 @@
           (where {:users_id (:id user)
                   :date (c/to-sql-time date)
                   :teams_id team-id})))
-
-;; TODO: Fix this so that you can filter by team if you want
-;; https://github.com/ursacorp/darg/issues/184
-(defn fetch-task-dates
-  "Returns a list of dates that a user posted tasks. Useful for timeline
-  generation."
-  ([user-id]
-   (let [db-results (select db/tasks
-                            (fields :date)
-                            (where {:users_id user-id})
-                            (order :date :desc)
-                            (group :date))]
-     (map :date db-results)))
-  ([user-id team-id]
-   (let [db-results (select db/tasks
-                            (fields :date)
-                            (where {:users_id user-id
-                                    :teams_id team-id})
-                            (order :date :desc)
-                            (group :date))]
-     (map :date db-results))))
 
 (defn authenticate
   "Authenticate this user. Returns true if password is valid, else nil"

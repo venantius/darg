@@ -46,14 +46,6 @@
   [id params]
   (update db/teams (where {:id id}) (set-fields params)))
 
-; Destroy
-
-(defn delete-team
-  "Delete a team from the database
-  Takes a team-id as an integer"
-  [id]
-  (delete db/teams (where {:id id})))
-
 ; Team Membership
 (defn fetch-team-users
   "Gets the list of users for a given team"

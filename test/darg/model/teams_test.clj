@@ -16,10 +16,6 @@
   (teams/update-team 1 {:name "Drake v. Weezy"})
   (is (= "Drake v. Weezy" (:name (teams/fetch-team-by-id 1)))))
 
-(deftest we-can-delete-team-from-db
-  (teams/delete-team 1)
-  (is (= nil (teams/fetch-team-by-id 1))))
-
 (deftest we-can-fetch-a-teamid
   (is (= 1 (teams/fetch-team-id {:id 1}))))
 

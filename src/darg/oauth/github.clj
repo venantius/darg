@@ -1,5 +1,10 @@
 (ns darg.oauth.github
-  "For details on the Github OAuth flow, refer to documentation here: https://developer.github.com/v3/oauth/#web-application-flow. This namespace includes the callback function and other utility functions for creating github auth-tokens and attaching them to a darg user account"
+  "For details on the Github OAuth flow, refer to documentation here: 
+   
+   https://developer.github.com/v3/oauth/#web-application-flow. 
+   
+   This namespace includes the callback function and other utility functions 
+   for creating github auth-tokens and attaching them to a darg user account"
   (:require [cheshire.core :refer [parse-string generate-string]]
             [clojure.tools.logging :as logging]
             [darg.model.users :as users]
@@ -26,7 +31,11 @@
 ;; Parses Github OAuth response and updates tables
 
 (defn insert-and-link-github-user
-  "This function is usually called from darg.oauth.github/callback. Takes a Github OAuth response and darg userid, and updates the database with the access-token and related Github user information. The Github user and Github token are then linked to the provided userid"
+  "This function is usually called from darg.oauth.github/callback. 
+   
+   It takes a Github OAuth response and darg userid, and updates the database 
+   with the access-token and related Github user information. The Github user 
+   and Github token are then linked to the provided userid."
   [userid body]
   (let [access-token (:access_token (parse-oauth-response body))]
     (gh-tokens/create-github-token {:gh_token access-token})
@@ -98,6 +107,3 @@
   (let [token-ids (list-auth-token-ids username password)]
     (for [x token-ids] 
       (delete-auth-token username password x))))
-
-
-

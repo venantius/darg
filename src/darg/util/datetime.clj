@@ -61,9 +61,3 @@
   [size & {:keys [offset] :or {offset 0}}]
   (let [most-recent-day (t/minus (t/today) (t/days offset))]
     (map (partial offset-date most-recent-day) (range size))))
-
-(defn sql-date-from-task
-  "Convert a string into a SQL date."
-  [string]
-  (c/to-sql-date
-    (c/from-string string)))
