@@ -1,6 +1,7 @@
 (ns darg.fixtures
   (:require [clojure.test :refer [use-fixtures]]
             [darg.db :as db]
+            [darg.db.migrations :as migrations]
             [darg.fixtures.db :as db-fixtures]
             [lobos.config :as lconfig]
             [lobos.core :as lobos]
@@ -35,11 +36,11 @@
   the database before each test"
   [test-fn]
   (let [db (db/construct-db-map)]
-    (silent-rollback db nil :all)
-    (silent-migrate db nil)
+    (migrations/rollback-all)
+    (migrations/migrate-all)
     (db-fixtures/insert-db-fixture-data)
     (test-fn)
-    (silent-rollback db nil :all)))
+    (migrations/rollback-all)))
 
 (defn -initialize-db-connection-fixture
   "Initializes the DB connection for Lobos and Korma"

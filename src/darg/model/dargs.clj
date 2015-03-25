@@ -11,10 +11,10 @@
 (defn team-darg-by-date
   "Generate a darg for a specific team for a specific dates"
   [team-id team-user-ids date]
-  (select model/users
+  (select model/user
           (fields :id :name)
-          (with model/tasks
-            (where {:teams_id team-id
+          (with model/task
+            (where {:team_id team-id
                     :date (c/to-sql-date date)}))
           (where {:id [in team-user-ids]})))
 
@@ -46,5 +46,3 @@
       (map (fn [k t] {:date (util/sql-datetime->date-str k)
                       :tasks t})
            dates tasks-by-date))))
-
-

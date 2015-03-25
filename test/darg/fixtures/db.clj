@@ -5,27 +5,27 @@
 
 (defn insert-user-fixture-data
   []
-  (insert users (values fmodel/test-users)))
+  (insert user (values fmodel/test-users)))
 
 (defn insert-team-fixture-data
   []
-  (insert teams (values fmodel/test-teams)))
+  (insert team (values fmodel/test-teams)))
 
 (defn insert-task-fixture-data
   []
-  (insert tasks (values fmodel/test-tasks)))
+  (insert task (values fmodel/test-tasks)))
 
 (defn insert-team-user-fixture-data
   []
-  (insert team-users (values fmodel/test-team-user-pairs)))
+  (insert team-user (values fmodel/test-team-user-pairs)))
 
 (defn insert-password-reset-token-fixture-data
   []
-  (insert password-reset-tokens (values fmodel/test-password-reset-tokens)))
+  (insert password-reset-token (values fmodel/test-password-reset-tokens)))
 
 (defn insert-github-user-fixture-data
   []
-  (insert github-users (values fmodel/test-github-users)))
+  (insert github-user (values fmodel/test-github-users)))
 
 (defn insert-db-fixture-data
   []

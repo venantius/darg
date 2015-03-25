@@ -33,21 +33,21 @@
 
 (deftest team-timeline-works
   (is (= (first (dargs/team-timeline 1))
-         {:users [{:tasks (list)
+         {:users [{:darg.task (list)
                    :name "John Lago"
                    :id 1}
-                  {:tasks (list)
+                  {:darg.task (list)
                    :name "The Couch"
                    :id 3}
-                  {:tasks (list
+                  {:darg.task (list
                             {:task "Do a good deed everyday"
-                             :teams_id 1
-                             :users_id 4
+                             :team_id 1
+                             :user_id 4
                              :date (:date fixture-data/test-task-1)
                              :id 1})
                    :name "Finn the Human"
                    :id 4}
-                  {:tasks (list)
+                  {:darg.task (list)
                    :name "David Jarvis"
                    :id 6}]
           :date (util/sql-datetime->date-str (:date fixture-data/test-task-1))

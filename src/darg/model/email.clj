@@ -19,8 +19,8 @@
   the database.
 
   Email mapping to task metadata is:
-    - From -> uses email address to lookup :users_id
-    - Recipient -> uses email address to lookup :teams_id
+    - From -> uses email address to lookup :user_id
+    - Recipient -> uses email address to lookup :team_id
     - Subject -> parses out date in format 'MMM dd YYYY' and converts to sqldate for :date
     - Body -> Each newline in the body is parsed as a separate :task"
   [email]
@@ -28,8 +28,8 @@
                       :stripped-text
                       (str/split #"\n")
                       (->> (map str/trim)))
-        email-metadata {:users_id (users/fetch-user-id {:email (:from email)})
-                        :teams_id (teams/fetch-team-id {:email (:recipient email)})
+        email-metadata {:user_id (users/fetch-user-id {:email (:from email)})
+                        :team_id (teams/fetch-team-id {:email (:recipient email)})
                         :date (dbutil/sql-date-from-subject (:subject email))}]
     (tasks/create-task-list task-list email-metadata)))
 

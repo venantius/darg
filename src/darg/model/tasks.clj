@@ -10,15 +10,15 @@
   Takes a map of fields to insert into the db
   Required Fields:
   :task - string that describes the actual completed task
-  :users_id - integer that identifies the user who completed the task
-  :teams_id - integer that identifies the team associated with the task
+  :user_id - integer that identifies the user who completed the task
+  :team_id - integer that identifies the team associated with the task
   :date - date the task was completed"
   [params]
-  (insert db/tasks (values params)))
+  (insert db/task (values params)))
 
 (defn create-task-list
   "Used to insert multiple tasks into the db with matching metadata
-  Takes a vector of tasks and a map of metadata {:users_id :teams_id :date} to apply to the tasklist"
+  Takes a vector of tasks and a map of metadata {:user_id :team_id :date} to apply to the tasklist"
   [tasks-list metadata]
   (dorun (map (fn
                 [task]
@@ -29,12 +29,12 @@
 (defn update-task
   "Update a task."
   [id fields]
-  (update db/tasks (where {:id id}) (set-fields fields)))
+  (update db/task (where {:id id}) (set-fields fields)))
 
 (defn delete-task
   "Delete a task."
   [id]
-  (delete db/tasks (where {:id id})))
+  (delete db/task (where {:id id})))
 
 ;; Retrieve
 
@@ -42,7 +42,7 @@
   "Returns tasks that match a set of fields, may return multiple tasks depending on the fields passed.
   Takes a map, where the key represents the field and the value is a vector of values for that field"
   [params]
-  (select db/tasks (where params)))
+  (select db/task (where params)))
 
 (defn fetch-one-task
   "Returns the first task returned by fetch-task"
@@ -53,13 +53,13 @@
   "Returns a task based on a unique id
   Takes an id as an integer or a vector of integer ids"
   [id]
-  (first (select db/tasks (where {:id id}))))
+  (first (select db/task (where {:id id}))))
 
 (defn fetch-task-id
   "Returns id for a task based on a set of fields
   Will return the first id for a task that matches"
   [params]
-  (:id (first (select db/users (fields :id) (where params)))))
+  (:id (first (select db/user (fields :id) (where params)))))
 
 ;; User Tasks
 
@@ -67,8 +67,8 @@
   "Returns a map of tasks which are associated with a specific user-id.
   Takes a user-id as an integer"
   [user-id]
-  (select db/tasks
-    (where {:users_id user-id})
+  (select db/task
+    (where {:user_id user-id})
     (order :date :desc)))
 
 ;; Team Tasks
@@ -77,5 +77,5 @@
   "Returns a map of tasks which are associated with a specific team-id.
   Takes a team-id as an integer"
   [team-id]
-  (select db/tasks
-    (where {:teams_id team-id})))
+  (select db/task
+    (where {:team_id team-id})))

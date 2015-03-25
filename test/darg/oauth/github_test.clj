@@ -39,9 +39,9 @@
     ; Check that all links are created
     ;; Github user is linked to user, and matches access-token's user id
     (is (= (:id (gh-users/fetch-one-github-user {:gh_login test-username}))
-           (:github_users_id (users/fetch-user-by-id 3))
+           (:github_user_id (users/fetch-user-by-id 3))
            (:id (tentacles.users/me {:oauth_token access-token}))))
     ;; Github token is linked to github user
-    (is (= (:github_tokens_id (gh-users/fetch-one-github-user {:gh_login test-username})) 
+    (is (= (:github_token_id (gh-users/fetch-one-github-user {:gh_login test-username})) 
            (gh-tokens/fetch-github-token-id {:gh_token access-token})))))
 

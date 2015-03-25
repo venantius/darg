@@ -10,7 +10,7 @@
 
 (def dargtester1-github-id (:id fixtures/test-github-user-1))
 (def dargtester2-github-id 31173233)
-(def dargtester2-github-map {:gh_avatar_url "https://avatars.githubusercontent.com/u/10094188?v=3", :id 31173233, :gh_login "dargtester2" :gh_email nil :github_tokens_id nil})
+(def dargtester2-github-map {:gh_avatar_url "https://avatars.githubusercontent.com/u/10094188?v=3", :id 31173233, :gh_login "dargtester2" :gh_email nil :github_token_id nil})
 
 
 ; API test
@@ -40,7 +40,7 @@
   (gh-users/create-github-user dargtester2-github-map)
   (users/link-github-user 3 dargtester2-github-id)
   (is (= dargtester2-github-id 
-         (:github_users_id (users/fetch-user-by-id 3)) 
+         (:github_user_id (users/fetch-user-by-id 3)) 
          (gh-users/fetch-github-user-id {:gh_login (:gh_login dargtester2-github-map)}))))
 
 

@@ -164,7 +164,7 @@
                         :params {:user-id "3"}}
         response (api/get-user-darg sample-request)]
     (is (= (:status response) 200))
-    (is (= (:body response) (tasks/fetch-task {:teams_id 1 :users_id 3})))))
+    (is (= (:body response) (tasks/fetch-task {:team_id 1 :user_id 3})))))
 
 (deftest user-can-get-their-own-darg
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
@@ -172,7 +172,7 @@
                         :params {:user-id "4"}}
         response (api/get-user-darg sample-request)]
     (is (= (:status response) 200))
-    (is (= (:body response) (tasks/fetch-task {:users_id 4})))))
+    (is (= (:body response) (tasks/fetch-task {:user_id 4})))))
 
 (deftest user-cant-see-darg-for-non-teammate
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}

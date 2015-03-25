@@ -2,21 +2,12 @@
   (:require [clojure.tools.logging :as logging]
             [clojure.tools.nrepl.server :as nrepl]
             [darg.db :as db]
+            [darg.db.migrations :as migrations]
             [darg.fixtures :as fixtures]
             [darg.fixtures.db :as db-fixtures]
             [environ.core :as env]
             [lobos.config :as lconfig]
-            [lobos.core :as lobos])
-  (:require [clojure.java.jdbc :as sql]
-            [ragtime.core :refer [connection migrate-all]]
-            [ragtime.sql.database] ;; import side effects
-            [ragtime.sql.files :refer [migrations]]))
-
-(defn ragtime-migrate
-  []
-  (let [db-str (:jdbc-url (db/construct-db-map))]
-    (sql/with-db-connection [db (connection db-str)]
-      (migrate-all db (migrations)))))
+            [lobos.core :as lobos]))
 
 (defn -reload-db
   "Load test fixture data so that it's available in development"
@@ -26,9 +17,9 @@
               "production"))]}
   (let [db (db/construct-db-map)]
     (logging/info "Rolling back the db...")
-    (fixtures/silent-rollback db nil :all)
+    (migrations/rollback-all)
     (logging/info "Migrating the db...")
-    (fixtures/silent-migrate db nil)
+    (migrations/migrate-all)
     (logging/info "Inserting test fixture data...")
     (db-fixtures/insert-db-fixture-data)))
 
@@ -37,7 +28,7 @@
   []
   (let [db (db/construct-db-map)]
     (logging/info "Migrating the db...")
-    (lobos/migrate db nil)))
+    (migrations/migrate-all)))
 
 (defn set-db-atoms
   "Set the Lobos and Korma database configuration atoms."
