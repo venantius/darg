@@ -15,10 +15,6 @@
                       :task "Interrupt the Cellular Mitosis"})
   (is (tasks/fetch-task {:task "Interrupt the Cellular Mitosis"})))
 
-(deftest we-can-delete-task-from-db
-  (tasks/delete-task 1)
-  (is (not (tasks/fetch-task-by-id 1))))
-
 (deftest we-can-update-task-in-db
   (tasks/update-task 1 {:task "Understand the concept of love"})
   (is (= "Understand the concept of love" (:task (tasks/fetch-task-by-id 1)))))

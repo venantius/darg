@@ -26,19 +26,13 @@
                 (assoc metadata :task task)))
                tasks-list)))
 
-;; Update
-
 (defn update-task
-  "Updates the fields for a task.
-  Takes an id as an integer and a map of fields + values to update."
+  "Update a task."
   [id fields]
   (update db/tasks (where {:id id}) (set-fields fields)))
 
-;; Destroy
-
 (defn delete-task
-  "Deletes a task from the database
-  Takes an id as an integer"
+  "Delete a task."
   [id]
   (delete db/tasks (where {:id id})))
 

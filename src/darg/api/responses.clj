@@ -15,11 +15,6 @@
   {:status 401
    :body {:message message}})
 
-(defn not-found
-  [message]
-  {:status 404
-   :body {:message message}})
-
 (defn method-not-allowed
   [message]
   {:status 405
