@@ -2,11 +2,10 @@
   (:require [clojure.tools.logging :as logging]
             [clojure.tools.nrepl.server :as nrepl]
             [darg.db :as db]
+            [darg.db.migrations :as migrations]
             [darg.fixtures :as fixtures]
             [darg.fixtures.db :as db-fixtures]
-            [environ.core :as env]
-            [lobos.config :as lconfig]
-            [lobos.core :as lobos]))
+            [environ.core :as env]))
 
 (defn -reload-db
   "Load test fixture data so that it's available in development"
@@ -16,9 +15,9 @@
               "production"))]}
   (let [db (db/construct-db-map)]
     (logging/info "Rolling back the db...")
-    (fixtures/silent-rollback db nil :all)
+    (migrations/rollback-all)
     (logging/info "Migrating the db...")
-    (fixtures/silent-migrate db nil)
+    (migrations/migrate-all)
     (logging/info "Inserting test fixture data...")
     (db-fixtures/insert-db-fixture-data)))
 
@@ -27,22 +26,16 @@
   []
   (let [db (db/construct-db-map)]
     (logging/info "Migrating the db...")
-    (lobos/migrate db nil)))
-
-(defn set-db-atoms
-  "Set the Lobos and Korma database configuration atoms."
-  []
-  (lconfig/init)
-  (db/set-korma-db))
+    (migrations/migrate-all)))
 
 (defn configure
   "Do all the configuration that needs to happen.
 
   Right now that's the following:
-   - Configure Lobos and Korma's database settings
+   - Configure Korma's database settings
    - Run any migrations"
   []
-  (set-db-atoms)
+  (db/set-korma-db)
   (cond (and (= (env/env :darg-environment) "dev")
              (env/env :reload-db-on-run)) (-reload-db)
         (= (env/env :darg-environment) "production")

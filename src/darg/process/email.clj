@@ -1,7 +1,7 @@
 (ns darg.process.email
   "A namespace for batch email-sending activity"
   (:require [clj-time.core :as t]
-            [darg.init :as init]
+            [darg.db :as db]
             [darg.model.email :as email]
             [darg.model.users :as users]
             [darg.util.datetime :as dt]))
@@ -16,7 +16,7 @@
 (defn send-emails
   "Check for any emails that might need to be sent, and send them."
   [& args]
-  (init/set-db-atoms)
+  (db/set-korma-db)
   (let [start-time (t/now)]
     (println "Current JVM time" (t/now))
     (println "Current JVM hour" (dt/nearest-hour))

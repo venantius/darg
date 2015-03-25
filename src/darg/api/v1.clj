@@ -146,8 +146,8 @@
       (responses/unauthorized "Not authorized.")
       :else
       (tasks/create-task {:task task
-                          :users_id user-id
-                          :teams_id team-id
+                          :user_id user-id
+                          :team_id team-id
                           :date date}))))
 
 ;; dargs
@@ -181,8 +181,8 @@
         date (-> params
                  :date
                  dbutil/sql-date-from-subject)
-        metadata {:users_id user-id
-                  :teams_id team-id
+        metadata {:user_id user-id
+                  :team_id team-id
                   :date date}]
     (if (users/user-in-team? user-id team-id)
       (do
@@ -206,8 +206,8 @@
       (responses/unauthorized "Not authorized.")
       (responses/ok
        (tasks/fetch-task
-        {:teams_id [ksql/pred-in team-ids]
-         :users_id target-user-id})))))
+        {:team_id [ksql/pred-in team-ids]
+         :user_id target-user-id})))))
 
 (defn get-team-darg
   "/api/v1/darg/team/:team-id

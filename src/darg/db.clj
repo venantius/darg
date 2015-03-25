@@ -1,7 +1,13 @@
 (ns darg.db
   (:require [darg.util :as util]
             [environ.core :refer [env]]
-            [korma.db :as korma]))
+            [korma.db :as korma]
+            [clojure.java.jdbc :as sql]
+            [ragtime.core :refer [connection
+                                  migrate-all
+                                  ]]
+            [ragtime.sql.database] ;; import side effects
+            [ragtime.sql.files :refer  [migrations]]))
 
 (defn construct-db-map
   []

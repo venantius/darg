@@ -77,9 +77,7 @@
         authn/darg-auth-fn
         :whitelist authn/darg-whitelist-fn)
       (handler/site
-        {:session {:store (cookie/cookie-store {:key (env/env :session-key)})
-                   :cookie-attrs {;; :secure true -- requires https somewhere
-                                  }}})
+        {:session {:store (cookie/cookie-store {:key (env/env :session-key)})}})
       middleware/ignore-trailing-slash
       wrap-json-response))
 

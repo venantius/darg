@@ -41,7 +41,7 @@
     (gh-tokens/create-github-token {:gh_token access-token})
     ;Link token to github user
     (let [github-user (assoc-in (gh-users/github-api-get-current-user access-token)
-                                [:github_tokens_id]
+                                [:github_token_id]
                                 (gh-tokens/fetch-github-token-id {:gh_token access-token}))
           github-user-id (:id github-user)]
       ;if a github user already exists, update it if not, create it
