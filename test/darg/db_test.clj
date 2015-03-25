@@ -4,9 +4,7 @@
             [korma.core :refer :all]
             [darg.db :as db]
             [darg.fixtures :refer [with-db-fixtures]]
-            [lobos.core :as lobos]
-            [darg.db-util :as dbutil]
-            [lobos.config :as lconfig]))
+            [darg.db-util :as dbutil]))
 
 (with-db-fixtures)
 

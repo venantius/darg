@@ -36,7 +36,6 @@
                  [ragtime/ragtime.core "0.3.8"]
                  [ragtime/ragtime.sql "0.3.8"]
                  [ragtime/ragtime.sql.files "0.3.8"]
-                 [lobos "1.0.0-beta3"]
                  [org.clojure/java.jdbc "0.3.5"]
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]
 
@@ -67,8 +66,7 @@
                          :reload-db-on-run true
                          :port "8080"
                          :session-key "california--bear"}
-                   :plugins [[jonase/eastwood "0.1.4"]
-                             [lein-lobos "1.0.0-beta1"]]}
+                   :plugins [[jonase/eastwood "0.1.4"]]}
              :test {:env {:darg-environment "test"
                           :database-url "postgres://localhost:5432/darg_test"
                           :port "8080"

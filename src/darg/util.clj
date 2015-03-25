@@ -58,7 +58,7 @@
      (parse-url url default-subproto-map default-classname-map)))
 
 (defn build-db-subname
-  "Given a database URI, assembles the :subname that Lobos requires"
+  "Given a database URI, assembles the :subname that JDBC requires"
   [dburi]
   (let [uri-map (parse-url dburi)
         host (if (= "127.0.0.1" (:host uri-map))
