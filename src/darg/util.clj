@@ -47,9 +47,9 @@
                                    host
                                    (when port ":") (or port "") path
                                    (when (or un pw query) "?") (or query "")
-                                   (when (and query (or un pw) "&"))
+                                   (when (and query (or un pw)) "&")
                                    (when un (str "user=" un))
-                                   (when (and pw (or query un) "&"))
+                                   (when (and pw (or query un)) "&")
                                    (when pw (str "password=" pw)))}))))
       ;; String
       (string? url)
