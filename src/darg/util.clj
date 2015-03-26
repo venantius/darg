@@ -26,7 +26,7 @@
             port (let [p (.getPort ^URI url)]
                    (and (pos? p) p))
             path (.getPath ^URI url)
-            authority (.getAuthority ^URI url)
+            userinfo (.getUserInfo ^URI url)
             query (.getRawQuery ^URI url)
             scheme  (.getScheme ^URI url)
             adapter (subproto-map scheme scheme)
@@ -37,8 +37,9 @@
                 :path path
                 :adapter  (keyword adapter)
                 :jdbc-url (str "jdbc:" adapter "://" 
-                               (or authority "") 
-                               path
+                               (or userinfo "") (when userinfo "@")
+                               host
+                               (when port ":") (or port "") path
                                (when query "?") (or query ""))}
                (if-let [user-info (.getUserInfo ^URI url)]
                  (let [[un pw] (str/split user-info #":")]
