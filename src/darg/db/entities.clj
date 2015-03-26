@@ -1,4 +1,4 @@
-(ns darg.model
+(ns darg.db.entities
   (:require [korma.core :refer :all]))
 
 (declare

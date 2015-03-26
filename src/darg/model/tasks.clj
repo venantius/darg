@@ -1,5 +1,5 @@
 (ns darg.model.tasks
-  (:require [darg.model :as db]
+  (:require [darg.db.entities :as db]
             [darg.model.users :as users]
             [darg.model.teams :as teams]
             [korma.core :refer :all]))

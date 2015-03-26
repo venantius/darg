@@ -7,7 +7,7 @@
             [darg.fixtures :refer [with-db-fixtures]]
             [darg.fixtures.email :as email-fixtures]
             [darg.fixtures.model :as model-fixtures]
-            [darg.model :as table]
+            [darg.db.entities :as table]
             [darg.model.tasks :as tasks]
             [darg.model.teams :as teams]
             [darg.model.users :as users]

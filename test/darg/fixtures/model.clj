@@ -2,7 +2,7 @@
   (:require [clj-time.core :as t]
             [clj-time.coerce :as c :refer [to-sql-date]]
             [darg.db-util :as db-util]
-            [darg.model :refer :all]
+            [darg.db.entities :refer :all]
             [darg.model.users :refer [encrypt-password]]
             [korma.core :refer :all]))
 
@@ -14,8 +14,7 @@
    :email_hour "1pm"
    :admin true
    :bot false
-   :active true
-   :github_user_id nil})
+   :active true})
 
 (def test-user-2
   {:email "domo@darg.io"
@@ -35,8 +34,7 @@
    :email_hour "2pm"
    :admin false
    :bot false
-   :active true
-   :github_user_id nil})
+   :active true})
 
 (def test-user-4
   {:email "test-user2@darg.io"
@@ -46,8 +44,7 @@
    :email_hour "7pm"
    :admin false
    :bot false
-   :active true
-   :github_user_id 10094188})
+   :active true})
 
 (def test-user-5
   {:email "test@darg.io"
@@ -57,8 +54,7 @@
    :email_hour "8pm"
    :admin false
    :bot false
-   :active true
-   :github_user_id nil})
+   :active true})
 
 (def test-user-6
   {:email "david@ursacorp.io"
@@ -68,8 +64,7 @@
    :email_hour "4pm"
    :admin true
    :bot false
-   :active true
-   :github_user_id nil})
+   :active true})
 
 (def test-users
   [test-user-1
@@ -83,7 +78,8 @@
   {:gh_login "dargtester1"
    :id 10094188
    :gh_avatar_url "https://avatars.githubusercontent.com/u/10094188?v=3"
-   :github_token_id nil})
+   :github_token_id nil
+   :darg_user_id 4})
 
 (def test-github-users
   [test-github-user-1])

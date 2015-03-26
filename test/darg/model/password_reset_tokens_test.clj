@@ -1,6 +1,6 @@
 (ns darg.model.password-reset-tokens-test
   (:require [clojure.test :refer :all]
-            [darg.model :refer [password-reset-token]]
+            [darg.db.entities :refer [password-reset-token]]
             [darg.fixtures :refer [with-db-fixtures]]
             [darg.model.password-reset-tokens :as password-reset-tokens]
             [korma.core :refer :all]))

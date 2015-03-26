@@ -1,5 +1,5 @@
 (ns darg.model.teams
-  (:require [darg.model :as db]
+  (:require [darg.db.entities :as db]
             [korma.core :refer :all]))
 
 ; Create

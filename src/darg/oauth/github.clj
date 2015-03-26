@@ -47,13 +47,17 @@
       ;if a github user already exists, update it if not, create it
       (if (empty? (gh-users/fetch-github-user-by-id github-user-id))
         (gh-users/create-github-user github-user)
-        (gh-users/update-github-user github-user-id github-user))
-      (users/link-github-user userid (:id github-user)))))
+        (gh-users/update-github-user github-user-id github-user)))))
 
 ;; Callback Function. Called after the user completes their github login.
 
 (defn callback
-  "This function is called after a user is redirected back to darg from https://github.com/login/oauth/authorize. It takes the github request as an input, parses out the access code from the params, and then makes a call to https://github.com/login/oauth/access_token generate an OAuth token"
+  "This function is called after a user is redirected back to darg from 
+   https://github.com/login/oauth/authorize. 
+   
+   It takes the github request as an input, parses out the access code from 
+   the params, and then makes a call to 
+   https://github.com/login/oauth/access_token to generate an OAuth token."
   [request]
   (let [userid (-> request :user :id)
         options {:headers {"Accept" "application/json"}
