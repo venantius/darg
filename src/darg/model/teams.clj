@@ -11,14 +11,6 @@
   [id]
   (first (select db/team (where {:id id}))))
 
-; Update
-
-(defn update-team
-  "Updates the fields for a team.
-  Takes a team-id as an integer and a map of fields + values to update."
-  [id params]
-  (update db/team (where {:id id}) (set-fields params)))
-
 ; Team Membership
 (defn fetch-team-users
   "Gets the list of users for a given team"

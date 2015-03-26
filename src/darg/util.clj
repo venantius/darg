@@ -35,13 +35,22 @@
                 :port port
                 :path path
                 :adapter  (keyword adapter)
-                :jdbc-url (str "jdbc:" adapter "://" host
+                :jdbc-url (str "jdbc:" adapter "://" 
+                               host
                                (when port ":") (or port "") path
                                (when query "?") (or query ""))}
                (if-let [user-info (.getUserInfo ^URI url)]
                  (let [[un pw] (str/split user-info #":")]
                    {:user un
-                    :password pw}))))
+                    :password pw
+                    :jdbc-url (str "jdbc:" adapter "://"
+                                   host
+                                   (when port ":") (or port "") path
+                                   (when (or un pw query) "?") (or query "")
+                                   (when (and query (or un pw)) "&")
+                                   (when un (str "user=" un))
+                                   (when (and pw (or query un)) "&")
+                                   (when pw (str "password=" pw)))}))))
       ;; String
       (string? url)
       (parse-url (if (.startsWith ^String url "jdbc:")

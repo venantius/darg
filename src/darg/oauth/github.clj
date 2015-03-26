@@ -47,7 +47,7 @@
       ;if a github user already exists, update it if not, create it
       (if (empty? (gh-users/fetch-github-user-by-id github-user-id))
         (gh-users/create-github-user! github-user)
-        (gh-users/update-github-user github-user-id github-user)))))
+        (gh-users/update-github-user! github-user-id github-user)))))
 
 ;; Callback Function. Called after the user completes their github login.
 
@@ -91,7 +91,7 @@
                (clojure.set/rename-keys {:token :access_token})
                (cheshire.core/generate-string))}))
 
-(defn delete-auth-token
+(defn delete-auth-token!
   [username password id]
   (let [options {:auth (str username ":" password)}]
     (t-oauth/delete-auth id options)))
@@ -110,4 +110,4 @@
   [username password]
   (let [token-ids (list-auth-token-ids username password)]
     (for [x token-ids] 
-      (delete-auth-token username password x))))
+      (delete-auth-token! username password x))))

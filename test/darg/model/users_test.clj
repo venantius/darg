@@ -12,11 +12,11 @@
 (with-db-fixtures)
 
 (deftest we-can-insert-user-into-the-db
-  (users/create-user {:email "haruko@test.com" :name "haruko" :active true})
+  (users/create-user! {:email "haruko@test.com" :name "haruko" :active true})
   (is (users/fetch-user {:email "haruko@test.com"})))
 
 (deftest we-can-update-user-in-the-db
-  (users/update-user 3 {:name "irrashaimase"})
+  (users/update-user! 3 {:name "irrashaimase"})
   (is (= "irrashaimase" (:name (users/fetch-user-by-id 3)))))
 
 (deftest we-can-fetch-userid

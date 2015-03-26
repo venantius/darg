@@ -18,7 +18,7 @@
   [candidate hashed]
   (BCrypt/checkpw candidate hashed))
 
-(defn create-user
+(defn create-user!
   "Insert a user into the database.
 
   Required fields:
@@ -37,9 +37,9 @@
   (-> account-map
       (select-keys [:name :email :password])
       (assoc :active true)
-      create-user))
+      create-user!))
 
-(defn update-user
+(defn update-user!
   "Updates the fields for a user.
   Takes a user-id as an integer and a map of fields + values to update."
   [id params]

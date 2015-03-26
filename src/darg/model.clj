@@ -17,14 +17,25 @@
   (fn [params]
     (first (select entity (where params)))))
 
+(defn- update!
+  [entity]
+  (fn [id params]
+    (update entity (where {:id id}) (set-fields params))
+    (first (select entity (where {:id id})))))
 
+(defn- delete!
+  [entity]
+  (fn [id]
+    (delete entity (where {:id id}))))
 
 (defn intern-fns
   [entity]
   (let [n (:name entity)]
     (intern *ns* (symbol (str "create-" n "!")) (create! entity))
     (intern *ns* (symbol (str "fetch-" n)) (fetch entity))
-    (intern *ns* (symbol (str "fetch-one-" n)) (fetch-one entity))))
+    (intern *ns* (symbol (str "fetch-one-" n)) (fetch-one entity))
+    (intern *ns* (symbol (str "update-" n "!")) (update! entity))
+    (intern *ns* (symbol (str "delete-" n "!")) (delete! entity))))
 
 (defmacro defmodel
   "Define basic database methods:
