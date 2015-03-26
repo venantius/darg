@@ -22,7 +22,7 @@
 
 (deftest we-can-get-a-teams-task-list
   (email/parse-email email-fixtures/test-email-2)
-  (let [test-team-id (teams/fetch-team-id {:email "test.api@darg.io"})]
+  (let [test-team-id (:id (teams/fetch-one-team {:email "test.api@darg.io"}))]
     (is (= (count (tasks/fetch-tasks-by-team-id test-team-id)) 6))))
 
 (deftest we-can-validate-email-posting-rights

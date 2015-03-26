@@ -145,7 +145,7 @@
       (not (users/user-in-team? user-id team-id))
       (responses/unauthorized "Not authorized.")
       :else
-      (tasks/create-task {:task task
+      (tasks/create-task! {:task task
                           :user_id user-id
                           :team_id team-id
                           :date date}))))

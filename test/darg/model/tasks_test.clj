@@ -9,7 +9,7 @@
 (with-db-fixtures)
 
 (deftest we-can-insert-task-into-db
-  (tasks/create-task {:date (dbutil/sql-date-from-subject "Sep 22 2014")
+  (tasks/create-task! {:date (dbutil/sql-date-from-subject "Sep 22 2014")
                       :user_id 2
                       :team_id 3
                       :task "Interrupt the Cellular Mitosis"})

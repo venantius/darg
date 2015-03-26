@@ -8,6 +8,5 @@ TODO.txt
 *.jar
 *.class
 /.lein*
-.nrepl-port
 darg.sublime-project
 darg.sublime-workspace

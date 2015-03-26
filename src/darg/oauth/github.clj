@@ -38,7 +38,7 @@
    and Github token are then linked to the provided userid."
   [userid body]
   (let [access-token (:access_token (parse-oauth-response body))]
-    (gh-tokens/create-github-token {:gh_token access-token})
+    (gh-tokens/create-github-token! {:gh_token access-token})
     ;Link token to github user
     (let [github-user (assoc-in (gh-users/github-api-get-current-user access-token)
                                 [:github_token_id]
@@ -46,7 +46,7 @@
           github-user-id (:id github-user)]
       ;if a github user already exists, update it if not, create it
       (if (empty? (gh-users/fetch-github-user-by-id github-user-id))
-        (gh-users/create-github-user github-user)
+        (gh-users/create-github-user! github-user)
         (gh-users/update-github-user github-user-id github-user)))))
 
 ;; Callback Function. Called after the user completes their github login.

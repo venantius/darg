@@ -11,7 +11,7 @@
   In other words, is this user a member of the team that owns this e-mail address?"
   [user-email team-email]
   (let [user-id (users/fetch-user-id {:email user-email})
-        team-id (teams/fetch-team-id {:email team-email})]
+        team-id (:id (teams/fetch-one-team {:email team-email}))]
     (users/user-in-team? user-id team-id)))
 
 (defn parse-email
@@ -29,7 +29,7 @@
                       (str/split #"\n")
                       (->> (map str/trim)))
         email-metadata {:user_id (users/fetch-user-id {:email (:from email)})
-                        :team_id (teams/fetch-team-id {:email (:recipient email)})
+                        :team_id (:id (teams/fetch-one-team {:email (:recipient email)}))
                         :date (dbutil/sql-date-from-subject (:subject email))}]
     (tasks/create-task-list task-list email-metadata)))
 
