@@ -13,7 +13,7 @@
   (is (teams/fetch-team {:name "krogancorp"})))
 
 (deftest we-can-update-team-in-db
-  (teams/update-team 1 {:name "Drake v. Weezy"})
+  (teams/update-team! 1 {:name "Drake v. Weezy"})
   (is (= "Drake v. Weezy" (:name (teams/fetch-team-by-id 1)))))
 
 (deftest we-can-fetch-a-teamid

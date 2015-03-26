@@ -17,16 +17,6 @@
                 (assoc metadata :task task)))
                tasks-list)))
 
-(defn update-task
-  "Update a task."
-  [id fields]
-  (update db/task (where {:id id}) (set-fields fields)))
-
-(defn delete-task
-  "Delete a task."
-  [id]
-  (delete db/task (where {:id id})))
-
 (defn fetch-task-by-id
   "Returns a task based on a unique id
   Takes an id as an integer or a vector of integer ids"

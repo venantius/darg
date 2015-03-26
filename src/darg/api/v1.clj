@@ -102,7 +102,7 @@
     (if (or (= email (:email params))
             (nil? (users/fetch-one-user {:email (:email params)})))
       (do
-        (users/update-user (:id current-user) params)
+        (users/update-user! (:id current-user) params)
         {:status 200
          :session (assoc session :email (:email params))
          :body current-user})

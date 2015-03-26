@@ -32,5 +32,5 @@
   (is (not-empty (gh-users/fetch-github-user {:id dargtester2-github-id}))))
 
 (deftest we-can-update-a-github-user-in-the-db
-  (gh-users/update-github-user dargtester1-github-id {:gh_email "dargtester1@darg.io"})
+  (gh-users/update-github-user! dargtester1-github-id {:gh_email "dargtester1@darg.io"})
   (is (not-empty (gh-users/fetch-github-user {:gh_email "dargtester1@darg.io"}))))

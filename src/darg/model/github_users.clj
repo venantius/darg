@@ -8,12 +8,6 @@
 
 (defmodel db/github-user)
 
-(defn update-github-user
-  "Updates the fields for a github-user.
-  Takes a github-user-id as an integer and a map of fields + values to update."
-  [id params]
-  (update db/github-user (where {:id id}) (set-fields params)))
-
 (defn fetch-github-user-id
   "Returns a github-user-id (integer)
   Takes a map of fields for use in db lookup"
@@ -37,7 +31,7 @@
   "Associates a github oAuth token with a github user
   Takes a github_users.id as the first value, and a github_tokens.id as the second"
   [github-users-id github-tokens-id]
-  (update-github-user github-users-id {:github_token_id github-tokens-id}))
+  (update-github-user! github-users-id {:github_token_id github-tokens-id}))
 
 (defn fetch-github-user-token
   "Returns the access token for a given user"
