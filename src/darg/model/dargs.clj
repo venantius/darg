@@ -1,6 +1,6 @@
 (ns darg.model.dargs
   (:require [clj-time.coerce :as c]
-            [darg.model :as model]
+            [darg.db.entities :as db]
             [darg.model.users :as users]
             [darg.model.tasks :as tasks]
             [darg.model.teams :as teams]
@@ -11,9 +11,9 @@
 (defn team-darg-by-date
   "Generate a darg for a specific team for a specific dates"
   [team-id team-user-ids date]
-  (select model/user
+  (select db/user
           (fields :id :name)
-          (with model/task
+          (with db/task
             (where {:team_id team-id
                     :date (c/to-sql-date date)}))
           (where {:id [in team-user-ids]})))

@@ -1,7 +1,7 @@
 (ns darg.model.github-users
-  (:require [darg.model :as db]
-            [cheshire.core :refer [parse-string]]
+  (:require [cheshire.core :refer [parse-string]]
             [clojure.set :refer [rename-keys]]
+            [darg.db.entities :as db]
             [korma.core :refer :all]
             [org.httpkit.client :as http]
             [tentacles.users :as t-users]

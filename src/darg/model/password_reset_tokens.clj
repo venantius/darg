@@ -2,7 +2,7 @@
   (:require [clj-time.core :as t]
             [clj-time.coerce :as c]
             [crypto.random :as random]
-            [darg.model :refer [password-reset-token]]
+            [darg.db.entities :refer [password-reset-token]]
             [korma.core :refer [insert select sqlfn values where]]))
 
 (defn generate-token
@@ -13,6 +13,7 @@
 (defn create!
   "Create a password reset token. Takes a map of fields, including the
   following required key:
+
     :user_id - the id for the user whose password is being reset"
   [params]
   (insert password-reset-token

@@ -1,7 +1,7 @@
 (ns darg.model.users
   (:require [cemerick.url :as url]
             [clj-time.coerce :as c]
-            [darg.model :as db]
+            [darg.db.entities :as entities]
             [darg.model.password-reset-tokens :as password-reset-tokens]
             [darg.services.mailgun :as mailgun]
             [korma.core :refer :all]
@@ -29,7 +29,7 @@
   :admin (optional) - identifies the user as a darg.io admin"
   [params]
   (let [params (update-in params [:password] encrypt-password)]
-    (insert db/user (values params))))
+    (insert entities/user (values params))))
 
 (defn create-user-from-signup-form
   "Create a user from the signup form"
@@ -43,21 +43,21 @@
   "Updates the fields for a user.
   Takes a user-id as an integer and a map of fields + values to update."
   [id params]
-  (update db/user (where {:id id}) (set-fields params)))
+  (update entities/user (where {:id id}) (set-fields params)))
 
 (defn- fetch-one-credentialed-user
   "Returns the user record WITH PASSWORD.
 
   Only for use in authentication functions."
   [params]
-  (first (select db/user (where params))))
+  (first (select entities/user (where params))))
 
 (defn fetch-user
   "Returns a safe user record from the db.
 
   Takes a map of fields for use in db lookup"
   [params]
-  (select db/user
+  (select entities/user
           (fields :id :active :bot :admin :name :email :timezone :email_hour)
           (where params)))
 
@@ -73,15 +73,15 @@
   for limiting the visibility into which teams a user is a member of."
   ([params]
    (first
-    (select db/user
+    (select entities/user
             (fields :id :active :bot :admin :name :email :timezone :email_hour)
-            (with db/team)
+            (with entities/team)
             (where params))))
   ([params team-ids]
    (first
-    (select db/user
+    (select entities/user
             (fields :id :active :bot :admin :name :email :timezone :email_hour)
-            (with db/team
+            (with entities/team
                   (where {:darg.team.id [in team-ids]}))
             (where params)))))
 
@@ -89,28 +89,22 @@
   "Returns a user-id (integer)
   Takes a map of fields for use in db lookup"
   [params]
-  (:id (first (select db/user (fields :id) (where params)))))
+  (:id (first (select entities/user (fields :id) (where params)))))
 
 (defn fetch-user-by-id
   "Returns a user record from the db.
   Takes a user-id as an integer"
   [id]
-  (first (select db/user (where {:id id}))))
+  (first (select entities/user (where {:id id}))))
 
 ; Github Account
-
-(defn link-github-user
-  "Associates a github account with a darg user
-  Takes a users.id as the first value, and a github_users.id as the second"
-  [users-id github-users-id]
-  (update-user users-id {:github_user_id github-users-id}))
 
 (defn fetch-user-github-account
   "Returns the associated github user"
   [userid]
-  (let [usermap (first (select db/user
+  (let [usermap (first (select entities/user
                                (where {:id userid})
-                               (with db/github-user)))]
+                               (with entities/github-user)))]
     {:user (merge (select-keys
                    usermap
                    [:id :email :name :admin :bot])
@@ -124,27 +118,27 @@
   "Returns boolean true/false based on whether the use is a member of a given team
   Takes a user-id (integer) and team-id (integer)"
   [userid teamid]
-  (if (empty? (select db/team-user (where {:user_id userid :team_id teamid}))) false true))
+  (if (empty? (select entities/team-user (where {:user_id userid :team_id teamid}))) false true))
 
 (defn fetch-user-teams
   "Returns the map of teams that a user belongs to
   Takes a user-id (integer)"
   [user-id]
-  (:darg.team (first (select db/user
+  (:darg.team (first (select entities/user
                          (where {:id user-id})
-                         (with db/team)))))
+                         (with entities/team)))))
 
 (defn team-overlap
   "Returns a seq of team-maps that two users have in common
   Will return an empty seq if the users do not share any teams.
   Takes 2 user-id's (integer)"
   [userid1 userid2]
-  (select db/team
+  (select entities/team
           (fields :id :name)
-          (where (and {:id [in (subselect db/team-user
+          (where (and {:id [in (subselect entities/team-user
                                           (fields :team_id)
                                           (where {:user_id userid1}))]}
-                      {:id [in (subselect db/team-user
+                      {:id [in (subselect entities/team-user
                                           (fields :team_id)
                                           (where {:user_id userid2}))]}))))
 
@@ -164,7 +158,7 @@
 (defn fetch-tasks-by-team-and-date
   "Find tasks for this user by date and team"
   [user team-id date]
-  (select db/task
+  (select entities/task
           (fields :id :date :user_id :team_id :task)
           (where {:user_id (:id user)
                   :date (c/to-sql-time date)

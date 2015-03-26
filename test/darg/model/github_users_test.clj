@@ -35,12 +35,3 @@
 (deftest we-can-update-a-github-user-in-the-db
   (gh-users/update-github-user dargtester1-github-id {:gh_email "dargtester1@darg.io"})
   (is (not-empty (gh-users/fetch-github-user {:gh_email "dargtester1@darg.io"}))))
-
-(deftest we-can-link-a-user-to-a-github-account
-  (gh-users/create-github-user dargtester2-github-map)
-  (users/link-github-user 3 dargtester2-github-id)
-  (is (= dargtester2-github-id 
-         (:github_user_id (users/fetch-user-by-id 3)) 
-         (gh-users/fetch-github-user-id {:gh_login (:gh_login dargtester2-github-map)}))))
-
-
