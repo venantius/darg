@@ -9,7 +9,7 @@
 (with-db-fixtures)
 
 (deftest we-can-insert-team-into-db
-  (teams/create-team {:name "krogancorp" :email "kcorp@darg.io"})
+  (teams/create-team! {:name "krogancorp" :email "kcorp@darg.io"})
   (is (teams/fetch-team {:name "krogancorp"})))
 
 (deftest we-can-update-team-in-db
@@ -17,7 +17,7 @@
   (is (= "Drake v. Weezy" (:name (teams/fetch-team-by-id 1)))))
 
 (deftest we-can-fetch-a-teamid
-  (is (= 1 (teams/fetch-team-id {:id 1}))))
+  (is (= 1 (:id (teams/fetch-one-team {:id 1})))))
 
 (deftest we-can-fetch-team-tasks
   (is (not (empty? (tasks/fetch-tasks-by-team-id 1)))))

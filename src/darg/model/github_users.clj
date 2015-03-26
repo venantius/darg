@@ -1,40 +1,18 @@
 (ns darg.model.github-users
-  (:require [cheshire.core :refer [parse-string]]
-            [clojure.set :refer [rename-keys]]
+  (:require [clojure.set :refer [rename-keys]]
             [darg.db.entities :as db]
+            [darg.model :refer [defmodel]]
             [korma.core :refer :all]
-            [org.httpkit.client :as http]
             [tentacles.users :as t-users]
             [tentacles.repos :as t-repos]))
 
-(defn create-github-user
-  "Insert a user into the database.
-  
-  Required fields:
-  :id - github user's userid
-  :login - github username
-  :avatar_url - URL that points to the GH user's6 gravatar
-  :email - email address associated with the user's github account
-  :github_token_id - Foreign Key for the associated github token"
-  [params]
-  (insert db/github-user (values params)))
+(defmodel db/github-user)
 
 (defn update-github-user
   "Updates the fields for a github-user.
   Takes a github-user-id as an integer and a map of fields + values to update."
   [id params]
   (update db/github-user (where {:id id}) (set-fields params)))
-
-(defn fetch-github-user
-  "returns a github-user map from the db
-  Takes a map of fields for use in db lookup"
-  [params]
-  (select db/github-user (where params)))
-
-(defn fetch-one-github-user
-  "Returns the first github-user from fetch-github-user"
-  [params]
-  (first (fetch-github-user params)))
 
 (defn fetch-github-user-id
   "Returns a github-user-id (integer)

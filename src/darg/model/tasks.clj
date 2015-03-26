@@ -1,20 +1,11 @@
 (ns darg.model.tasks
   (:require [darg.db.entities :as db]
+            [darg.model :refer [defmodel]]
             [darg.model.users :as users]
             [darg.model.teams :as teams]
             [korma.core :refer :all]))
 
-;; Create
-(defn create-task
-  "Creates a task in the database
-  Takes a map of fields to insert into the db
-  Required Fields:
-  :task - string that describes the actual completed task
-  :user_id - integer that identifies the user who completed the task
-  :team_id - integer that identifies the team associated with the task
-  :date - date the task was completed"
-  [params]
-  (insert db/task (values params)))
+(defmodel db/task)
 
 (defn create-task-list
   "Used to insert multiple tasks into the db with matching metadata
@@ -22,7 +13,7 @@
   [tasks-list metadata]
   (dorun (map (fn
                 [task]
-                (create-task
+                (create-task!
                 (assoc metadata :task task)))
                tasks-list)))
 
@@ -35,19 +26,6 @@
   "Delete a task."
   [id]
   (delete db/task (where {:id id})))
-
-;; Retrieve
-
-(defn fetch-task
-  "Returns tasks that match a set of fields, may return multiple tasks depending on the fields passed.
-  Takes a map, where the key represents the field and the value is a vector of values for that field"
-  [params]
-  (select db/task (where params)))
-
-(defn fetch-one-task
-  "Returns the first task returned by fetch-task"
-  [params]
-  (first (fetch-task params)))
 
 (defn fetch-task-by-id
   "Returns a task based on a unique id

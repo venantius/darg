@@ -1,6 +1,5 @@
 (ns darg.model.github-users-test
   (:require [clojure.test :refer :all]
-            [clojure.tools.logging :as logging]
             [darg.fixtures :refer [with-db-fixtures]]
             [darg.fixtures.model :as fixtures]
             [darg.model.github-users :as gh-users]
@@ -29,7 +28,7 @@
   (is (= dargtester1-github-id (gh-users/fetch-github-user-id {:gh_login "dargtester1"}))))
 
 (deftest we-can-insert-github-user-into-the-db
-  (gh-users/create-github-user dargtester2-github-map)
+  (gh-users/create-github-user! dargtester2-github-map)
   (is (not-empty (gh-users/fetch-github-user {:id dargtester2-github-id}))))
 
 (deftest we-can-update-a-github-user-in-the-db
