@@ -1,4 +1,4 @@
-(ns darg.model.github-tokens
+(ns darg.model.github-token
   (:require [darg.db.entities :as db]
             [darg.model :refer [defmodel]]
             [korma.core :refer :all]))

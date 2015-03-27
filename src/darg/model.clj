@@ -38,12 +38,12 @@
     (intern *ns* (symbol (str "delete-" n "!")) (delete! entity))))
 
 (defmacro defmodel
-  "Define basic database methods:
+  "Define basic database methods for the target entity.
    
-   create-X!
-   fetch-X
-   fetch-one-X
-   update-X!
-   delete-X!"
+    * create-X!
+    * fetch-X
+    * fetch-one-X
+    * update-X!
+    * delete-X!"
   [entity]
   `(intern-fns ~entity))

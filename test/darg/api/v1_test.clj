@@ -7,11 +7,8 @@
             [darg.fixtures :refer [with-db-fixtures]]
             [darg.fixtures.email :as email-fixtures]
             [darg.fixtures.model :as model-fixtures]
-            [darg.db.entities :as table]
-            [darg.model.tasks :as tasks]
-            [darg.model.teams :as teams]
-            [darg.model.users :as users]
-            [korma.core :refer :all]
+            [darg.model.task :as task]
+            [darg.model.user :as user]
             [ring.mock.request :as mock-request]))
 
 (with-db-fixtures)
@@ -53,7 +50,7 @@
                         :params params}
         response (api/update-user sample-request)]
     (is (= (:status response) 200))
-    (is (some? (users/fetch-one-user {:email "test-user5@darg.io"})))))
+    (is (some? (user/fetch-one-user {:email "test-user5@darg.io"})))))
 
 (deftest we-cant-update-a-user-to-have-an-email-of-an-existing-user
   (let [params {:email "david@ursacorp.io"
@@ -63,7 +60,7 @@
                         :params params}
         response (api/update-user sample-request)]
     (is (= (:status response) 409))
-    (is (= 1 (count (users/fetch-user {:email "david@ursacorp.io"}))))))
+    (is (= 1 (count (user/fetch-user {:email "david@ursacorp.io"}))))))
 
 ;; /api/v1/gravatar
 
@@ -93,7 +90,7 @@
     (is (= (json/parse-string (:body auth-response) true)
            {:message "Account successfully created"}))
     (is (= (:status auth-response) 200))
-    (is (not (empty? (users/fetch-user {:email "dummy@darg.io"}))))
+    (is (not (empty? (user/fetch-user {:email "dummy@darg.io"}))))
     (is (some #{"logged-in=true;Path=/"}
               (get (:headers auth-response) "Set-Cookie")))))
 
@@ -114,7 +111,7 @@
     (is (= (json/parse-string (:body auth-response) true)
            {:message "The signup form needs an e-mail, a name, and a password."}))
     (is (= (:status auth-response) 400))
-    (is (empty? (users/fetch-user {:email "quasi-user@darg.io"})))
+    (is (empty? (user/fetch-user {:email "quasi-user@darg.io"})))
     (is (not (some #{"logged-in=true;Path=/"}
                    (get (:headers auth-response) "Set-Cookie"))))))
 
@@ -137,11 +134,11 @@
                                  :date "Mar 10 2014"
                                  :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
         response (api/post-darg sample-request)
-        test-user-id (users/fetch-user-id {:email "test-user2@darg.io"})]
+        test-user-id (user/fetch-user-id {:email "test-user2@darg.io"})]
     (is (= (:status response) 401))
     (is (= (:body response)
            {:message "User not authorized."}))
-    (is (= (count (tasks/fetch-tasks-by-user-id test-user-id)) 4))))
+    (is (= (count (task/fetch-tasks-by-user-id test-user-id)) 4))))
 
 (deftest authenticated-user-can-post-a-darg
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
@@ -151,10 +148,10 @@
                                  :date "Mar 10 2014"
                                  :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
         response (api/post-darg sample-request)
-        test-user-id (users/fetch-user-id {:email "test-user2@darg.io"})]
+        test-user-id (user/fetch-user-id {:email "test-user2@darg.io"})]
     (is (= (:status response) 200))
     (is (= (:body response) "Tasks created successfully."))
-    (is (= (count (tasks/fetch-tasks-by-user-id test-user-id)) 7))))
+    (is (= (count (task/fetch-tasks-by-user-id test-user-id)) 7))))
 
 ;; GET api/v1/user/:userid/darg
 
@@ -164,7 +161,7 @@
                         :params {:user-id "3"}}
         response (api/get-user-darg sample-request)]
     (is (= (:status response) 200))
-    (is (= (:body response) (tasks/fetch-task {:team_id 1 :user_id 3})))))
+    (is (= (:body response) (task/fetch-task {:team_id 1 :user_id 3})))))
 
 (deftest user-can-get-their-own-darg
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
@@ -172,7 +169,7 @@
                         :params {:user-id "4"}}
         response (api/get-user-darg sample-request)]
     (is (= (:status response) 200))
-    (is (= (:body response) (tasks/fetch-task {:user_id 4})))))
+    (is (= (:body response) (task/fetch-task {:user_id 4})))))
 
 (deftest user-cant-see-darg-for-non-teammate
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
@@ -192,7 +189,7 @@
         response (api/get-user-profile sample-request)]
     (is (= (:status response) 200))
     (is (= (:body response)
-           (users/profile {:id 1})))))
+           (user/profile {:id 1})))))
 
 (deftest user-cant-see-profile-for-non-teammate
   (let [sample-request {:user {:authenticated true :email "test-user2@darg.io" :id 4}
@@ -213,8 +210,8 @@
     (is (= (:status response) 200))
     (is (= (:body response)
            (json/encode {:message "E-mail successfully parsed."})))
-    (is (not (empty? (tasks/fetch-task {:task "Dancing tiem!!"}))))
-    (is (not (empty? (tasks/fetch-task {:task "Aint it a thing?"}))))))
+    (is (not (empty? (task/fetch-task {:task "Dancing tiem!!"}))))
+    (is (not (empty? (task/fetch-task {:task "Aint it a thing?"}))))))
 
 (deftest unauthenticated-emails-return-401
   (let [email (assoc email-fixtures/test-email-2

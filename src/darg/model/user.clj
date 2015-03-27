@@ -1,8 +1,8 @@
-(ns darg.model.users
+(ns darg.model.user
   (:require [cemerick.url :as url]
             [clj-time.coerce :as c]
             [darg.db.entities :as entities]
-            [darg.model.password-reset-tokens :as password-reset-tokens]
+            [darg.model.password-reset-token :as password-reset-token]
             [darg.services.mailgun :as mailgun]
             [korma.core :refer :all]
             [net.cgrand.enlive-html :as html])
@@ -82,7 +82,7 @@
     (select entities/user
             (fields :id :active :bot :admin :name :email :timezone :email_hour)
             (with entities/team
-                  (where {:darg.team.id [in team-ids]}))
+                  (where {:team.id [in team-ids]}))
             (where params)))))
 
 (defn fetch-user-id
@@ -124,7 +124,7 @@
   "Returns the map of teams that a user belongs to
   Takes a user-id (integer)"
   [user-id]
-  (:darg.team (first (select entities/user
+  (:team (first (select entities/user
                          (where {:id user-id})
                          (with entities/team)))))
 
@@ -177,7 +177,7 @@
   we should actually be creating a password reset token."
   [{:keys [id] :as user}]
   (let [base-reset-url (url/url "http://darg.herokuapp.com/new_password")
-        token (:token (password-reset-tokens/create! {:user_id id}))]
+        token (:token (password-reset-token/create! {:user_id id}))]
     (str (assoc
           base-reset-url
           :query {:token token}))))

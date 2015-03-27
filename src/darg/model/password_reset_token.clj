@@ -1,4 +1,4 @@
-(ns darg.model.password-reset-tokens
+(ns darg.model.password-reset-token
   (:require [clj-time.core :as t]
             [clj-time.coerce :as c]
             [crypto.random :as random]

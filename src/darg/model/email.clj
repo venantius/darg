@@ -1,18 +1,18 @@
 (ns darg.model.email
   (:require [clojure.string :as str]
             [darg.db-util :as dbutil]
-            [darg.model.tasks :as tasks]
-            [darg.model.teams :as teams]
-            [darg.model.users :as users]))
+            [darg.model.task :as task]
+            [darg.model.team :as team]
+            [darg.model.user :as user]))
 
 (defn user-can-email-this-team?
   "Is the user who owns this e-mail authorized to post to this e-mail address?
 
   In other words, is this user a member of the team that owns this e-mail address?"
   [user-email team-email]
-  (let [user-id (users/fetch-user-id {:email user-email})
-        team-id (:id (teams/fetch-one-team {:email team-email}))]
-    (users/user-in-team? user-id team-id)))
+  (let [user-id (user/fetch-user-id {:email user-email})
+        team-id (:id (team/fetch-one-team {:email team-email}))]
+    (user/user-in-team? user-id team-id)))
 
 (defn parse-email
   "Recieves a darg email from a user, parses tasklist, and inserts the tasks into
@@ -28,8 +28,8 @@
                       :stripped-text
                       (str/split #"\n")
                       (->> (map str/trim)))
-        email-metadata {:user_id (users/fetch-user-id {:email (:from email)})
-                        :team_id (:id (teams/fetch-one-team {:email (:recipient email)}))
+        email-metadata {:user_id (user/fetch-user-id {:email (:from email)})
+                        :team_id (:id (team/fetch-one-team {:email (:recipient email)}))
                         :date (dbutil/sql-date-from-subject (:subject email))}]
-    (tasks/create-task-list task-list email-metadata)))
+    (task/create-task-list task-list email-metadata)))
 
