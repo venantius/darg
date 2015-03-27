@@ -1,4 +1,4 @@
-(ns darg.model.teams
+(ns darg.model.team
   (:require [darg.db.entities :as db]
             [darg.model :refer [defmodel]]
             [korma.core :refer :all]))
@@ -15,7 +15,7 @@
 (defn fetch-team-users
   "Gets the list of users for a given team"
   [id]
-  (:darg.user (first (select db/team
+  (:user (first (select db/team
                        (where {:id id})
                        (with db/user)))))
 

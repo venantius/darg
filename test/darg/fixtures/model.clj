@@ -3,7 +3,7 @@
             [clj-time.coerce :as c :refer [to-sql-date]]
             [darg.db-util :as db-util]
             [darg.db.entities :refer :all]
-            [darg.model.users :refer [encrypt-password]]
+            [darg.model.user :refer [encrypt-password]]
             [korma.core :refer :all]))
 
 (def test-user-1

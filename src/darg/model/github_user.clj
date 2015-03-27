@@ -1,4 +1,4 @@
-(ns darg.model.github-users
+(ns darg.model.github-user
   (:require [clojure.set :refer [rename-keys]]
             [darg.db.entities :as db]
             [darg.model :refer [defmodel]]

@@ -4,26 +4,26 @@
             [darg.fixtures.email :as email-fixtures]
             [darg.fixtures.model :as model-fixtures]
             [darg.model.email :as email]
-            [darg.model.tasks :as tasks]
-            [darg.model.teams :as teams]
-            [darg.model.users :as users]))
+            [darg.model.task :as task]
+            [darg.model.team :as team]
+            [darg.model.user :as user]))
 
 (with-db-fixtures)
 
 (deftest parsed-email-is-written-to-db
   (email/parse-email email-fixtures/test-email-2)
-  (is (not (empty? (tasks/fetch-task {:task "Dancing tiem!!"}))))
-  (is (not (empty? (tasks/fetch-task {:task "Aint it a thing?"})))))
+  (is (not (empty? (task/fetch-task {:task "Dancing tiem!!"}))))
+  (is (not (empty? (task/fetch-task {:task "Aint it a thing?"})))))
 
 (deftest we-can-get-a-users-task-list
   (email/parse-email email-fixtures/test-email-2)
-  (let [test-user-id (users/fetch-user-id {:email "savelago@gmail.com"})]
-    (is (= (count (tasks/fetch-tasks-by-user-id test-user-id)) 3))))
+  (let [test-user-id (user/fetch-user-id {:email "savelago@gmail.com"})]
+    (is (= (count (task/fetch-tasks-by-user-id test-user-id)) 3))))
 
 (deftest we-can-get-a-teams-task-list
   (email/parse-email email-fixtures/test-email-2)
-  (let [test-team-id (:id (teams/fetch-one-team {:email "test.api@darg.io"}))]
-    (is (= (count (tasks/fetch-tasks-by-team-id test-team-id)) 6))))
+  (let [test-team-id (:id (team/fetch-one-team {:email "test.api@darg.io"}))]
+    (is (= (count (task/fetch-tasks-by-team-id test-team-id)) 6))))
 
 (deftest we-can-validate-email-posting-rights
   (testing "a user on the team returns true"
