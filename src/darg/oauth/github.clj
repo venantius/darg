@@ -7,9 +7,8 @@
    for creating github auth-tokens and attaching them to a darg user account"
   (:require [cheshire.core :refer [parse-string generate-string]]
             [clojure.tools.logging :as logging]
-            [darg.model.users :as users]
-            [darg.model.github-users :as gh-users]
-            [darg.model.github-tokens :as gh-tokens]
+            [darg.model.github-user :as gh-user]
+            [darg.model.github-token :as gh-token]
             [darg.api.responses :as responses]
             [environ.core :as env]
             [org.httpkit.client :as http]
@@ -38,16 +37,16 @@
    and Github token are then linked to the provided userid."
   [userid body]
   (let [access-token (:access_token (parse-oauth-response body))]
-    (gh-tokens/create-github-token! {:gh_token access-token})
+    (gh-token/create-github-token! {:gh_token access-token})
     ;Link token to github user
-    (let [github-user (assoc-in (gh-users/github-api-get-current-user access-token)
+    (let [github-user (assoc-in (gh-user/github-api-get-current-user access-token)
                                 [:github_token_id]
-                                (gh-tokens/fetch-github-token-id {:gh_token access-token}))
+                                (gh-token/fetch-github-token-id {:gh_token access-token}))
           github-user-id (:id github-user)]
       ;if a github user already exists, update it if not, create it
-      (if (empty? (gh-users/fetch-github-user-by-id github-user-id))
-        (gh-users/create-github-user! github-user)
-        (gh-users/update-github-user! github-user-id github-user)))))
+      (if (empty? (gh-user/fetch-github-user-by-id github-user-id))
+        (gh-user/create-github-user! github-user)
+        (gh-user/update-github-user! github-user-id github-user)))))
 
 ;; Callback Function. Called after the user completes their github login.
 

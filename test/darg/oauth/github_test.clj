@@ -1,15 +1,11 @@
 (ns darg.oauth.github-test
-  (:require [cheshire.core :refer [generate-string]]
-            [clojure.test :refer :all]
+  (:require [clojure.test :refer :all]
             [clojure.tools.logging :as logging]
-            [darg.api.responses :as responses]
             [darg.fixtures :refer [with-db-fixtures]]
-            [darg.model.github-users :as gh-users]
-            [darg.model.github-tokens :as gh-tokens]
-            [darg.model.users :as users]
+            [darg.model.github-user :as gh-user]
+            [darg.model.github-token :as gh-token]
             [darg.oauth.github :as oauth-github]
-            [environ.core :as env]
-            [tentacles.users :as t-users]))
+            [environ.core :as env]))
 
 ; Note: We cannot test the full web oauth flow, so we will generate an oAuth token using the authorizations API. Production environments should use the web authorization flow and callback function.
 
@@ -37,6 +33,6 @@
   (let [userid 3]
     (oauth-github/insert-and-link-github-user userid test-github-oauth)
     ;; Github token is linked to github user
-    (is (= (:github_token_id (gh-users/fetch-one-github-user {:gh_login test-username})) 
-           (gh-tokens/fetch-github-token-id {:gh_token access-token})))))
+    (is (= (:github_token_id (gh-user/fetch-one-github-user {:gh_login test-username})) 
+           (gh-token/fetch-github-token-id {:gh_token access-token})))))
 

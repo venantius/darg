@@ -1,8 +1,6 @@
-(ns darg.model.tasks
+(ns darg.model.task
   (:require [darg.db.entities :as db]
             [darg.model :refer [defmodel]]
-            [darg.model.users :as users]
-            [darg.model.teams :as teams]
             [korma.core :refer :all]))
 
 (defmodel db/task)
@@ -18,7 +16,7 @@
                tasks-list)))
 
 (defn fetch-tasks-by-user-id
-  "Returns a map of tasks which are associated with a specific user-id.
+  "Returns a seq of tasks which are associated with a specific user-id.
   Takes a user-id as an integer"
   [user-id]
   (select db/task
@@ -26,7 +24,7 @@
     (order :date :desc)))
 
 (defn fetch-tasks-by-team-id
-  "Returns a map of tasks which are associated with a specific team-id.
+  "Returns a seq of tasks which are associated with a specific team-id.
   Takes a team-id as an integer"
   [team-id]
   (select db/task

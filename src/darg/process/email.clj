@@ -3,7 +3,7 @@
   (:require [clj-time.core :as t]
             [darg.db :as db]
             [darg.model.email :as email]
-            [darg.model.users :as users]
+            [darg.model.user :as user]
             [darg.util.datetime :as dt]))
 
 (defn within-the-hour
@@ -20,5 +20,5 @@
   (let [start-time (t/now)]
     (println "Current JVM time" (t/now))
     (println "Current JVM hour" (dt/nearest-hour))
-    (dorun (map println (map #(within-the-hour start-time %) (users/fetch-user {}))))
+    (dorun (map println (map #(within-the-hour start-time %) (user/fetch-user {}))))
     (println "Sent email!")))

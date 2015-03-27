@@ -3,18 +3,14 @@
             [clojure.string :as str :refer [split trim]]
             [darg.api.responses :as responses]
             [darg.db-util :as dbutil]
-            [darg.model.dargs :as dargs]
+            [darg.model.darg :as darg]
             [darg.model.email :as email]
-            [darg.model.tasks :as tasks]
-            [darg.model.teams :as teams]
-            [darg.model.users :as users]
+            [darg.model.task :as task]
+            [darg.model.user :as user]
             [darg.services.mailgun :as mailgun]
             [korma.core :refer :all]
             [korma.sql.fns :as ksql]
-            [pandect.algo.md5 :refer :all]
-            [ring.middleware.session.cookie :as cookie-store]
-            [ring.middleware.session.store :as session-store]
-            [slingshot.slingshot :refer [try+]]))
+            [pandect.algo.md5 :refer :all]))
 
 (defn login
   "/v1/api/login
@@ -26,12 +22,12 @@
   [{:keys [params] :as request}]
   (let [{:keys [email password]} params]
     (cond
-      (not (users/authenticate email password))
+      (not (user/authenticate email password))
       {:body "Failed to authenticate"
        :session {:authenticated false}
        :status 401}
       :else
-      (let [id (:id (first (users/fetch-user {:email email})))]
+      (let [id (:id (first (user/fetch-user {:email email})))]
         {:body "Successfully authenticated"
          :cookies {"logged-in" {:value true :path "/"}}
          :session {:authenticated true :id id :email email}
@@ -62,7 +58,7 @@
   [request-map]
   (let [email (-> request-map :params :email)]
     (try
-      (users/send-password-reset-email email)
+      (user/send-password-reset-email email)
       (responses/ok "Success!")
       (catch Exception e
         (responses/bad-request "Password reset failed.")))))
@@ -78,13 +74,13 @@
   (let [params (:params request-map)
         email (:email params)]
     (cond
-      (some? (users/fetch-one-user {:email email}))
+      (some? (user/fetch-one-user {:email email}))
       (responses/conflict "A user with that e-mail already exists.")
       (not (every? params [:email :name :password]))
       (responses/bad-request
        "The signup form needs an e-mail, a name, and a password.")
       :else
-      (let [user (users/create-user-from-signup-form params)]
+      (let [user (user/create-user-from-signup-form params)]
         {:body {:message "Account successfully created"}
          :cookies {"logged-in" {:value true :path "/"}}
          :session {:authenticated true :email (:email params) :id (:id user)}
@@ -98,11 +94,11 @@
   Update a user's profile."
   [{:keys [user params session] :as request}]
   (let [email (:email user)
-        current-user (users/fetch-one-user {:email email})]
+        current-user (user/fetch-one-user {:email email})]
     (if (or (= email (:email params))
-            (nil? (users/fetch-one-user {:email (:email params)})))
+            (nil? (user/fetch-one-user {:email (:email params)})))
       (do
-        (users/update-user! (:id current-user) params)
+        (user/update-user! (:id current-user) params)
         {:status 200
          :session (assoc session :email (:email params))
          :body current-user})
@@ -142,10 +138,10 @@
     (cond
       (not (and task user-id team-id date))
       (responses/bad-request "Request needs to include 'task', 'team-id' and 'date'.")
-      (not (users/user-in-team? user-id team-id))
+      (not (user/user-in-team? user-id team-id))
       (responses/unauthorized "Not authorized.")
       :else
-      (tasks/create-task! {:task task
+      (task/create-task! {:task task
                           :user_id user-id
                           :team_id team-id
                           :date date}))))
@@ -161,7 +157,7 @@
   [{:keys [params user] :as request}]
   (let [team-id (-> params :team-id read-string)]
     (responses/ok
-     {:dargs (dargs/personal-timeline (:id user) team-id)})))
+     {:darg (darg/personal-timeline (:id user) team-id)})))
 
 (defn post-darg
   "/api/v1/darg
@@ -171,9 +167,12 @@
   Creates a darg for the user. Expects the following:
 
     :email - taken from user authentication map
-    :team-id - specified by user in the body of the request, takes only one team and applies to the full darg
-    :date - specified by user in the body of the request, takes only one date and applies to the full darg
-    :darg - specified by user in the body of the request, expects an array of task strings"
+    :team-id - specified by user in the body of the request, takes only one team 
+               and applies to the full darg
+    :date - specified by user in the body of the request, takes only one date 
+            and applies to the full darg
+    :darg - specified by user in the body of the request, expects an array of 
+            task strings"
   [{:keys [params user] :as request}]
   (let [task-list (:darg params)
         user-id (:id user)
@@ -184,9 +183,9 @@
         metadata {:user_id user-id
                   :team_id team-id
                   :date date}]
-    (if (users/user-in-team? user-id team-id)
+    (if (user/user-in-team? user-id team-id)
       (do
-        (tasks/create-task-list task-list metadata)
+        (task/create-task-list task-list metadata)
         (responses/ok "Tasks created successfully."))
       (responses/unauthorized "User not authorized."))))
 
@@ -201,11 +200,11 @@
   [{:keys [params user] :as request}]
   (let [current-user-id (:id user)
         target-user-id (-> params :user-id read-string)
-        team-ids (mapv :id (users/team-overlap current-user-id target-user-id))]
+        team-ids (mapv :id (user/team-overlap current-user-id target-user-id))]
     (if (empty? team-ids)
       (responses/unauthorized "Not authorized.")
       (responses/ok
-       (tasks/fetch-task
+       (task/fetch-task
         {:team_id [ksql/pred-in team-ids]
          :user_id target-user-id})))))
 
@@ -218,9 +217,9 @@
   [{:keys [params user] :as request}]
   (let [team-id (-> params :team-id read-string)]
     (responses/ok
-     {:dargs (dargs/team-timeline team-id)})))
+     {:darg (darg/team-timeline team-id)})))
 
-;; v1/users
+;; v1/user
 ;; TODO: for both get-user and get-user-profile (which should probably be
 ;; renamed to get-current-user and get-any-user) we should add in a list of
 ;; teams that they're on (as well as some thinking around which of those teams
@@ -235,7 +234,7 @@
   Retrieve info on the current user."
   [{:keys [user] :as request}]
   (responses/ok
-   (users/profile {:id (:id user)})))
+   (user/profile {:id (:id user)})))
 
 (defn get-user-profile
   "/api/v1/user/:user-id
@@ -246,11 +245,11 @@
   [{:keys [params user] :as request}]
   (let [current-user-id (:id user)
         target-user-id (-> params :user-id read-string)
-        team-ids (mapv :id (users/team-overlap current-user-id target-user-id))]
+        team-ids (mapv :id (user/team-overlap current-user-id target-user-id))]
     (if (empty? team-ids)
       (responses/unauthorized "Not authorized.")
       (responses/ok
-       (users/profile
+       (user/profile
         {:id target-user-id}
         team-ids)))))
 
