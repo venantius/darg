@@ -134,7 +134,7 @@
                                  :date "Mar 10 2014"
                                  :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
         response (api/post-darg sample-request)
-        test-user-id (user/fetch-user-id {:email "test-user2@darg.io"})]
+        test-user-id (:id (user/fetch-one-user {:email "test-user2@darg.io"}))]
     (is (= (:status response) 401))
     (is (= (:body response)
            {:message "User not authorized."}))
@@ -148,7 +148,7 @@
                                  :date "Mar 10 2014"
                                  :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
         response (api/post-darg sample-request)
-        test-user-id (user/fetch-user-id {:email "test-user2@darg.io"})]
+        test-user-id (:id (user/fetch-one-user {:email "test-user2@darg.io"}))]
     (is (= (:status response) 200))
     (is (= (:body response) "Tasks created successfully."))
     (is (= (count (task/fetch-tasks-by-user-id test-user-id)) 7))))
@@ -251,4 +251,4 @@
                                 email))]
       (is (= (:status response) 401))
       (is (= (:body response)
-             (json/encode {:message "E-mails from this address <savelago@gmail.com> are not authorized to post to this team address <jncake@darg.io>."}))))))
+             (json/encode {:message "E-mails from this address <savelago@gmail.com> are not authorized to post to this team address <jncake@mail.darg.io>."}))))))

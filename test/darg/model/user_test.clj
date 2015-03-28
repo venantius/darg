@@ -19,14 +19,12 @@
   (user/update-user! 3 {:name "irrashaimase"})
   (is (= "irrashaimase" (:name (user/fetch-user-by-id 3)))))
 
-(deftest we-can-fetch-userid
-  (is (= 1 (user/fetch-user-id {:id 1}))))
-
 (deftest we-can-fetch-user-tasks
   (is (not (empty? (task/fetch-tasks-by-user-id 2)))))
 
 (deftest we-can-get-a-users-teams
-  (is (= (first (user/fetch-user-teams 1)) {:email "test.api@darg.io", :name "Darg", :id 1})))
+  (is (= (first (user/fetch-user-teams {:id 1})) 
+         {:email "test.api@mail.darg.io", :name "Darg", :id 1})))
 
 (deftest we-can-check-a-user-is-in-a-team
   (is (user/user-in-team? 3 1))
@@ -56,7 +54,8 @@
 (deftest build-password-reset-link-works
   (let [user (user/fetch-user-by-id 4)
         link (user/build-password-reset-link user)
-        token (:token (password-reset-token/fetch-one-valid {:user_id (:id user)}))]
+        token (:token (password-reset-token/fetch-one-valid 
+                        {:user_id (:id user)}))]
     (is (= link
            (clojure.string/join ["http://darg.herokuapp.com/new_password?token="
                                  token])))))
