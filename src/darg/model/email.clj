@@ -1,16 +1,18 @@
 (ns darg.model.email
   (:require [clojure.string :as str]
+            [clojure.tools.logging :as log]
             [darg.db-util :as dbutil]
             [darg.model.task :as task]
             [darg.model.team :as team]
-            [darg.model.user :as user]))
+            [darg.model.user :as user]
+            [darg.services.mailgun :as mailgun]))
 
 (defn user-can-email-this-team?
   "Is the user who owns this e-mail authorized to post to this e-mail address?
 
   In other words, is this user a member of the team that owns this e-mail address?"
   [user-email team-email]
-  (let [user-id (user/fetch-user-id {:email user-email})
+  (let [user-id (:id (user/fetch-one-user {:email user-email}))
         team-id (:id (team/fetch-one-team {:email team-email}))]
     (user/user-in-team? user-id team-id)))
 
@@ -28,8 +30,26 @@
                       :stripped-text
                       (str/split #"\n")
                       (->> (map str/trim)))
-        email-metadata {:user_id (user/fetch-user-id {:email (:from email)})
+        email-metadata {:user_id (:id (user/fetch-one-user {:email (:from email)}))
                         :team_id (:id (team/fetch-one-team {:email (:recipient email)}))
                         :date (dbutil/sql-date-from-subject (:subject email))}]
     (task/create-task-list task-list email-metadata)))
 
+(defn send-one-personal-email
+  "Send an e-mail for each team this user is on asking what they did today."
+  [user team]
+  (let [from (:email team)
+        to (:email user)]
+    (log/info "Emailing" to "from" from)
+    (mailgun/send-message {:from from
+                           :to to
+                           :subject "This is a test email"
+                           :text "What did you do today?"})))
+
+(defn send-personal-emails
+  "Look at what teams a user is part of, and send them the daily personal
+   email for each of those teams."
+  [user]
+  (log/info "Sending daily e-mail for" user)
+  (let [teams (user/fetch-user-teams user)]
+    (doall (map #(send-one-personal-email user %) teams))))

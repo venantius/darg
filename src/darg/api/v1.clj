@@ -13,7 +13,7 @@
             [pandect.algo.md5 :refer :all]))
 
 (defn login
-  "/v1/api/login
+  "/api/v1/login
 
   Method: POST
 

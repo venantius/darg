@@ -20,7 +20,7 @@
                     api/post-darg
                     authn/darg-auth-fn)
                   sample-request)
-        test-user-id (user/fetch-user-id {:email "test-user2@darg.io"})]
+        test-user-id (:id (user/fetch-one-user {:email "test-user2@darg.io"}))]
     (is (= (:status response) 401))
     (is (= (:body response)
            {:message "User not authenticated."}))

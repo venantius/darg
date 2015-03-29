@@ -21,4 +21,8 @@
     (println "Current JVM time" (t/now))
     (println "Current JVM hour" (dt/nearest-hour))
     (dorun (map println (map #(within-the-hour start-time %) (user/fetch-user {}))))
+    (println)
+    (dorun (map email/send-personal-emails
+                (filter #(within-the-hour start-time %) 
+                        (user/fetch-user {}))))
     (println "Sent email!")))

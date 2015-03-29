@@ -39,12 +39,6 @@
       (assoc :active true)
       create-user!))
 
-(defn update-user!
-  "Updates the fields for a user.
-  Takes a user-id as an integer and a map of fields + values to update."
-  [id params]
-  (update entities/user (where {:id id}) (set-fields params)))
-
 (defn- fetch-one-credentialed-user
   "Returns the user record WITH PASSWORD.
 
@@ -66,6 +60,13 @@
   [params]
   (first (fetch-user params)))
 
+(defn update-user!
+  "Updates the fields for a user.
+  Takes a user-id as an integer and a map of fields + values to update."
+  [id params]
+  (update entities/user (where {:id id}) (set-fields params))
+  (fetch-one-user {:id id}))
+
 (defn profile
   "Returns the profile for a given user, including the teams that they're on.
 
@@ -84,12 +85,6 @@
             (with entities/team
                   (where {:team.id [in team-ids]}))
             (where params)))))
-
-(defn fetch-user-id
-  "Returns a user-id (integer)
-  Takes a map of fields for use in db lookup"
-  [params]
-  (:id (first (select entities/user (fields :id) (where params)))))
 
 (defn fetch-user-by-id
   "Returns a user record from the db.
@@ -121,11 +116,10 @@
   (if (empty? (select entities/team-user (where {:user_id userid :team_id teamid}))) false true))
 
 (defn fetch-user-teams
-  "Returns the map of teams that a user belongs to
-  Takes a user-id (integer)"
-  [user-id]
+  "Returns the map of teams that a user belongs to."
+  [user]
   (:team (first (select entities/user
-                         (where {:id user-id})
+                         (where user)
                          (with entities/team)))))
 
 (defn team-overlap

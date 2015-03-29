@@ -60,7 +60,7 @@
   {:email "david@ursacorp.io"
    :password (encrypt-password "bloodthirst")
    :name "David Jarvis"
-   :timezone "UTC"
+   :timezone "America/Los_Angeles"
    :email_hour "4pm"
    :admin true
    :bot false
@@ -86,15 +86,15 @@
 
 (def test-team-1
   {:name "Darg"
-   :email "test.api@darg.io"})
+   :email "test.api@mail.darg.io"})
 
 (def test-team-2
   {:name "Standard Treasury"
-   :email "st@darg.io"})
+   :email "st@mail.darg.io"})
 
 (def test-team-3
   {:name "Jake n Cake"
-   :email "jncake@darg.io"})
+   :email "jncake@mail.darg.io"})
 
 (def test-teams
   [test-team-1
