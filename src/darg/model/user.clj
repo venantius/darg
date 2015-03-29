@@ -4,6 +4,7 @@
             [darg.db.entities :as entities]
             [darg.model.password-reset-token :as password-reset-token]
             [darg.services.mailgun :as mailgun]
+            [environ.core :as env]
             [korma.core :refer :all]
             [net.cgrand.enlive-html :as html])
   (:import [org.mindrot.jbcrypt BCrypt]))
@@ -86,12 +87,6 @@
                   (where {:team.id [in team-ids]}))
             (where params)))))
 
-(defn fetch-user-by-id
-  "Returns a user record from the db.
-  Takes a user-id as an integer"
-  [id]
-  (first (select entities/user (where {:id id}))))
-
 ; Github Account
 
 (defn fetch-user-github-account
@@ -164,13 +159,16 @@
   (if-let [user (fetch-one-credentialed-user {:email email})]
     (valid-password? password (:password user))))
 
-;; TODO - change the hardcoded URL here
-;; https://github.com/ursacorp/darg/issues/159
 (defn build-password-reset-link
-  "Actually build a password reset link. Note that this is really the only time
+  "Build a password reset link. Note that this is really the only time
   we should actually be creating a password reset token."
   [{:keys [id] :as user}]
-  (let [base-reset-url (url/url "http://darg.herokuapp.com/new_password")
+  (let [root-url (if (= (env/env :darg-environment) "dev")
+                   "localhost"
+                   "darg.io")
+        base-reset-url (url/url (str "http://"
+                                     root-url
+                                     "/new_password"))
         token (:token (password-reset-token/create! {:user_id id}))]
     (str (assoc
           base-reset-url
