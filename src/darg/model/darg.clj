@@ -38,7 +38,7 @@
   This is a naive implementation for now that can be
   expanded to include other darg subtypes as we go."
   [user-id team-id]
-  (let [user (user/fetch-user-by-id user-id)
+  (let [user (user/fetch-one-user {:id user-id})
         dates (map c/to-sql-date (dt/date-range 5))
         tasks-by-date (map (partial user/fetch-tasks-by-team-and-date user team-id) dates)]
     (reduce conj []

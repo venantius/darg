@@ -17,7 +17,7 @@
 
 (deftest we-can-update-user-in-the-db
   (user/update-user! 3 {:name "irrashaimase"})
-  (is (= "irrashaimase" (:name (user/fetch-user-by-id 3)))))
+  (is (= "irrashaimase" (:name (user/fetch-one-user {:id 3})))))
 
 (deftest we-can-fetch-user-tasks
   (is (not (empty? (task/fetch-tasks-by-user-id 2)))))
@@ -39,7 +39,7 @@
   (is (not (user/users-on-same-team? 2 1))))
 
 (deftest fetch-tasks-by-team-and-date-works
-  (let [user (user/fetch-user-by-id 4)
+  (let [user (user/fetch-one-user {:id 4})
         date (c/from-sql-date (:date fixtures/test-task-1))
         date_2 (t/local-date 2012 02 17)]
     (is (= (dissoc (first (user/fetch-tasks-by-team-and-date user 1 date)) :id)
@@ -48,16 +48,16 @@
            (list)))))
 
 (deftest we-can-authenticate-a-user
-  (let [user (user/fetch-user-by-id 4)]
+  (let [user (user/fetch-one-user {:id 4})]
     (is (true? (user/authenticate (:email user) "samurai")))))
 
 (deftest build-password-reset-link-works
-  (let [user (user/fetch-user-by-id 4)
+  (let [user (user/fetch-one-user {:id 4})
         link (user/build-password-reset-link user)
         token (:token (password-reset-token/fetch-one-valid 
                         {:user_id (:id user)}))]
     (is (= link
-           (clojure.string/join ["http://darg.herokuapp.com/new_password?token="
+           (clojure.string/join ["http://darg.io/new_password?token="
                                  token])))))
 
 (deftest ^:integration send-password-reset-email-works
