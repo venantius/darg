@@ -9,23 +9,24 @@
  github-user
  github-token
  github-issue
- github-pushe
+ github-push
  github-pull-request)
 
 (defentity user
   (table :darg.user :user)
+  (entity-fields :id :name)
   (has-many task)
   (belongs-to github-user)
-  (many-to-many team :darg.team_user))
+  (many-to-many team :darg.role))
 
 (defentity team
   (table :darg.team :team)
   (has-many task)
   (has-many repo :team_repo)
-  (many-to-many user :darg.team_user))
+  (many-to-many user :darg.role))
 
-(defentity team-user
-  (table :darg.team_user :team_user)
+(defentity role
+  (table :darg.role :role)
   (has-many team {:fk :team_id})
   (has-many user {:fk :user_id}))
 
@@ -42,7 +43,7 @@
   (table :github.repo :team_repo)
   (many-to-many team :darg.team_repo)
   (has-many github-issue)
-  (has-many github-pushe)
+  (has-many github-push)
   (has-many github-pull-request))
 
 (defentity github-user
@@ -50,7 +51,7 @@
   (has-one user)
   (belongs-to github-token)
   (has-many github-issue)
-  (has-many github-pushe)
+  (has-many github-push)
   (has-many github-pull-request))
 
 (defentity github-token

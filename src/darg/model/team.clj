@@ -5,15 +5,8 @@
 
 (defmodel db/team)
 
-(defn fetch-team-by-id
-  "Returns a team map from the db
-  Takes a team id as an integer"
-  [id]
-  (first (select db/team (where {:id id}))))
-
-; Team Membership
-(defn fetch-team-users
-  "Gets the list of users for a given team"
+(defn fetch-roles
+  "Gets the list of users for a given team and their respective roles."
   [id]
   (:user (first (select db/team
                        (where {:id id})

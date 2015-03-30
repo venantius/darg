@@ -1,6 +1,7 @@
 (ns darg.model.user
   (:require [cemerick.url :as url]
             [clj-time.coerce :as c]
+            [crypto.random :as random]
             [darg.db.entities :as entities]
             [darg.model.password-reset-token :as password-reset-token]
             [darg.services.mailgun :as mailgun]
@@ -45,7 +46,9 @@
 
   Only for use in authentication functions."
   [params]
-  (first (select entities/user (where params))))
+  (first (select entities/user 
+                 (fields :id :password)
+                 (where params))))
 
 (defn fetch-user
   "Returns a safe user record from the db.
@@ -108,7 +111,7 @@
   "Returns boolean true/false based on whether the use is a member of a given team
   Takes a user-id (integer) and team-id (integer)"
   [userid teamid]
-  (if (empty? (select entities/team-user (where {:user_id userid :team_id teamid}))) false true))
+  (if (empty? (select entities/role (where {:user_id userid :team_id teamid}))) false true))
 
 (defn fetch-user-teams
   "Returns the map of teams that a user belongs to."
@@ -124,10 +127,10 @@
   [userid1 userid2]
   (select entities/team
           (fields :id :name)
-          (where (and {:id [in (subselect entities/team-user
+          (where (and {:id [in (subselect entities/role
                                           (fields :team_id)
                                           (where {:user_id userid1}))]}
-                      {:id [in (subselect entities/team-user
+                      {:id [in (subselect entities/role
                                           (fields :team_id)
                                           (where {:user_id userid2}))]}))))
 
@@ -156,7 +159,7 @@
 (defn authenticate
   "Authenticate this user. Returns true if password is valid, else nil"
   [email password]
-  (if-let [user (fetch-one-credentialed-user {:email email})]
+  (when-let [user (fetch-one-credentialed-user {:email email})]
     (valid-password? password (:password user))))
 
 (defn build-password-reset-link

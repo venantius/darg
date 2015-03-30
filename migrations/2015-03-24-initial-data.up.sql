@@ -29,7 +29,7 @@ CREATE TABLE darg.task (
     team_id     integer     NOT NULL references darg.team(id) ON DELETE CASCADE
 );
 
-CREATE TABLE darg.team_user (
+CREATE TABLE darg.role (
     id          SERIAL      PRIMARY KEY,
     admin       boolean     DEFAULT FALSE,
     user_id     integer     NOT NULL references darg.user(id) ON DELETE CASCADE,
