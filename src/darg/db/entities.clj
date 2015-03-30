@@ -14,6 +14,7 @@
 
 (defentity user
   (table :darg.user :user)
+  (entity-fields :id :name)
   (has-many task)
   (belongs-to github-user)
   (many-to-many team :darg.role))

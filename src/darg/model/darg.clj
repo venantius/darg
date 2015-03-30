@@ -11,7 +11,6 @@
   "Generate a darg for a specific team for a specific dates"
   [team-id role-ids date]
   (select db/user
-          (fields :id :name)
           (with db/task
             (where {:team_id team-id
                     :date (c/to-sql-date date)}))

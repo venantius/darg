@@ -1,6 +1,7 @@
 (ns darg.model.user
   (:require [cemerick.url :as url]
             [clj-time.coerce :as c]
+            [crypto.random :as random]
             [darg.db.entities :as entities]
             [darg.model.password-reset-token :as password-reset-token]
             [darg.services.mailgun :as mailgun]
@@ -45,7 +46,9 @@
 
   Only for use in authentication functions."
   [params]
-  (first (select entities/user (where params))))
+  (first (select entities/user 
+                 (fields :id :password)
+                 (where params))))
 
 (defn fetch-user
   "Returns a safe user record from the db.
@@ -156,7 +159,7 @@
 (defn authenticate
   "Authenticate this user. Returns true if password is valid, else nil"
   [email password]
-  (if-let [user (fetch-one-credentialed-user {:email email})]
+  (when-let [user (fetch-one-credentialed-user {:email email})]
     (valid-password? password (:password user))))
 
 (defn build-password-reset-link

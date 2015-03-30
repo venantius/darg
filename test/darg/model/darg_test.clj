@@ -31,8 +31,7 @@
           ])))
 
 (deftest team-timeline-works
-  (is (= (first (darg/team-timeline 1))
-         {:user [{:task (list)
+  (is (= {:user [{:task (list)
                    :name "John Lago"
                    :id 1}
                   {:task (list)
@@ -50,4 +49,5 @@
                    :name "David Jarvis"
                    :id 6}]
           :date (util/sql-datetime->date-str (:date fixture-data/test-task-1))
-          })))
+          }
+          (first (darg/team-timeline 1)))))
