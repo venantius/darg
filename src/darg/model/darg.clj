@@ -9,29 +9,29 @@
 
 (defn team-darg-by-date
   "Generate a darg for a specific team for a specific dates"
-  [team-id team-user-ids date]
+  [team-id role-ids date]
   (select db/user
           (fields :id :name)
           (with db/task
             (where {:team_id team-id
                     :date (c/to-sql-date date)}))
-          (where {:id [in team-user-ids]})))
+          (where {:id [in role-ids]})))
 
 (defn- formatted-team-darg-by-date
   "A helper function for formatting team dargs."
-  [team-id team-user-ids date]
+  [team-id role-ids date]
   {:date (util/sql-datetime->date-str date)
-   :user (vec (team-darg-by-date team-id team-user-ids date))})
+   :user (vec (team-darg-by-date team-id role-ids date))})
 
 (defn team-timeline
   "Build a darg timeline for a given team."
   [team-id]
-  (let [team-user-ids (map :id (team/fetch-team-users team-id))
+  (let [role-ids (map :id (team/fetch-roles team-id))
         dates (map c/to-sql-date (dt/date-range 5))
         date (first dates)]
     (map (partial
            formatted-team-darg-by-date
-           team-id team-user-ids) dates)))
+           team-id role-ids) dates)))
 
 (defn personal-timeline
   "Build a darg timeline for a single person on a single team.

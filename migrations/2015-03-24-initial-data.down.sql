@@ -3,7 +3,7 @@
 
 DROP TABLE darg.password_reset_token;
 DROP TABLE darg.api_key;
-DROP TABLE darg.team_user;
+DROP TABLE darg.role;
 DROP TABLE darg.task;
 DROP TABLE darg.team;
 DROP TABLE darg.user;

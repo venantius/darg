@@ -15,9 +15,9 @@
   []
   (insert task (values fmodel/test-tasks)))
 
-(defn insert-team-user-fixture-data
+(defn insert-role-fixture-data
   []
-  (insert team-user (values fmodel/test-team-user-pairs)))
+  (insert role (values fmodel/test-role-pairs)))
 
 (defn insert-password-reset-token-fixture-data
   []
@@ -32,7 +32,7 @@
   (insert-user-fixture-data)
   (insert-team-fixture-data)
   (insert-task-fixture-data)
-  (insert-team-user-fixture-data)
+  (insert-role-fixture-data)
   (insert-password-reset-token-fixture-data)
   
   (insert-github-user-fixture-data))

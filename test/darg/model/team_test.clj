@@ -14,7 +14,7 @@
 
 (deftest we-can-update-team-in-db
   (team/update-team! 1 {:name "Drake v. Weezy"})
-  (is (= "Drake v. Weezy" (:name (team/fetch-team-by-id 1)))))
+  (is (= "Drake v. Weezy" (:name (team/fetch-one-team {:id 1})))))
 
 (deftest we-can-fetch-a-teamid
   (is (= 1 (:id (team/fetch-one-team {:id 1})))))
@@ -22,5 +22,5 @@
 (deftest we-can-fetch-team-tasks
   (is (not (empty? (task/fetch-tasks-by-team-id 1)))))
 
-(deftest we-can-fetch-team-users
-  (is (not (empty? (team/fetch-team-users 1)))))
+(deftest we-can-fetch-roles
+  (is (not (empty? (team/fetch-roles 1)))))

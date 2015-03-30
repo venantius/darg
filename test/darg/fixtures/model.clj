@@ -152,59 +152,59 @@
    test-task-6
    test-task-7])
 
-(def test-team-user-pair-1
+(def test-role-pair-1
   {:user_id 1
    :team_id 1
    :admin true})
 
-(def test-team-user-pair-2
+(def test-role-pair-2
   {:user_id 3
    :team_id 1})
 
-(def test-team-user-pair-3
+(def test-role-pair-3
   {:user_id 1
    :team_id 2})
 
-(def test-team-user-pair-4
+(def test-role-pair-4
   {:user_id 4
    :team_id 2
    :admin true})
 
-(def test-team-user-pair-5
+(def test-role-pair-5
   {:user_id 4
    :team_id 1
    :admin true})
 
-(def test-team-user-pair-6
+(def test-role-pair-6
   {:user_id 2
    :team_id 3
    :admin false})
 
-(def test-team-user-pair-7
+(def test-role-pair-7
   {:user_id 3
    :team_id 3
    :admin false})
 
-(def test-team-user-pair-8
+(def test-role-pair-8
   {:user_id 6
    :team_id 1
    :admin true})
 
-(def test-team-user-pair-9
+(def test-role-pair-9
   {:user_id 6
    :team_id 2
    :admin true})
 
-(def test-team-user-pairs
-  [test-team-user-pair-1
-   test-team-user-pair-2
-   test-team-user-pair-3
-   test-team-user-pair-4
-   test-team-user-pair-5
-   test-team-user-pair-6
-   test-team-user-pair-7
-   test-team-user-pair-8
-   test-team-user-pair-9])
+(def test-role-pairs
+  [test-role-pair-1
+   test-role-pair-2
+   test-role-pair-3
+   test-role-pair-4
+   test-role-pair-5
+   test-role-pair-6
+   test-role-pair-7
+   test-role-pair-8
+   test-role-pair-9])
 
 (def test-password-reset-token-1
   {:token "XBT6XI7WAHPX4NQDHBWGXPP2YCJSXS7Q"
