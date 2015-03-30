@@ -131,6 +131,7 @@
 
   Create a task."
   [{:keys [params user] :as request}]
+  (logging/info params)
   (let [task (:task params)
         user-id (:id user)
         team-id (read-string (:team_id params))

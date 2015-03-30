@@ -100,13 +100,14 @@ darg.controller('DargUserCtrl',
     };
 
     getDefaultTeam = function() {
+        console.log(user);
         if (user.info != null) {
-            if (user.info.teams.length == 0) {
+            if (user.info.team.length == 0) {
                 return null; 
             } else if ($routeParams.teamId != null) {
                 return $routeParams.teamId
             } else {
-                return user.info.teams[0].id;
+                return user.info.team[0].id;
             }
         };
     };
@@ -123,7 +124,7 @@ darg.controller('DargUserCtrl',
             $scope.UserSettingsProfile.email = data.email;
             $scope.UserSettingsProfile.timezone = data.timezone;
             $scope.UserSettingsProfile.email_hour = data.email_hour;
-            user.team = getDefaultTeam();
+            user.current_team = getDefaultTeam();
         })
     };
 
@@ -191,7 +192,7 @@ darg.controller('DargUserCtrl',
     $scope.$watch(function() {
         return getDefaultTeam()
     }, function(oldValue, newValue) {
-        user.team = getDefaultTeam();
+        user.current_team = getDefaultTeam();
     });
 }]);
 

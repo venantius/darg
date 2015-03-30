@@ -7,7 +7,7 @@
       <div class="btn-group-vertical">
         <!-- TODO: Make current team light up with btn-primary instead --> 
         <!-- https://github.com/ursacorp/darg/issues/179 -->
-        <button class="btn btn-inverse" type="button" ng-repeat="team in CurrentUser.teams" ng-click="loadNewTeamTimeline(team.id)">
+        <button class="btn btn-inverse" type="button" ng-repeat="team in CurrentUser.team" ng-click="loadNewTeamTimeline(team.id)">
           {{team.name}}
         </button>
       </div>
@@ -23,7 +23,7 @@
       </div>
 
       <!-- timeline -->
-      <div class="timeline-darg" ng-repeat="darg in Timeline.dargs">
+      <div class="timeline-darg" ng-repeat="darg in Timeline.darg">
         <nav class="navbar navbar-default">
           <ul class="nav navbar-nav navbar-left">
             <li class="timeline-section">
@@ -35,7 +35,7 @@
           </ul>
         </nav>
 
-        <ul class="list-group" ng-repeat="user in darg.users" ng-show="showUser(user)">
+        <ul class="list-group" ng-repeat="user in darg.user" ng-show="showUser(user)">
 
           {{user.name}}
           <div ng-show="userHasTasks(user)">
@@ -47,7 +47,7 @@
               </span>
             </li>
 
-            <li class="timeline-item list-group-item" ng-repeat="task in user.tasks">
+            <li class="timeline-item list-group-item" ng-repeat="task in user.task">
               <span class="timeline-item-edit-icon fui-new"></span>
               <span class="timeline-item">
                 {{task.task}}

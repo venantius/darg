@@ -191,7 +191,7 @@ darg.controller('DargTimelineCtrl',
      * Does this user have any tasks listed for today?
      */
     $scope.userHasTasks = function(user) {
-        if (user.tasks.length > 0) {
+        if (user.task.length > 0) {
             return true;
         } else {
             return false;
@@ -199,8 +199,8 @@ darg.controller('DargTimelineCtrl',
     }
 
     $scope.GetTimeline = function() {
-        if (user.team != null) {
-            url = "/api/v1/darg/team/" + user.team
+        if (user.current_team != null) {
+            url = "/api/v1/darg/team/" + user.current_team
             $http({
                 method: "get",
                 url: url
@@ -222,9 +222,10 @@ darg.controller('DargTimelineCtrl',
     }
 
     $scope.$watch(function() {
-        return user.team
+        return user.current_team
     }, function(oldValue, newValue) {
-        if (user.loggedIn() == true && user.team != null) {
+        if (user.loggedIn() == true && user.current_team != null) {
+            $scope.loadNewTeamTimeline(user.current_team);
             $scope.GetTimeline();
         }
     });
@@ -334,13 +335,14 @@ darg.controller('DargUserCtrl',
     };
 
     getDefaultTeam = function() {
+        console.log(user);
         if (user.info != null) {
-            if (user.info.teams.length == 0) {
+            if (user.info.team.length == 0) {
                 return null; 
             } else if ($routeParams.teamId != null) {
                 return $routeParams.teamId
             } else {
-                return user.info.teams[0].id;
+                return user.info.team[0].id;
             }
         };
     };
@@ -357,7 +359,7 @@ darg.controller('DargUserCtrl',
             $scope.UserSettingsProfile.email = data.email;
             $scope.UserSettingsProfile.timezone = data.timezone;
             $scope.UserSettingsProfile.email_hour = data.email_hour;
-            user.team = getDefaultTeam();
+            user.current_team = getDefaultTeam();
         })
     };
 
@@ -425,7 +427,7 @@ darg.controller('DargUserCtrl',
     $scope.$watch(function() {
         return getDefaultTeam()
     }, function(oldValue, newValue) {
-        user.team = getDefaultTeam();
+        user.current_team = getDefaultTeam();
     });
 }]);
 
@@ -433,7 +435,7 @@ darg.controller('DargUserCtrl',
 darg.factory('user', function($cookieStore) {
     var service = {};
     var info = null;
-    var team = null;
+    var current_team = null;
 
     service.loggedIn = function() {
         if ($cookieStore.get('logged-in') == true) {
