@@ -7,6 +7,8 @@
             [compojure.core :refer [defroutes context GET POST ANY]]
             [compojure.route :as route]
             [darg.api.v1 :as api]
+            [darg.controller.auth :as auth]
+            [darg.controller.user :as user]
             [darg.oauth.github :as gh-oauth]
             [ring.util.response :refer [resource-response]]))
 
@@ -35,10 +37,10 @@
   (GET    "/oauth/github"               request (gh-oauth/callback request))
 
   ;; api
-  (POST   "/api/v1/login"               request (api/login request))
-  (GET    "/api/v1/logout"              request (api/logout request))
-  (POST   "/api/v1/password_reset"      request (api/password-reset request))
-  (POST   "/api/v1/signup"              request (api/signup request))
+  (POST   "/api/v1/login"               request (auth/login request))
+  (GET    "/api/v1/logout"              request (auth/logout request))
+  (POST   "/api/v1/password_reset"      request (auth/password-reset request))
+  (POST   "/api/v1/signup"              request (user/create! request))
   (POST   "/api/v1/email"               request (api/email request))
   (POST   "/api/v1/gravatar"            request (api/gravatar request))
   (GET    "/api/v1/darg/:team_id"       request (api/get-darg request))
