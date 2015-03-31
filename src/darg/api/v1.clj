@@ -2,6 +2,7 @@
   (:require [clojure.tools.logging :as logging]
             [clojure.string :as str :refer [split trim]]
             [darg.api.responses :as responses]
+            [darg.controller.user :as user-api]
             [darg.db-util :as dbutil]
             [darg.model.darg :as darg]
             [darg.model.email :as email]
@@ -63,46 +64,9 @@
       (catch Exception e
         (responses/bad-request "Password reset failed.")))))
 
-(defn signup
-  "/api/v1/signup
-
-  Method: POST
-
-  Signs a user up. This creates an account in our db and authenticates
-  the user."
-  [request-map]
-  (let [params (:params request-map)
-        email (:email params)]
-    (cond
-      (some? (user/fetch-one-user {:email email}))
-      (responses/conflict "A user with that e-mail already exists.")
-      (not (every? params [:email :name :password]))
-      (responses/bad-request
-       "The signup form needs an e-mail, a name, and a password.")
-      :else
-      (let [user (user/create-user-from-signup-form params)]
-        {:body {:message "Account successfully created"}
-         :cookies {"logged-in" {:value true :path "/"}}
-         :session {:authenticated true :email (:email params) :id (:id user)}
-         :status 200}))))
-
-(defn update-user
-  "/api/v1/user
-
-  Method: POST
-
-  Update a user's profile."
-  [{:keys [user params session] :as request}]
-  (let [email (:email user)
-        current-user (user/fetch-one-user {:email email})]
-    (if (or (= email (:email params))
-            (nil? (user/fetch-one-user {:email (:email params)})))
-      (do
-        (user/update-user! (:id current-user) params)
-        {:status 200
-         :session (assoc session :email (:email params))
-         :body current-user})
-      (responses/conflict "User with that e-mail already exists"))))
+(def signup user-api/create!)
+(def get-user user-api/get)
+(def update-user user-api/update!)
 
 (defn gravatar
   "/api/v1/gravatar
@@ -208,15 +172,6 @@
 ;; they can actually see.
 ;; https://github.com/ursacorp/darg/issues/178
 
-(defn get-user
-  "/api/v1/user
-
-  Method: GET
-
-  Retrieve info on the current user."
-  [{:keys [user]}]
-  (responses/ok
-   (user/profile {:id (:id user)})))
 
 (defn get-user-profile
   "/api/v1/user/:user-id
@@ -240,7 +195,7 @@
 
   E-mail parsing endpoint; only for use with Mailgun. Authenticates the e-mail
   from Mailgun, and adds a task for each newline in the :stripped-text field."
-  [{:keys [params] :as request}]
+  [{:keys [params]}]
   (let [{:keys [recipient sender from subject
                 body-plain stripped-text stripped-signature
                 body-html stripped-html attachment-count
