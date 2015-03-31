@@ -10,7 +10,9 @@
 ;; https://github.com/ursacorp/darg/issues/178
 
 (defn create!
-  "/api/v1/signup
+  "/api/v1/user
+
+  Method: POST
 
   Signs a user up. This creates an account in our db and authenticates
   the user."
@@ -26,19 +28,20 @@
       :else
       (let [user (user/create-user-from-signup-form params)]
         {:body {:message "Account successfully created"}
-         :cookies {"logged-in" {:value true :path "/"}}
+         :cookies {"logged-in" {:value true :path "/"}
+                   "id" {:value (:id user) :path "/"}}
          :session {:authenticated true :email (:email params) :id (:id user)}
          :status 200}))))
 
 (defn get
-  "/api/v1/user/:user_id
+  "/api/v1/user/:id
 
   Method: GET
 
   Retrieve info on the targeted user."
   [{:keys [params user]}]
   (let [current-user-id (:id user)
-        target-user-id (-> params :user_id read-string)
+        target-user-id (-> params :id read-string)
         team-ids (mapv :id (user/team-overlap current-user-id target-user-id))]
     (if (empty? team-ids)
       (responses/unauthorized "Not authorized.")
@@ -48,18 +51,20 @@
         team-ids)))))
 
 (defn update!
-  "/api/v1/user
+  "/api/v1/user/:id
+
+  Method: POST
 
   Update the user."
-  [{:keys [user params session] :as request}]
+  [{:keys [user params session]}]
   (let [email (:email user)
-        current-user (user/fetch-one-user {:email email})]
+        current-user (user/fetch-one-user {:email email})
+        target-user-id (-> params :id read-string)]
     (if (or (= email (:email params))
             (nil? (user/fetch-one-user {:email (:email params)})))
       (do
-        (user/update-user! (:id current-user) params)
+        (user/update-user! target-user-id (assoc params :id target-user-id))
         {:status 200
          :session (assoc session :email (:email params))
          :body current-user})
       (responses/conflict "User with that e-mail already exists"))))
-
