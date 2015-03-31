@@ -234,15 +234,13 @@ darg.controller('DargTimelineCtrl',
 
 
 darg.controller('DargUserCtrl', 
-    ['$cookies',
-     '$cookieStore',
+    ['$cookieStore',
      '$location',
      '$scope', 
      '$http',
      '$routeParams',
      'user',
      function(
-         $cookies,
          $cookieStore,
          $location,
          $scope, 
@@ -348,9 +346,10 @@ darg.controller('DargUserCtrl',
     };
 
     $scope.getCurrentUser = function() {
+        url = "/api/v1/user/" + $cookieStore.get('id');
         $http({
             method: "get",
-            url: "/api/v1/user"
+            url: url
         })
         .success(function(data) {
             user.info = data;

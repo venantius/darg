@@ -3,6 +3,12 @@
   (:require [darg.api.responses :as responses]
             [darg.model.user :as user]))
 
+;; TODO: for both get-user and get-user-profile (which should probably be
+;; renamed to get-current-user and get-any-user) we should add in a list of
+;; teams that they're on (as well as some thinking around which of those teams
+;; they can actually see.
+;; https://github.com/ursacorp/darg/issues/178
+
 (defn create!
   "/api/v1/signup
 
@@ -25,12 +31,21 @@
          :status 200}))))
 
 (defn get
-  "/api/v1/user
+  "/api/v1/user/:user_id
 
-  Retrieve the current user."
-  [{:keys [user]}]
-  (responses/ok
-   (user/profile {:id (:id user)})))
+  Method: GET
+
+  Retrieve info on the targeted user."
+  [{:keys [params user]}]
+  (let [current-user-id (:id user)
+        target-user-id (-> params :user_id read-string)
+        team-ids (mapv :id (user/team-overlap current-user-id target-user-id))]
+    (if (empty? team-ids)
+      (responses/unauthorized "Not authorized.")
+      (responses/ok
+       (user/profile
+        {:id target-user-id}
+        team-ids)))))
 
 (defn update!
   "/api/v1/user

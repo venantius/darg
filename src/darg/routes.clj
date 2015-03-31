@@ -19,14 +19,14 @@
 (defroutes routes
   ;; site
   (GET    "/"                         [] darg-spa)
-  (GET    "/timeline/:team-id"        [] darg-spa)
+  (GET    "/timeline/:team_id"        [] darg-spa)
   (GET    "/about"                    [] darg-spa)
   (GET    "/api"                      [] darg-spa)
   (GET    "/faq"                      [] darg-spa)
   (GET    "/integrations"             [] darg-spa)
   (GET    "/password_reset"           [] darg-spa)
   (GET    "/settings"                 [] darg-spa)
-  (GET    "/settings/:settings-page"  [] darg-spa)
+  (GET    "/settings/:settings_page"  [] darg-spa)
 
   ;; debug
   (ANY    "/debug"                      request (debug request))
@@ -41,11 +41,9 @@
   (POST   "/api/v1/signup"              request (api/signup request))
   (POST   "/api/v1/email"               request (api/email request))
   (POST   "/api/v1/gravatar"            request (api/gravatar request))
-  (GET    "/api/v1/darg/:team-id"       request (api/get-darg request))
-  (POST   "/api/v1/darg"                request (api/post-darg request))
-  (GET    "/api/v1/darg/team/:team-id"  request (api/get-team-darg request))
+  (GET    "/api/v1/darg/:team_id"       request (api/get-darg request))
+  (GET    "/api/v1/darg/team/:team_id"  request (api/get-team-darg request))
   (POST   "/api/v1/task"                request (api/post-task request))
-  (GET    "/api/v1/user"                request (api/get-user request))
   (POST   "/api/v1/user"                request (api/update-user request))
-  (GET    "/api/v1/user/:user-id"       request (api/get-user-profile request))
+  (GET    "/api/v1/user/:user_id"       request (api/get-user request))
   (route/resources "/"))
