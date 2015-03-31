@@ -40,28 +40,6 @@
 ; TODO - TEST HERE WITH A HEADLESS BROWSER
 ; https://github.com/ursacorp/darg/issues/161
 
-;; /api/v1/user (POST)
-
-(deftest update-user-works
-  (let [params {:email "test-user5@darg.io"
-                :name "Fiona the Human"}
-        sample-request {:user {:email "test-user2@darg.io" :id 4}
-                        :request-method :post
-                        :params params}
-        response (api/update-user sample-request)]
-    (is (= (:status response) 200))
-    (is (some? (user/fetch-one-user {:email "test-user5@darg.io"})))))
-
-(deftest we-cant-update-a-user-to-have-an-email-of-an-existing-user
-  (let [params {:email "david@ursacorp.io"
-                :name "David Jarvis"}
-        sample-request {:user {:email "test-user2@darg.io" :id 4}
-                        :request-method :post
-                        :params params}
-        response (api/update-user sample-request)]
-    (is (= (:status response) 409))
-    (is (= 1 (count (user/fetch-user {:email "david@ursacorp.io"}))))))
-
 ;; /api/v1/gravatar
 
 (deftest gravar-image-is-what-it-should-be
@@ -83,7 +61,7 @@
 
 (deftest i-can-register-and-it-wrote-to-the-database-and-cookies
   (let [auth-response (server/app (mock-request/request
-                                   :post "/api/v1/signup"
+                                   :post "/api/v1/user"
                                    {:email "dummy@darg.io"
                                     :password "test"
                                     :name "Crash dummy"}))]
@@ -98,7 +76,7 @@
   (let [user (select-keys model-fixtures/test-user-4
                           [:email :name :password])
         auth-response (server/app (mock-request/request
-                                   :post "/api/v1/signup"
+                                   :post "/api/v1/user"
                                    user))]
     (is (= (json/parse-string (:body auth-response) true)
            {:message "A user with that e-mail already exists."}))
@@ -106,7 +84,7 @@
 
 (deftest signup-failure-does-not-write-to-database-and-sets-no-cookies
   (let [auth-response (server/app (mock-request/request
-                                   :post "/api/v1/signup"
+                                   :post "/api/v1/user"
                                    {:email "quasi-user@darg.io"}))]
     (is (= (json/parse-string (:body auth-response) true)
            {:message "The signup form needs an e-mail, a name, and a password."}))
@@ -129,7 +107,7 @@
 (deftest user-can-get-teammates-profile
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
                         :request-method :get
-                        :params {:user_id "1"}}
+                        :params {:id "1"}}
         response (api/get-user sample-request)]
     (is (= (:status response) 200))
     (is (= (:body response)
@@ -138,7 +116,7 @@
 (deftest user-cant-see-profile-for-non-teammate
   (let [sample-request {:user {:authenticated true :email "test-user2@darg.io" :id 4}
                         :request-method :get
-                        :params {:user_id "2" :resource "profile"}}
+                        :params {:id "2" :resource "profile"}}
         response (api/get-user sample-request)]
     (is (= (:status response) 401))
     (is (= (:body response)

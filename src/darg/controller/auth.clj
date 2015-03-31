@@ -37,7 +37,7 @@
    :status 200
    :session nil
    :cookies {"logged-in" {:value false :max-age 0 :path "/"}
-             "id" {:value nil :path "/"}}})
+             "id" {:value "" :max-age 0 :path "/"}}})
 
 (defn password-reset
   "/api/v1/password_reset

@@ -10,7 +10,7 @@ darg.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore'
     $scope.Signup = function() {
         $http({
             method: "post",
-            url: '/api/v1/signup', 
+            url: '/api/v1/user', 
             data: $.param($scope.SignupForm),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })

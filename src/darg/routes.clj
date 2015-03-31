@@ -40,12 +40,15 @@
   (POST   "/api/v1/login"               request (auth/login request))
   (GET    "/api/v1/logout"              request (auth/logout request))
   (POST   "/api/v1/password_reset"      request (auth/password-reset request))
-  (POST   "/api/v1/signup"              request (user/create! request))
+  
   (POST   "/api/v1/email"               request (api/email request))
   (POST   "/api/v1/gravatar"            request (api/gravatar request))
   (GET    "/api/v1/darg/:team_id"       request (api/get-darg request))
   (GET    "/api/v1/darg/team/:team_id"  request (api/get-team-darg request))
   (POST   "/api/v1/task"                request (api/post-task request))
-  (POST   "/api/v1/user"                request (api/update-user request))
-  (GET    "/api/v1/user/:user_id"       request (api/get-user request))
+
+  (POST   "/api/v1/user"                request (user/create! request))
+  (GET    "/api/v1/user/:id"            request (user/get request))
+  (POST   "/api/v1/user/:id"            request (user/update! request))
+  
   (route/resources "/"))

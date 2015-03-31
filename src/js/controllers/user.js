@@ -85,9 +85,10 @@ darg.controller('DargUserCtrl',
     }
 
     $scope.updateUserProfile = function() {
+        url = "/api/v1/user/" + $cookieStore.get('id');
         $http({
             method: "post",
-            url: "/api/v1/user",
+            url: url,
             data: $.param($scope.UserSettingsProfile),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
@@ -98,7 +99,6 @@ darg.controller('DargUserCtrl',
     };
 
     getDefaultTeam = function() {
-        console.log(user);
         if (user.info != null) {
             if (user.info.team.length == 0) {
                 return null; 

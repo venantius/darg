@@ -20,7 +20,7 @@
     (= path "/debug") true
     (= path "/api/v1/email") true
     (= path "/api/v1/login") true
-    (= path "/api/v1/signup") true
+    (= path "/api/v1/user") true
     (= path "/api/v1/gravatar") true
     (= path "/api/v1/password_reset") true
     :else false))
