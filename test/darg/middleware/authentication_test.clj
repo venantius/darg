@@ -4,20 +4,18 @@
             [darg.fixtures :refer [with-db-fixtures]]
             [darg.middleware.authentication :as authn]
             [darg.model.user :as user]
-            [darg.model.task :as task]
-            ))
+            [darg.model.task :as task]))
 
 (with-db-fixtures)
 
 (deftest unauthenticated-user-returns-401
   (let [sample-request {:session {:authenticated false :email "test-user2@darg.io" :id 4}
                         :request-method :post
-                        :params {:email "test-user2@darg.io"
+                        :params {:task "I created a new task!"
                                  :team-id 2
-                                 :date "Mar 10 2014"
-                                 :darg ["Cardio" "Double Tap" "Beware of Bathrooms"]}}
+                                 :date "Mar 10 2014"}}
         response ((authn/wrap-authentication
-                    api/post-darg
+                    api/post-task
                     authn/darg-auth-fn)
                   sample-request)
         test-user-id (:id (user/fetch-one-user {:email "test-user2@darg.io"}))]
