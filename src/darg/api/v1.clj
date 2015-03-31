@@ -131,6 +131,7 @@
 
   Create a task."
   [{:keys [params user] :as request}]
+  (logging/info params)
   (let [task (:task params)
         user-id (:id user)
         team-id (read-string (:team_id params))
@@ -189,32 +190,13 @@
         (responses/ok "Tasks created successfully."))
       (responses/unauthorized "User not authorized."))))
 
-;; TODO: Re-write this to include authorization re: teams
-;; https://github.com/ursacorp/darg/issues/177
-(defn get-user-darg
-  "/api/v1/darg/user/:user-id
-
-  Method: GET
-
-  Returns a darg for a given user"
-  [{:keys [params user] :as request}]
-  (let [current-user-id (:id user)
-        target-user-id (-> params :user-id read-string)
-        team-ids (mapv :id (user/team-overlap current-user-id target-user-id))]
-    (if (empty? team-ids)
-      (responses/unauthorized "Not authorized.")
-      (responses/ok
-       (task/fetch-task
-        {:team_id [ksql/pred-in team-ids]
-         :user_id target-user-id})))))
-
 (defn get-team-darg
   "/api/v1/darg/team/:team-id
 
   Method: GET
 
   Retrieve all dargs for a given team"
-  [{:keys [params user] :as request}]
+  [{:keys [params user]}]
   (let [team-id (-> params :team-id read-string)]
     (responses/ok
      {:darg (darg/team-timeline team-id)})))
@@ -232,7 +214,7 @@
   Method: GET
 
   Retrieve info on the current user."
-  [{:keys [user] :as request}]
+  [{:keys [user]}]
   (responses/ok
    (user/profile {:id (:id user)})))
 
@@ -242,7 +224,7 @@
   Method: GET
 
   Retrieve info on the targeted user."
-  [{:keys [params user] :as request}]
+  [{:keys [params user]}]
   (let [current-user-id (:id user)
         target-user-id (-> params :user-id read-string)
         team-ids (mapv :id (user/team-overlap current-user-id target-user-id))]
