@@ -153,33 +153,6 @@
     (is (= (:body response) "Tasks created successfully."))
     (is (= (count (task/fetch-tasks-by-user-id test-user-id)) 7))))
 
-;; GET api/v1/user/:userid/darg
-
-(deftest user-can-get-teammates-darg
-  (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
-                        :request-method :get
-                        :params {:user-id "3"}}
-        response (api/get-user-darg sample-request)]
-    (is (= (:status response) 200))
-    (is (= (:body response) (task/fetch-task {:team_id 1 :user_id 3})))))
-
-(deftest user-can-get-their-own-darg
-  (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
-                        :request-method :get
-                        :params {:user-id "4"}}
-        response (api/get-user-darg sample-request)]
-    (is (= (:status response) 200))
-    (is (= (:body response) (task/fetch-task {:user_id 4})))))
-
-(deftest user-cant-see-darg-for-non-teammate
-  (let [sample-request {:user {:email "test-user2@darg.io" :id 4}
-                        :request-method :get
-                        :params {:user-id "2"}}
-        response (api/get-user-darg sample-request)]
-    (is (= (:status response) 401))
-    (is (= (:body response)
-           {:message "Not authorized."}))))
-
 ;; GET api/v1/user/:userid/profile
 
 (deftest user-can-get-teammates-profile
