@@ -2,6 +2,7 @@
   (:require [clojure.tools.logging :as logging]
             [clojure.string :as str :refer [split trim]]
             [darg.api.responses :as responses]
+            [darg.controller.gravatar :as gravatar-api]
             [darg.controller.task :as task-api]
             [darg.controller.user :as user-api]
             [darg.db-util :as dbutil]
@@ -11,8 +12,7 @@
             [darg.model.user :as user]
             [darg.services.mailgun :as mailgun]
             [korma.core :refer :all]
-            [korma.sql.fns :as ksql]
-            [pandect.algo.md5 :refer :all]))
+            [korma.sql.fns :as ksql]))
 
 (defn login
   "/api/v1/login
@@ -70,23 +70,8 @@
 
 (def update-user user-api/update!)
 
-(defn gravatar
-  "/api/v1/gravatar
 
-  Supports: POST
-
-  Return a given user's gravatar image URL."
-  [request]
-  (let [email (-> request :session :email)
-        size (-> request :params :size)]
-    (if email
-      (responses/ok
-       (clojure.string/join "" ["http://www.gravatar.com/avatar/"
-                                (md5 email)
-                                "?s="
-                                size]))
-      (responses/ok
-       (format "http://www.gravatar.com/avatar/?s=%s" size)))))
+(def gravatar gravatar-api/gravatar)
 
 (def post-task task-api/create!)
 
