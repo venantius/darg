@@ -25,8 +25,8 @@
 
 (defn- delete!
   [entity]
-  (fn [id]
-    (delete entity (where {:id id}))))
+  (fn [params]
+    (delete entity (where params))))
 
 (defn intern-fns
   [entity]
