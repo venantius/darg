@@ -56,7 +56,7 @@
   Takes a map of fields for use in db lookup"
   [params]
   (select entities/user
-          (fields :id :active :bot :admin :name :email :timezone :email_hour)
+          (fields :active :bot :admin :email :timezone :email_hour)
           (where params)))
 
 (defn fetch-one-user

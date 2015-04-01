@@ -61,19 +61,26 @@
 
   :jvm-opts  ["-Duser.timezone=UTC"]
 
-  :profiles {:dev {:env {:darg-environment "dev"
-                         :database-url "postgres://localhost:5432/darg"
-                         :reload-db-on-run true
-                         :port "8080"
-                         :session-key "california--bear"}
-                   :plugins [[jonase/eastwood "0.1.4"]]}
-             :test {:env {:darg-environment "test"
-                          :database-url "postgres://localhost:5432/darg_test"
-                          :port "8080"
-                          :session-key "antarctica--bear"}
-                    plugins [[jonase/eastwood "0.1.4"]]}
-             :staging {:env {:darg-environment "staging"}}
-             :production {:env {:darg-environment "production"}}}
+  :profiles {:dev 
+             {:env {:darg-environment "dev"
+                    :database-url "postgres://localhost:5432/darg"
+                    :reload-db-on-run true
+                    :port "8080"
+                    :session-key "california--bear"}
+              :plugins [[jonase/eastwood "0.1.4"]]}
+
+             :test 
+             {:env {:darg-environment "test"
+                    :database-url "postgres://localhost:5432/darg_test"
+                    :port "8080"
+                    :session-key "antarctica--bear"}
+              :plugins [[jonase/eastwood "0.1.4"]]
+              :jvm-opts ["-Dlog4j.configuration=log4j-test.properties"]}
+
+             :staging 
+             {:env {:darg-environment "staging"}}
+
+             :production 
+             {:env {:darg-environment "production"}}}
   :repl-options {:port 6001}
-  :main darg.core
-)
+  :main darg.core)
