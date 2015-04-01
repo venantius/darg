@@ -27,3 +27,15 @@
                           :user_id user-id
                           :team_id team-id
                           :date date}))))
+
+(defn update!
+  "/api/v1/task/:id
+   
+   Method: POST
+   
+   Update an existing task."
+  [{:keys [params user]}]
+  (log/info "Updating task" params)
+  ()
+
+  )
