@@ -1,19 +1,12 @@
-(ns darg.api.v1-test
-  (:require [cheshire.core :as json]
-            [clojure.test :refer :all]
-            [darg.api.v1 :as api]
-            [darg.process.server :as server]
-            [darg.db :as db]
+(ns darg.controller.auth-test
+  (:require [clojure.test :refer :all]
+            [darg.controller.auth :as api]
             [darg.fixtures :refer [with-db-fixtures]]
-            [darg.fixtures.email :as email-fixtures]
             [darg.fixtures.model :as model-fixtures]
-            [darg.model.task :as task]
-            [darg.model.user :as user]
+            [darg.process.server :as server]
             [ring.mock.request :as mock-request]))
 
 (with-db-fixtures)
-
-;; /api/v1/login
 
 (deftest i-can-login-and-it-set-my-cookies
   (let [auth-response (server/app (mock-request/request
@@ -35,14 +28,3 @@
     (is (not (some #{"logged-in=true;Path=/"}
                    (get (:headers auth-response) "Set-Cookie"))))))
 
-;; /api/v1/logout
-
-; TODO - TEST HERE WITH A HEADLESS BROWSER
-; https://github.com/ursacorp/darg/issues/161
-
-(deftest authenticated-user-can-view-their-darg
-  (let [sample-request {:session {:authenticated true :email "test-user2@darg.io" :id 4}
-                        :request-method :get
-                        :params {:team_id "1"}}
-        response (api/get-darg sample-request)]
-    (is (= (:status response) 200))))

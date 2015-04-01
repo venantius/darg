@@ -1,6 +1,7 @@
 (ns darg.middleware.authentication-test
   (:require [clojure.test :refer :all]
-            [darg.api.v1 :as api]
+            [darg.controller.task :as task-api]
+            [darg.controller.darg :as darg-api]
             [darg.fixtures :refer [with-db-fixtures]]
             [darg.middleware.authentication :as authn]
             [darg.model.user :as user]
@@ -15,7 +16,7 @@
                                  :team-id 2
                                  :date "Mar 10 2014"}}
         response ((authn/wrap-authentication
-                    api/post-task
+                    task-api/create!
                     authn/darg-auth-fn)
                   sample-request)
         test-user-id (:id (user/fetch-one-user {:email "test-user2@darg.io"}))]
@@ -28,7 +29,7 @@
   (let [sample-request {:session {:authenticated true}
                         :request-method :get}
         response ((authn/wrap-authentication
-                    api/get-darg
+                    darg-api/get-darg
                     authn/darg-auth-fn)
                   sample-request)]
     (is (= (:status response) 401))
