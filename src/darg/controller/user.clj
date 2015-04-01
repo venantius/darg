@@ -1,6 +1,7 @@
 (ns darg.controller.user
   (:refer-clojure :exclude [get])
-  (:require [darg.api.responses :as responses]
+  (:require [clojure.tools.logging :as log]
+            [darg.api.responses :as responses]
             [darg.model.user :as user]))
 
 ;; TODO: for both get-user and get-user-profile (which should probably be
@@ -43,7 +44,8 @@
   (let [current-user-id (:id user)
         target-user-id (-> params :id read-string)
         team-ids (mapv :id (user/team-overlap current-user-id target-user-id))]
-    (if (empty? team-ids)
+    (if (and (not= current-user-id target-user-id)
+             (empty? team-ids))
       (responses/unauthorized "Not authorized.")
       (responses/ok
        (user/profile
