@@ -16,7 +16,7 @@ module.exports = function(grunt) {
           yuicompress: true
         },
         files: {
-          "./resources/public/css/flat-ui.css": "./resources/dependencies/flatui/less/flat-ui.less"
+          "./resources/public/css/flat-ui.css": "./src/less/darg.less",
         }
       }
     },
@@ -28,7 +28,7 @@ module.exports = function(grunt) {
         tasks: ["concat"]
       },
       less: {
-        files: "./resources/dependencies/flatui/less/**/*.less",
+        files: "./src/less/**/*.less",
         tasks: ["less"]
       }
     }
