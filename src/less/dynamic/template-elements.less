@@ -695,6 +695,7 @@
     list-style: none;
     padding-left: 0;
     position: relative;
+    font-size: 15px;
     &:after {
         content: "";
         height: auto;
@@ -753,6 +754,7 @@
                 left: 23.5px;
                 top: 7px;
                 z-index: 12;
+                font-size: 30px;
 
                 [class*= glyphicon] {
                    top:-1px !important;
@@ -761,14 +763,20 @@
         }
 
         &.timeline-sm {
+            p   { 
+                font-size: 15px; 
+            }
             li  {
                 padding-left: 40px;
                 margin-bottom: 10px;
+                font-size: 15px;
                 &:after {
                     left: -5px;
                 }
                 .timeline-icon {
-                    left: 4.5px;
+                  padding-left: 1px;
+                  margin-top: -5px;
+                  left: 4.5px;
                 }
             }
         }

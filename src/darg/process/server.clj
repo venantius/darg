@@ -15,7 +15,7 @@
   (-> routes
       (authn/wrap-authentication
         authn/darg-auth-fn
-        :whitelist authn/darg-whitelist-fn)
+        :whitelist authn/route-whitelist-fn)
       (handler/site
         {:session {:store (cookie/cookie-store {:key (env/env :session-key)})}})
       middleware/ignore-trailing-slash
@@ -27,4 +27,4 @@
   (init/configure)
   (let [port (Integer. (env/env :port))]
     (logging/info "Starting Darg server on port" port)
-    (server/run-server #'app {:port port :join? false})))
+    (server/run-server app {:port port :join? false})))

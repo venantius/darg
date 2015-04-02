@@ -27,17 +27,15 @@
         <ul ng-repeat="user in darg.user" ng-show="showUser(user)">
 
           {{user.name}}
-          <ul class="timeline timeline-icons timeline-sm">
-          <div ng-show="userHasTasks(user)">
-
+          <ul class="timeline timeline-icons timeline-sm" ng-show="userHasTasks(user)">
             <li ng-repeat="task in user.task">
               <p>
                 {{task.task}}
-                  <span class="timeline-icon"><i class="fa fa-file-text-o"></i></span>
-                  <span class="timeline-date">{{task.date}}</span>
-                </p>
+                <span class="timeline-icon octicon octicon-flame"></span>
+                <span class="timeline-date">{{task.date}}</span>
+              </p>
             </li>
-          </div>
+          </ul>
 
           <!-- Enter new tasks -->
           <div class="ptl mtl" ng-controller="DargTaskCreationCtrl" ng-show="isCurrentUser(user.id)">
