@@ -10,10 +10,22 @@
 
             <!-- Show this menu if logged in -->
             <div>
-              <ul class="nav navbar-nav navbar-left"> 
-                <li>
-                  <a href="/">Home</a>
-                </li>
+              <ul class="nav navbar-nav navbar-left">
+                  <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                      Teams
+                      <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li ng-repeat="team in CurrentUser.team">
+                        <a ng-href="/timeline/{{team.id}}">{{team.name}}</a>
+                      </li>
+                      <li class="divider"></li>
+                      <li>
+                        <a ng-click="/new_team">Create new</a>
+                      </li>
+                    </ul>
+                  </li>
                 <li>
                   <a href="/integrations">Integrations</a>
                 </li>

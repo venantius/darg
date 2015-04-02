@@ -1,28 +1,35 @@
 (ns darg.middleware.authentication
   (:require
-    [clojure.tools.logging :as logging]
-    [darg.api.responses :as responses]
-    [ring.util.request :as req]))
+   [clojure.tools.logging :as logging]
+   [darg.api.responses :as responses]
+   [ring.util.request :as req]))
 
-(defn darg-whitelist-fn
+(defn route-whitelist-fn
   "A function for whitelisting particular routes.
 
   Whitelists our major resource routes first, then some API routes."
   [path]
   (cond
-    (= path "/") true
-    (.startsWith path "/css") true
-    (.startsWith path "/fonts") true
-    (.startsWith path "/images") true
-    (.startsWith path "/js") true
-    (.startsWith path "/templates") true
+    (or 
+     (= path "/")
+     (.startsWith path "/css")
+     (.startsWith path "/fonts")
+     (.startsWith path "/images")
+     (.startsWith path "/js")
+     (.startsWith path "/templates")
 
-    (= path "/debug") true
-    (= path "/api/v1/email") true
-    (= path "/api/v1/login") true
-    (= path "/api/v1/user") true
-    (= path "/api/v1/gravatar") true
-    (= path "/api/v1/password_reset") true
+     (= path "/about")
+     (= path "/api")
+     (= path "/faq")
+     (= path "/integrations")
+     (= path "/password_reset")
+
+     (= path "/debug")
+     (= path "/api/v1/email")
+     (= path "/api/v1/login")
+     (= path "/api/v1/user")
+     (= path "/api/v1/gravatar")
+     (= path "/api/v1/password_reset")) true
     :else false))
 
 (defn darg-auth-fn

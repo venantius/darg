@@ -2,18 +2,7 @@
   <div class="row ptl pbl mtl mbl">
   </div>
   <div class="row">
-    <!-- menu --> 
-    <div class="col-xs-3 ptl">
-      <div class="btn-group-vertical">
-        <!-- TODO: Make current team light up with btn-primary instead --> 
-        <!-- https://github.com/ursacorp/darg/issues/179 -->
-        <button class="btn btn-inverse" type="button" ng-repeat="team in CurrentUser.team" ng-click="loadNewTeamTimeline(team.id)">
-          {{team.name}}
-        </button>
-      </div>
-    </div>
-
-    <div class="col-xs-9">
+    <div class="col-xs-12">
       <div class="col-xs-3">
       </div>
       
@@ -35,25 +24,18 @@
           </ul>
         </nav>
 
-        <ul class="list-group" ng-repeat="user in darg.user" ng-show="showUser(user)">
+        <ul ng-repeat="user in darg.user" ng-show="showUser(user)">
 
           {{user.name}}
-          <div ng-show="userHasTasks(user)">
-
-            <li class="timeline-type-header list-group-item">
-              <span class="fui-list-numbered timeline-type-icon"></span>
-              <span class="timeline-type">
-                Tasks
-              </span>
-            </li>
-
-            <li class="timeline-item list-group-item" ng-repeat="task in user.task">
-              <span class="timeline-item-edit-icon fui-new"></span>
-              <span class="timeline-item">
+          <ul class="timeline timeline-icons timeline-sm" ng-show="userHasTasks(user)">
+            <li ng-repeat="task in user.task">
+              <p>
                 {{task.task}}
-              </span>
+                <span class="timeline-icon octicon octicon-flame"></span>
+                <span class="timeline-date">{{task.date}}</span>
+              </p>
             </li>
-          </div>
+          </ul>
 
           <!-- Enter new tasks -->
           <div class="ptl mtl" ng-controller="DargTaskCreationCtrl" ng-show="isCurrentUser(user.id)">
