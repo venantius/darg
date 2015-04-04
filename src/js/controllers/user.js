@@ -38,6 +38,7 @@ darg.controller('DargUserCtrl',
             url: "/api/v1/logout"
         })
         .success(function(data) {
+            $cookieStore.remove('logged-in');
             $location.path('/');
         })
     };
