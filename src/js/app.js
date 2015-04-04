@@ -29,7 +29,9 @@ darg.config(['$routeProvider', '$locationProvider',
 
         // inner
         .when('/timeline/:teamId', {
-            templateUrl: '/templates/home.html'
+            templateUrl: '/templates/home.html',
+            controller: 'DargTimelineCtrl',
+            controllerAs: 'Timeline'
         })
         .when('/settings', {
             templateUrl: '/templates/settings.html'

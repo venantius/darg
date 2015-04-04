@@ -30,7 +30,7 @@ darg.controller('DargTaskCreationCtrl',
         })
         .success(function(data) {
             console.log("Posted new task!");
-            $scope.GetTimeline();
+            $scope.GetTimeline(user.current_team);
         })
     }
 

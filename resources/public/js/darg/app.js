@@ -29,7 +29,9 @@ darg.config(['$routeProvider', '$locationProvider',
 
         // inner
         .when('/timeline/:teamId', {
-            templateUrl: '/templates/home.html'
+            templateUrl: '/templates/home.html',
+            controller: 'DargTimelineCtrl',
+            controllerAs: 'Timeline'
         })
         .when('/settings', {
             templateUrl: '/templates/settings.html'
@@ -155,7 +157,7 @@ darg.controller('DargTaskCreationCtrl',
         })
         .success(function(data) {
             console.log("Posted new task!");
-            $scope.GetTimeline();
+            $scope.GetTimeline(user.current_team);
         })
     }
 
@@ -205,14 +207,16 @@ darg.controller('DargTimelineCtrl',
         }
     }
 
-    $scope.GetTimeline = function() {
-        if (user.current_team != null) {
-            url = "/api/v1/darg/team/" + user.current_team
+    $scope.GetTimeline = function(id) {
+        if (id != null) {
+            url = "/api/v1/darg/team/" + id
             $http({
                 method: "get",
                 url: url
             })
             .success(function(data) {
+                url = "/timeline/" + id;
+                $location.path(url);
                 $scope.Timeline = data;
             })
             .error(function(data) {
@@ -223,19 +227,11 @@ darg.controller('DargTimelineCtrl',
         }
     };
 
-    $scope.loadNewTeamTimeline = function(id) {
-        url = "/timeline/" + id;
-        $location.path(url);
-    }
-
     $scope.$watch(function() {
         return user.current_team
     }, function(oldValue, newValue) {
         if (user.loggedIn() == true && user.current_team != null) {
-            console.log("CURRENT TEAM");
-            console.log(user.current_team);
-            $scope.loadNewTeamTimeline(user.current_team);
-            $scope.GetTimeline();
+            $scope.GetTimeline(user.current_team);
         }
     });
 }]);
@@ -268,9 +264,6 @@ darg.controller('DargUserCtrl',
             url: '/api/v1/login', 
             data: $.param($scope.LoginForm),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(data) {
-            $scope.getCurrentUser();
         })
     };
 
