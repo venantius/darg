@@ -20,18 +20,9 @@
     (is (true? (:admin created-role)))
     (is (some? (team/fetch-one-team {:id (:id body)})))))
 
-(deftest we-cant-create-a-team-with-an-existing-email
-  (let [request {:request-method :post 
-                 :params {:name "Standard Treasury 2"
-                          :email "st@mail.darg.io"}
-                 :user {:id 4 :email "test-user2@darg.io"}}
-        response (api/create! request)]
-    (is (= (:status response) 409))))
-
 (deftest we-can-update-a-team
   (let [request {:request-method :post 
                  :params {:name "Darg sucks as a name"
-                          :email "test.api@mail.darg.io"
                           :id "1"}
                  :user {:id 4 :email "test-user2@darg.io"}}
         response (api/update! request)
@@ -49,15 +40,3 @@
         response (api/update! request)
         team (team/fetch-one-team {:id 1})]
     (is (= (:status response) 401))))
-
-(deftest we-cant-update-a-team-with-an-email-that-another-team-has
-  (let [request {:request-method :post 
-                 :params {:name "Darg sucks as a name"
-                          :email "st@mail.darg.io"
-                          :id "1"}
-                 :user {:id 4 :email "test-user2@darg.io"}}
-        response (api/update! request)
-        team (team/fetch-one-team {:id 1})]
-    (is (= (:status response) 409))
-    (is (= (:name team)
-           "Darg"))))

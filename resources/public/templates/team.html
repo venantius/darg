@@ -4,22 +4,16 @@
   <div class="row ptl mtl pbl">
     <div class="col-xs-3">
     </div>
-    <div class="col-xs-6" ng-controller="DargTeamCtrl">
+    <div class="col-xs-6">
+      <h4>Create a New Team
+      </h4>
       <form class="login-form">
         <div class="form-group">
-          <input type="text" class="form-control login-field" placeholder="Your name" ng-model="SignupForm.name"/>
+          <input type="text" class="form-control login-field" placeholder="Team name" ng-model="Team.creationForm.name"/>
           <label class="login-field-icon fui-user" for="signup-name"></label>
         </div>
-        <div class="form-group">
-          <input type="text" class="form-control login-field" placeholder="Your e-mail" ng-model="SignupForm.email"/>
-          <label class="login-field-icon fui-mail" for="signup-email"></label>
-        </div>
-        <div class="form-group">
-          <input type="password" class="form-control login-field" placeholder="Your password" ng-model="SignupForm.password"/>
-          <label class="login-field-icon fui-lock" for="signup-pass"></label>
-        </div>
-        <button class="btn btn-primary btn-lg btn-block" ng-click="Signup()"> 
-          Sign Up 
+        <button class="btn btn-primary btn-lg btn-block" ng-click="Team.createTeam()"> 
+          Create New Team 
         </button>
       </form>
     </div>
