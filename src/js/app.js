@@ -40,7 +40,9 @@ darg.config(['$routeProvider', '$locationProvider',
             templateUrl: '/templates/settings.html'
         })
         .when('/team', {
-            templateUrl: '/templates/team.html'
+            templateUrl: '/templates/team.html',
+            controller: 'DargTeamCtrl',
+            controllerAs: 'Team'
         })
 
         .otherwise({

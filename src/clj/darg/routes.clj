@@ -11,6 +11,7 @@
             [darg.controller.email :as email]
             [darg.controller.gravatar :as gravatar]
             [darg.controller.task :as task]
+            [darg.controller.team :as team]
             [darg.controller.user :as user]
             [darg.oauth.github :as gh-oauth]
             [ring.util.response :refer [resource-response]]))
@@ -50,6 +51,8 @@
   (GET    "/api/v1/darg/:team_id"       request (darg/get-darg request))
   (GET    "/api/v1/darg/team/:team_id"  request (darg/get-team-darg request))
   (POST   "/api/v1/task"                request (task/create! request))
+
+  (POST   "/api/v1/team"                request (team/create! request))
 
   (POST   "/api/v1/user"                request (user/create! request))
   (GET    "/api/v1/user/:id"            request (user/get request))

@@ -3,7 +3,7 @@ module.exports = function(grunt) {
     // running `grunt concat` will concat our source js
     concat: {
       dist: {
-        src: ['./src/js/**/*.js'],
+        src: './src/js/**/*.js',
         dest: './resources/public/js/darg/app.js'
       }
     },

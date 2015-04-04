@@ -5,6 +5,11 @@
 
 (defmodel db/team)
 
+(defn email-from-name
+  "Figure out an email address from the name"
+  [n]
+  (str (clojure.string/replace n #"\W" "-") "@mail.darg.io"))
+
 (defn fetch-roles
   "Gets the list of users for a given team and their respective roles."
   [id]
