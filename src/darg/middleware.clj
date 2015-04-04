@@ -1,4 +1,13 @@
-(ns darg.middleware)
+(ns darg.middleware
+  (:require [clojure.tools.logging :as log]))
+
+(defn log-response
+  "Don't actually use this."
+  [handler]
+  (fn [request]
+    (let [response (handler request)]
+      (log/warn (:headers response))
+      response)))
 
 (defn ignore-trailing-slash
   "Modifies the request uri before calling the handler.

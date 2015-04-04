@@ -10,21 +10,21 @@
             <!-- Show this menu if logged in -->
             <div>
               <ul class="nav navbar-nav">
-                  <li class="dropdown" ng-show="loggedIn()">
-                    <a class="dropdown-toggle" data-toggle="dropdown">
-                      Teams
-                      <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li ng-repeat="team in CurrentUser.team">
-                        <a ng-href="/timeline/{{team.id}}">{{team.name}}</a>
-                      </li>
-                      <li class="divider"></li>
-                      <li>
-                        <a ng-click="/new_team">Create new</a>
-                      </li>
-                    </ul>
-                  </li>
+                <li class="dropdown" ng-show="loggedIn()">
+                  <a class="dropdown-toggle" data-toggle="dropdown">
+                    Teams
+                    <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li ng-repeat="team in currentUser.team">
+                      <a ng-href="/timeline/{{team.id}}">{{team.name}}</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                      <a href="/new_team">Create new</a>
+                    </li>
+                  </ul>
+                </li>
                 <li>
                   <a href="/integrations">Integrations</a>
                 </li>

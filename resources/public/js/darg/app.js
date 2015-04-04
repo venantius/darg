@@ -256,7 +256,7 @@ darg.controller('DargUserCtrl',
          user) {
 
     $scope.loggedIn = user.loggedIn
-    $scope.CurrentUser = {};
+    $scope.currentUser = {};
     $scope.LoginForm = {
         email: "",
         password: ""
@@ -360,7 +360,7 @@ darg.controller('DargUserCtrl',
         })
         .success(function(data) {
             user.info = data;
-            $scope.CurrentUser = data;
+            $scope.currentUser = data;
             $scope.UserSettingsProfile.name = data.name;
             $scope.UserSettingsProfile.email = data.email;
             $scope.UserSettingsProfile.timezone = data.timezone;
