@@ -7,10 +7,8 @@ darg.config(['$routeProvider', '$locationProvider',
            function AppConfig($routeProvider, $locationProvider) {
 
     $routeProvider
+        // outer
         .when('/', {
-            templateUrl: '/templates/home.html'
-        })
-        .when('/timeline/:teamId', {
             templateUrl: '/templates/home.html'
         })
         .when('/about', {
@@ -28,12 +26,21 @@ darg.config(['$routeProvider', '$locationProvider',
         .when('/password_reset', {
             templateUrl: '/templates/password_reset.html'
         })
+
+        // inner
+        .when('/timeline/:teamId', {
+            templateUrl: '/templates/home.html'
+        })
         .when('/settings', {
             templateUrl: '/templates/settings.html'
         })
         .when('/settings/:settingPage', {
             templateUrl: '/templates/settings.html'
         })
+        .when('/team', {
+            templateUrl: '/templates/team.html'
+        })
+
         .otherwise({
             redirectTo: '/'
         });

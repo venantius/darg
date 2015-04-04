@@ -19,7 +19,8 @@
       (handler/site
         {:session {:store (cookie/cookie-store {:key (env/env :session-key)})}})
       middleware/ignore-trailing-slash
-      wrap-json-response))
+      wrap-json-response
+      middleware/log-response))
 
 (defn run-web-server
   "Run the Darg.io web server process."

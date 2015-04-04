@@ -7,10 +7,8 @@ darg.config(['$routeProvider', '$locationProvider',
            function AppConfig($routeProvider, $locationProvider) {
 
     $routeProvider
+        // outer
         .when('/', {
-            templateUrl: '/templates/home.html'
-        })
-        .when('/timeline/:teamId', {
             templateUrl: '/templates/home.html'
         })
         .when('/about', {
@@ -28,12 +26,21 @@ darg.config(['$routeProvider', '$locationProvider',
         .when('/password_reset', {
             templateUrl: '/templates/password_reset.html'
         })
+
+        // inner
+        .when('/timeline/:teamId', {
+            templateUrl: '/templates/home.html'
+        })
         .when('/settings', {
             templateUrl: '/templates/settings.html'
         })
         .when('/settings/:settingPage', {
             templateUrl: '/templates/settings.html'
         })
+        .when('/team', {
+            templateUrl: '/templates/team.html'
+        })
+
         .otherwise({
             redirectTo: '/'
         });
@@ -249,7 +256,7 @@ darg.controller('DargUserCtrl',
          user) {
 
     $scope.loggedIn = user.loggedIn
-    $scope.CurrentUser = {};
+    $scope.currentUser = {};
     $scope.LoginForm = {
         email: "",
         password: ""
@@ -353,7 +360,7 @@ darg.controller('DargUserCtrl',
         })
         .success(function(data) {
             user.info = data;
-            $scope.CurrentUser = data;
+            $scope.currentUser = data;
             $scope.UserSettingsProfile.name = data.name;
             $scope.UserSettingsProfile.email = data.email;
             $scope.UserSettingsProfile.timezone = data.timezone;

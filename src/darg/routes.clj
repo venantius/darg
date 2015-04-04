@@ -30,6 +30,7 @@
   (GET    "/faq"                      [] darg-spa)
   (GET    "/integrations"             [] darg-spa)
   (GET    "/password_reset"           [] darg-spa)
+  (GET    "/team"                     [] darg-spa)
   (GET    "/settings"                 [] darg-spa)
   (GET    "/settings/:settings_page"  [] darg-spa)
 
