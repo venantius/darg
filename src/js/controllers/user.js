@@ -27,9 +27,6 @@ darg.controller('DargUserCtrl',
             data: $.param($scope.LoginForm),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
-        .success(function(data) {
-            $scope.getCurrentUser();
-        })
     };
 
     $scope.Logout = function() {
