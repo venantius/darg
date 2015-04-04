@@ -69,10 +69,10 @@ darg.controller('DargTimelineCtrl',
         return user.current_team
     }, function(oldValue, newValue) {
         if (user.loggedIn() == true && user.current_team != null) {
+            console.log("CURRENT TEAM");
+            console.log(user.current_team);
             $scope.loadNewTeamTimeline(user.current_team);
             $scope.GetTimeline();
         }
     });
-
 }]);
-

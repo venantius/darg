@@ -43,7 +43,7 @@
                  [ring "1.3.1"]
                  [ring/ring-json "0.3.1"]
                  [compojure "1.1.8"]
-                 [http-kit "2.1.8"]
+                 [http-kit "2.1.18"]
 
                  ;; templating
                  [enlive "1.1.5"]
@@ -60,6 +60,8 @@
                    :unit (complement :integration)}
 
   :jvm-opts  ["-Duser.timezone=UTC"]
+
+  :source-paths ["src/clj"]
 
   :profiles {:dev 
              {:env {:darg-environment "dev"
