@@ -64,9 +64,10 @@
         target-user-id (-> params :id read-string)]
     (if (or (= email (:email params))
             (nil? (user/fetch-one-user {:email (:email params)})))
-      (do
-        (user/update-user! target-user-id (assoc params :id target-user-id))
+      (let [updated-user (user/update-user! 
+                           target-user-id 
+                           (assoc params :id target-user-id))]
         {:status 200
          :session (assoc session :email (:email params))
-         :body current-user})
+         :body updated-user})
       (responses/conflict "User with that e-mail already exists"))))

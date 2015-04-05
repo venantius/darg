@@ -10,7 +10,8 @@
   Authentication endpoint. if successful, we set auth in their session and
   update the cookie to indicate that they're now logged in."
   [{:keys [params] :as request}]
-  (let [{:keys [email password]} params]
+  (let [{:keys [email password]} params
+        email (clojure.string/lower-case email)]
     (cond
       (not (user/authenticate email password))
       {:body "Failed to authenticate"
@@ -48,7 +49,7 @@
   with a special link that they can use to reset their password. The link will
   only remain valid for a finite amount of time."
   [request-map]
-  (let [email (-> request-map :params :email)]
+  (let [email (-> request-map :params :email clojure.string/lower-case)]
     (try
       (user/send-password-reset-email email)
       (ok "Success!")

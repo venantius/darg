@@ -30,7 +30,9 @@
   :password - user's password, in plaintext.
   :admin (optional) - identifies the user as a darg.io admin"
   [params]
-  (let [params (update-in params [:password] encrypt-password)]
+  (let [params (-> params
+                   (update-in [:password] encrypt-password)
+                   (update-in [:email] clojure.string/lower-case))]
     (insert entities/user (values params))))
 
 (defn create-user-from-signup-form
@@ -68,8 +70,11 @@
   "Updates the fields for a user.
   Takes a user-id as an integer and a map of fields + values to update."
   [id params]
-  (update entities/user (where {:id id}) (set-fields params))
-  (fetch-one-user {:id id}))
+  (let [params (if (:email params)
+                 (update-in params [:email] clojure.string/upper-case)
+                 params)]
+    (update entities/user (where {:id id}) (set-fields params))
+    (fetch-one-user {:id id})))
 
 (defn profile
   "Returns the profile for a given user, including the teams that they're on.
