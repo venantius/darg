@@ -17,7 +17,6 @@
                 body-html stripped-html attachment-count
                 attachment-x timestamp token signature
                 message-headers content-id-map] :as email} params]
-    (log/warn sender recipient)
     (try
       (cond
         (not (mailgun/authenticate email))
