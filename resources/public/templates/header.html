@@ -10,6 +10,9 @@
             <!-- Show this menu if logged in -->
             <div>
               <ul class="nav navbar-nav">
+                <li ng-hide="loggedIn()">
+                  <a href="/">Home</a>
+                </li>
                 <li class="dropdown" ng-show="loggedIn()">
                   <a class="dropdown-toggle" data-toggle="dropdown">
                     Teams
