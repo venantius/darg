@@ -71,7 +71,7 @@
   Takes a user-id as an integer and a map of fields + values to update."
   [id params]
   (let [params (if (:email params)
-                 (update-in params [:email] clojure.string/upper-case)
+                 (update-in params [:email] clojure.string/lower-case)
                  params)]
     (update entities/user (where {:id id}) (set-fields params))
     (fetch-one-user {:id id})))
