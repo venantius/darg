@@ -59,10 +59,10 @@
 
   Update the user."
   [{:keys [user params session]}]
-  (let [email (:email user)
-        current-user (user/fetch-one-user {:email email})
+  (let [session-email (-> user :email clojure.string/lower-case)
+        current-user (user/fetch-one-user {:email session-email})
         target-user-id (-> params :id read-string)]
-    (if (or (= email (:email params))
+    (if (or (= session-email (:email params))
             (nil? (user/fetch-one-user {:email (:email params)})))
       (let [updated-user (user/update-user! 
                            target-user-id 
