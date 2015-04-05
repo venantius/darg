@@ -2,7 +2,8 @@
   (:require [clojure.tools.logging :as log]
             [darg.api.responses :refer [bad-request ok unauthorized]] 
             [darg.model.email :as email]
-            [darg.services.mailgun :as mailgun]))
+            [darg.services.mailgun :as mailgun]
+            [darg.util.stacktrace]))
 
 (defn email
   "/api/v1/email
@@ -29,5 +30,6 @@
           (ok {:message "E-mail successfully parsed."})))
       (catch Exception e
         (log/errorf "Failed to parse email with exception: %s" e)
+        (darg.util.stacktrace/print-stacktrace e)
         (bad-request "Failed to parse e-mail.")))))
 
