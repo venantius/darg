@@ -10,7 +10,7 @@
   E-mail parsing endpoint; only for use with Mailgun. Authenticates the e-mail
   from Mailgun, and adds a task for each newline in the :stripped-text field."
   [{:keys [params]}]
-  (logging/info params)
+  (log/info params)
   (let [{:keys [recipient sender from subject
                 body-plain stripped-text stripped-signature
                 body-html stripped-html attachment-count
