@@ -55,7 +55,7 @@
    :token "ee55af9ce04725e2b93ca5844b14621ac96de7e9144b21222f"
    :from "savelago@gmail.com"
    :Received "by luna.mailgun.net with HTTP; Tue, 02 Sep 2014 01:51:29 +0000"
-   :sender "domo@darg.io"
+   :sender "savelago@gmail.com"
    :Message-Id "<20140902015129.23125.83955@darg.io>"
    :To "test.api@mail.darg.io"
    :Content-Transfer-Encoding "7bit"

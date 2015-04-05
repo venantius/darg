@@ -16,12 +16,13 @@
                 body-html stripped-html attachment-count
                 attachment-x timestamp token signature
                 message-headers content-id-map] :as email} params]
+    (log/warn sender recipient)
     (try
       (cond
         (not (mailgun/authenticate email))
         (unauthorized "Failed to authenticate email.")
-        (not (email/user-can-email-this-team? from recipient))
-        (unauthorized (format "E-mails from this address <%s> are not authorized to post to this team address <%s>." from recipient))
+        (not (email/user-can-email-this-team? sender recipient))
+        (unauthorized (format "E-mails from this address <%s> are not authorized to post to this team address <%s>." sender recipient))
         :else
         (do
           (email/parse-email email)
