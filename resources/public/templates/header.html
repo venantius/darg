@@ -1,79 +1,71 @@
 <script src="../js/flatui/flat-ui.min.js" type="text/javascript-lazy"></script>
 
-<div>
+<nav class="navbar-sm navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
-    <div class="row" >
-      <div class="col-xs-9">
-        <nav class="navbar-sm navbar-inverse navbar-fixed-top" role="navigation">
-          <div class="container">
-            <div class="collapse navbar-collapse" id="navbar-collapse-01"> 
+    <div class="collapse navbar-collapse" id="navbar-collapse-01"> 
 
-              <!-- Show this menu if logged in -->
-              <div>
-                <ul class="nav navbar-nav">
-                  <li ng-hide="loggedIn()">
-                    <a href="/">Home</a>
-                  </li>
-                  <li class="dropdown" ng-show="loggedIn()">
-                    <a class="dropdown-toggle" data-toggle="dropdown">
-                      Teams
-                      <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li ng-repeat="team in currentUser.team">
-                        <a ng-href="/timeline/{{team.id}}">{{team.name}}</a>
-                      </li>
-                      <li class="divider"></li>
-                      <li>
-                        <a href="/team">Create new</a>
-                      </li>
-                    </ul>
-                  </li>
+      <!-- Show this menu if logged in -->
+      <div>
+        <ul class="nav navbar-nav">
+          <li ng-hide="loggedIn()">
+            <a href="/">Home</a>
+          </li>
+          <li class="dropdown" ng-show="loggedIn()">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+              Teams
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li ng-repeat="team in currentUser.team">
+                <a ng-href="/timeline/{{team.id}}">{{team.name}}</a>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <a href="/team">Create new</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Show log in form if not logged-in -->
+      <div> 
+        <div ng-hide="loggedIn()">
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <form role="search" class="navbar-form navbar-left">
+                <div class="form-group">
+                  <input type="text" placeholder="Email" class="form-control input-sm" ng-model="LoginForm.email">
+                </div>
+                <div class="form-group">
+                  <input type="password" size="8" placeholder="Password" class="form-control input-sm" ng-model="LoginForm.password">
+                </div>
+                <button class="btn btn-primary" ng-click="Login()">Login</button>
+                <button class="btn btn-danger" data-toggle="tooltip" title="Forgot your password?" data-placement="bottom" type="button" ng-click="LoadPasswordResetPage()">!</button>
+              </form>
+            </li>
+          </ul>
+        </div>
+        <div ng-show="loggedIn()">
+          <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                  <span class="octicon octicon-gear"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/settings/profile">Settings</a></li>
+                    <li class="divider"></li>
+                  <li><a ng-click="Logout()">Logout</a></li>
                 </ul>
-              </div>
-
-              <!-- Show log in form if not logged-in -->
-              <div> 
-                <div ng-hide="loggedIn()">
-                  <ul class="nav navbar-nav navbar-right">
-                    <li>
-                      <form role="search" class="navbar-form navbar-left">
-                        <div class="form-group">
-                          <input type="text" placeholder="Email" class="form-control input-sm" ng-model="LoginForm.email">
-                        </div>
-                        <div class="form-group">
-                          <input type="password" size="8" placeholder="Password" class="form-control input-sm" ng-model="LoginForm.password">
-                        </div>
-                        <button class="btn btn-primary" ng-click="Login()">Login</button>
-                        <button class="btn btn-danger" data-toggle="tooltip" title="Forgot your password?" data-placement="bottom" type="button" ng-click="LoadPasswordResetPage()">!</button>
-                      </form>
-                    </li>
-                  </ul>
-                </div>
-                <div ng-show="loggedIn()">
-                  <ul class="nav navbar-nav navbar-right">
-                    <ul class="nav navbar-nav">
-                      <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                          <span class="octicon octicon-gear"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li><a href="/settings/profile">Settings</a></li>
-                            <li class="divider"></li>
-                          <li><a ng-click="Logout()">Logout</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </nav>
+              </li>
+            </ul>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</nav>
 
 <!-- This has to get re-loaded because of Angular's way of handling scripts inside templates -->
 <script type="text/javascript-lazy">
