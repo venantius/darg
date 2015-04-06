@@ -1,10 +1,13 @@
 (ns darg.model.email
-  (:require [clojure.string :as str]
+  (:require [clj-time.core :as t]
+            [clj-time.format :as f]
+            [clojure.string :as str]
             [clojure.tools.logging :as log]
             [darg.db-util :as dbutil]
             [darg.model.task :as task]
             [darg.model.team :as team]
             [darg.model.user :as user]
+            [darg.util.datetime :as dt]
             [darg.services.mailgun :as mailgun]))
 
 (defn user-can-email-this-team?
@@ -21,29 +24,34 @@
   the database.
 
   Email mapping to task metadata is:
-    - From -> uses email address to lookup :user_id
-    - Recipient -> uses email address to lookup :team_id
-    - Subject -> parses out date in format 'MMM dd YYYY' and converts to sqldate for :date
-    - Body -> Each newline in the body is parsed as a separate :task"
-  [email]
-  (let [task-list (-> email
-                      :stripped-text
+    - sender -> uses email address to lookup :user_id
+    - recipient -> uses email address to lookup :team_id
+    - subject -> parses out date in format 'MMM dd YYYY' and converts to sqldate for :date
+    - stripped-text -> Each newline in the body is parsed as a separate :task"
+  [{:keys [sender recipient subject stripped-text] :as email}]
+  (let [task-list (-> stripped-text
                       (str/split #"\n")
                       (->> (map str/trim)))
-        email-metadata {:user_id (:id (user/fetch-one-user {:email (:from email)}))
-                        :team_id (:id (team/fetch-one-team {:email (:recipient email)}))
-                        :date (dbutil/sql-date-from-subject (:subject email))}]
+        email-metadata {:user_id (:id (user/fetch-one-user {:email sender}))
+                        :team_id (:id (team/fetch-one-team {:email recipient}))
+                        :date (dbutil/sql-date-from-subject subject)}]
     (task/create-task-list task-list email-metadata)))
+
+(defn todays-subject-line
+  [{:keys [timezone] :as user}]
+  (let [today (dt/local-time (t/now) timezone)]
+    (str "What did you do today: " (f/unparse (f/formatter "MMMM dd YYYY") today) "?")))
 
 (defn send-one-personal-email
   "Send an e-mail for each team this user is on asking what they did today."
   [user team]
   (let [from (:email team)
-        to (:email user)]
+        to (:email user)
+        subject (todays-subject-line user)]
     (log/info "Emailing" to "from" from)
     (mailgun/send-message {:from from
                            :to to
-                           :subject "This is a test email"
+                           :subject subject
                            :text "What did you do today?"})))
 
 (defn send-personal-emails
