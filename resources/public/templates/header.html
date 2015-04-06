@@ -28,12 +28,6 @@
                     </li>
                   </ul>
                 </li>
-                <li>
-                  <a href="/integrations">Integrations</a>
-                </li>
-                <li>
-                  <a href="/about">About</a>
-                </li>
               </ul>
             </div>
 
@@ -56,12 +50,11 @@
                 </ul>
               </div>
               <div ng-show="loggedIn()">
-                <ul class="nav navbar-right">
-                  <ul class="nav navbar-nav navbar-favicon">
+                <ul class="nav navbar-nav navbar-right">
+                  <ul class="nav navbar-nav">
                     <li class="dropdown">
                       <a class="dropdown-toggle" data-toggle="dropdown">
-                        <img ng-src="{{gravatars.navbar}}" class="img-circle">
-                        <b class="caret"></b>
+                        <span class="octicon octicon-gear"></span>
                       </a>
                       <ul class="dropdown-menu">
                         <li><a href="/settings/profile">Settings</a></li>
