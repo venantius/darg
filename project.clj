@@ -83,6 +83,9 @@
              {:env {:darg-environment "staging"}}
 
              :production 
-             {:env {:darg-environment "production"}}}
+             {:env {:darg-environment "production"}}
+
+             :uberjar
+             {:aot [darg.core]}}
   :repl-options {:port 6001}
   :main darg.core)

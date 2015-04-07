@@ -47,7 +47,10 @@
                    :id 4}
                   {:task (list)
                    :name "David Jarvis"
-                   :id 6}]
+                   :id 6}
+                  {:task (list)
+                   :name "Dave"
+                   :id 7}]
           :date (util/sql-datetime->date-str (:date fixture-data/test-task-1))
           }
           (first (darg/team-timeline 1)))))

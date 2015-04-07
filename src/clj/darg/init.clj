@@ -21,8 +21,8 @@
     (logging/info "Inserting test fixture data...")
     (db-fixtures/insert-db-fixture-data)))
 
-(defn -prod-migrate
-  "Migrate in production"
+(defn prod-migrate
+  "Migrate in production-ish environments"
   []
   (let [db (db/construct-db-map)]
     (logging/info "Migrating the db...")
@@ -38,7 +38,6 @@
   (db/set-korma-db)
   (cond (and (= (env/env :darg-environment) "dev")
              (env/env :reload-db-on-run)) (-reload-db)
-        (= (env/env :darg-environment) "production")
-          (-prod-migrate))
+        :else (prod-migrate))
   (logging/info "Starting nREPL server on port" 6001)
   (nrepl/start-server :port 6001))

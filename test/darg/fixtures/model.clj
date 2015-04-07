@@ -66,13 +66,24 @@
    :bot false
    :active true})
 
+(def test-user-7
+  {:email "venantius@gmail.com"
+   :password (encrypt-password "bongle5")
+   :name "Dave"
+   :timezone "America/Los_Angeles"
+   :email_hour "7pm"
+   :admin true
+   :bot false
+   :active true})
+
 (def test-users
   [test-user-1
    test-user-2
    test-user-3
    test-user-4
    test-user-5
-   test-user-6])
+   test-user-6
+   test-user-7])
 
 (def test-github-user-1
   {:gh_login "dargtester1"
@@ -86,7 +97,7 @@
 
 (def test-team-1
   {:name "Darg"
-   :email "test.api@mail.darg.io"})
+   :email "darg@mail.darg.io"})
 
 (def test-team-2
   {:name "Standard Treasury"
@@ -195,6 +206,11 @@
    :team_id 2
    :admin true})
 
+(def test-role-pair-10
+  {:user_id 7
+   :team_id 1
+   :admin true})
+
 (def test-role-pairs
   [test-role-pair-1
    test-role-pair-2
@@ -204,7 +220,8 @@
    test-role-pair-6
    test-role-pair-7
    test-role-pair-8
-   test-role-pair-9])
+   test-role-pair-9
+   test-role-pair-10])
 
 (def test-password-reset-token-1
   {:token "XBT6XI7WAHPX4NQDHBWGXPP2YCJSXS7Q"

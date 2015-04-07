@@ -24,7 +24,7 @@
 
 (deftest we-can-get-a-users-teams
   (is (= (first (user/fetch-user-teams {:id 1})) 
-         {:email "test.api@mail.darg.io", :name "Darg", :id 1})))
+         {:email "darg@mail.darg.io", :name "Darg", :id 1})))
 
 (deftest we-can-check-a-user-is-in-a-team
   (is (user/user-in-team? 3 1))
