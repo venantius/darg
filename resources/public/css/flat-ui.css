@@ -19518,6 +19518,9 @@ p.answer {
   padding-right: 15px;
   padding-left: 15px;
 }
+.navbar-icons {
+  font-size: 16px;
+}
 /*
 
 The Timeline is divided into the following hierarchy:
