@@ -9,7 +9,6 @@
             [darg.controller.auth :as auth]
             [darg.controller.darg :as darg]
             [darg.controller.email :as email]
-            [darg.controller.gravatar :as gravatar]
             [darg.controller.task :as task]
             [darg.controller.team :as team]
             [darg.controller.user :as user]
@@ -47,7 +46,6 @@
   (POST   "/api/v1/password_reset"      request (auth/password-reset request))
   
   (POST   "/api/v1/email"               request (email/email request))
-  (POST   "/api/v1/gravatar"            request (gravatar/gravatar request))
   (GET    "/api/v1/darg/:team_id"       request (darg/get-darg request))
   (GET    "/api/v1/darg/team/:team_id"  request (darg/get-team-darg request))
   (POST   "/api/v1/task"                request (task/create! request))

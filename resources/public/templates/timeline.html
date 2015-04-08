@@ -28,7 +28,9 @@
         <div class="form-group">
           <div class="input-group">
             <span class="input-group-btn">
-              <button class="btn" type="button"><span class="fui-calendar"></span></button>
+              <button class="btn" type="button">
+                <span class="fui-calendar"></span>
+              </button>
             </span>
             <input type="text" class="form-control timepicker-with-dropdowns" value="14 March, 2013" id="datepicker-02" />
           </div>
@@ -37,13 +39,6 @@
     </div>
     <div class="col-xs-9">
       
-      <!-- profile -->
-      <!-- 
-      <div class="timeline-header">
-        <img ng-src="{{gravatars.timeline}}" class="img-circle timeline-profile">
-      </div>
-      -->
-
       <!-- timeline -->
       <div class="timeline-darg" ng-repeat="darg in Timeline.darg">
         <nav class="navbar navbar-default">
@@ -57,25 +52,37 @@
           </ul>
         </nav>
 
-        <ul ng-repeat="user in darg.user" ng-show="showUser(user)">
-
-          {{user.name}}
-          <ul class="timeline timeline-icons timeline-sm" ng-show="userHasTasks(user)">
-            <li ng-repeat="task in user.task">
-              <p>
-                {{task.task}}
-                <span class="timeline-icon octicon octicon-check"></span>
-                <span class="timeline-date">{{task.date}}</span>
-              </p>
-            </li>
-          </ul>
-
-          <!-- Enter new tasks -->
-          <div class="ptl mtl" ng-controller="DargTaskCreationCtrl" ng-show="isCurrentUser(user.id)">
-            <form class="task-form" ng-submit="PostTask(darg)">
-              <input type="text" placeholder="Left something out? Enter it here!" class="form-control" ng-model="TaskForm.task"/>
-            </form>
+        <div class="row timeline-day" ng-repeat="user in darg.user" ng-show="showUser(user)">
+  
+          <!-- user profile -->
+          <div class="col-xs-3">
+            <img class="img-circle timeline-profile" gravatar-src="user.email" gravatar-size="64">
+            <div class="timeline-profile-text">
+              {{user.name}}
+            </div>
           </div>
+
+          <!-- user timeline -->
+          <div class="col-xs-9">
+            <ul class="timeline timeline-icons timeline-sm" ng-show="userHasTasks(user)">
+              <li ng-repeat="task in user.task">
+                <p>
+                  {{task.task}}
+                  <span class="timeline-icon octicon octicon-check"></span>
+                  <span class="timeline-date">{{task.date}}</span>
+                </p>
+              </li>
+            </ul>
+
+            <!-- Enter new tasks -->
+            <div class="ptl mtl" ng-controller="DargTaskCreationCtrl" ng-show="isCurrentUser(user.id)">
+              <form class="task-form" ng-submit="PostTask(darg)">
+                <input type="text" placeholder="Left something out? Enter it here!" class="form-control" ng-model="TaskForm.task"/>
+              </form>
+            </div>
+          </div>
+
+
         </ul>
       </div>
     </div>

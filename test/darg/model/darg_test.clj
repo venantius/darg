@@ -33,9 +33,11 @@
 (deftest team-timeline-works
   (is (= {:user [{:task (list)
                    :name "John Lago"
+                   :email "savelago@gmail.com"
                    :id 1}
                   {:task (list)
                    :name "The Couch"
+                   :email "arrigato@darg.io"
                    :id 3}
                   {:task (list
                             {:task "Do a good deed everyday"
@@ -44,12 +46,15 @@
                              :date (:date fixture-data/test-task-1)
                              :id 1})
                    :name "Finn the Human"
+                   :email "test-user2@darg.io"
                    :id 4}
                   {:task (list)
                    :name "David Jarvis"
+                   :email "david@ursacorp.io"
                    :id 6}
                   {:task (list)
                    :name "Dave"
+                   :email "venantius@gmail.com"
                    :id 7}]
           :date (util/sql-datetime->date-str (:date fixture-data/test-task-1))
           }

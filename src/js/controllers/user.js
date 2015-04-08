@@ -91,8 +91,6 @@ darg.controller('DargUserCtrl',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
-            $scope.loadGravatar("navbar", 40);
-            $scope.loadGravatar("timeline", 100);
         })
     };
 
@@ -133,23 +131,6 @@ darg.controller('DargUserCtrl',
         }
     };
 
-    $scope.gravatars = {
-        "navbar": null,
-        "timeline": null
-    }
-
-    $scope.loadGravatar = function(target, size) {
-        $http({
-            method: "post",
-            data: $.param({"size": size}),
-            url: "/api/v1/gravatar",
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(data, status) {
-            $scope.gravatars[target] = data;
-        });
-    };
-
     $scope.ResetForm = {
         "email": ""
     }
@@ -181,8 +162,6 @@ darg.controller('DargUserCtrl',
     }, function(oldValue, newValue) {
         if (user.loggedIn() == true) {
             $scope.getCurrentUser();
-            $scope.loadGravatar("navbar", 40);
-            $scope.loadGravatar("timeline", 100);
         }
     });
 
