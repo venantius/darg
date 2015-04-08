@@ -81,23 +81,3 @@
     </div>
   </div>
 </div>
-
-<script type="text/javascript-lazy">
-    // jQuery UI Datepicker
-  var datepickerSelector2 = $('#datepicker-02');
-  datepickerSelector2.datepicker({
-    showOtherMonths: true,
-    selectOtherMonths: true,
-    dateFormat: "d MM, yy",
-    yearRange: '-1:+1',
-    changeMonth: true,
-    changeYear: true
-  }).prev().on('click', function (e) {
-    e && e.preventDefault();
-    datepickerSelector2.focus().blur();
-  });
-  $.extend($.datepicker, {_checkOffset:function(inst,offset,isFixed){return offset}});
-
-  // Now let's align datepicker with the prepend button
-  datepickerSelector2.datepicker('widget').css({'margin-left': -datepickerSelector2.prev('.input-group-btn').find('.btn').outerWidth()});
-</script>
