@@ -1,0 +1,1048 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'update' ]
+2 info using npm@2.1.14
+3 info using node@v0.10.35
+4 verbose node symlink /usr/local/bin/node
+5 silly mapToRegistry name grunt
+6 silly mapToRegistry using default registry
+7 silly mapToRegistry registry https://registry.npmjs.org/
+8 silly mapToRegistry uri https://registry.npmjs.org/grunt
+9 silly mapToRegistry name grunt-contrib-concat
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-concat
+13 silly mapToRegistry name grunt-contrib-jshint
+14 silly mapToRegistry using default registry
+15 silly mapToRegistry registry https://registry.npmjs.org/
+16 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-jshint
+17 silly mapToRegistry name grunt-contrib-nodeunit
+18 silly mapToRegistry using default registry
+19 silly mapToRegistry registry https://registry.npmjs.org/
+20 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-nodeunit
+21 silly mapToRegistry name grunt-contrib-uglify
+22 silly mapToRegistry using default registry
+23 silly mapToRegistry registry https://registry.npmjs.org/
+24 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-uglify
+25 silly mapToRegistry name grunt-contrib-less
+26 silly mapToRegistry using default registry
+27 silly mapToRegistry registry https://registry.npmjs.org/
+28 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-less
+29 silly mapToRegistry name grunt-contrib-watch
+30 silly mapToRegistry using default registry
+31 silly mapToRegistry registry https://registry.npmjs.org/
+32 silly mapToRegistry uri https://registry.npmjs.org/grunt-contrib-watch
+33 verbose request uri https://registry.npmjs.org/grunt-contrib-concat
+34 verbose request no auth needed
+35 info attempt registry request try #1 at 19:56:42
+36 verbose request id 6c570ddf996f2bf3
+37 verbose etag "7IW0ISJA5W0E4VP4JRUCPHCQM"
+38 http request GET https://registry.npmjs.org/grunt-contrib-concat
+39 verbose request uri https://registry.npmjs.org/grunt-contrib-jshint
+40 verbose request no auth needed
+41 info attempt registry request try #1 at 19:56:42
+42 verbose etag "4ZZ01MJQF1WZWZ87TP8WK4UA9"
+43 http request GET https://registry.npmjs.org/grunt-contrib-jshint
+44 verbose request uri https://registry.npmjs.org/grunt
+45 verbose request no auth needed
+46 info attempt registry request try #1 at 19:56:42
+47 verbose etag "6WCVICRPA7PU6FWVYJ91B4VPU"
+48 http request GET https://registry.npmjs.org/grunt
+49 verbose request uri https://registry.npmjs.org/grunt-contrib-uglify
+50 verbose request no auth needed
+51 info attempt registry request try #1 at 19:56:42
+52 verbose etag "417JXB4Y491KFUJV2IWZ051JG"
+53 http request GET https://registry.npmjs.org/grunt-contrib-uglify
+54 verbose request uri https://registry.npmjs.org/grunt-contrib-nodeunit
+55 verbose request no auth needed
+56 info attempt registry request try #1 at 19:56:42
+57 verbose etag "E3BGXRK7A24M6882D7TMU00X1"
+58 http request GET https://registry.npmjs.org/grunt-contrib-nodeunit
+59 verbose request uri https://registry.npmjs.org/grunt-contrib-watch
+60 verbose request no auth needed
+61 info attempt registry request try #1 at 19:56:42
+62 verbose etag "5ZDE9AXAY5GDBDSMNL9V85N1U"
+63 http request GET https://registry.npmjs.org/grunt-contrib-watch
+64 verbose request uri https://registry.npmjs.org/grunt-contrib-less
+65 verbose request no auth needed
+66 info attempt registry request try #1 at 19:56:42
+67 verbose etag "67M4MJOUE1L4YNFJY341O1VEL"
+68 http request GET https://registry.npmjs.org/grunt-contrib-less
+69 http 304 https://registry.npmjs.org/grunt-contrib-concat
+70 silly get cb [ 304,
+70 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+70 silly get     server: 'Apache',
+70 silly get     via: '1.1 varnish',
+70 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:40 GMT',
+70 silly get     'cache-control': 'max-age=60',
+70 silly get     etag: '"7IW0ISJA5W0E4VP4JRUCPHCQM"',
+70 silly get     age: '9',
+70 silly get     'x-served-by': 'cache-lax1432-LAX',
+70 silly get     'x-cache': 'HIT',
+70 silly get     'x-cache-hits': '1',
+70 silly get     'x-timer': 'S1428461800.632133,VS0,VE0',
+70 silly get     vary: 'Accept',
+70 silly get     'content-length': '0',
+70 silly get     'keep-alive': 'timeout=10, max=50',
+70 silly get     connection: 'Keep-Alive' } ]
+71 verbose etag https://registry.npmjs.org/grunt-contrib-concat from cache
+72 http 304 https://registry.npmjs.org/grunt-contrib-jshint
+73 silly get cb [ 304,
+73 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+73 silly get     server: 'Apache',
+73 silly get     via: '1.1 varnish',
+73 silly get     'last-modified': 'Wed, 08 Apr 2015 02:43:08 GMT',
+73 silly get     'cache-control': 'max-age=60',
+73 silly get     etag: '"4ZZ01MJQF1WZWZ87TP8WK4UA9"',
+73 silly get     age: '45',
+73 silly get     'x-served-by': 'cache-lax1420-LAX',
+73 silly get     'x-cache': 'HIT',
+73 silly get     'x-cache-hits': '39',
+73 silly get     'x-timer': 'S1428461800.632180,VS0,VE0',
+73 silly get     vary: 'Accept',
+73 silly get     'content-length': '0',
+73 silly get     'keep-alive': 'timeout=10, max=50',
+73 silly get     connection: 'Keep-Alive' } ]
+74 verbose etag https://registry.npmjs.org/grunt-contrib-jshint from cache
+75 http 304 https://registry.npmjs.org/grunt-contrib-watch
+76 silly get cb [ 304,
+76 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+76 silly get     server: 'Apache',
+76 silly get     via: '1.1 varnish',
+76 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:40 GMT',
+76 silly get     'cache-control': 'max-age=60',
+76 silly get     etag: '"5ZDE9AXAY5GDBDSMNL9V85N1U"',
+76 silly get     age: '12',
+76 silly get     'x-served-by': 'cache-lax1432-LAX',
+76 silly get     'x-cache': 'HIT',
+76 silly get     'x-cache-hits': '1',
+76 silly get     'x-timer': 'S1428461800.656076,VS0,VE0',
+76 silly get     vary: 'Accept',
+76 silly get     'content-length': '0',
+76 silly get     'keep-alive': 'timeout=10, max=49',
+76 silly get     connection: 'Keep-Alive' } ]
+77 verbose etag https://registry.npmjs.org/grunt-contrib-watch from cache
+78 silly mapToRegistry name chalk
+79 silly mapToRegistry using default registry
+80 silly mapToRegistry registry https://registry.npmjs.org/
+81 silly mapToRegistry uri https://registry.npmjs.org/chalk
+82 silly mapToRegistry name source-map
+83 silly mapToRegistry using default registry
+84 silly mapToRegistry registry https://registry.npmjs.org/
+85 silly mapToRegistry uri https://registry.npmjs.org/source-map
+86 verbose request uri https://registry.npmjs.org/chalk
+87 verbose request no auth needed
+88 info attempt registry request try #1 at 19:56:42
+89 verbose etag "C5I5EFJ8JVIOVT9VO2CW914Y8"
+90 http request GET https://registry.npmjs.org/chalk
+91 verbose request uri https://registry.npmjs.org/source-map
+92 verbose request no auth needed
+93 info attempt registry request try #1 at 19:56:42
+94 verbose etag "6X6700A4ARF6BEP1WI9Y86P6"
+95 http request GET https://registry.npmjs.org/source-map
+96 http 200 https://registry.npmjs.org/grunt-contrib-uglify
+97 silly get cb [ 200,
+97 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+97 silly get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+97 silly get     etag: '"51T6TYXNI1P422KFRJTOF3HJG"',
+97 silly get     'content-type': 'application/json',
+97 silly get     'cache-control': 'max-age=60',
+97 silly get     'content-length': '65550',
+97 silly get     'accept-ranges': 'bytes',
+97 silly get     via: '1.1 varnish',
+97 silly get     age: '12',
+97 silly get     'x-served-by': 'cache-lax1420-LAX',
+97 silly get     'x-cache': 'HIT',
+97 silly get     'x-cache-hits': '2',
+97 silly get     'x-timer': 'S1428461800.634237,VS0,VE0',
+97 silly get     vary: 'Accept',
+97 silly get     'keep-alive': 'timeout=10, max=50',
+97 silly get     connection: 'Keep-Alive' } ]
+98 http 200 https://registry.npmjs.org/grunt
+99 silly get cb [ 200,
+99 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+99 silly get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+99 silly get     etag: '"DA1LWTWC956WR4QBPKX9PHB0E"',
+99 silly get     'content-type': 'application/json',
+99 silly get     'cache-control': 'max-age=60',
+99 silly get     'content-length': '88780',
+99 silly get     'accept-ranges': 'bytes',
+99 silly get     via: '1.1 varnish',
+99 silly get     age: '46',
+99 silly get     'x-served-by': 'cache-lax1431-LAX',
+99 silly get     'x-cache': 'HIT',
+99 silly get     'x-cache-hits': '1',
+99 silly get     'x-timer': 'S1428461800.635272,VS0,VE0',
+99 silly get     vary: 'Accept',
+99 silly get     'keep-alive': 'timeout=10, max=50',
+99 silly get     connection: 'Keep-Alive' } ]
+100 http 304 https://registry.npmjs.org/source-map
+101 silly get cb [ 304,
+101 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+101 silly get     server: 'Apache',
+101 silly get     via: '1.1 varnish',
+101 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:40 GMT',
+101 silly get     'cache-control': 'max-age=60',
+101 silly get     etag: '"6X6700A4ARF6BEP1WI9Y86P6"',
+101 silly get     age: '4',
+101 silly get     'x-served-by': 'cache-lax1420-LAX',
+101 silly get     'x-cache': 'HIT',
+101 silly get     'x-cache-hits': '1',
+101 silly get     'x-timer': 'S1428461800.705296,VS0,VE0',
+101 silly get     vary: 'Accept',
+101 silly get     'content-length': '0',
+101 silly get     'keep-alive': 'timeout=10, max=49',
+101 silly get     connection: 'Keep-Alive' } ]
+102 verbose etag https://registry.npmjs.org/source-map from cache
+103 silly mapToRegistry name gaze
+104 silly mapToRegistry using default registry
+105 silly mapToRegistry registry https://registry.npmjs.org/
+106 silly mapToRegistry uri https://registry.npmjs.org/gaze
+107 silly mapToRegistry name tiny-lr-fork
+108 silly mapToRegistry using default registry
+109 silly mapToRegistry registry https://registry.npmjs.org/
+110 silly mapToRegistry uri https://registry.npmjs.org/tiny-lr-fork
+111 silly mapToRegistry name lodash
+112 silly mapToRegistry using default registry
+113 silly mapToRegistry registry https://registry.npmjs.org/
+114 silly mapToRegistry uri https://registry.npmjs.org/lodash
+115 silly mapToRegistry name async
+116 silly mapToRegistry using default registry
+117 silly mapToRegistry registry https://registry.npmjs.org/
+118 silly mapToRegistry uri https://registry.npmjs.org/async
+119 http 304 https://registry.npmjs.org/grunt-contrib-nodeunit
+120 silly get cb [ 304,
+120 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+120 silly get     server: 'Apache',
+120 silly get     via: '1.1 varnish',
+120 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:40 GMT',
+120 silly get     'cache-control': 'max-age=60',
+120 silly get     etag: '"E3BGXRK7A24M6882D7TMU00X1"',
+120 silly get     age: '0',
+120 silly get     'x-served-by': 'cache-lax1421-LAX',
+120 silly get     'x-cache': 'HIT',
+120 silly get     'x-cache-hits': '1',
+120 silly get     'x-timer': 'S1428461800.638483,VS0,VE79',
+120 silly get     vary: 'Accept',
+120 silly get     'content-length': '0',
+120 silly get     'keep-alive': 'timeout=10, max=50',
+120 silly get     connection: 'Keep-Alive' } ]
+121 verbose etag https://registry.npmjs.org/grunt-contrib-nodeunit from cache
+122 verbose request uri https://registry.npmjs.org/tiny-lr-fork
+123 verbose request no auth needed
+124 info attempt registry request try #1 at 19:56:42
+125 verbose etag "9ATLEQSLOKA6WCFFKVWB9Y5GI"
+126 http request GET https://registry.npmjs.org/tiny-lr-fork
+127 verbose request uri https://registry.npmjs.org/gaze
+128 verbose request no auth needed
+129 info attempt registry request try #1 at 19:56:42
+130 verbose etag "9DU5ARSDTZLR9EVK2E8J2SQ9T"
+131 http request GET https://registry.npmjs.org/gaze
+132 verbose request uri https://registry.npmjs.org/lodash
+133 verbose request no auth needed
+134 info attempt registry request try #1 at 19:56:42
+135 verbose etag "4631J5WV8FJE4HPD9TAVWOP2U"
+136 http request GET https://registry.npmjs.org/lodash
+137 verbose request uri https://registry.npmjs.org/async
+138 verbose request no auth needed
+139 info attempt registry request try #1 at 19:56:42
+140 verbose etag "ZAWC8IJ3CSTE2ZVK48J01K9F"
+141 http request GET https://registry.npmjs.org/async
+142 silly mapToRegistry name async
+143 silly mapToRegistry using default registry
+144 silly mapToRegistry registry https://registry.npmjs.org/
+145 silly mapToRegistry uri https://registry.npmjs.org/async
+146 silly mapToRegistry name coffee-script
+147 silly mapToRegistry using default registry
+148 silly mapToRegistry registry https://registry.npmjs.org/
+149 silly mapToRegistry uri https://registry.npmjs.org/coffee-script
+150 silly mapToRegistry name colors
+151 silly mapToRegistry using default registry
+152 silly mapToRegistry registry https://registry.npmjs.org/
+153 silly mapToRegistry uri https://registry.npmjs.org/colors
+154 silly mapToRegistry name dateformat
+155 silly mapToRegistry using default registry
+156 silly mapToRegistry registry https://registry.npmjs.org/
+157 silly mapToRegistry uri https://registry.npmjs.org/dateformat
+158 silly mapToRegistry name eventemitter2
+159 silly mapToRegistry using default registry
+160 silly mapToRegistry registry https://registry.npmjs.org/
+161 silly mapToRegistry uri https://registry.npmjs.org/eventemitter2
+162 silly mapToRegistry name findup-sync
+163 silly mapToRegistry using default registry
+164 silly mapToRegistry registry https://registry.npmjs.org/
+165 silly mapToRegistry uri https://registry.npmjs.org/findup-sync
+166 silly mapToRegistry name glob
+167 silly mapToRegistry using default registry
+168 silly mapToRegistry registry https://registry.npmjs.org/
+169 silly mapToRegistry uri https://registry.npmjs.org/glob
+170 silly mapToRegistry name hooker
+171 silly mapToRegistry using default registry
+172 silly mapToRegistry registry https://registry.npmjs.org/
+173 silly mapToRegistry uri https://registry.npmjs.org/hooker
+174 silly mapToRegistry name iconv-lite
+175 silly mapToRegistry using default registry
+176 silly mapToRegistry registry https://registry.npmjs.org/
+177 silly mapToRegistry uri https://registry.npmjs.org/iconv-lite
+178 silly mapToRegistry name minimatch
+179 silly mapToRegistry using default registry
+180 silly mapToRegistry registry https://registry.npmjs.org/
+181 silly mapToRegistry uri https://registry.npmjs.org/minimatch
+182 silly mapToRegistry name nopt
+183 silly mapToRegistry using default registry
+184 silly mapToRegistry registry https://registry.npmjs.org/
+185 silly mapToRegistry uri https://registry.npmjs.org/nopt
+186 silly mapToRegistry name rimraf
+187 silly mapToRegistry using default registry
+188 silly mapToRegistry registry https://registry.npmjs.org/
+189 silly mapToRegistry uri https://registry.npmjs.org/rimraf
+190 silly mapToRegistry name lodash
+191 silly mapToRegistry using default registry
+192 silly mapToRegistry registry https://registry.npmjs.org/
+193 silly mapToRegistry uri https://registry.npmjs.org/lodash
+194 silly mapToRegistry name underscore.string
+195 silly mapToRegistry using default registry
+196 silly mapToRegistry registry https://registry.npmjs.org/
+197 silly mapToRegistry uri https://registry.npmjs.org/underscore.string
+198 silly mapToRegistry name which
+199 silly mapToRegistry using default registry
+200 silly mapToRegistry registry https://registry.npmjs.org/
+201 silly mapToRegistry uri https://registry.npmjs.org/which
+202 silly mapToRegistry name js-yaml
+203 silly mapToRegistry using default registry
+204 silly mapToRegistry registry https://registry.npmjs.org/
+205 silly mapToRegistry uri https://registry.npmjs.org/js-yaml
+206 silly mapToRegistry name exit
+207 silly mapToRegistry using default registry
+208 silly mapToRegistry registry https://registry.npmjs.org/
+209 silly mapToRegistry uri https://registry.npmjs.org/exit
+210 silly mapToRegistry name getobject
+211 silly mapToRegistry using default registry
+212 silly mapToRegistry registry https://registry.npmjs.org/
+213 silly mapToRegistry uri https://registry.npmjs.org/getobject
+214 silly mapToRegistry name grunt-legacy-util
+215 silly mapToRegistry using default registry
+216 silly mapToRegistry registry https://registry.npmjs.org/
+217 silly mapToRegistry uri https://registry.npmjs.org/grunt-legacy-util
+218 silly mapToRegistry name grunt-legacy-log
+219 silly mapToRegistry using default registry
+220 silly mapToRegistry registry https://registry.npmjs.org/
+221 silly mapToRegistry uri https://registry.npmjs.org/grunt-legacy-log
+222 http 200 https://registry.npmjs.org/chalk
+223 silly get cb [ 200,
+223 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+223 silly get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+223 silly get     etag: '"5HRSSUFL6B42EC6J0JBV50A7F"',
+223 silly get     'content-type': 'application/json',
+223 silly get     'cache-control': 'max-age=60',
+223 silly get     'content-length': '19937',
+223 silly get     'accept-ranges': 'bytes',
+223 silly get     via: '1.1 varnish',
+223 silly get     age: '53',
+223 silly get     'x-served-by': 'cache-lax1425-LAX',
+223 silly get     'x-cache': 'HIT',
+223 silly get     'x-cache-hits': '1',
+223 silly get     'x-timer': 'S1428461800.759054,VS0,VE0',
+223 silly get     vary: 'Accept',
+223 silly get     'keep-alive': 'timeout=10, max=50',
+223 silly get     connection: 'Keep-Alive' } ]
+224 verbose request uri https://registry.npmjs.org/async
+225 verbose request no auth needed
+226 info attempt registry request try #1 at 19:56:42
+227 verbose etag "ZAWC8IJ3CSTE2ZVK48J01K9F"
+228 http request GET https://registry.npmjs.org/async
+229 verbose request uri https://registry.npmjs.org/colors
+230 verbose request no auth needed
+231 info attempt registry request try #1 at 19:56:42
+232 verbose etag "5VS3JD0ATHLEJSXDPKZQOVII6"
+233 http request GET https://registry.npmjs.org/colors
+234 verbose request uri https://registry.npmjs.org/dateformat
+235 verbose request no auth needed
+236 info attempt registry request try #1 at 19:56:42
+237 verbose etag "7ZPQSKOVK9FKXBU7ZKIJYNYW1"
+238 http request GET https://registry.npmjs.org/dateformat
+239 verbose request uri https://registry.npmjs.org/eventemitter2
+240 verbose request no auth needed
+241 info attempt registry request try #1 at 19:56:42
+242 verbose etag "54TRNU01D6VYJR0JRWWNQGHHG"
+243 http request GET https://registry.npmjs.org/eventemitter2
+244 verbose request uri https://registry.npmjs.org/findup-sync
+245 verbose request no auth needed
+246 info attempt registry request try #1 at 19:56:42
+247 verbose etag "CT2PJF8E88RPQNWEIB1UFL8EJ"
+248 http request GET https://registry.npmjs.org/findup-sync
+249 verbose request uri https://registry.npmjs.org/hooker
+250 verbose request no auth needed
+251 info attempt registry request try #1 at 19:56:42
+252 verbose etag "4DY34K38FHJYVVASIUV17HYVG"
+253 http request GET https://registry.npmjs.org/hooker
+254 verbose request uri https://registry.npmjs.org/iconv-lite
+255 verbose request no auth needed
+256 info attempt registry request try #1 at 19:56:42
+257 verbose etag "CMJKNLD5T8I6VU26OINX3XDWZ"
+258 http request GET https://registry.npmjs.org/iconv-lite
+259 verbose request uri https://registry.npmjs.org/minimatch
+260 verbose request no auth needed
+261 info attempt registry request try #1 at 19:56:42
+262 verbose etag "4UBG29Z6A42JO59G4MSTT4HR1"
+263 http request GET https://registry.npmjs.org/minimatch
+264 verbose request uri https://registry.npmjs.org/glob
+265 verbose request no auth needed
+266 info attempt registry request try #1 at 19:56:42
+267 verbose etag "ARAFP8VBSZ78NEYFQ3MWCO9TT"
+268 http request GET https://registry.npmjs.org/glob
+269 verbose request uri https://registry.npmjs.org/lodash
+270 verbose request no auth needed
+271 info attempt registry request try #1 at 19:56:42
+272 verbose etag "4631J5WV8FJE4HPD9TAVWOP2U"
+273 http request GET https://registry.npmjs.org/lodash
+274 verbose request uri https://registry.npmjs.org/nopt
+275 verbose request no auth needed
+276 info attempt registry request try #1 at 19:56:42
+277 verbose etag "4C3OKANQKKY6UCSQCU29FEZ6J"
+278 http request GET https://registry.npmjs.org/nopt
+279 verbose request uri https://registry.npmjs.org/rimraf
+280 verbose request no auth needed
+281 info attempt registry request try #1 at 19:56:42
+282 verbose etag "3Q4JZH6I4AM1WBR3WTW98PVYG"
+283 http request GET https://registry.npmjs.org/rimraf
+284 verbose request uri https://registry.npmjs.org/which
+285 verbose request no auth needed
+286 info attempt registry request try #1 at 19:56:42
+287 verbose etag "7AHA3HQ2XLPQ3LYNYGLWHGSOH"
+288 http request GET https://registry.npmjs.org/which
+289 verbose request uri https://registry.npmjs.org/underscore.string
+290 verbose request no auth needed
+291 info attempt registry request try #1 at 19:56:42
+292 verbose etag "3AN9C9CF4HLTWQU8C48ICYTZ2"
+293 http request GET https://registry.npmjs.org/underscore.string
+294 verbose request uri https://registry.npmjs.org/exit
+295 verbose request no auth needed
+296 info attempt registry request try #1 at 19:56:42
+297 verbose etag "A8RSV0CIFC1BGP86QLDRYT1U1"
+298 http request GET https://registry.npmjs.org/exit
+299 verbose request uri https://registry.npmjs.org/getobject
+300 verbose request no auth needed
+301 info attempt registry request try #1 at 19:56:42
+302 verbose etag "6BA71D2RAHO8H4TANYZ04N718"
+303 http request GET https://registry.npmjs.org/getobject
+304 verbose request uri https://registry.npmjs.org/js-yaml
+305 verbose request no auth needed
+306 info attempt registry request try #1 at 19:56:42
+307 verbose etag "B7QYCJB1F2VM5KW1JFAAM0HPZ"
+308 http request GET https://registry.npmjs.org/js-yaml
+309 verbose request uri https://registry.npmjs.org/coffee-script
+310 verbose request no auth needed
+311 info attempt registry request try #1 at 19:56:42
+312 verbose etag "DIOY9SGNCUEXAU3CBIRFF1XF7"
+313 http request GET https://registry.npmjs.org/coffee-script
+314 verbose request uri https://registry.npmjs.org/grunt-legacy-util
+315 verbose request no auth needed
+316 info attempt registry request try #1 at 19:56:42
+317 verbose etag "937M3ZH1Z0OA0IWSDR7Y8V1TP"
+318 http request GET https://registry.npmjs.org/grunt-legacy-util
+319 verbose request uri https://registry.npmjs.org/grunt-legacy-log
+320 verbose request no auth needed
+321 info attempt registry request try #1 at 19:56:42
+322 verbose etag "BU34V1HJNA64DGH9DPYVFSK8T"
+323 http request GET https://registry.npmjs.org/grunt-legacy-log
+324 silly mapToRegistry name hooker
+325 silly mapToRegistry using default registry
+326 silly mapToRegistry registry https://registry.npmjs.org/
+327 silly mapToRegistry uri https://registry.npmjs.org/hooker
+328 silly mapToRegistry name nodeunit
+329 silly mapToRegistry using default registry
+330 silly mapToRegistry registry https://registry.npmjs.org/
+331 silly mapToRegistry uri https://registry.npmjs.org/nodeunit
+332 verbose request uri https://registry.npmjs.org/hooker
+333 verbose request no auth needed
+334 info attempt registry request try #1 at 19:56:42
+335 verbose etag "4DY34K38FHJYVVASIUV17HYVG"
+336 http request GET https://registry.npmjs.org/hooker
+337 verbose request uri https://registry.npmjs.org/nodeunit
+338 verbose request no auth needed
+339 info attempt registry request try #1 at 19:56:42
+340 verbose etag "9QM14H871BBTF6J4AJPCN80S9"
+341 http request GET https://registry.npmjs.org/nodeunit
+342 http 304 https://registry.npmjs.org/gaze
+343 silly get cb [ 304,
+343 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+343 silly get     server: 'Apache',
+343 silly get     via: '1.1 varnish',
+343 silly get     'last-modified': 'Wed, 08 Apr 2015 02:17:26 GMT',
+343 silly get     'cache-control': 'max-age=60',
+343 silly get     etag: '"9DU5ARSDTZLR9EVK2E8J2SQ9T"',
+343 silly get     age: '44',
+343 silly get     'x-served-by': 'cache-lax1425-LAX',
+343 silly get     'x-cache': 'HIT',
+343 silly get     'x-cache-hits': '227',
+343 silly get     'x-timer': 'S1428461800.842534,VS0,VE0',
+343 silly get     vary: 'Accept',
+343 silly get     'content-length': '0',
+343 silly get     'keep-alive': 'timeout=10, max=50',
+343 silly get     connection: 'Keep-Alive' } ]
+344 verbose etag https://registry.npmjs.org/gaze from cache
+345 http 304 https://registry.npmjs.org/tiny-lr-fork
+346 silly get cb [ 304,
+346 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+346 silly get     server: 'Apache',
+346 silly get     via: '1.1 varnish',
+346 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:40 GMT',
+346 silly get     'cache-control': 'max-age=60',
+346 silly get     etag: '"9ATLEQSLOKA6WCFFKVWB9Y5GI"',
+346 silly get     age: '8',
+346 silly get     'x-served-by': 'cache-lax1424-LAX',
+346 silly get     'x-cache': 'HIT',
+346 silly get     'x-cache-hits': '1',
+346 silly get     'x-timer': 'S1428461800.841879,VS0,VE0',
+346 silly get     vary: 'Accept',
+346 silly get     'content-length': '0',
+346 silly get     'keep-alive': 'timeout=10, max=50',
+346 silly get     connection: 'Keep-Alive' } ]
+347 verbose etag https://registry.npmjs.org/tiny-lr-fork from cache
+348 silly mapToRegistry name globule
+349 silly mapToRegistry using default registry
+350 silly mapToRegistry registry https://registry.npmjs.org/
+351 silly mapToRegistry uri https://registry.npmjs.org/globule
+352 silly mapToRegistry name qs
+353 silly mapToRegistry using default registry
+354 silly mapToRegistry registry https://registry.npmjs.org/
+355 silly mapToRegistry uri https://registry.npmjs.org/qs
+356 silly mapToRegistry name faye-websocket
+357 silly mapToRegistry using default registry
+358 silly mapToRegistry registry https://registry.npmjs.org/
+359 silly mapToRegistry uri https://registry.npmjs.org/faye-websocket
+360 silly mapToRegistry name noptify
+361 silly mapToRegistry using default registry
+362 silly mapToRegistry registry https://registry.npmjs.org/
+363 silly mapToRegistry uri https://registry.npmjs.org/noptify
+364 silly mapToRegistry name debug
+365 silly mapToRegistry using default registry
+366 silly mapToRegistry registry https://registry.npmjs.org/
+367 silly mapToRegistry uri https://registry.npmjs.org/debug
+368 verbose request uri https://registry.npmjs.org/globule
+369 verbose request no auth needed
+370 info attempt registry request try #1 at 19:56:42
+371 verbose etag "4MRHUL3PZOWAT3TXB1JGH9YUM"
+372 http request GET https://registry.npmjs.org/globule
+373 verbose request uri https://registry.npmjs.org/qs
+374 verbose request no auth needed
+375 info attempt registry request try #1 at 19:56:42
+376 verbose etag "55L0NJ3W8H57LJL7K8J8XWB1"
+377 http request GET https://registry.npmjs.org/qs
+378 verbose request uri https://registry.npmjs.org/noptify
+379 verbose request no auth needed
+380 info attempt registry request try #1 at 19:56:42
+381 verbose etag "ANUWJTM3QVOXJ6BTVIHVO3XJF"
+382 http request GET https://registry.npmjs.org/noptify
+383 verbose request uri https://registry.npmjs.org/faye-websocket
+384 verbose request no auth needed
+385 info attempt registry request try #1 at 19:56:42
+386 verbose etag "FO4K1W15VDQVT34WDETEROF5"
+387 http request GET https://registry.npmjs.org/faye-websocket
+388 verbose request uri https://registry.npmjs.org/debug
+389 verbose request no auth needed
+390 info attempt registry request try #1 at 19:56:42
+391 verbose etag "EI1810KCJ5I1NL9I2SQBWYMU9"
+392 http request GET https://registry.npmjs.org/debug
+393 http 200 https://registry.npmjs.org/async
+394 silly get cb [ 200,
+394 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+394 silly get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+394 silly get     etag: '"8HIAMS5O33NF2IZG8RTXJQZZU"',
+394 silly get     'content-type': 'application/json',
+394 silly get     'cache-control': 'max-age=60',
+394 silly get     'content-length': '101629',
+394 silly get     'accept-ranges': 'bytes',
+394 silly get     via: '1.1 varnish',
+394 silly get     age: '41',
+394 silly get     'x-served-by': 'cache-lax1425-LAX',
+394 silly get     'x-cache': 'HIT',
+394 silly get     'x-cache-hits': '2',
+394 silly get     'x-timer': 'S1428461800.815741,VS0,VE0',
+394 silly get     vary: 'Accept',
+394 silly get     'keep-alive': 'timeout=10, max=49',
+394 silly get     connection: 'Keep-Alive' } ]
+395 http 200 https://registry.npmjs.org/colors
+396 silly get cb [ 200,
+396 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+396 silly get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+396 silly get     etag: '"2V5AOO4RR39FUL280AEJTV22K"',
+396 silly get     'content-type': 'application/json',
+396 silly get     'cache-control': 'max-age=60',
+396 silly get     'content-length': '15553',
+396 silly get     'accept-ranges': 'bytes',
+396 silly get     via: '1.1 varnish',
+396 silly get     age: '8',
+396 silly get     'x-served-by': 'cache-lax1424-LAX',
+396 silly get     'x-cache': 'HIT',
+396 silly get     'x-cache-hits': '2',
+396 silly get     'x-timer': 'S1428461800.863492,VS0,VE0',
+396 silly get     vary: 'Accept',
+396 silly get     'keep-alive': 'timeout=10, max=49',
+396 silly get     connection: 'Keep-Alive' } ]
+397 http 304 https://registry.npmjs.org/dateformat
+398 silly get cb [ 304,
+398 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+398 silly get     server: 'Apache',
+398 silly get     via: '1.1 varnish',
+398 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:33 GMT',
+398 silly get     'cache-control': 'max-age=60',
+398 silly get     etag: '"7ZPQSKOVK9FKXBU7ZKIJYNYW1"',
+398 silly get     age: '41',
+398 silly get     'x-served-by': 'cache-lax1425-LAX',
+398 silly get     'x-cache': 'HIT',
+398 silly get     'x-cache-hits': '2',
+398 silly get     'x-timer': 'S1428461800.893660,VS0,VE0',
+398 silly get     vary: 'Accept',
+398 silly get     'content-length': '0',
+398 silly get     'keep-alive': 'timeout=10, max=48',
+398 silly get     connection: 'Keep-Alive' } ]
+399 verbose etag https://registry.npmjs.org/dateformat from cache
+400 http 200 https://registry.npmjs.org/lodash
+401 silly get cb [ 200,
+401 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+401 silly get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+401 silly get     etag: '"4C0MK947T2SADIYZ7T21RWWKB"',
+401 silly get     'content-type': 'application/json',
+401 silly get     'cache-control': 'max-age=60',
+401 silly get     'content-length': '90585',
+401 silly get     'accept-ranges': 'bytes',
+401 silly get     via: '1.1 varnish',
+401 silly get     age: '54',
+401 silly get     'x-served-by': 'cache-lax1426-LAX',
+401 silly get     'x-cache': 'HIT',
+401 silly get     'x-cache-hits': '5',
+401 silly get     'x-timer': 'S1428461800.843530,VS0,VE0',
+401 silly get     vary: 'Accept',
+401 silly get     'keep-alive': 'timeout=10, max=50',
+401 silly get     connection: 'Keep-Alive' } ]
+402 http 304 https://registry.npmjs.org/eventemitter2
+403 silly get cb [ 304,
+403 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+403 silly get     server: 'Apache',
+403 silly get     via: '1.1 varnish',
+403 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:40 GMT',
+403 silly get     'cache-control': 'max-age=60',
+403 silly get     etag: '"54TRNU01D6VYJR0JRWWNQGHHG"',
+403 silly get     age: '42',
+403 silly get     'x-served-by': 'cache-lax1424-LAX',
+403 silly get     'x-cache': 'HIT',
+403 silly get     'x-cache-hits': '1',
+403 silly get     'x-timer': 'S1428461800.902899,VS0,VE0',
+403 silly get     vary: 'Accept',
+403 silly get     'content-length': '0',
+403 silly get     'keep-alive': 'timeout=10, max=48',
+403 silly get     connection: 'Keep-Alive' } ]
+404 verbose etag https://registry.npmjs.org/eventemitter2 from cache
+405 http 304 https://registry.npmjs.org/findup-sync
+406 silly get cb [ 304,
+406 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+406 silly get     server: 'Apache',
+406 silly get     via: '1.1 varnish',
+406 silly get     'last-modified': 'Wed, 08 Apr 2015 02:55:51 GMT',
+406 silly get     'cache-control': 'max-age=60',
+406 silly get     etag: '"CT2PJF8E88RPQNWEIB1UFL8EJ"',
+406 silly get     age: '50',
+406 silly get     'x-served-by': 'cache-lax1425-LAX',
+406 silly get     'x-cache': 'HIT',
+406 silly get     'x-cache-hits': '2',
+406 silly get     'x-timer': 'S1428461800.912220,VS0,VE0',
+406 silly get     vary: 'Accept',
+406 silly get     'content-length': '0',
+406 silly get     'keep-alive': 'timeout=10, max=47',
+406 silly get     connection: 'Keep-Alive' } ]
+407 verbose etag https://registry.npmjs.org/findup-sync from cache
+408 http 200 https://registry.npmjs.org/async
+409 silly get cb [ 200,
+409 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+409 silly get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+409 silly get     etag: '"8HIAMS5O33NF2IZG8RTXJQZZU"',
+409 silly get     'content-type': 'application/json',
+409 silly get     'cache-control': 'max-age=60',
+409 silly get     'content-length': '101629',
+409 silly get     'accept-ranges': 'bytes',
+409 silly get     via: '1.1 varnish',
+409 silly get     age: '42',
+409 silly get     'x-served-by': 'cache-lax1425-LAX',
+409 silly get     'x-cache': 'HIT',
+409 silly get     'x-cache-hits': '3',
+409 silly get     'x-timer': 'S1428461800.861006,VS0,VE0',
+409 silly get     vary: 'Accept',
+409 silly get     'keep-alive': 'timeout=10, max=49',
+409 silly get     connection: 'Keep-Alive' } ]
+410 http 304 https://registry.npmjs.org/hooker
+411 silly get cb [ 304,
+411 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+411 silly get     server: 'Apache',
+411 silly get     via: '1.1 varnish',
+411 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:40 GMT',
+411 silly get     'cache-control': 'max-age=60',
+411 silly get     etag: '"4DY34K38FHJYVVASIUV17HYVG"',
+411 silly get     age: '44',
+411 silly get     'x-served-by': 'cache-lax1426-LAX',
+411 silly get     'x-cache': 'HIT',
+411 silly get     'x-cache-hits': '1',
+411 silly get     'x-timer': 'S1428461800.925249,VS0,VE0',
+411 silly get     vary: 'Accept',
+411 silly get     'content-length': '0',
+411 silly get     'keep-alive': 'timeout=10, max=49',
+411 silly get     connection: 'Keep-Alive' } ]
+412 verbose etag https://registry.npmjs.org/hooker from cache
+413 http 304 https://registry.npmjs.org/minimatch
+414 silly get cb [ 304,
+414 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+414 silly get     server: 'Apache',
+414 silly get     via: '1.1 varnish',
+414 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:40 GMT',
+414 silly get     'cache-control': 'max-age=60',
+414 silly get     etag: '"4UBG29Z6A42JO59G4MSTT4HR1"',
+414 silly get     age: '8',
+414 silly get     'x-served-by': 'cache-lax1425-LAX',
+414 silly get     'x-cache': 'HIT',
+414 silly get     'x-cache-hits': '1',
+414 silly get     'x-timer': 'S1428461800.935140,VS0,VE0',
+414 silly get     vary: 'Accept',
+414 silly get     'content-length': '0',
+414 silly get     'keep-alive': 'timeout=10, max=46',
+414 silly get     connection: 'Keep-Alive' } ]
+415 verbose etag https://registry.npmjs.org/minimatch from cache
+416 http 304 https://registry.npmjs.org/nopt
+417 silly get cb [ 304,
+417 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+417 silly get     server: 'Apache',
+417 silly get     via: '1.1 varnish',
+417 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:40 GMT',
+417 silly get     'cache-control': 'max-age=60',
+417 silly get     etag: '"4C3OKANQKKY6UCSQCU29FEZ6J"',
+417 silly get     age: '49',
+417 silly get     'x-served-by': 'cache-lax1425-LAX',
+417 silly get     'x-cache': 'HIT',
+417 silly get     'x-cache-hits': '1',
+417 silly get     'x-timer': 'S1428461800.954334,VS0,VE0',
+417 silly get     vary: 'Accept',
+417 silly get     'content-length': '0',
+417 silly get     'keep-alive': 'timeout=10, max=45',
+417 silly get     connection: 'Keep-Alive' } ]
+418 verbose etag https://registry.npmjs.org/nopt from cache
+419 http 200 https://registry.npmjs.org/glob
+420 silly get cb [ 200,
+420 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+420 silly get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+420 silly get     etag: '"495O4R31MC5791GB4ALWLDUKP"',
+420 silly get     'content-type': 'application/json',
+420 silly get     'cache-control': 'max-age=60',
+420 silly get     'content-length': '93050',
+420 silly get     'accept-ranges': 'bytes',
+420 silly get     via: '1.1 varnish',
+420 silly get     age: '48',
+420 silly get     'x-served-by': 'cache-lax1425-LAX',
+420 silly get     'x-cache': 'HIT',
+420 silly get     'x-cache-hits': '4',
+420 silly get     'x-timer': 'S1428461800.941264,VS0,VE0',
+420 silly get     vary: 'Accept',
+420 silly get     'keep-alive': 'timeout=10, max=48',
+420 silly get     connection: 'Keep-Alive' } ]
+421 http 200 https://registry.npmjs.org/lodash
+422 silly get cb [ 200,
+422 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+422 silly get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+422 silly get     etag: '"4C0MK947T2SADIYZ7T21RWWKB"',
+422 silly get     'content-type': 'application/json',
+422 silly get     'cache-control': 'max-age=60',
+422 silly get     'content-length': '90585',
+422 silly get     'accept-ranges': 'bytes',
+422 silly get     via: '1.1 varnish',
+422 silly get     age: '54',
+422 silly get     'x-served-by': 'cache-lax1426-LAX',
+422 silly get     'x-cache': 'HIT',
+422 silly get     'x-cache-hits': '6',
+422 silly get     'x-timer': 'S1428461800.944471,VS0,VE0',
+422 silly get     vary: 'Accept',
+422 silly get     'keep-alive': 'timeout=10, max=48',
+422 silly get     connection: 'Keep-Alive' } ]
+423 http 200 https://registry.npmjs.org/iconv-lite
+424 silly get cb [ 200,
+424 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+424 silly get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+424 silly get     etag: '"57SD9F5AHGAA8PYIVBDLGPPK4"',
+424 silly get     'content-type': 'application/json',
+424 silly get     'cache-control': 'max-age=60',
+424 silly get     'content-length': '46126',
+424 silly get     'accept-ranges': 'bytes',
+424 silly get     via: '1.1 varnish',
+424 silly get     age: '34',
+424 silly get     'x-served-by': 'cache-lax1424-LAX',
+424 silly get     'x-cache': 'HIT',
+424 silly get     'x-cache-hits': '2',
+424 silly get     'x-timer': 'S1428461800.932336,VS0,VE0',
+424 silly get     vary: 'Accept',
+424 silly get     'keep-alive': 'timeout=10, max=47',
+424 silly get     connection: 'Keep-Alive' } ]
+425 http 200 https://registry.npmjs.org/rimraf
+426 silly get cb [ 200,
+426 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+426 silly get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+426 silly get     etag: '"1B2TLB2S8DJBC26YHICNV5N6W"',
+426 silly get     'content-type': 'application/json',
+426 silly get     'cache-control': 'max-age=60',
+426 silly get     'content-length': '36176',
+426 silly get     'accept-ranges': 'bytes',
+426 silly get     via: '1.1 varnish',
+426 silly get     age: '30',
+426 silly get     'x-served-by': 'cache-lax1425-LAX',
+426 silly get     'x-cache': 'HIT',
+426 silly get     'x-cache-hits': '1',
+426 silly get     'x-timer': 'S1428461800.973630,VS0,VE0',
+426 silly get     vary: 'Accept',
+426 silly get     'keep-alive': 'timeout=10, max=44',
+426 silly get     connection: 'Keep-Alive' } ]
+427 http 304 https://registry.npmjs.org/which
+428 silly get cb [ 304,
+428 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+428 silly get     server: 'Apache',
+428 silly get     via: '1.1 varnish',
+428 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:26 GMT',
+428 silly get     'cache-control': 'max-age=60',
+428 silly get     etag: '"7AHA3HQ2XLPQ3LYNYGLWHGSOH"',
+428 silly get     age: '28',
+428 silly get     'x-served-by': 'cache-lax1425-LAX',
+428 silly get     'x-cache': 'HIT',
+428 silly get     'x-cache-hits': '2',
+428 silly get     'x-timer': 'S1428461800.989184,VS0,VE0',
+428 silly get     vary: 'Accept',
+428 silly get     'content-length': '0',
+428 silly get     'keep-alive': 'timeout=10, max=47',
+428 silly get     connection: 'Keep-Alive' } ]
+429 verbose etag https://registry.npmjs.org/which from cache
+430 http 304 https://registry.npmjs.org/underscore.string
+431 silly get cb [ 304,
+431 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+431 silly get     server: 'Apache',
+431 silly get     via: '1.1 varnish',
+431 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:40 GMT',
+431 silly get     'cache-control': 'max-age=60',
+431 silly get     etag: '"3AN9C9CF4HLTWQU8C48ICYTZ2"',
+431 silly get     age: '1',
+431 silly get     'x-served-by': 'cache-lax1426-LAX',
+431 silly get     'x-cache': 'HIT',
+431 silly get     'x-cache-hits': '1',
+431 silly get     'x-timer': 'S1428461800.991801,VS0,VE0',
+431 silly get     vary: 'Accept',
+431 silly get     'content-length': '0',
+431 silly get     'keep-alive': 'timeout=10, max=47',
+431 silly get     connection: 'Keep-Alive' } ]
+432 verbose etag https://registry.npmjs.org/underscore.string from cache
+433 http 304 https://registry.npmjs.org/exit
+434 silly get cb [ 304,
+434 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+434 silly get     server: 'Apache',
+434 silly get     via: '1.1 varnish',
+434 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:40 GMT',
+434 silly get     'cache-control': 'max-age=60',
+434 silly get     etag: '"A8RSV0CIFC1BGP86QLDRYT1U1"',
+434 silly get     age: '2',
+434 silly get     'x-served-by': 'cache-lax1424-LAX',
+434 silly get     'x-cache': 'HIT',
+434 silly get     'x-cache-hits': '1',
+434 silly get     'x-timer': 'S1428461800.994334,VS0,VE0',
+434 silly get     vary: 'Accept',
+434 silly get     'content-length': '0',
+434 silly get     'keep-alive': 'timeout=10, max=46',
+434 silly get     connection: 'Keep-Alive' } ]
+435 verbose etag https://registry.npmjs.org/exit from cache
+436 http 304 https://registry.npmjs.org/getobject
+437 silly get cb [ 304,
+437 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+437 silly get     server: 'Apache',
+437 silly get     via: '1.1 varnish',
+437 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:40 GMT',
+437 silly get     'cache-control': 'max-age=60',
+437 silly get     etag: '"6BA71D2RAHO8H4TANYZ04N718"',
+437 silly get     age: '41',
+437 silly get     'x-served-by': 'cache-lax1425-LAX',
+437 silly get     'x-cache': 'HIT',
+437 silly get     'x-cache-hits': '1',
+437 silly get     'x-timer': 'S1428461800.999206,VS0,VE0',
+437 silly get     vary: 'Accept',
+437 silly get     'content-length': '0',
+437 silly get     'keep-alive': 'timeout=10, max=43',
+437 silly get     connection: 'Keep-Alive' } ]
+438 verbose etag https://registry.npmjs.org/getobject from cache
+439 http 304 https://registry.npmjs.org/js-yaml
+440 silly get cb [ 304,
+440 silly get   { date: 'Wed, 08 Apr 2015 02:56:41 GMT',
+440 silly get     server: 'Apache',
+440 silly get     via: '1.1 varnish',
+440 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:33 GMT',
+440 silly get     'cache-control': 'max-age=60',
+440 silly get     etag: '"B7QYCJB1F2VM5KW1JFAAM0HPZ"',
+440 silly get     age: '26',
+440 silly get     'x-served-by': 'cache-lax1425-LAX',
+440 silly get     'x-cache': 'HIT',
+440 silly get     'x-cache-hits': '2',
+440 silly get     'x-timer': 'S1428461801.010613,VS0,VE0',
+440 silly get     vary: 'Accept',
+440 silly get     'content-length': '0',
+440 silly get     'keep-alive': 'timeout=10, max=46',
+440 silly get     connection: 'Keep-Alive' } ]
+441 verbose etag https://registry.npmjs.org/js-yaml from cache
+442 http 200 https://registry.npmjs.org/coffee-script
+443 silly get cb [ 200,
+443 silly get   { date: 'Wed, 08 Apr 2015 02:56:41 GMT',
+443 silly get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+443 silly get     etag: '"6E6PIDH63RYUMPI7HQNZFPOQB"',
+443 silly get     'content-type': 'application/json',
+443 silly get     'cache-control': 'max-age=60',
+443 silly get     'content-length': '35799',
+443 silly get     'accept-ranges': 'bytes',
+443 silly get     via: '1.1 varnish',
+443 silly get     age: '8',
+443 silly get     'x-served-by': 'cache-lax1426-LAX',
+443 silly get     'x-cache': 'HIT',
+443 silly get     'x-cache-hits': '1',
+443 silly get     'x-timer': 'S1428461801.012006,VS0,VE0',
+443 silly get     vary: 'Accept',
+443 silly get     'keep-alive': 'timeout=10, max=46',
+443 silly get     connection: 'Keep-Alive' } ]
+444 http 304 https://registry.npmjs.org/grunt-legacy-util
+445 silly get cb [ 304,
+445 silly get   { date: 'Wed, 08 Apr 2015 02:56:41 GMT',
+445 silly get     server: 'Apache',
+445 silly get     via: '1.1 varnish',
+445 silly get     'last-modified': 'Wed, 08 Apr 2015 02:55:59 GMT',
+445 silly get     'cache-control': 'max-age=60',
+445 silly get     etag: '"937M3ZH1Z0OA0IWSDR7Y8V1TP"',
+445 silly get     age: '41',
+445 silly get     'x-served-by': 'cache-lax1424-LAX',
+445 silly get     'x-cache': 'HIT',
+445 silly get     'x-cache-hits': '2',
+445 silly get     'x-timer': 'S1428461801.020498,VS0,VE0',
+445 silly get     vary: 'Accept',
+445 silly get     'content-length': '0',
+445 silly get     'keep-alive': 'timeout=10, max=45',
+445 silly get     connection: 'Keep-Alive' } ]
+446 verbose etag https://registry.npmjs.org/grunt-legacy-util from cache
+447 http 304 https://registry.npmjs.org/grunt-legacy-log
+448 silly get cb [ 304,
+448 silly get   { date: 'Wed, 08 Apr 2015 02:56:41 GMT',
+448 silly get     server: 'Apache',
+448 silly get     via: '1.1 varnish',
+448 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:41 GMT',
+448 silly get     'cache-control': 'max-age=60',
+448 silly get     etag: '"BU34V1HJNA64DGH9DPYVFSK8T"',
+448 silly get     age: '41',
+448 silly get     'x-served-by': 'cache-lax1425-LAX',
+448 silly get     'x-cache': 'HIT',
+448 silly get     'x-cache-hits': '1',
+448 silly get     'x-timer': 'S1428461801.021789,VS0,VE0',
+448 silly get     vary: 'Accept',
+448 silly get     'content-length': '0',
+448 silly get     'keep-alive': 'timeout=10, max=42',
+448 silly get     connection: 'Keep-Alive' } ]
+449 verbose etag https://registry.npmjs.org/grunt-legacy-log from cache
+450 http 200 https://registry.npmjs.org/grunt-contrib-less
+451 silly get cb [ 200,
+451 silly get   { date: 'Wed, 08 Apr 2015 02:56:40 GMT',
+451 silly get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+451 silly get     etag: '"1CX0JB6CC4XQ8EP4UN1OO0MCS"',
+451 silly get     'content-type': 'application/json',
+451 silly get     'cache-control': 'max-age=60',
+451 silly get     'content-length': '65790',
+451 silly get     'accept-ranges': 'bytes',
+451 silly get     via: '1.1 varnish',
+451 silly get     age: '0',
+451 silly get     'x-served-by': 'cache-lax1420-LAX',
+451 silly get     'x-cache': 'HIT',
+451 silly get     'x-cache-hits': '1',
+451 silly get     'x-timer': 'S1428461800.656170,VS0,VE312',
+451 silly get     vary: 'Accept',
+451 silly get     'keep-alive': 'timeout=10, max=49',
+451 silly get     connection: 'Keep-Alive' } ]
+452 http 304 https://registry.npmjs.org/hooker
+453 silly get cb [ 304,
+453 silly get   { date: 'Wed, 08 Apr 2015 02:56:41 GMT',
+453 silly get     server: 'Apache',
+453 silly get     via: '1.1 varnish',
+453 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:41 GMT',
+453 silly get     'cache-control': 'max-age=60',
+453 silly get     etag: '"4DY34K38FHJYVVASIUV17HYVG"',
+453 silly get     age: '44',
+453 silly get     'x-served-by': 'cache-lax1425-LAX',
+453 silly get     'x-cache': 'HIT',
+453 silly get     'x-cache-hits': '1',
+453 silly get     'x-timer': 'S1428461801.029875,VS0,VE0',
+453 silly get     vary: 'Accept',
+453 silly get     'content-length': '0',
+453 silly get     'keep-alive': 'timeout=10, max=45',
+453 silly get     connection: 'Keep-Alive' } ]
+454 verbose etag https://registry.npmjs.org/hooker from cache
+455 silly mapToRegistry name hooker
+456 silly mapToRegistry using default registry
+457 silly mapToRegistry registry https://registry.npmjs.org/
+458 silly mapToRegistry uri https://registry.npmjs.org/hooker
+459 silly mapToRegistry name async
+460 silly mapToRegistry using default registry
+461 silly mapToRegistry registry https://registry.npmjs.org/
+462 silly mapToRegistry uri https://registry.npmjs.org/async
+463 silly mapToRegistry name lodash
+464 silly mapToRegistry using default registry
+465 silly mapToRegistry registry https://registry.npmjs.org/
+466 silly mapToRegistry uri https://registry.npmjs.org/lodash
+467 silly mapToRegistry name exit
+468 silly mapToRegistry using default registry
+469 silly mapToRegistry registry https://registry.npmjs.org/
+470 silly mapToRegistry uri https://registry.npmjs.org/exit
+471 silly mapToRegistry name underscore.string
+472 silly mapToRegistry using default registry
+473 silly mapToRegistry registry https://registry.npmjs.org/
+474 silly mapToRegistry uri https://registry.npmjs.org/underscore.string
+475 silly mapToRegistry name getobject
+476 silly mapToRegistry using default registry
+477 silly mapToRegistry registry https://registry.npmjs.org/
+478 silly mapToRegistry uri https://registry.npmjs.org/getobject
+479 silly mapToRegistry name which
+480 silly mapToRegistry using default registry
+481 silly mapToRegistry registry https://registry.npmjs.org/
+482 silly mapToRegistry uri https://registry.npmjs.org/which
+483 http 304 https://registry.npmjs.org/globule
+484 silly get cb [ 304,
+484 silly get   { date: 'Wed, 08 Apr 2015 02:56:41 GMT',
+484 silly get     server: 'Apache',
+484 silly get     via: '1.1 varnish',
+484 silly get     'last-modified': 'Wed, 08 Apr 2015 02:56:41 GMT',
+484 silly get     'cache-control': 'max-age=60',
+484 silly get     etag: '"4MRHUL3PZOWAT3TXB1JGH9YUM"',
+484 silly get     age: '41',
+484 silly get     'x-served-by': 'cache-lax1424-LAX',
+484 silly get     'x-cache': 'HIT',
+484 silly get     'x-cache-hits': '1',
+484 silly get     'x-timer': 'S1428461801.038549,VS0,VE0',
+484 silly get     vary: 'Accept',
+484 silly get     'content-length': '0',
+484 silly get     'keep-alive': 'timeout=10, max=44',
+484 silly get     connection: 'Keep-Alive' } ]
+485 verbose etag https://registry.npmjs.org/globule from cache
+486 verbose get https://registry.npmjs.org/hooker not expired, no request
+487 verbose get https://registry.npmjs.org/async not expired, no request
+488 verbose get https://registry.npmjs.org/lodash not expired, no request
+489 verbose get https://registry.npmjs.org/underscore.string not expired, no request
+490 verbose get https://registry.npmjs.org/exit not expired, no request
+491 verbose get https://registry.npmjs.org/which not expired, no request
+492 verbose get https://registry.npmjs.org/getobject not expired, no request
+493 verbose type called_on_non_object
+494 verbose stack TypeError: Object.keys called on non-object
+494 verbose stack     at Function.keys (native)
+494 verbose stack     at unmarkExtraneous (/usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:362:10)
+494 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:137:5
+494 verbose stack     at next (/usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:185:14)
+494 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:169:14
+494 verbose stack     at Object.oncomplete (evalmachine.<anonymous>:108:15)
+495 verbose cwd /Users/david/Code/darg/resources
+496 error Darwin 14.1.0
+497 error argv "node" "/usr/local/bin/npm" "update"
+498 error node v0.10.35
+499 error npm  v2.1.14
+500 error Object.keys called on non-object
+501 error If you need help, you may report this error at:
+501 error     <http://github.com/npm/npm/issues>
+502 verbose exit [ 1, true ]

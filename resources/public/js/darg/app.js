@@ -1,7 +1,8 @@
 var darg = angular.module('darg', 
                           ['ngCookies', 
                            'ngRoute', 
-                           'ngLoadScript']);
+                           'ngLoadScript',
+                           'ui.date']);
 
 darg.config(['$routeProvider', '$locationProvider', 
            function AppConfig($routeProvider, $locationProvider) {
