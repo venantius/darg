@@ -25,6 +25,6 @@
   "Run the Darg.io web server process."
   [& args]
   (init/configure)
-  (let [port (Integer. (env/env :port))]
+  (let [port (Integer. (or (env/env :port) "8080"))]
     (logging/info "Starting Darg server on port" port)
     (server/run-server app {:port port :join? false})))

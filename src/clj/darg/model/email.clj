@@ -4,6 +4,7 @@
             [clojure.string :as str]
             [clojure.tools.logging :as log]
             [darg.db-util :as dbutil]
+            [darg.model.email.template :as template]
             [darg.model.task :as task]
             [darg.model.team :as team]
             [darg.model.user :as user]
@@ -40,19 +41,23 @@
 (defn todays-subject-line
   [{:keys [timezone] :as user}]
   (let [today (dt/local-time (t/now) timezone)]
-    (str "What did you do today: " (f/unparse (f/formatter "MMMM dd YYYY") today) "?")))
+    (str "Darg.io: What did you do today? [" (f/unparse (f/formatter "MMMM dd YYYY") today) "]")))
+
+(defn from
+  [{:keys [email name] :as team}]
+  (str name " (Darg.io) <" email ">"))
 
 (defn send-one-personal-email
   "Send an e-mail for each team this user is on asking what they did today."
   [user team]
-  (let [from (:email team)
+  (let [from (from team)
         to (:email user)
         subject (todays-subject-line user)]
     (log/info "Emailing" to "from" from)
     (mailgun/send-message {:from from
                            :to to
                            :subject subject
-                           :text "What did you do today?"})))
+                           :html template/daily-email})))
 
 (defn send-personal-emails
   "Look at what teams a user is part of, and send them the daily personal
