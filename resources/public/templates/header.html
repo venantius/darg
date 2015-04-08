@@ -1,5 +1,3 @@
-<script src="../js/flatui/flat-ui.min.js" type="text/javascript-lazy"></script>
-
 <nav class="navbar-sm navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="collapse navbar-collapse" id="navbar-collapse-01"> 
@@ -50,7 +48,7 @@
           <ul class="nav navbar-nav navbar-right">
             <ul class="nav navbar-nav">
               <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <span>menu &nbsp &nbsp</span>
                   <i class="fa fa-bars navbar-icons"></i>
                 </a>
@@ -67,10 +65,3 @@
     </div>
   </div>
 </nav>
-
-<!-- This has to get re-loaded because of Angular's way of handling scripts inside templates -->
-<script type="text/javascript-lazy">
-  $(function () {
-    $('[data-toggle=tooltip]').tooltip();
-  });
-</script>
