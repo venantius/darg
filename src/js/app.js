@@ -35,11 +35,10 @@ darg.config(['$routeProvider', '$locationProvider',
             controller: 'DargTimelineCtrl',
             controllerAs: 'Timeline'
         })
-        .when('/settings', {
-            templateUrl: '/templates/settings.html'
-        })
-        .when('/settings/:settingPage', {
-            templateUrl: '/templates/settings.html'
+        .when('/settings/profile', {
+            templateUrl: '/templates/settings/profile.html',
+            controller: 'DargSettingsCtrl',
+            controllerAs: 'Settings'
         })
         .when('/team', {
             templateUrl: '/templates/team.html',
