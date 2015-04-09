@@ -19521,6 +19521,9 @@ p.answer {
 .navbar-icons {
   font-size: 16px;
 }
+.img-portrait {
+  border-radius: 50%;
+}
 /*
 
 The Timeline is divided into the following hierarchy:
@@ -19533,22 +19536,38 @@ The Timeline is divided into the following hierarchy:
 */
 /* Profile image at the top */
 img.timeline-profile {
-  border: 2px solid #34495E;
+  border: 1px solid #34495e;
   display: block;
-  margin-bottom: 25px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 10px;
 }
 div.timeline-profile-text {
+  font-weight: 500;
   display: block;
   text-align: center;
 }
-/* Darg */
+/* Timeline menu */
+a.team-timeline-link {
+  width: 94%;
+}
+a.team-settings-link {
+  display: inline-block;
+  float: right;
+  width: 15%;
+}
+.nav-list > li > a {
+  display: inline-block;
+}
+/* Timline */
 div.timeline-darg {
   padding-bottom: 30px;
 }
-.timeline-day {
+div.timeline-user {
   padding-bottom: 50px;
+}
+div.timeline-user-events {
+  padding-top: 16px;
 }
 /* timeline-section */
 li.timeline-section {
@@ -19564,27 +19583,6 @@ span.timeline-section-date {
   font-size: 19px;
   font-weight: 700;
   padding-left: 13px;
-}
-/* timeline-type-header */
-li.timeline-type-header {
-  margin-left: 50px;
-  background-color: #ecf0f1;
-  font-size: 16px;
-}
-span.timeline-type {
-  margin-left: 12px;
-}
-span.timeline-type-icon {
-  font-size: 14px;
-}
-/* timeline-item */
-li.timeline-item {
-  margin-left: 50px;
-  font-size: 16px;
-}
-span.timeline-item {
-  display: inline-block;
-  padding-right: 10px;
 }
 span.timeline-item-edit-icon {
   right: 15px;

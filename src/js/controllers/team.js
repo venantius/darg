@@ -4,19 +4,24 @@ darg.controller('DargTeamCtrl',
     '$cookieStore',
     '$http',
     '$location',
+    '$routeParams',
     '$scope',
+    'team',
     'user',
     function(
         $cookies,
         $cookieStore,
         $http,
         $location,
+        $routeParams,
         $scope,
+        team,
         user) {
 
     this.creationForm = {
         name: "",
     };
+    this.team = {}
 
     this.createTeam = function() {
         $http({
@@ -31,6 +36,20 @@ darg.controller('DargTeamCtrl',
         })
     };
 
+    /* $watch section*/
+    var self = this;
+
+    /* Watch what team we should be looking at */
+    $scope.$watch(function() {
+        return $routeParams.teamId
+    }, function(oldValue, newValue) {
+        if (newValue != null) {
+            team.getTeam(newValue)
+            .then(function(data) {
+                self.team = data
+            }, function(data) {
+                console.log("Failed to update team.");
+            });
+        }
+    });
 }]);
-
-

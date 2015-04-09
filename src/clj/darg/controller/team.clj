@@ -3,6 +3,7 @@
             [darg.api.responses :refer [conflict ok unauthorized]]
             [darg.model.role :as role]
             [darg.model.team :as team]
+            [darg.model.user :as user]
             [korma.sql.fns :refer [pred-not=]]))
 
 (defn create!
@@ -22,6 +23,22 @@
                           :user_id (:id user)
                           :team_id (:id team)})
       (ok team))))
+
+(defn fetch
+  "/api/v1/team/:id
+  
+  Method: GET
+   
+  Fetch a team."
+  [{:keys [params user]}]
+  (log/info "Fetching team:" params)
+  (let [user-id (:id user)
+        team-id (-> params :id read-string)]
+    (cond
+      (not (user/user-in-team? user-id team-id))
+      (unauthorized "You are not a member of this team.")
+      :else
+      (ok (team/fetch-one-team {:id team-id})))))
 
 (defn update!
   "/api/v1/team/:id

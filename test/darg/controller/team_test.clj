@@ -20,6 +20,18 @@
     (is (true? (:admin created-role)))
     (is (some? (team/fetch-one-team {:id (:id body)})))))
 
+(deftest we-can-fetch-a-team
+  (let [request {:request-method :get
+                 :params {:id "1"}
+                 :user {:id 4 :email "test-user2@darg.io"}}
+        {:keys [body status]} (api/fetch request)
+        team-id (:id body)]
+    (is (= status 200))
+    (is (= body
+           {:email "darg@mail.darg.io"
+            :name "Darg"
+            :id 1}))))
+
 (deftest we-can-update-a-team
   (let [request {:request-method :post 
                  :params {:name "Darg sucks as a name"

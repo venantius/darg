@@ -26,25 +26,31 @@ darg.config(['$routeProvider', '$locationProvider',
             templateUrl: '/templates/integrations.html'
         })
         .when('/password_reset', {
-            templateUrl: '/templates/password_reset.html'
+            templateUrl: '/templates/password_reset.html',
+            controller: 'DargPasswordResetCtrl',
+            controllerAs: 'PasswordReset'
         })
 
         // inner
-        .when('/timeline/:teamId', {
-            templateUrl: '/templates/home.html',
-            controller: 'DargTimelineCtrl',
-            controllerAs: 'Timeline'
-        })
-        .when('/settings', {
-            templateUrl: '/templates/settings.html'
-        })
-        .when('/settings/:settingPage', {
-            templateUrl: '/templates/settings.html'
-        })
         .when('/team', {
             templateUrl: '/templates/team.html',
             controller: 'DargTeamCtrl',
             controllerAs: 'Team'
+        })
+        .when('/team/:teamId', {
+            templateUrl: '/templates/team/settings.html',
+            controller: 'DargTeamCtrl',
+            controllerAs: 'Team'
+        })
+        .when('/team/:teamId/timeline', {
+            templateUrl: '/templates/team/timeline.html',
+            controller: 'DargTimelineCtrl',
+            controllerAs: 'Timeline'
+        })
+        .when('/settings/profile', {
+            templateUrl: '/templates/settings/profile.html',
+            controller: 'DargSettingsCtrl',
+            controllerAs: 'Settings'
         })
 
         .otherwise({

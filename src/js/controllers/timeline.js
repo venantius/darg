@@ -50,7 +50,7 @@ darg.controller('DargTimelineCtrl',
                 url: url
             })
             .success(function(data) {
-                url = "/timeline/" + id;
+                url = "/team/" + id + "/timeline";
                 $location.path(url);
                 $scope.Timeline = data;
             })
@@ -65,7 +65,7 @@ darg.controller('DargTimelineCtrl',
     $scope.$watch(function() {
         return user.current_team
     }, function(oldValue, newValue) {
-        if (user.loggedIn() == true && user.current_team != null) {
+        if (user.current_team != null) {
             $scope.GetTimeline(user.current_team);
         }
     });

@@ -8,17 +8,17 @@
       <ul class="nav nav-list">
         <li class="nav-header">Teams</li>
         <li ng-repeat="team in currentUser.team">
-          <a ng-href="/timeline/{{team.id}}">
+          <a class="team-timeline-link" ng-href="/team/{{team.id}}/timeline">
             {{team.name}}
-            <span class="pull-right">
-              <i class="fa fa-cog"></i>
-            </span>
+          </a>
+          <a class="team-settings-link" ng-href="/team/{{team.id}}">
+            <i class="fa fa-cog"></i>
           </a>
         </li>
         <li class="divider"></li>
         <li>
           <a href="/team">
-            Create new team
+            Create a new team
           </a>
         </li>
       </ul>
@@ -52,18 +52,19 @@
           </ul>
         </nav>
 
-        <div class="row timeline-day" ng-repeat="user in darg.user" ng-show="showUser(user)">
+        <!-- begin user section -->
+        <div class="row timeline-user" ng-repeat="user in darg.user" ng-show="showUser(user)">
   
-          <!-- user profile -->
-          <div class="col-xs-3">
-            <img class="img-circle timeline-profile" gravatar-src="user.email" gravatar-size="64">
+          <!-- mini-profile on the left -->
+          <div class="col-xs-4">
+            <img class="img-portrait timeline-profile" gravatar-src="user.email" gravatar-size="64">
             <div class="timeline-profile-text">
               {{user.name}}
             </div>
           </div>
 
-          <!-- user timeline -->
-          <div class="col-xs-9">
+          <!-- user's timeline on the right -->
+          <div class="col-xs-8 timeline-user-events">
             <ul class="timeline timeline-icons timeline-sm" ng-show="userHasTasks(user)">
               <li ng-repeat="task in user.task">
                 <p>
@@ -75,7 +76,7 @@
             </ul>
 
             <!-- Enter new tasks -->
-            <div class="ptl mtl" ng-controller="DargTaskCreationCtrl" ng-show="isCurrentUser(user.id)">
+            <div ng-controller="DargTaskCreationCtrl" ng-show="isCurrentUser(user.id)">
               <form class="task-form" ng-submit="PostTask(darg)">
                 <input type="text" placeholder="Left something out? Enter it here!" class="form-control" ng-model="TaskForm.task"/>
               </form>
