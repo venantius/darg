@@ -24,7 +24,8 @@
 (defroutes routes
   ;; site
   (GET    "/"                         [] darg-spa)
-  (GET    "/timeline/:team_id"        [] darg-spa)
+  (GET    "/team/:team_id"            [] darg-spa)
+  (GET    "/team/:team_id/timeline"   [] darg-spa)
   (GET    "/about"                    [] darg-spa)
   (GET    "/api"                      [] darg-spa)
   (GET    "/faq"                      [] darg-spa)
@@ -51,6 +52,7 @@
   (POST   "/api/v1/task"                request (task/create! request))
 
   (POST   "/api/v1/team"                request (team/create! request))
+  (GET    "/api/v1/team/:id"            request (team/fetch request))
 
   (POST   "/api/v1/user"                request (user/create! request))
   (GET    "/api/v1/user/:id"            request (user/get request))

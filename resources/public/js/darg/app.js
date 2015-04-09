@@ -30,8 +30,18 @@ darg.config(['$routeProvider', '$locationProvider',
         })
 
         // inner
-        .when('/timeline/:teamId', {
-            templateUrl: '/templates/home.html',
+        .when('/team', {
+            templateUrl: '/templates/team.html',
+            controller: 'DargTeamCtrl',
+            controllerAs: 'Team'
+        })
+        .when('/team/:teamId', {
+            templateUrl: '/templates/team/settings.html',
+            controller: 'DargTeamCtrl',
+            controllerAs: 'Team'
+        })
+        .when('/team/:teamId/timeline', {
+            templateUrl: '/templates/team/timeline.html',
             controller: 'DargTimelineCtrl',
             controllerAs: 'Timeline'
         })
@@ -39,11 +49,6 @@ darg.config(['$routeProvider', '$locationProvider',
             templateUrl: '/templates/settings/profile.html',
             controller: 'DargSettingsCtrl',
             controllerAs: 'Settings'
-        })
-        .when('/team', {
-            templateUrl: '/templates/team.html',
-            controller: 'DargTeamCtrl',
-            controllerAs: 'Team'
         })
 
         .otherwise({
@@ -172,19 +177,24 @@ darg.controller('DargTeamCtrl',
     '$cookieStore',
     '$http',
     '$location',
+    '$routeParams',
     '$scope',
+    'team',
     'user',
     function(
         $cookies,
         $cookieStore,
         $http,
         $location,
+        $routeParams,
         $scope,
+        team,
         user) {
 
     this.creationForm = {
         name: "",
     };
+    this.team = {}
 
     this.createTeam = function() {
         $http({
@@ -199,9 +209,23 @@ darg.controller('DargTeamCtrl',
         })
     };
 
+    /* $watch section*/
+    var self = this;
+
+    /* Watch what team we should be looking at */
+    $scope.$watch(function() {
+        return $routeParams.teamId
+    }, function(oldValue, newValue) {
+        if (newValue != null) {
+            team.getTeam(newValue)
+            .then(function(data) {
+                self.team = data
+            }, function(data) {
+                console.log("Failed to update team.");
+            });
+        }
+    });
 }]);
-
-
 
 darg.controller('DargTimelineCtrl', 
     ['$cookies',
@@ -255,7 +279,7 @@ darg.controller('DargTimelineCtrl',
                 url: url
             })
             .success(function(data) {
-                url = "/timeline/" + id;
+                url = "/team/" + id + "/timeline";
                 $location.path(url);
                 $scope.Timeline = data;
             })
@@ -450,6 +474,21 @@ darg.controller('DargUserCtrl',
     });
 }]);
 
+
+darg.service('team', function($http, $q) {
+    this.getTeam = function(id) {
+        url = "/api/v1/team/" + id;
+        var deferred = $q.defer();
+        $http({
+            method: "get",
+            url: url
+        })
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        return deferred.promise;
+    };
+});
 
 darg.factory('user', function($cookieStore) {
     var service = {};

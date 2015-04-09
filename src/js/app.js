@@ -30,8 +30,18 @@ darg.config(['$routeProvider', '$locationProvider',
         })
 
         // inner
-        .when('/timeline/:teamId', {
-            templateUrl: '/templates/home.html',
+        .when('/team', {
+            templateUrl: '/templates/team.html',
+            controller: 'DargTeamCtrl',
+            controllerAs: 'Team'
+        })
+        .when('/team/:teamId', {
+            templateUrl: '/templates/team/settings.html',
+            controller: 'DargTeamCtrl',
+            controllerAs: 'Team'
+        })
+        .when('/team/:teamId/timeline', {
+            templateUrl: '/templates/team/timeline.html',
             controller: 'DargTimelineCtrl',
             controllerAs: 'Timeline'
         })
@@ -39,11 +49,6 @@ darg.config(['$routeProvider', '$locationProvider',
             templateUrl: '/templates/settings/profile.html',
             controller: 'DargSettingsCtrl',
             controllerAs: 'Settings'
-        })
-        .when('/team', {
-            templateUrl: '/templates/team.html',
-            controller: 'DargTeamCtrl',
-            controllerAs: 'Team'
         })
 
         .otherwise({

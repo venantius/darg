@@ -8,10 +8,10 @@
       <ul class="nav nav-list">
         <li class="nav-header">Teams</li>
         <li ng-repeat="team in currentUser.team">
-          <a class="team-timeline-link" ng-href="/timeline/{{team.id}}">
+          <a class="team-timeline-link" ng-href="/team/{{team.id}}/timeline">
             {{team.name}}
           </a>
-          <a class="team-settings-link" ng-href="/timeline/{{team.id}}">
+          <a class="team-settings-link" ng-href="/team/{{team.id}}">
             <i class="fa fa-cog"></i>
           </a>
         </li>

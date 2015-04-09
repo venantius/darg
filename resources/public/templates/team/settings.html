@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="row ptl pbl mtl mbl">
+  </div>
+  <div class="row">
+    <div class="col-xs-3">
+
+      <!-- Side navbar -->
+      <ul class="nav nav-list">
+        <li class="nav-header">Teams</li>
+        <li ng-repeat="team in currentUser.team">
+          <a class="team-timeline-link" ng-href="/team/{{team.id}}/timeline">
+            {{team.name}}
+          </a>
+          <a class="team-settings-link" ng-href="/team/{{team.id}}">
+            <i class="fa fa-cog"></i>
+          </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+          <a href="/team">
+            Create a new team
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Team settings -->
+    <div class="col-xs-6">
+      <h4>Members</h4>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+      </div>
+      {{Team.team}}
+    </div>
+
+  </div>
+</div>

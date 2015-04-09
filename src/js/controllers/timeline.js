@@ -50,7 +50,7 @@ darg.controller('DargTimelineCtrl',
                 url: url
             })
             .success(function(data) {
-                url = "/timeline/" + id;
+                url = "/team/" + id + "/timeline";
                 $location.path(url);
                 $scope.Timeline = data;
             })
