@@ -1,15 +1,33 @@
-darg.factory('user', function($cookieStore) {
-    var service = {};
-    var info = null;
-    var current_team = null;
+darg.service('user', function($cookieStore, $http) {
+    this.info = null;
+    this.current_team = null;
 
-    service.loggedIn = function() {
-        if ($cookieStore.get('logged-in') == true) {
-            return true;
-        } else {
-            return false;
-        }
+    this.updateProfile = function(params) {
+        url = "/api/v1/user/" + $cookieStore.get('id');
+        $http({
+            method: "post",
+            url: url,
+            data: $.param(params),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+        })
     };
 
-    return service;
+    this.resetPassword = function(params) {
+        $http({
+            method: "post",
+            url: "/api/v1/password_reset",
+            data: $.param(params),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+            // TODO: Provide a tooltip or something on success?
+            // No, replace the entire speech bubble
+        })
+        .error(function(data) {
+            console.log("Failed to reset password.");
+        });
+    };
+
 });

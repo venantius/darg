@@ -26,7 +26,9 @@ darg.config(['$routeProvider', '$locationProvider',
             templateUrl: '/templates/integrations.html'
         })
         .when('/password_reset', {
-            templateUrl: '/templates/password_reset.html'
+            templateUrl: '/templates/password_reset.html',
+            controller: 'DargPasswordResetCtrl',
+            controllerAs: 'PasswordReset'
         })
 
         // inner

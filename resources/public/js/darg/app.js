@@ -26,7 +26,9 @@ darg.config(['$routeProvider', '$locationProvider',
             templateUrl: '/templates/integrations.html'
         })
         .when('/password_reset', {
-            templateUrl: '/templates/password_reset.html'
+            templateUrl: '/templates/password_reset.html',
+            controller: 'DargPasswordResetCtrl',
+            controllerAs: 'PasswordReset'
         })
 
         // inner
@@ -59,6 +61,14 @@ darg.config(['$routeProvider', '$locationProvider',
     $locationProvider.hashPrefix('!');
    }
 ]);
+
+darg.controller('DargPasswordResetCtrl',
+    ['$scope',
+     'auth',
+     function(
+         $scope,
+         auth) {
+}]);
 
 darg.controller('DargSettingsCtrl', 
     ['$cookies',
@@ -294,7 +304,7 @@ darg.controller('DargTimelineCtrl',
     $scope.$watch(function() {
         return user.current_team
     }, function(oldValue, newValue) {
-        if (user.loggedIn() == true && user.current_team != null) {
+        if (user.current_team != null) {
             $scope.GetTimeline(user.current_team);
         }
     });
@@ -306,6 +316,7 @@ darg.controller('DargUserCtrl',
      '$scope', 
      '$http',
      '$routeParams',
+     'auth',
      'user',
      function(
          $cookieStore,
@@ -313,36 +324,29 @@ darg.controller('DargUserCtrl',
          $scope, 
          $http, 
          $routeParams,
+         auth,
          user) {
 
-    $scope.loggedIn = user.loggedIn
+
+    $scope.auth = auth;
+
+    $scope.loggedIn = function() {
+        if ($cookieStore.get('logged-in') == true) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     $scope.currentUser = {};
     $scope.LoginForm = {
         email: "",
         password: ""
     };
 
-    $scope.Login = function() {
-        $http({
-            method: "post",
-            url: '/api/v1/login', 
-            data: $.param($scope.LoginForm),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-    };
 
-    $scope.Logout = function() {
-        $http({
-            method: "get",
-            url: "/api/v1/logout"
-        })
-        .success(function(data) {
-            $cookieStore.remove('logged-in');
-            $location.path('/');
-        })
-    };
 
-    $scope.UserSettingsProfile = {
+    $scope.UserProfile = {
         "name": "",
         "email": "",
         "timezone": "",
@@ -377,25 +381,14 @@ darg.controller('DargUserCtrl',
 
 
     $scope.updateTimezoneSetting = function(tz) {
-        $scope.UserSettingsProfile.timezone = tz;
+        $scope.UserProfile.timezone = tz;
     }
 
     $scope.updateEmailHourSettings = function(hour) {
-        $scope.UserSettingsProfile.email_hour = hour;
+        $scope.UserProfile.email_hour = hour;
     }
 
-    $scope.updateUserProfile = function() {
-        url = "/api/v1/user/" + $cookieStore.get('id');
-        $http({
-            method: "post",
-            url: url,
-            data: $.param($scope.UserSettingsProfile),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(data) {
-        })
-    };
-
+    $scope.updateProfile = user.updateProfile;
     getDefaultTeam = function() {
         if (user.info != null) {
             if (user.info.team.length == 0) {
@@ -417,10 +410,10 @@ darg.controller('DargUserCtrl',
         .success(function(data) {
             user.info = data;
             $scope.currentUser = data;
-            $scope.UserSettingsProfile.name = data.name;
-            $scope.UserSettingsProfile.email = data.email;
-            $scope.UserSettingsProfile.timezone = data.timezone;
-            $scope.UserSettingsProfile.email_hour = data.email_hour;
+            $scope.UserProfile.name = data.name;
+            $scope.UserProfile.email = data.email;
+            $scope.UserProfile.timezone = data.timezone;
+            $scope.UserProfile.email_hour = data.email_hour;
             user.current_team = getDefaultTeam();
         })
     };
@@ -441,28 +434,13 @@ darg.controller('DargUserCtrl',
         $location.path('/password_reset');
     };
 
-    $scope.resetPassword = function() {
-        $http({
-            method: "post",
-            url: "/api/v1/password_reset",
-            data: $.param($scope.ResetForm),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(data) {
-            // TODO: Provide a tooltip or something on success?
-            // No, replace the entire speech bubble
-        })
-        .error(function(data) {
-            console.log("Failed to reset password");
-            console.log(data);
-        });
-    };
+    $scope.resetPassword = user.resetPassword;
 
     /* watchers */
     $scope.$watch(function() {
-        return user.loggedIn()
+        return $scope.loggedIn()
     }, function(oldValue, newValue) {
-        if (user.loggedIn() == true) {
+        if ($scope.loggedIn() == true) {
             $scope.getCurrentUser();
         }
     });
@@ -474,6 +452,33 @@ darg.controller('DargUserCtrl',
     });
 }]);
 
+
+/*
+ * Service for authentication (login/logout)
+ */
+darg.service('auth', function($cookieStore, $http, $location) {
+    this.login = function(params) {
+        $http({
+            method: "post",
+            url: '/api/v1/login', 
+            data: $.param(params),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+    };
+
+    this.logout = function() {
+        $http({
+            method: "get",
+            url: "/api/v1/logout"
+        })
+        .success(function(data) {
+            console.log('logged out.');
+            $cookieStore.remove('logged-in');
+            $location.path('/');
+        })
+    };
+
+});
 
 darg.service('team', function($http, $q) {
     this.getTeam = function(id) {
@@ -490,20 +495,38 @@ darg.service('team', function($http, $q) {
     };
 });
 
-darg.factory('user', function($cookieStore) {
-    var service = {};
-    var info = null;
-    var current_team = null;
+darg.service('user', function($cookieStore, $http) {
+    this.info = null;
+    this.current_team = null;
 
-    service.loggedIn = function() {
-        if ($cookieStore.get('logged-in') == true) {
-            return true;
-        } else {
-            return false;
-        }
+    this.updateProfile = function(params) {
+        url = "/api/v1/user/" + $cookieStore.get('id');
+        $http({
+            method: "post",
+            url: url,
+            data: $.param(params),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+        })
     };
 
-    return service;
+    this.resetPassword = function(params) {
+        $http({
+            method: "post",
+            url: "/api/v1/password_reset",
+            data: $.param(params),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+            // TODO: Provide a tooltip or something on success?
+            // No, replace the entire speech bubble
+        })
+        .error(function(data) {
+            console.log("Failed to reset password.");
+        });
+    };
+
 });
 
 /* 

@@ -11,6 +11,15 @@
             [ring.middleware.json :refer [wrap-json-response]]
             [ring.middleware.session.cookie :as cookie]))
 
+(def server (atom nil))
+
+(defn stop-web-server
+  "Stop the Darg.io web server process."
+  []
+  (when-not (nil? @server)
+    (@server :timeout 0)
+    (reset! server nil)))
+
 (def app
   (-> routes
       (authn/wrap-authentication
@@ -27,4 +36,4 @@
   (init/configure)
   (let [port (Integer. (or (env/env :port) "8080"))]
     (logging/info "Starting Darg server on port" port)
-    (server/run-server app {:port port :join? false})))
+    (reset! server (server/run-server #'app {:port port}))))
