@@ -23,10 +23,17 @@ darg.controller('DargTeamCtrl',
     this.creationForm = {
         name: "",
     };
-    this.team = {}
-    this.roles = {}
+    this.team = {};
+    this.roles = {};
+    this.currentRole = {field: ""};
 
-    this.deleteTeamRole = role.deleteTeamRole;
+    this.newRole = {
+        email: "",
+    };
+
+    this.deleteRole = role.deleteRole;
+    this.createRole = role.createRole;
+
 
     this.createTeam = function() {
         $http({
@@ -41,7 +48,22 @@ darg.controller('DargTeamCtrl',
         })
     };
 
-    /* $watch section*/
+    /*
+     * Utility functions
+     */
+
+    /* Can we delete this user? */
+    this.canDelete = function(target_user_id) {
+        if (this.currentRole.admin == true || $cookieStore.get('id') == target_user_id) {
+            return true;
+        } else {
+            return false
+        }
+    };
+
+    /*
+     * $watch section
+     */
     var self = this;
 
     /* Watch what team we should be looking at */
@@ -51,16 +73,23 @@ darg.controller('DargTeamCtrl',
         if (newValue != null) {
             team.getTeam(newValue)
             .then(function(data) {
-                self.team = data
+                self.team = data;
             }, function(data) {
                 console.log("Failed to update team.");
             });
 
             role.getTeamRoles(newValue)
             .then(function(data) {
-                self.roles = data
+                self.roles = data;
             }, function(data) {
                 console.log("Failed to update roles.");
+            });
+
+            role.getRole(newValue, $cookieStore.get('id'))
+            .then(function(data) {
+                self.currentRole = data;
+            }, function(data) {
+                console.log(data);
             });
         }
     });

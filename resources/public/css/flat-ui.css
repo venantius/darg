@@ -19544,6 +19544,9 @@ img.settings-profile {
   width: 64px;
   height: 64px;
 }
+div.team-role {
+  padding-bottom: 20px;
+}
 /*
 
 The Timeline is divided into the following hierarchy:

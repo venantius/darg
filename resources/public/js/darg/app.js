@@ -206,10 +206,17 @@ darg.controller('DargTeamCtrl',
     this.creationForm = {
         name: "",
     };
-    this.team = {}
-    this.roles = {}
+    this.team = {};
+    this.roles = {};
+    this.currentRole = {field: ""};
 
-    this.deleteTeamRole = role.deleteTeamRole;
+    this.newRole = {
+        email: "",
+    };
+
+    this.deleteRole = role.deleteRole;
+    this.createRole = role.createRole;
+
 
     this.createTeam = function() {
         $http({
@@ -224,7 +231,22 @@ darg.controller('DargTeamCtrl',
         })
     };
 
-    /* $watch section*/
+    /*
+     * Utility functions
+     */
+
+    /* Can we delete this user? */
+    this.canDelete = function(target_user_id) {
+        if (this.currentRole.admin == true || $cookieStore.get('id') == target_user_id) {
+            return true;
+        } else {
+            return false
+        }
+    };
+
+    /*
+     * $watch section
+     */
     var self = this;
 
     /* Watch what team we should be looking at */
@@ -234,16 +256,23 @@ darg.controller('DargTeamCtrl',
         if (newValue != null) {
             team.getTeam(newValue)
             .then(function(data) {
-                self.team = data
+                self.team = data;
             }, function(data) {
                 console.log("Failed to update team.");
             });
 
             role.getTeamRoles(newValue)
             .then(function(data) {
-                self.roles = data
+                self.roles = data;
             }, function(data) {
                 console.log("Failed to update roles.");
+            });
+
+            role.getRole(newValue, $cookieStore.get('id'))
+            .then(function(data) {
+                self.currentRole = data;
+            }, function(data) {
+                console.log(data);
             });
         }
     });
@@ -493,9 +522,12 @@ darg.service('auth', function($cookieStore, $http, $location) {
 
 });
 
-darg.service('role', function($http, $q) {
+darg.service('role', function($cookieStore, $http, $q) {
+    /*
+     * API
+     */
     this.getTeamRoles = function(id) {
-        url = "/api/v1/team/" + id + "/role";
+        url = "/api/v1/team/" + id + "/user";
         var deferred = $q.defer();
         $http({
             method: "get",
@@ -507,9 +539,26 @@ darg.service('role', function($http, $q) {
         return deferred.promise;
     };
 
-    this.deleteTeamRole = function(team_id, role_id) {
+    this.getRole = function(team_id, user_id) {
+        console.log("fetching role...");
+        url = "/api/v1/team/" + team_id + "/user/" + user_id;
+        var deferred = $q.defer();
+        $http({
+            method: "get",
+            url: url
+        })
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            console.log(data)
+        })
+        return deferred.promise;
+    };
+
+    this.deleteRole = function(team_id, user_id) {
         console.log("deleting role...");
-        url = "/api/v1/team/" + team_id + "/role/" + role_id;
+        url = "/api/v1/team/" + team_id + "/user/" + user_id;
         var deferred = $q.defer();
         $http({
             method: "delete",
@@ -523,6 +572,36 @@ darg.service('role', function($http, $q) {
         })
         return deferred.promise;
     };
+
+    this.createRole = function(team_id, params) {
+        console.log("creating role...");
+        url = "/api/v1/team/" + team_id + "/user"
+        var deferred = $q.defer();
+        $http({
+            method: "post",
+            url: url,
+            data: $.param(params),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            console.log(data);
+        })
+        return deferred.promise;
+    };
+
+    /* 
+     * Utility Functions
+     */
+    this.isAdmin = function(role) {
+        if (role.admin == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 });
 
 darg.service('team', function($http, $q) {

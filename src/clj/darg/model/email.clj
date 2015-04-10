@@ -66,3 +66,10 @@
   (log/info "Sending daily e-mail for" user)
   (let [teams (user/fetch-user-teams user)]
     (doall (map #(send-one-personal-email user %) teams))))
+
+(defn send-team-invitation
+  [email-address team-id]
+  "Send an invitation to join a team to a particular user."
+  (log/info "Sending an invitation for" email-address
+            "to join team with id" team-id)
+  )

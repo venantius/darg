@@ -58,8 +58,10 @@
   (POST   "/api/v1/team"                    request (team/create! request))
   (GET    "/api/v1/team/:id"                request (team/fetch request))
 
-  (GET    "/api/v1/team/:id/role"           request (role/fetch-all request))
-  (DELETE "/api/v1/team/:id/role/:role_id"  request (role/delete! request))
+  (GET    "/api/v1/team/:team_id/user"           request (role/fetch-all request))
+  (POST   "/api/v1/team/:team_id/user"           request (role/create! request))
+  (GET    "/api/v1/team/:team_id/user/:user_id"  request (role/fetch-one request))
+  (DELETE "/api/v1/team/:team_id/user/:user_id"  request (role/delete! request))
 
   (POST   "/api/v1/user"                    request (user/create! request))
   (GET    "/api/v1/user/:id"                request (user/get request))
