@@ -189,6 +189,7 @@ darg.controller('DargTeamCtrl',
     '$location',
     '$routeParams',
     '$scope',
+    'role',
     'team',
     'user',
     function(
@@ -198,6 +199,7 @@ darg.controller('DargTeamCtrl',
         $location,
         $routeParams,
         $scope,
+        role,
         team,
         user) {
 
@@ -205,6 +207,9 @@ darg.controller('DargTeamCtrl',
         name: "",
     };
     this.team = {}
+    this.roles = {}
+
+    this.deleteTeamRole = role.deleteTeamRole;
 
     this.createTeam = function() {
         $http({
@@ -233,8 +238,16 @@ darg.controller('DargTeamCtrl',
             }, function(data) {
                 console.log("Failed to update team.");
             });
+
+            role.getTeamRoles(newValue)
+            .then(function(data) {
+                self.roles = data
+            }, function(data) {
+                console.log("Failed to update roles.");
+            });
         }
     });
+
 }]);
 
 darg.controller('DargTimelineCtrl', 
@@ -478,6 +491,38 @@ darg.service('auth', function($cookieStore, $http, $location) {
         })
     };
 
+});
+
+darg.service('role', function($http, $q) {
+    this.getTeamRoles = function(id) {
+        url = "/api/v1/team/" + id + "/role";
+        var deferred = $q.defer();
+        $http({
+            method: "get",
+            url: url
+        })
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        return deferred.promise;
+    };
+
+    this.deleteTeamRole = function(team_id, role_id) {
+        console.log("deleting role...");
+        url = "/api/v1/team/" + team_id + "/role/" + role_id;
+        var deferred = $q.defer();
+        $http({
+            method: "delete",
+            url: url
+        })
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            console.log(data);
+        })
+        return deferred.promise;
+    };
 });
 
 darg.service('team', function($http, $q) {

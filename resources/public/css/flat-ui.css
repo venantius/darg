@@ -19524,6 +19524,26 @@ p.answer {
 .img-portrait {
   border-radius: 50%;
 }
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: 108px;
+}
+.footer {
+  height: 108px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+img.settings-profile {
+  border: 1px solid #34495e;
+  display: inline-block;
+  margin-left: 0px;
+  width: 64px;
+  height: 64px;
+}
 /*
 
 The Timeline is divided into the following hierarchy:
@@ -19541,6 +19561,8 @@ img.timeline-profile {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 10px;
+  width: 64px;
+  height: 64px;
 }
 div.timeline-profile-text {
   font-weight: 500;
@@ -19554,7 +19576,7 @@ a.team-timeline-link {
 a.team-settings-link {
   display: inline-block;
   float: right;
-  width: 15%;
+  width: 36px;
 }
 .nav-list > li > a {
   display: inline-block;

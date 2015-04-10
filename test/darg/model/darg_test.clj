@@ -37,7 +37,7 @@
                    :id 1}
                   {:task (list)
                    :name "The Couch"
-                   :email "arrigato@darg.io"
+                   :email "david@standardtreasury.com"
                    :id 3}
                   {:task (list
                             {:task "Do a good deed everyday"
