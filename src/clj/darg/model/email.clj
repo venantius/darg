@@ -68,8 +68,7 @@
     (doall (map #(send-one-personal-email user %) teams))))
 
 (defn send-team-invitation
-  [email-address team-id]
   "Send an invitation to join a team to a particular user."
+  [email-address team-id]
   (log/info "Sending an invitation for" email-address
-            "to join team with id" team-id)
-  )
+            "to join team with id" team-id))
