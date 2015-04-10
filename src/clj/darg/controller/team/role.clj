@@ -24,14 +24,15 @@
                                                   :team_id team-id})]
     (cond
       (some? maybe-existing-role)
-      (conflict "A user with that email address is already a member of this team.")
+      (conflict 
+        "A user with that email address is already a member of this team.")
       :else
       (do
         (when (some? (user/fetch-one-user {:email email}))
           (role/create-role! {:user_id (:id maybe-user)
                               :team_id team-id}))
         (email/send-team-invitation email team-id)
-        (ok "Invitation sent.")))))
+        (ok {:message "Invitation sent."})))))
 
 (defn fetch-all
   "/api/v1/team/:id/role
@@ -60,8 +61,12 @@
   (let [current-user-id (:id user)
         target-user-id (-> params :user_id read-string)
         team-id (-> params :team_id read-string)]
-    (ok (role/fetch-one-role {:user_id target-user-id
-                              :team_id team-id}))))
+    (cond
+      (not (user/user-in-team? current-user-id team-id))
+      (unauthorized "You are not a member of this team.")
+      :else
+      (ok (role/fetch-one-role {:user_id target-user-id
+                                :team_id team-id})))))
 
 (defn delete!
   "/api/v1/team/:id/role

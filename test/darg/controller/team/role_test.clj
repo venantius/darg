@@ -8,10 +8,44 @@
 (with-db-fixtures)
 
 (deftest create!-makes-a-role-if-the-user-exists
-  (is (= 0 1)))
+  (is (nil? (role/fetch-one-role {:team_id 2 :user_id 7})))
+  (let [request {:request-method :post
+                 :params {:team_id "2" :email "venantius@gmail.com"}
+                 :user {:id 4 :email "test-user2@darg.io"}}
+        {:keys [status body]} (api/create! request)]
+    (is (= status 200))
+    (is (= body
+           {:message "Invitation sent."}))
+    (is (some? (role/fetch-one-role {:team_id 2
+                                     :user_id 7})))))
 
 (deftest create!-returns-conflict-if-the-role-already-exists
-  (is (= 0 1)))
+  (is (some? (role/fetch-one-role {:team_id 1 :user_id 7})))
+  (let [request {:request-method :post
+                 :params {:team_id "1" :email "venantius@gmail.com"}
+                 :user {:id 4 :email "test-user2@darg.io"}}
+        {:keys [status body]} (api/create! request)]
+    (is (= status 409))
+    (is (= body
+           {:message "A user with that email address is already a member of this team."}))))
+
+(deftest fetch-one-works
+  (let [request {:request-method :get
+                 :params {:team_id "1" :user_id "4"}
+                 :user {:id 4 :email "test-user2@darg.io"}}
+        {:keys [status body]} (api/fetch-one request)]
+    (is (= status 200))
+    (is (= body
+           (role/fetch-one-role {:team_id 1 :user_id 4})))))
+
+(deftest fetch-one-doesnt-work-if-were-not-on-the-team
+   (let [request {:request-method :get
+                 :params {:team_id "2" :user_id "4"}
+                 :user {:id 7 :email "venantius@gmail.com"}}
+        {:keys [status body]} (api/fetch-one request)]
+    (is (= status 401))
+     (is (= body 
+            {:message "You are not a member of this team."}))))
 
 (deftest fetch-all-works
   (let [request {:request-method :get
