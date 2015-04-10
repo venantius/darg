@@ -1,6 +1,9 @@
-darg.service('role', function($http, $q) {
+darg.service('role', function($cookieStore, $http, $q) {
+    /*
+     * API
+     */
     this.getTeamRoles = function(id) {
-        url = "/api/v1/team/" + id + "/role";
+        url = "/api/v1/team/" + id + "/user";
         var deferred = $q.defer();
         $http({
             method: "get",
@@ -12,9 +15,26 @@ darg.service('role', function($http, $q) {
         return deferred.promise;
     };
 
-    this.deleteTeamRole = function(team_id, role_id) {
+    this.getRole = function(team_id, user_id) {
+        console.log("fetching role...");
+        url = "/api/v1/team/" + team_id + "/user/" + user_id;
+        var deferred = $q.defer();
+        $http({
+            method: "get",
+            url: url
+        })
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            console.log(data)
+        })
+        return deferred.promise;
+    };
+
+    this.deleteRole = function(team_id, user_id) {
         console.log("deleting role...");
-        url = "/api/v1/team/" + team_id + "/role/" + role_id;
+        url = "/api/v1/team/" + team_id + "/user/" + user_id;
         var deferred = $q.defer();
         $http({
             method: "delete",
@@ -28,4 +48,34 @@ darg.service('role', function($http, $q) {
         })
         return deferred.promise;
     };
+
+    this.createRole = function(team_id, params) {
+        console.log("creating role...");
+        url = "/api/v1/team/" + team_id + "/user"
+        var deferred = $q.defer();
+        $http({
+            method: "post",
+            url: url,
+            data: $.param(params),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            console.log(data);
+        })
+        return deferred.promise;
+    };
+
+    /* 
+     * Utility Functions
+     */
+    this.isAdmin = function(role) {
+        if (role.admin == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 });

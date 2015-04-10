@@ -28,27 +28,29 @@
     <div class="col-xs-6">
       <h4>Members</h4>
       <!-- list team members -->
-      <div ng-repeat="role in Team.roles">
+      <div class="team-role" ng-repeat="role in Team.roles">
         <form class="form-inline">
           <img class="img-portrait settings-profile" gravatar-src="role.email" gravatr-size="64">
           <div class="form-group">
-            <label class="sr-only" for="exampleInputEmail2">{{role.id}}</label>
-            <input type="email" class="form-control" id="exampleInputEmail2" placeholder="{{role.user_id}}">
+            <input type="email" class="form-control" id="exampleInputEmail2" placeholder="{{role.email}}" disabled>
           </div>
           <div class="form-group">
-            <button type="button" class="btn btn-danger" ng-click="Team.deleteTeamRole(role.team_id, role.id)">Remove</button>
+            <button type="button" class="btn btn-danger" ng-click="Team.deleteRole(role.team_id, role.user_id)" ng-show="Team.canDelete(role.user_id)">Remove</button>
+          </div>
+          <div class="form-group" ng-show="role.admin">
+            This user is an admin
           </div>
         </form>
       </div>
-      <div>
+      <div ng-show="Team.currentRole.admin">
         <h6>Add a new member</h6>
         <form class="form-horizontal">
           <div class="form-group">
             <div class="col-sm-10">
-              <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email address"></input>
+              <input type="email" class="form-control login-field" name="email" ng-model="Team.newRole.email" placeholder="Email address"/>
             </div>
             <div class="col-sm-2">
-              <button class="btn btn-primary">
+              <button class="btn btn-primary" ng-click="Team.createRole(Team.team.id, Team.newRole)">
                 Send invitation!
               </button>
             </div>
