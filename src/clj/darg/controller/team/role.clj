@@ -35,8 +35,6 @@
     (let [target-role (role/fetch-one-role-with-user {:id role-id})
           current-users-role (role/fetch-one-role {:user_id user-id
                                                    :team_id team-id})]
-      (log/warn target-role)
-      (log/warn (:user_id target-role) user-id)
       (cond
         (not (user/user-in-team? user-id team-id))
         (unauthorized "You are not a member of this team.")

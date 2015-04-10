@@ -208,8 +208,7 @@
 
 (def test-role-pair-10
   {:user_id 7
-   :team_id 1
-   :admin true})
+   :team_id 1})
 
 (def test-role-pairs
   [test-role-pair-1
