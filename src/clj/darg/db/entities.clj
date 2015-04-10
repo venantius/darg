@@ -5,6 +5,7 @@
  user
  team
  task
+ role
  repo
  github-user
  github-token
@@ -16,6 +17,7 @@
   (table :darg.user :user)
   (entity-fields :id :name)
   (has-many task)
+  (has-many role)
   (belongs-to github-user)
   (many-to-many team :darg.role))
 
@@ -23,12 +25,13 @@
   (table :darg.team :team)
   (has-many task)
   (has-many repo :team_repo)
+  (has-many role)
   (many-to-many user :darg.role))
 
 (defentity role
   (table :darg.role :role)
-  (has-many team {:fk :team_id})
-  (has-many user {:fk :user_id}))
+  (belongs-to team)
+  (belongs-to user))
 
 (defentity task
   (table :darg.task :task)

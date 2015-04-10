@@ -48,7 +48,7 @@
                  :params {:name "Darg sucks as a name"
                           :email "test.api@mail.darg.io"
                           :id "1"}
-                 :user {:id 3 :email "arrigato@darg.io"}}
+                 :user {:id 3 :email "david@standardtreasury.com"}}
         response (api/update! request)
         team (team/fetch-one-team {:id 1})]
     (is (= (:status response) 401))))

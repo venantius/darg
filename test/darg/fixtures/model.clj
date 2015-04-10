@@ -27,7 +27,7 @@
    :active true})
 
 (def test-user-3
-  {:email "arrigato@darg.io"
+  {:email "david@standardtreasury.com"
    :password (encrypt-password "nihon")
    :name "The Couch"
    :timezone "UTC"

@@ -1,66 +1,48 @@
-<nav class="navbar-sm navbar-inverse navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
-    <div class="collapse navbar-collapse" id="navbar-collapse-01"> 
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        <i class="fa fa-home navbar-icons"></i>
+      </a>
+    </div>
 
-      <!-- Show this menu if logged in -->
-      <div>
-        <ul class="nav navbar-nav">
-          <li ng-hide="loggedIn()">
-            <a href="/">Home</a>
+    <div class="" id="navbar-collapse-11"> 
+      <!-- Show log in form if not logged-in -->
+      <div ng-hide="loggedIn()">
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <form role="search" class="navbar-form">
+              <div class="form-group">
+                <input type="text" placeholder="Email" class="form-control input-sm" ng-model="LoginForm.email">
+              </div>
+              <div class="form-group">
+                <input type="password" size="8" placeholder="Password" class="form-control input-sm" ng-model="LoginForm.password">
+              </div>
+              <button class="btn btn-primary" ng-click="auth.login(LoginForm)">Login</button>
+              <button class="btn btn-danger" data-toggle="tooltip" title="Forgot your password?" data-placement="bottom" type="button" ng-click="LoadPasswordResetPage()">!</button>
+            </form>
           </li>
-          <li class="dropdown" ng-show="loggedIn()">
-            <a href="/">
-              <i class="fa fa-home navbar-icons"></i>
+        </ul>
+      </div>
+      <div ng-show="loggedIn()" class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              menu &nbsp &nbsp
+              <i class="fa fa-bars navbar-icons"></i>
             </a>
-            </a>
-            <ul class="dropdown-menu" role="menu">
-              <li ng-repeat="team in currentUser.team">
-                <a ng-href="/timeline/{{team.id}}">{{team.name}}</a>
-              </li>
-              <li class="divider"></li>
+            <ul class="dropdown-menu">
               <li>
-                <a href="/team">Create new</a>
+                <a href="/settings/profile">Settings</a>
+              </li>
+              <li class="divider">
+              </li>
+              <li>
+                <a ng-click="auth.logout()">Logout</a>
               </li>
             </ul>
           </li>
         </ul>
-      </div>
-
-      <!-- Show log in form if not logged-in -->
-      <div> 
-        <div ng-hide="loggedIn()">
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <form role="search" class="navbar-form navbar-left">
-                <div class="form-group">
-                  <input type="text" placeholder="Email" class="form-control input-sm" ng-model="LoginForm.email">
-                </div>
-                <div class="form-group">
-                  <input type="password" size="8" placeholder="Password" class="form-control input-sm" ng-model="LoginForm.password">
-                </div>
-                <button class="btn btn-primary" ng-click="auth.login(LoginForm)">Login</button>
-                <button class="btn btn-danger" data-toggle="tooltip" title="Forgot your password?" data-placement="bottom" type="button" ng-click="LoadPasswordResetPage()">!</button>
-              </form>
-            </li>
-          </ul>
-        </div>
-        <div ng-show="loggedIn()">
-          <ul class="nav navbar-nav navbar-right">
-            <ul class="nav navbar-nav">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <span>menu &nbsp &nbsp</span>
-                  <i class="fa fa-bars navbar-icons"></i>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a href="/settings/profile">Settings</a></li>
-                    <li class="divider"></li>
-                  <li><a ng-click="auth.logout()">Logout</a></li>
-                </ul>
-              </li>
-            </ul>
-          </ul>
-        </div>
       </div>
     </div>
   </div>

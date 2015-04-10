@@ -6,6 +6,7 @@ darg.controller('DargTeamCtrl',
     '$location',
     '$routeParams',
     '$scope',
+    'role',
     'team',
     'user',
     function(
@@ -15,6 +16,7 @@ darg.controller('DargTeamCtrl',
         $location,
         $routeParams,
         $scope,
+        role,
         team,
         user) {
 
@@ -22,6 +24,9 @@ darg.controller('DargTeamCtrl',
         name: "",
     };
     this.team = {}
+    this.roles = {}
+
+    this.deleteTeamRole = role.deleteTeamRole;
 
     this.createTeam = function() {
         $http({
@@ -50,6 +55,14 @@ darg.controller('DargTeamCtrl',
             }, function(data) {
                 console.log("Failed to update team.");
             });
+
+            role.getTeamRoles(newValue)
+            .then(function(data) {
+                self.roles = data
+            }, function(data) {
+                console.log("Failed to update roles.");
+            });
         }
     });
+
 }]);
