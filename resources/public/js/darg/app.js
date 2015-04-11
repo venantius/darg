@@ -2,7 +2,7 @@ var darg = angular.module('darg',
                           ['ngCookies', 
                            'ngRoute', 
                            'ngLoadScript',
-                           'ui.date',
+                           'ui.bootstrap',
                            'ui.gravatar']);
 
 darg.config(['$routeProvider', '$locationProvider', 
@@ -61,6 +61,29 @@ darg.config(['$routeProvider', '$locationProvider',
     $locationProvider.hashPrefix('!');
    }
 ]);
+
+darg.config(function($provide) {
+  $provide.decorator('datepickerDirective', function($delegate) {
+    $delegate[0].templateUrl = '/templates/angular_bootstrap/datepicker/datepicker.html';
+    return $delegate;
+  });
+  $provide.decorator('yearpickerDirective', function($delegate) {
+    $delegate[0].templateUrl = '/templates/angular_bootstrap/datepicker/year.html';
+    return $delegate;
+  });
+  $provide.decorator('monthpickerDirective', function($delegate) {
+    $delegate[0].templateUrl = '/templates/angular_bootstrap/datepicker/month.html';
+    return $delegate;
+  });
+  $provide.decorator('daypickerDirective', function($delegate) {
+    $delegate[0].templateUrl = '/templates/angular_bootstrap/datepicker/day.html';
+    return $delegate;
+  });
+  $provide.decorator('datepickerPopupWrapDirective', function($delegate) {
+      $delegate[0].templateUrl = '/templates/angular_bootstrap/datepicker/popup.html';
+      return $delegate;
+  });
+});
 
 darg.controller('DargPasswordResetCtrl',
     ['$scope',
@@ -221,6 +244,40 @@ darg.controller('DargTeamCtrl',
     this.roles = {};
     this.currentRole = {field: ""};
 
+  $scope.today = function() {
+    $scope.dt = new Date();
+  };
+  $scope.today();
+
+  $scope.clear = function () {
+    $scope.dt = null;
+  };
+
+  // Disable weekend selection
+  $scope.disabled = function(date, mode) {
+    return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+  };
+
+  $scope.toggleMin = function() {
+    $scope.minDate = $scope.minDate ? null : new Date();
+  };
+  $scope.toggleMin();
+
+  $scope.open = function($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+
+    $scope.opened = true;
+  };
+
+  $scope.dateOptions = {
+    formatYear: 'yy',
+    startingDay: 1
+  };
+
+  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+  $scope.format = $scope.formats[0];
+
     /* 
      * Alerts
      */
@@ -235,6 +292,7 @@ darg.controller('DargTeamCtrl',
      */
     this.createRole = role.createRole;
     this.createTeam = team.createTeam;
+
 
     /*
      * Utility functions
@@ -711,6 +769,8 @@ darg.service('user', function($cookieStore, $http) {
 * At some point I'll refactor it out into its own file (which should generally
 * happen with all of the Angular code), but I'm not yet certain how to do that.
 */
+
+
 
 (function (ng) {
   'use strict';
