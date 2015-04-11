@@ -69,6 +69,13 @@
 
 (defn send-team-invitation
   "Send an invitation to join a team to a particular user."
-  [email-address team-id]
+  [email-address team]
   (log/info "Sending an invitation for" email-address
-            "to join team with id" team-id))
+            "to join team" team)
+  (let [from (from team)
+        content (template/render-team-invite team)
+        subject (str "You've been invited to join " (:name team) " on Darg.io!")]
+    (mailgun/send-message {:from from
+                           :to email-address
+                           :subject subject
+                           :html content})))

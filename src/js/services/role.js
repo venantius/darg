@@ -1,4 +1,4 @@
-darg.service('role', function($cookieStore, $http, $q) {
+darg.service('role', function($cookieStore, $http, $route, $q) {
     /*
      * API
      */
@@ -11,6 +11,9 @@ darg.service('role', function($cookieStore, $http, $q) {
         })
         .success(function(data) {
             deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
         })
         return deferred.promise;
     };
@@ -27,7 +30,7 @@ darg.service('role', function($cookieStore, $http, $q) {
             deferred.resolve(data);
         })
         .error(function(data) {
-            console.log(data)
+            deferred.reject(data);
         })
         return deferred.promise;
     };
@@ -44,7 +47,7 @@ darg.service('role', function($cookieStore, $http, $q) {
             deferred.resolve(data);
         })
         .error(function(data) {
-            console.log(data);
+            deferred.reject(data);
         })
         return deferred.promise;
     };
@@ -63,7 +66,7 @@ darg.service('role', function($cookieStore, $http, $q) {
             deferred.resolve(data);
         })
         .error(function(data) {
-            console.log(data);
+            deferred.reject(data);
         })
         return deferred.promise;
     };

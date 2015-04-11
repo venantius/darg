@@ -4,13 +4,13 @@
             [darg.services.mailgun :as mailgun]))
 
 (def test-text-message
-  {:from "test@darg.io"
+  {:from "test@mail.darg.io"
    :to "demo@darg.io"
    :subject "Hi!"
    :text "This is a test"})
 
 (def test-html-message
-  {:from "test@darg.io"
+  {:from "test@mail.darg.io"
    :to "demo@darg.io"
    :subject "Hi!"
    :html "<html>This is a test</html>"})
