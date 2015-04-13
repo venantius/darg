@@ -45,7 +45,14 @@
           </div>
         </div>
       </div><!-- /.row -->
-    </div><!-- /.container -->
+
+
+    <h4>Inline</h4>
+    <div style="display:inline-block; min-height:290px;">
+        <datepicker ng-model="dt" min-date="minDate" show-weeks="false" class="well well-sm"></datepicker>
+    </div>
+</div>
+
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -75,6 +82,20 @@
       datepickerSelector2.datepicker('widget').css({'margin-left': -datepickerSelector2.prev('.input-group-btn').find('.btn').outerWidth()});
 
     </script>
+  <!-- MomentJS -->
+  <script src="./js/moment/moment-with-locales.min.js"></script>
+  <script src="./js/moment/moment-timezone-with-data.min.js"></script>
+
+  <!-- AngularJS -->
+  <script src="./js/angular/angular.min.js"></script>
+  <script src="./js/angular/angular-cookies.min.js"></script>
+  <script src="./js/angular/angular-resource.min.js"></script>
+  <script src="./js/angular/angular-route.min.js"></script>
+  <script src="./js/angular/angular-gravatar.min.js"></script>
+  <script src="./js/angular/ui-bootstrap-0.12.1.js"></script>
+
+  <!-- Darg JS -->
+  <script src="./js/darg/app.js"></script>
 
   </body>
 </html>

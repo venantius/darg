@@ -21,7 +21,8 @@
         email (:email params)
         maybe-user (user/fetch-one-user {:email email})
         maybe-existing-role (role/fetch-one-role {:user_id (:id maybe-user)
-                                                  :team_id team-id})]
+                                                  :team_id team-id})
+        team (team/fetch-one-team {:id team-id})]
     (cond
       (some? maybe-existing-role)
       (conflict 
@@ -31,7 +32,7 @@
         (when (some? (user/fetch-one-user {:email email}))
           (role/create-role! {:user_id (:id maybe-user)
                               :team_id team-id}))
-        (email/send-team-invitation email team-id)
+        (email/send-team-invitation email team)
         (ok {:message "Invitation sent."})))))
 
 (defn fetch-all

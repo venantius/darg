@@ -8,6 +8,10 @@
 
 (with-db-fixtures)
 
+(deftest capitalized-emails-are-normalized
+  (team/create-team! {:name "WeeabooCorp" :email "WeEaBoo@darg.io"})
+  (is (some? (team/fetch-one-team {:email "weeaboo@darg.io"}))))
+
 (deftest we-can-insert-team-into-db
   (team/create-team! {:name "krogancorp" :email "kcorp@darg.io"})
   (is (team/fetch-team {:name "krogancorp"})))

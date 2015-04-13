@@ -50,12 +50,24 @@
               <input type="email" class="form-control login-field" name="email" ng-model="Team.newRole.email" placeholder="Email address"/>
             </div>
             <div class="col-sm-2">
-              <button class="btn btn-primary" ng-click="Team.createRole(Team.team.id, Team.newRole)">
+              <button class="btn btn-primary" ng-click="Team.createRole(Team.team.id, Team.newRole)" ng-submit="Team.addAlert(Team.newRole.email)">
                 Send invitation!
               </button>
             </div>
           </div>
         </form>
+        <div class="alert alert-success" ng-repeat="alert in Team.invitationSuccessAlerts">
+          <span class="fui-mail mrm"></span>
+          {{alert.msg}}
+          <button type="button" class="close fui-cross" data-dismiss="alert"></button>
+        </div>
+        <div class="alert alert-danger" ng-repeat="alert in Team.invitationFailureAlerts">{{alert.msg}}
+          <button type="button" class="close fui-cross" data-dismiss="alert"></button>
+        </div>
+      </div>
+
+      <div>
+
       </div>
 
       <!-- Add a new team member -->

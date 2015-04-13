@@ -1,0 +1,43 @@
+<div class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" style="top: 123px; left: 116px; z-index: 1; display: block;">
+
+  <!-- header -->
+  <div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">
+    <a class="ui-datepicker-prev ui-corner-all ui-state-disabled" title="Prev">
+      <span class="ui-icon ui-icon-circle-triangle-w" ng-click="move(-1)">Prev</span>
+    </a> 
+    <a class="ui-datepicker-next ui-corner-all ui-state-disabled" title="Next" ng-click="move(1)">
+      <span class="ui-icon ui-icon-circle-triangle-e">Next</span>
+    </a>
+    <div class="ui-datepicker-title">
+      <div type="button" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%;">
+        <span class="ui-datepicker-month">
+          {{title}}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- main calendar -->
+  <table role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}" class="ui-datepicker-calendar">
+    <thead>
+      <tr>
+        <th ng-repeat="label in labels track by $index">
+          <span aria-label="{{label.full}}">
+            {{label.abbr}}
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="row in rows track by $index">
+        <td class="dt.customClass" ng-repeat="dt in row track by dt.date" class="" role="gridcell" id="{{dt.uid}}" aria-disabled="{{!!dt.disabled}}" ng-class="{'ui-datepicker-other-month': dt.secondary}">
+          <a 
+            class="ui-state-default" 
+            ng-class="{'ui-state-active': dt.selected, active: isActive(dt)}" 
+            href="#" 
+            ng-click="select(dt.date)">{{dt.label}}</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

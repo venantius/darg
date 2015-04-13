@@ -8,16 +8,17 @@
 (with-db-fixtures)
 
 (deftest create!-makes-a-role-if-the-user-exists
-  (is (nil? (role/fetch-one-role {:team_id 2 :user_id 7})))
-  (let [request {:request-method :post
-                 :params {:team_id "2" :email "venantius@gmail.com"}
-                 :user {:id 4 :email "test-user2@darg.io"}}
-        {:keys [status body]} (api/create! request)]
-    (is (= status 200))
-    (is (= body
-           {:message "Invitation sent."}))
-    (is (some? (role/fetch-one-role {:team_id 2
-                                     :user_id 7})))))
+  (with-redefs [darg.services.mailgun/send-message (constantly nil)]
+    (is (nil? (role/fetch-one-role {:team_id 2 :user_id 7})))
+    (let [request {:request-method :post
+                   :params {:team_id "2" :email "venantius@gmail.com"}
+                   :user {:id 4 :email "test-user2@darg.io"}}
+          {:keys [status body]} (api/create! request)]
+      (is (= status 200))
+      (is (= body
+             {:message "Invitation sent."}))
+      (is (some? (role/fetch-one-role {:team_id 2
+                                       :user_id 7}))))))
 
 (deftest create!-returns-conflict-if-the-role-already-exists
   (is (some? (role/fetch-one-role {:team_id 1 :user_id 7})))

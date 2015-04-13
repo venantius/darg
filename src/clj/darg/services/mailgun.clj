@@ -8,7 +8,7 @@
 ;; API endpoints
 (def -base-url "https://api.mailgun.net/v3")
 (def -post-message-endpoint
-  (clojure.string/join [-base-url "/" settings/domain "/messages"]))
+  (clojure.string/join [-base-url "/" settings/mailgun-domain "/messages"]))
 
 ;; messages API
 (defn send-message

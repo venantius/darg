@@ -1,4 +1,4 @@
-(defproject darg "0.1.1-SNAPSHOT"
+(defproject darg "0.1.2"
   :description "Simple Accomplishment Tracking for Teams"
   :min-lein-version "2.0.0"
   :url "http://darg.io"
@@ -47,6 +47,7 @@
 
                  ;; templating
                  [enlive "1.1.5"]
+                 [selmer "0.8.2"]
 
                  ;; testing
                  [ring-mock "0.1.5"]]

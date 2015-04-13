@@ -2,7 +2,7 @@ var darg = angular.module('darg',
                           ['ngCookies', 
                            'ngRoute', 
                            'ngLoadScript',
-                           'ui.date',
+                           'ui.bootstrap',
                            'ui.gravatar']);
 
 darg.config(['$routeProvider', '$locationProvider', 
@@ -61,6 +61,29 @@ darg.config(['$routeProvider', '$locationProvider',
     $locationProvider.hashPrefix('!');
    }
 ]);
+
+darg.config(function($provide) {
+  $provide.decorator('datepickerDirective', function($delegate) {
+    $delegate[0].templateUrl = '/templates/angular_bootstrap/datepicker/datepicker.html';
+    return $delegate;
+  });
+  $provide.decorator('yearpickerDirective', function($delegate) {
+    $delegate[0].templateUrl = '/templates/angular_bootstrap/datepicker/year.html';
+    return $delegate;
+  });
+  $provide.decorator('monthpickerDirective', function($delegate) {
+    $delegate[0].templateUrl = '/templates/angular_bootstrap/datepicker/month.html';
+    return $delegate;
+  });
+  $provide.decorator('daypickerDirective', function($delegate) {
+    $delegate[0].templateUrl = '/templates/angular_bootstrap/datepicker/day.html';
+    return $delegate;
+  });
+  $provide.decorator('datepickerPopupWrapDirective', function($delegate) {
+      $delegate[0].templateUrl = '/templates/angular_bootstrap/datepicker/popup.html';
+      return $delegate;
+  });
+});
 
 darg.controller('DargPasswordResetCtrl',
     ['$scope',
@@ -202,34 +225,40 @@ darg.controller('DargTeamCtrl',
         role,
         team,
         user) {
+    var self = this;
 
+    /* 
+     * Forms
+     */
     this.creationForm = {
         name: "",
     };
-    this.team = {};
-    this.roles = {};
-    this.currentRole = {field: ""};
-
     this.newRole = {
         email: "",
     };
 
-    this.deleteRole = role.deleteRole;
-    this.createRole = role.createRole;
+    /*
+     * Controller model
+     */
+    this.team = {};
+    this.roles = {};
+    this.currentRole = {field: ""};
 
-
-    this.createTeam = function() {
-        $http({
-            method: "post",
-            url: "/api/v1/team",
-            data: $.param(this.creationForm),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(data) {
-            url = "/timeline/" + data.id
-            $location.path(url);
-        })
+    /* 
+     * Alerts
+     */
+    this.invitationSuccessAlerts = [];
+    this.invitationFailureAlerts = [];
+    this.setAlert = function(alert_list, alert_content) {
+        alert_list[0] = {msg: alert_content};
     };
+
+    /* 
+     * Adding members to team
+     */
+    this.createRole = role.createRole;
+    this.createTeam = team.createTeam;
+
 
     /*
      * Utility functions
@@ -244,38 +273,71 @@ darg.controller('DargTeamCtrl',
         }
     };
 
-    /*
-     * $watch section
+
+    this._refreshTeamData = function(team_id) {
+        team.getTeam(team_id)
+        .then(function(data) {
+            self.team = data;
+        }, function(data) {
+            console.log(data);
+        });
+    };
+
+    /* 
+     * Since this gets called by $scope.$watch
      */
-    var self = this;
+    this._refreshTeamAndRoleData = function(team_id) {
+        self._refreshTeamData(team_id);
+
+        role.getTeamRoles(team_id)
+        .then(function(data) {
+            self.roles = data;
+        }, function(data) {
+            console.log(data);
+        });
+
+        role.getRole(team_id, $cookieStore.get('id'))
+        .then(function(data) {
+            self.currentRole = data;
+        }, function(data) {
+            console.log(data);
+        });
+    }
+
+    /* Delete a role, and update the model */
+    this.deleteRole = function(team_id, user_id) {
+        role.deleteRole(team_id, user_id)
+        .then(function(data) {
+            self._refreshTeamAndRoleData(team_id);
+        }, function(data) {
+             console.log(data);
+        });
+    };
+
+    /* Create a role, and update the model */
+    this.createRole = function(team_id, params) {
+        role.createRole(team_id, params)
+        .then(function(data) {
+            self._refreshTeamAndRoleData(team_id);
+            message = "Invitation sent to " + params.email + "!";
+            self.setAlert(self.invitationSuccessAlerts, message);
+        }, function(data) {
+            console.log(data);
+            self.setAlert(self.invitationFailureAlerts, data.message);
+        });
+    };
 
     /* Watch what team we should be looking at */
     $scope.$watch(function() {
         return $routeParams.teamId
     }, function(oldValue, newValue) {
         if (newValue != null) {
-            team.getTeam(newValue)
-            .then(function(data) {
-                self.team = data;
-            }, function(data) {
-                console.log("Failed to update team.");
-            });
-
-            role.getTeamRoles(newValue)
-            .then(function(data) {
-                self.roles = data;
-            }, function(data) {
-                console.log("Failed to update roles.");
-            });
-
-            role.getRole(newValue, $cookieStore.get('id'))
-            .then(function(data) {
-                self.currentRole = data;
-            }, function(data) {
-                console.log(data);
-            });
+            console.log("refreshing...");
+            self._refreshTeamAndRoleData(newValue);
         }
     });
+
+
 
 }]);
 
@@ -285,7 +347,7 @@ darg.controller('DargTimelineCtrl',
      '$http', 
      '$location',
      '$routeParams',
-     '$scope', 
+     '$scope',
      'user',
      function(
          $cookies, 
@@ -295,6 +357,13 @@ darg.controller('DargTimelineCtrl',
          $routeParams,
          $scope, 
          user) {
+
+    /*
+     * This is the date for the Datepicker. It has to be at $scope,
+     * because of how the Angular UI folks wrote the datepicker. 
+     * I loathe this.
+     */
+    $scope.date = new Date();
 
     $scope.formatDateString = function(date) {
         return Date.parse(date);
@@ -522,7 +591,7 @@ darg.service('auth', function($cookieStore, $http, $location) {
 
 });
 
-darg.service('role', function($cookieStore, $http, $q) {
+darg.service('role', function($http, $q) {
     /*
      * API
      */
@@ -535,6 +604,9 @@ darg.service('role', function($cookieStore, $http, $q) {
         })
         .success(function(data) {
             deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
         })
         return deferred.promise;
     };
@@ -551,7 +623,7 @@ darg.service('role', function($cookieStore, $http, $q) {
             deferred.resolve(data);
         })
         .error(function(data) {
-            console.log(data)
+            deferred.reject(data);
         })
         return deferred.promise;
     };
@@ -568,7 +640,7 @@ darg.service('role', function($cookieStore, $http, $q) {
             deferred.resolve(data);
         })
         .error(function(data) {
-            console.log(data);
+            deferred.reject(data);
         })
         return deferred.promise;
     };
@@ -587,7 +659,7 @@ darg.service('role', function($cookieStore, $http, $q) {
             deferred.resolve(data);
         })
         .error(function(data) {
-            console.log(data);
+            deferred.reject(data);
         })
         return deferred.promise;
     };
@@ -604,7 +676,21 @@ darg.service('role', function($cookieStore, $http, $q) {
     }
 });
 
-darg.service('team', function($http, $q) {
+darg.service('team', function($http, $location, $q) {
+
+    this.createTeam = function(params) {
+        $http({
+            method: "post",
+            url: "/api/v1/team",
+            data: $.param(params),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+            url = "/team/" + data.id + "/timeline"
+            $location.path(url);
+        })
+    };
+
     this.getTeam = function(id) {
         url = "/api/v1/team/" + id;
         var deferred = $q.defer();
@@ -660,6 +746,8 @@ darg.service('user', function($cookieStore, $http) {
 * At some point I'll refactor it out into its own file (which should generally
 * happen with all of the Angular code), but I'm not yet certain how to do that.
 */
+
+
 
 (function (ng) {
   'use strict';
