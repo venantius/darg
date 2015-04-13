@@ -1,5 +1,6 @@
 (ns darg.db.entities
-  (:require [korma.core :refer :all]))
+  (:require [clojure.tools.logging :as log]
+            [korma.core :refer :all]))
 
 (declare
  user
@@ -23,6 +24,10 @@
 
 (defentity team
   (table :darg.team :team)
+  (prepare (fn [{:keys [email] :as t}]
+             (if email
+               (assoc t :email (clojure.string/lower-case email))
+               t)))
   (has-many task)
   (has-many repo :team_repo)
   (has-many role)

@@ -20,6 +20,17 @@
     (is (true? (:admin created-role)))
     (is (some? (team/fetch-one-team {:id (:id body)})))))
 
+(deftest team-creation-fails-if-a-team-with-that-email-exists
+  (let [request {:request-method :post 
+                 :params {:name "Darg"}
+                 :user {:id 4 :email "test-user2@darg.io"}}
+        {:keys [body status]} (api/create! request)]
+    (is (= status 409))
+    (is (= {:message "A team by that name already exists."}
+           body))))
+
+(deftest team-creation-fails-if-a-team-with-that-email-exists-case-check)
+
 (deftest we-can-fetch-a-team
   (let [request {:request-method :get
                  :params {:id "1"}

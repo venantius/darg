@@ -1,4 +1,4 @@
-darg.service('team', function($http, $q) {
+darg.service('team', function($http, $location, $q) {
 
     this.createTeam = function(params) {
         $http({
@@ -8,7 +8,7 @@ darg.service('team', function($http, $q) {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
-            url = "/timeline/" + data.id
+            url = "/team/" + data.id + "/timeline"
             $location.path(url);
         })
     };

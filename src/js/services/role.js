@@ -1,4 +1,4 @@
-darg.service('role', function($cookieStore, $http, $route, $q) {
+darg.service('role', function($http, $q) {
     /*
      * API
      */

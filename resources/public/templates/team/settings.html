@@ -56,7 +56,9 @@
             </div>
           </div>
         </form>
-        <div class="alert alert-success" ng-repeat="alert in Team.invitationSuccessAlerts">{{alert.msg}}
+        <div class="alert alert-success" ng-repeat="alert in Team.invitationSuccessAlerts">
+          <span class="fui-mail mrm"></span>
+          {{alert.msg}}
           <button type="button" class="close fui-cross" data-dismiss="alert"></button>
         </div>
         <div class="alert alert-danger" ng-repeat="alert in Team.invitationFailureAlerts">{{alert.msg}}

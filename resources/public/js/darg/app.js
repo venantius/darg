@@ -274,22 +274,26 @@ darg.controller('DargTeamCtrl',
     };
 
 
-    /* 
-     * Since this gets called by $scope.$watch
-     */
-    this._refreshTeamAndRoleData = function(team_id) {
+    this._refreshTeamData = function(team_id) {
         team.getTeam(team_id)
         .then(function(data) {
             self.team = data;
         }, function(data) {
-            console.log("Failed to update team.");
+            console.log(data);
         });
+    };
+
+    /* 
+     * Since this gets called by $scope.$watch
+     */
+    this._refreshTeamAndRoleData = function(team_id) {
+        self._refreshTeamData(team_id);
 
         role.getTeamRoles(team_id)
         .then(function(data) {
             self.roles = data;
         }, function(data) {
-            console.log("Failed to update roles.");
+            console.log(data);
         });
 
         role.getRole(team_id, $cookieStore.get('id'))
@@ -587,7 +591,7 @@ darg.service('auth', function($cookieStore, $http, $location) {
 
 });
 
-darg.service('role', function($cookieStore, $http, $route, $q) {
+darg.service('role', function($http, $q) {
     /*
      * API
      */
@@ -672,7 +676,7 @@ darg.service('role', function($cookieStore, $http, $route, $q) {
     }
 });
 
-darg.service('team', function($http, $q) {
+darg.service('team', function($http, $location, $q) {
 
     this.createTeam = function(params) {
         $http({
@@ -682,7 +686,7 @@ darg.service('team', function($http, $q) {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
-            url = "/timeline/" + data.id
+            url = "/team/" + data.id + "/timeline"
             $location.path(url);
         })
     };

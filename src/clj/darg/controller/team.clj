@@ -17,12 +17,17 @@
   (let [email (team/email-from-name (:name params))
         params (-> params
                    (select-keys [:name])
-                   (assoc :email email))]
-    (let [team (team/create-team! params)]
-      (role/create-role! {:admin true
-                          :user_id (:id user)
-                          :team_id (:id team)})
-      (ok team))))
+                   (assoc :email email))
+        maybe-team (team/fetch-one-team {:email email})]
+    (cond
+      (some? maybe-team)
+      (conflict "A team by that name already exists.")
+      :else
+      (let [team (team/create-team! params)]
+        (role/create-role! {:admin true
+                            :user_id (:id user)
+                            :team_id (:id team)})
+        (ok team)))))
 
 (defn fetch
   "/api/v1/team/:id

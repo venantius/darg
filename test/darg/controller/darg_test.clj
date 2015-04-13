@@ -17,14 +17,13 @@
                         :params {:team_id "1"}
                         :request-method :get}
         {:keys [status body]} (api/get-team-darg request)]
-    (is (= status 200))
-    (println body)))
+    (is (= status 200))))
 
 (deftest user-cant-view-team-darg-if-theyre-not-on-that-team
-  (let [request {:user {:id 7 :email "test-user2@darg.io"}
+  (let [request {:user {:id 5 :email "test@darg.io"}
                         :params {:team_id "1"}
                         :request-method :get}
         {:keys [status body]} (api/get-team-darg request)]
-    (is (= status 401))
+    (is (= 401 status))
     (is (= body 
            {:message "You are not a member of this team."}))))
