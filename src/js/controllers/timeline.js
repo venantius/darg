@@ -4,7 +4,7 @@ darg.controller('DargTimelineCtrl',
      '$http', 
      '$location',
      '$routeParams',
-     '$scope', 
+     '$scope',
      'user',
      function(
          $cookies, 
@@ -14,6 +14,13 @@ darg.controller('DargTimelineCtrl',
          $routeParams,
          $scope, 
          user) {
+
+    /*
+     * This is the date for the Datepicker. It has to be at $scope,
+     * because of how the Angular UI folks wrote the datepicker. 
+     * I loathe this.
+     */
+    $scope.date = new Date();
 
     $scope.formatDateString = function(date) {
         return Date.parse(date);
