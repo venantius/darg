@@ -1,4 +1,4 @@
-(ns darg.oauth.github-test
+(ns ^:integration darg.oauth.github-test
   (:require [clojure.test :refer :all]
             [clojure.tools.logging :as logging]
             [darg.fixtures :refer [with-db-fixtures]]
@@ -26,7 +26,7 @@
 
 (use-fixtures :once cleanup-auth-tokens)
 
-(deftest we-can-successfully-get-an-oauth-token
+(deftest ^:integration we-can-successfully-get-an-oauth-token
   (is (some? access-token)))
 
 (deftest we-can-insert-and-link-a-github-user

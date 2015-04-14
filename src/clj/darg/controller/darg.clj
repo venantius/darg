@@ -1,5 +1,7 @@
 (ns darg.controller.darg
-  (:require [darg.api.responses :refer [ok unauthorized]]
+  (:require [clj-time.format :as f]
+            [clojure.tools.logging :as log]
+            [darg.api.responses :refer [ok unauthorized]]
             [darg.model.darg :as darg]
             [darg.model.user :as user]))
 
@@ -12,7 +14,7 @@
   [{:keys [params user] :as request}]
   (let [team-id (-> params :team_id read-string)]
     (ok
-     {:darg (darg/personal-timeline (:id user) team-id)})))
+     (darg/personal-timeline (:id user) team-id))))
 
 (defn get-team-darg
   "/api/v1/darg/team/:team-id
@@ -27,4 +29,20 @@
       (unauthorized "You are not a member of this team.")
       :else
       (ok
-       {:darg (darg/team-timeline team-id)}))))
+       (darg/team-timeline team-id)))))
+
+(defn get-team-darg-by-date
+  "/api/v1/darg/team/:team_id/:date
+   
+  Method: GET
+   
+  Retrieve a set of dargs for a particular date"
+  [{:keys [params user]}]
+  (let [team-id (-> params :team_id read-string)
+        date (-> params :date f/parse)]
+    (cond
+      (not (user/user-in-team? (:id user) team-id))
+      (unauthorized "You are not a member of this team.")
+      :else
+      (ok
+        (darg/team-timeline team-id date)))))

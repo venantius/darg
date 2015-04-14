@@ -26,6 +26,20 @@
 
     <!-- Team settings -->
     <div class="col-xs-6">
+
+      <h4>Settings</h4>
+      <form>
+        <div class="form-group">
+          Name
+          <input type="text" class="form-control" ng-model="Team.currentTeam.name">
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" ng-click="Team.updateTeam(Team.currentTeam)">Update</button>
+        </div>
+      </form>
+      {{Team.currentTeam}}
+
+      <!-- User administration -->
       <h4>Members</h4>
       <!-- list team members -->
       <div class="team-role" ng-repeat="role in Team.roles">
@@ -50,7 +64,7 @@
               <input type="email" class="form-control login-field" name="email" ng-model="Team.newRole.email" placeholder="Email address"/>
             </div>
             <div class="col-sm-2">
-              <button class="btn btn-primary" ng-click="Team.createRole(Team.team.id, Team.newRole)" ng-submit="Team.addAlert(Team.newRole.email)">
+              <button class="btn btn-primary" ng-click="Team.createRole(Team.currentTeam.id, Team.newRole)" ng-submit="Team.addAlert(Team.newRole.email)">
                 Send invitation!
               </button>
             </div>

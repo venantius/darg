@@ -47,6 +47,11 @@ darg.config(['$routeProvider', '$locationProvider',
             controller: 'DargTimelineCtrl',
             controllerAs: 'Timeline'
         })
+        .when('/team/:teamId/timeline/:date', {
+            templateUrl: '/templates/team/timeline.html',
+            controller: 'DargTimelineCtrl',
+            controllerAs: 'Timeline'
+        })
         .when('/settings/profile', {
             templateUrl: '/templates/settings/profile.html',
             controller: 'DargSettingsCtrl',
@@ -166,41 +171,10 @@ darg.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore'
     };
 }]);
 
-darg.controller('DargTaskCreationCtrl', 
-    ['$scope', 
-     '$http', 
-     '$routeParams',
-     '$cookies', 
-     '$cookieStore', 
-     'user',
-     function(
-         $scope, 
-         $http, 
-         $routeParams,
-         $cookies, 
-         $cookieStore, 
-         user) {
-
-    $scope.TaskForm = {
-        "date": "",
-        "task": "",
-        "team_id": ""
-    };
-
-    $scope.PostTask = function(darg) {
-        $scope.TaskForm.date = darg.date;
-        $scope.TaskForm.team_id = $routeParams.teamId;
-        $http({
-            method: "post",
-            url: "/api/v1/task",
-            data: $.param($scope.TaskForm),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(data) {
-            console.log("Posted new task!");
-            $scope.GetTimeline(user.current_team);
-        })
-    }
+darg.controller('DargTaskCtrl', 
+    [function() {
+    
+    this.task = null;
 
 }]);
 
@@ -240,7 +214,7 @@ darg.controller('DargTeamCtrl',
     /*
      * Controller model
      */
-    this.team = {};
+    this.currentTeam = {};
     this.roles = {};
     this.currentRole = {field: ""};
 
@@ -252,13 +226,6 @@ darg.controller('DargTeamCtrl',
     this.setAlert = function(alert_list, alert_content) {
         alert_list[0] = {msg: alert_content};
     };
-
-    /* 
-     * Adding members to team
-     */
-    this.createRole = role.createRole;
-    this.createTeam = team.createTeam;
-
 
     /*
      * Utility functions
@@ -277,18 +244,13 @@ darg.controller('DargTeamCtrl',
     this._refreshTeamData = function(team_id) {
         team.getTeam(team_id)
         .then(function(data) {
-            self.team = data;
+            self.currentTeam = data;
         }, function(data) {
             console.log(data);
         });
     };
 
-    /* 
-     * Since this gets called by $scope.$watch
-     */
-    this._refreshTeamAndRoleData = function(team_id) {
-        self._refreshTeamData(team_id);
-
+    this._refreshRoleData = function(team_id) {
         role.getTeamRoles(team_id)
         .then(function(data) {
             self.roles = data;
@@ -302,23 +264,46 @@ darg.controller('DargTeamCtrl',
         }, function(data) {
             console.log(data);
         });
-    }
+    };
 
     /* Delete a role, and update the model */
     this.deleteRole = function(team_id, user_id) {
         role.deleteRole(team_id, user_id)
         .then(function(data) {
-            self._refreshTeamAndRoleData(team_id);
+            self._refreshRoleData(team_id);
         }, function(data) {
              console.log(data);
         });
+    };
+
+    this.createTeam = function(params) {
+        team.createTeam(params).
+            then(function(data) {
+                user.getCurrentUser()
+                .then(function(data) {
+                    user.info = data;
+                }, function(data) {
+                    console.log(data)
+                });
+            }, function(data) {
+                console.log(data)
+            });
+    }
+
+    this.updateTeam = function(params) {
+        team.updateTeam($routeParams.teamId, params).
+            then(function(data) {
+                console.log("success!");
+            }, function(data) {
+                console.log(data);
+            });
     };
 
     /* Create a role, and update the model */
     this.createRole = function(team_id, params) {
         role.createRole(team_id, params)
         .then(function(data) {
-            self._refreshTeamAndRoleData(team_id);
+            self._refreshRoleData(team_id);
             message = "Invitation sent to " + params.email + "!";
             self.setAlert(self.invitationSuccessAlerts, message);
         }, function(data) {
@@ -330,44 +315,65 @@ darg.controller('DargTeamCtrl',
     /* Watch what team we should be looking at */
     $scope.$watch(function() {
         return $routeParams.teamId
-    }, function(oldValue, newValue) {
+    }, function(newValue, oldValue) {
         if (newValue != null) {
-            console.log("refreshing...");
-            self._refreshTeamAndRoleData(newValue);
+            self._refreshTeamData(newValue);
+            self._refreshRoleData(newValue);
         }
     });
-
-
-
 }]);
 
 darg.controller('DargTimelineCtrl', 
-    ['$cookies',
-     '$cookieStore',
-     '$http', 
+    ['$http',
      '$location',
      '$routeParams',
      '$scope',
+     'datepicker',
+     'task',
+     'timeline',
      'user',
      function(
-         $cookies, 
-         $cookieStore, 
          $http,
          $location,
          $routeParams,
-         $scope, 
+         $scope,
+         datepicker,
+         task,
+         timeline,
          user) {
-
-    /*
-     * This is the date for the Datepicker. It has to be at $scope,
-     * because of how the Angular UI folks wrote the datepicker. 
-     * I loathe this.
-     */
-    $scope.date = new Date();
+    
+    var self = this;
 
     $scope.formatDateString = function(date) {
-        return Date.parse(date);
+        return moment(date)._d;
     }
+
+    /*
+     * This is for the Datepicker. It has to be at $scope,
+     * because of how the Angular UI folks wrote the datepicker. 
+     */
+    this.show = datepicker.show;
+
+    this.setDate = function() {
+        if ($routeParams.date != null) {
+            $scope.date = moment($routeParams.date)._d;
+        } else {
+            $scope.date = new Date();
+        }
+    }
+    this.setDate();
+
+    $scope.open = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        $scope.opened = true;
+    };
+    $scope.dateOptions = {
+        formatYear: 'yy',
+        startingDay: 1,
+        maxMode: 'day'
+    };
 
     /* 
      * Display this user if they have content, or if they're the currently
@@ -392,31 +398,43 @@ darg.controller('DargTimelineCtrl',
         }
     }
 
-    $scope.GetTimeline = function(id) {
-        if (id != null) {
-            url = "/api/v1/darg/team/" + id
-            $http({
-                method: "get",
-                url: url
-            })
-            .success(function(data) {
-                url = "/team/" + id + "/timeline";
-                $location.path(url);
-                $scope.Timeline = data;
-            })
-            .error(function(data) {
-                console.log("Failed to get timeline");
-            });
-        } else {
-            console.log("Something is fucked");
+    this._refreshTimeline = function () {
+        timeline.getTimeline($routeParams.teamId, $routeParams.date)
+        .then(function(data) {
+            self.events = data;
+        }, function(data) {
+            console.log(data) 
+        });
+    }
+
+    this.postTask = function(date, taskString) {
+        var params = {
+            "date": date,
+            "team_id": $routeParams.teamId,
+            "task": taskString
         }
-    };
+        task.createTask(params)
+        .then(function(data) {
+            self._refreshTimeline();
+        }, function(data) {
+            console.log(data)
+        });
+    }
 
     $scope.$watch(function() {
-        return user.current_team
-    }, function(oldValue, newValue) {
-        if (user.current_team != null) {
-            $scope.GetTimeline(user.current_team);
+        return $routeParams.teamId;
+    }, function(newValue, oldValue) {
+        self._refreshTimeline();
+    });
+
+    $scope.$watch(function() {
+        return $scope.date;
+    }, function(newValue, oldValue) {
+        if (newValue != null) {
+            date = moment(newValue).format('YYYY-MM-DD');
+            url = "/team/" + $routeParams.teamId
+                + "/timeline/" + date;
+            $location.url(url);
         }
     });
 }]);
@@ -449,7 +467,6 @@ darg.controller('DargUserCtrl',
         }
     };
 
-    $scope.currentUser = {};
     $scope.LoginForm = {
         email: "",
         password: ""
@@ -513,20 +530,17 @@ darg.controller('DargUserCtrl',
     };
 
     $scope.getCurrentUser = function() {
-        url = "/api/v1/user/" + $cookieStore.get('id');
-        $http({
-            method: "get",
-            url: url
-        })
-        .success(function(data) {
+        user.getCurrentUser()
+        .then(function(data) {
             user.info = data;
-            $scope.currentUser = data;
             $scope.UserProfile.name = data.name;
             $scope.UserProfile.email = data.email;
             $scope.UserProfile.timezone = data.timezone;
             $scope.UserProfile.email_hour = data.email_hour;
             user.current_team = getDefaultTeam();
-        })
+        }, function(data) {
+            console.log(data)
+        });
     };
 
     $scope.isCurrentUser = function(id) {
@@ -550,15 +564,21 @@ darg.controller('DargUserCtrl',
     /* watchers */
     $scope.$watch(function() {
         return $scope.loggedIn()
-    }, function(oldValue, newValue) {
+    }, function(newValue, oldValue) {
         if ($scope.loggedIn() == true) {
             $scope.getCurrentUser();
         }
     });
 
     $scope.$watch(function() {
+        return user.info
+    }, function(newValue, oldValue) {
+        $scope.currentUser = newValue;
+    });
+
+    $scope.$watch(function() {
         return getDefaultTeam()
-    }, function(oldValue, newValue) {
+    }, function(newValue, oldValue) {
         user.current_team = getDefaultTeam();
     });
 }]);
@@ -589,6 +609,10 @@ darg.service('auth', function($cookieStore, $http, $location) {
         })
     };
 
+});
+
+darg.service('datepicker', function() {
+    this.show = true;
 });
 
 darg.service('role', function($http, $q) {
@@ -676,9 +700,31 @@ darg.service('role', function($http, $q) {
     }
 });
 
+darg.service('task', function($http, $q) {
+
+    this.createTask = function(params) {
+        var deferred = $q.defer();
+        $http({
+            method: "post",
+            url: "/api/v1/task",
+            data: $.param(params),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+});
+
 darg.service('team', function($http, $location, $q) {
 
     this.createTeam = function(params) {
+        var deferred = $q.defer();
         $http({
             method: "post",
             url: "/api/v1/team",
@@ -688,7 +734,12 @@ darg.service('team', function($http, $location, $q) {
         .success(function(data) {
             url = "/team/" + data.id + "/timeline"
             $location.path(url);
+            deferred.resolve(data);
         })
+        .error(function(data) {
+            deferred.reject(data);
+        })
+        return deferred.promise;
     };
 
     this.getTeam = function(id) {
@@ -701,11 +752,53 @@ darg.service('team', function($http, $location, $q) {
         .success(function(data) {
             deferred.resolve(data);
         })
+        .error(function(data) {
+            deferred.reject(data);
+        })
+        return deferred.promise;
+    };
+
+    this.updateTeam = function(id, params) {
+        url = "/api/v1/team/" + id;
+        var deferred = $q.defer();
+        $http({
+            method: "post",
+            url: url,
+            data: $.param(params),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        })
         return deferred.promise;
     };
 });
 
-darg.service('user', function($cookieStore, $http) {
+darg.service('timeline', function($http, $q) {
+    this.getTimeline = function(team_id, date) {
+        url = "/api/v1/darg/team/" + team_id
+        if (date != null) {
+            url += "/" + date 
+        };
+        var deferred = $q.defer();
+        $http({
+            method: "get",
+            url: url
+        })
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+});
+
+darg.service('user', function($cookieStore, $http, $q) {
     this.info = null;
     this.current_team = null;
 
@@ -722,6 +815,7 @@ darg.service('user', function($cookieStore, $http) {
     };
 
     this.resetPassword = function(params) {
+        var deferred = $q.defer();
         $http({
             method: "post",
             url: "/api/v1/password_reset",
@@ -737,6 +831,21 @@ darg.service('user', function($cookieStore, $http) {
         });
     };
 
+    this.getCurrentUser = function() {
+        var deferred = $q.defer();
+        url = "/api/v1/user/" + $cookieStore.get('id');
+        $http({
+            method: "get",
+            url: url
+        })
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        })
+        return deferred.promise;
+    }
 });
 
 /* 

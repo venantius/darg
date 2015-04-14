@@ -1,5 +1,6 @@
 (ns darg.model.darg
   (:require [clj-time.coerce :as c]
+            [clojure.tools.logging :as log]
             [darg.db.entities :as db]
             [darg.model.user :as user]
             [darg.model.team :as team]
@@ -13,8 +14,8 @@
   (select db/user
           (fields [:email])
           (with db/task
-            (where {:team_id team-id
-                    :date (c/to-sql-date date)}))
+                (where {:team_id team-id
+                        :date (c/to-sql-date date)}))
           (where {:id [in role-ids]})))
 
 (defn- formatted-team-darg-by-date
@@ -25,13 +26,17 @@
 
 (defn team-timeline
   "Build a darg timeline for a given team."
-  [team-id]
-  (let [role-ids (map :id (team/fetch-roles team-id))
-        dates (map c/to-sql-date (dt/date-range 5))
-        date (first dates)]
-    (map (partial
+  ([team-id]
+   (let [role-ids (map :id (team/fetch-roles team-id))
+         dates (map c/to-sql-date (dt/date-range 5))]
+     (map (partial
            formatted-team-darg-by-date
            team-id role-ids) dates)))
+  ([team-id date]
+   (let [role-ids (map :id (team/fetch-roles team-id))
+         date (c/to-sql-date date)]
+     (list (formatted-team-darg-by-date
+       team-id role-ids date)))))
 
 (defn personal-timeline
   "Build a darg timeline for a single person on a single team.
@@ -42,6 +47,6 @@
         dates (map c/to-sql-date (dt/date-range 5))
         tasks-by-date (map (partial user/fetch-tasks-by-team-and-date user team-id) dates)]
     (reduce conj []
-      (map (fn [k t] {:date (util/sql-datetime->date-str k)
-                      :tasks t})
-           dates tasks-by-date))))
+            (map (fn [k t] {:date (util/sql-datetime->date-str k)
+                            :tasks t})
+                 dates tasks-by-date))))

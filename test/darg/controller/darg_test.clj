@@ -27,3 +27,15 @@
     (is (= 401 status))
     (is (= body 
            {:message "You are not a member of this team."}))))
+
+(deftest get-team-darg-by-date-works
+  (is (= 0 1)))
+
+(deftest get-team-darg-by-date-returns-401-on-unauthorized
+  (let [request {:user {:id 5 :email "test@darg.io"}
+                        :params {:team_id "1" :date "2015-04-30"}
+                        :request-method :get}
+        {:keys [status body]} (api/get-team-darg-by-date request)]
+    (is (= 401 status))
+    (is (= body 
+           {:message "You are not a member of this team."}))))
