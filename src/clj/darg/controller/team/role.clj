@@ -7,7 +7,7 @@
             [darg.api.responses :refer [conflict ok unauthorized]]))
 
 (defn create!
-  "/api/v1/team/:id/role
+  "/api/v1/team/:team_id/user
    
   Method: POST
    
@@ -26,7 +26,7 @@
     (cond
       (some? maybe-existing-role)
       (conflict 
-        "A user with that email address is already a member of this team.")
+       "A user with that email address is already a member of this team.")
       :else
       (do
         (when (some? (user/fetch-one-user {:email email}))
@@ -36,7 +36,7 @@
         (ok {:message "Invitation sent."})))))
 
 (defn fetch-all
-  "/api/v1/team/:id/role
+  "/api/v1/team/:team_id/user
    
   Method: GET
    
@@ -69,8 +69,37 @@
       (ok (role/fetch-one-role {:user_id target-user-id
                                 :team_id team-id})))))
 
+(defn update!
+  "/api/v1/team/:team_id/user/:user_id
+   
+  Method: POST
+   
+  Remove a user from a team."
+  [{:keys [params user]}]
+  (log/info "Updating team role:" params)
+  (let [user-id (:id user)
+        team-id (-> params :team_id read-string)
+        target-user-id (-> params :user_id read-string)]
+    (let [target-role (role/fetch-one-role-with-user {:user_id target-user-id
+                                                      :team_id team-id})
+          current-users-role (role/fetch-one-role {:user_id user-id
+                                                   :team_id team-id})]
+      (cond
+        (not (user/user-in-team? user-id team-id))
+        (unauthorized "You are not a member of this team.")
+        (and (not= (:user_id target-role) user-id)
+             (not= (:admin current-users-role) true))
+        (unauthorized "You do not have deletion permissions for this role.")
+        :else
+        (let [fields (select-keys params [:admin :role])
+              fields (if (some? (:admin fields))
+                       (update-in fields [:admin] read-string)
+                       fields)]
+          (log/info fields)
+          (ok (role/update-role! (:id target-role) fields)))))))
+
 (defn delete!
-  "/api/v1/team/:id/role
+  "/api/v1/team/:team_id/user/:user_id
    
   Method: DELETE
    

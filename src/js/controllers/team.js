@@ -43,6 +43,7 @@ darg.controller('DargTeamCtrl',
      */
     this.invitationSuccessAlerts = [];
     this.invitationFailureAlerts = [];
+    this.settingsUpdatedAlerts = [];
     this.setAlert = function(alert_list, alert_content) {
         alert_list[0] = {msg: alert_content};
     };
@@ -96,6 +97,16 @@ darg.controller('DargTeamCtrl',
         });
     };
 
+    this.updateRole = function(team_id, user_id, params) {
+        console.log("Updating...");
+        role.updateRole(team_id, user_id, params)
+        .then(function(data) {
+            console.log("Successfully updated!");
+        }, function(data) {
+            console.log(data);
+        });
+    };
+
     this.createTeam = function(params) {
         team.createTeam(params).
             then(function(data) {
@@ -114,6 +125,9 @@ darg.controller('DargTeamCtrl',
         team.updateTeam($routeParams.teamId, params).
             then(function(data) {
                 console.log("success!");
+                $scope.getCurrentUser();
+                message = "Successfully updated!";
+                self.setAlert(self.settingsUpdatedAlerts, message);
             }, function(data) {
                 console.log(data);
             });

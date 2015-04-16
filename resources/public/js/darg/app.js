@@ -62,7 +62,10 @@ darg.config(['$routeProvider', '$locationProvider',
             redirectTo: '/'
         });
 
-    $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: false
+    });
     $locationProvider.hashPrefix('!');
    }
 ]);
@@ -223,6 +226,7 @@ darg.controller('DargTeamCtrl',
      */
     this.invitationSuccessAlerts = [];
     this.invitationFailureAlerts = [];
+    this.settingsUpdatedAlerts = [];
     this.setAlert = function(alert_list, alert_content) {
         alert_list[0] = {msg: alert_content};
     };
@@ -276,6 +280,16 @@ darg.controller('DargTeamCtrl',
         });
     };
 
+    this.updateRole = function(team_id, user_id, params) {
+        console.log("Updating...");
+        role.updateRole(team_id, user_id, params)
+        .then(function(data) {
+            console.log("Successfully updated!");
+        }, function(data) {
+            console.log(data);
+        });
+    };
+
     this.createTeam = function(params) {
         team.createTeam(params).
             then(function(data) {
@@ -294,6 +308,9 @@ darg.controller('DargTeamCtrl',
         team.updateTeam($routeParams.teamId, params).
             then(function(data) {
                 console.log("success!");
+                $scope.getCurrentUser();
+                message = "Successfully updated!";
+                self.setAlert(self.settingsUpdatedAlerts, message);
             }, function(data) {
                 console.log(data);
             });
@@ -635,6 +652,25 @@ darg.service('role', function($http, $q) {
         return deferred.promise;
     };
 
+    this.createRole = function(team_id, params) {
+        console.log("creating role...");
+        url = "/api/v1/team/" + team_id + "/user"
+        var deferred = $q.defer();
+        $http({
+            method: "post",
+            url: url,
+            data: $.param(params),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        })
+        return deferred.promise;
+    };
+
     this.getRole = function(team_id, user_id) {
         console.log("fetching role...");
         url = "/api/v1/team/" + team_id + "/user/" + user_id;
@@ -642,6 +678,26 @@ darg.service('role', function($http, $q) {
         $http({
             method: "get",
             url: url
+        })
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        })
+        return deferred.promise;
+    };
+
+    this.updateRole = function(team_id, user_id, params) {
+        console.log("updating role...");
+        console.log(params);
+        url = "/api/v1/team/" + team_id + "/user/" + user_id;
+        var deferred = $q.defer();
+        $http({
+            method: "post",
+            url: url,
+            data: $.param(params),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
             deferred.resolve(data);
@@ -669,24 +725,7 @@ darg.service('role', function($http, $q) {
         return deferred.promise;
     };
 
-    this.createRole = function(team_id, params) {
-        console.log("creating role...");
-        url = "/api/v1/team/" + team_id + "/user"
-        var deferred = $q.defer();
-        $http({
-            method: "post",
-            url: url,
-            data: $.param(params),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(data) {
-            deferred.resolve(data);
-        })
-        .error(function(data) {
-            deferred.reject(data);
-        })
-        return deferred.promise;
-    };
+
 
     /* 
      * Utility Functions

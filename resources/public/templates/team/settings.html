@@ -15,13 +15,18 @@
             <i class="fa fa-cog"></i>
           </a>
         </li>
-        <li class="divider"></li>
+        <li class="divider">
+        </li>
         <li>
-          <a href="/team">
-            Create a new team
-          </a>
+          <form action="/team">
+            <button type="submit" class="btn btn-primary btn-block">
+              Create a new team&nbsp
+              <i class="fa fa-plus"></i>
+            </button>
+          </form>
         </li>
       </ul>
+
     </div>
 
     <!-- Team settings -->
@@ -34,28 +39,60 @@
           <input type="text" class="form-control" ng-model="Team.currentTeam.name">
         </div>
         <div class="form-group">
-          <button class="btn btn-primary" ng-click="Team.updateTeam(Team.currentTeam)">Update</button>
+          Email
+          <input type="text" disabled="disabled" class="form-control" ng-model="Team.currentTeam.email">
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" ng-click="Team.updateTeam(Team.currentTeam)">Save</button>
         </div>
       </form>
-      {{Team.currentTeam}}
+
+      <!-- Alerts -->
+      <div class="alert alert-success" ng-repeat="alert in Team.settingsUpdatedAlerts">
+        {{alert.msg}}
+        <button type="button" class="close fui-cross" data-dismiss="alert">
+        </button>
+      </div>
 
       <!-- User administration -->
       <h4>Members</h4>
       <!-- list team members -->
-      <div class="team-role" ng-repeat="role in Team.roles">
-        <form class="form-inline">
-          <img class="img-portrait settings-profile" gravatar-src="role.email" gravatr-size="64">
-          <div class="form-group">
-            <input type="email" class="form-control" id="exampleInputEmail2" placeholder="{{role.email}}" disabled>
+      <div class="col-xs-12" ng-repeat="role in Team.roles">
+        <div class="row role-card">
+          <div class="col-xs-10 role-contents">
+            <form>
+              <div class="form-group">
+                <h6>
+                  {{role.name}}
+                </h6>
+
+                <input class="form-control" ng-model=role.role placeholder="What is this person's role on your team?">
+              </div>
+              <div class="form-group">
+                <label class="checkbox">
+                  <input type="checkbox" ng-model="role.admin" ng-disabled="{{!Team.canDelete(role)}}" class="custom-checkbox">
+                  <span class="icons">
+                    <span class="icon-unchecked">
+                    </span>
+                    <span class="icon-checked">
+                    </span>
+                  </span>
+                  Admin
+                </label>
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-primary" ng-click="Team.updateRole(role.team_id, role.user_id, role)" ng-show="Team.canDelete(role.user_id)">Save</button>
+                <button type="button" class="btn btn-danger" ng-click="Team.deleteRole(role.team_id, role.user_id)" ng-show="Team.canDelete(role.user_id)">Remove</button>
+              </div>
+            </form>
           </div>
-          <div class="form-group">
-            <button type="button" class="btn btn-danger" ng-click="Team.deleteRole(role.team_id, role.user_id)" ng-show="Team.canDelete(role.user_id)">Remove</button>
+          <div class="col-xs-2 tile role-profile">
+            <img class="img-portrait timeline-profile" gravatar-src="role.email" gravatr-size="64">
           </div>
-          <div class="form-group" ng-show="role.admin">
-            This user is an admin
-          </div>
-        </form>
+        </div>
       </div>
+
+      <!-- Invite new members -->
       <div ng-show="Team.currentRole.admin">
         <h6>Add a new member</h6>
         <form class="form-horizontal">
