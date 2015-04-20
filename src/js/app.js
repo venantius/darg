@@ -47,6 +47,11 @@ darg.config(['$routeProvider', '$locationProvider',
             controller: 'DargTimelineCtrl',
             controllerAs: 'Timeline'
         })
+        .when('/team/:teamId/timeline/:date', {
+            templateUrl: '/templates/team/timeline.html',
+            controller: 'DargTimelineCtrl',
+            controllerAs: 'Timeline'
+        })
         .when('/settings/profile', {
             templateUrl: '/templates/settings/profile.html',
             controller: 'DargSettingsCtrl',
@@ -57,7 +62,10 @@ darg.config(['$routeProvider', '$locationProvider',
             redirectTo: '/'
         });
 
-    $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: false
+    });
     $locationProvider.hashPrefix('!');
    }
 ]);

@@ -19486,6 +19486,10 @@ h6.about {
 .about-left {
   padding-right: 45px;
 }
+.ui-datepicker {
+  outline-width: 0;
+  margin-top: 0px;
+}
 .dictionary-text {
   margin: 0 0 0 0;
   padding: 0 0 0 0;
@@ -19544,8 +19548,22 @@ img.settings-profile {
   width: 64px;
   height: 64px;
 }
+div.role-card {
+  background-color: #eff0f2;
+  border-radius: 6px;
+  padding: 14px;
+  margin-bottom: 20px;
+}
+div.role-contents {
+  background-color: #fff;
+  padding: 14px;
+  border-radius: 6px;
+}
+div.role-profile {
+  padding-left: 10px;
+}
 div.team-role {
-  padding-bottom: 20px;
+  padding-top: 30px;
 }
 /*
 

@@ -26,7 +26,6 @@ darg.controller('DargUserCtrl',
         }
     };
 
-    $scope.currentUser = {};
     $scope.LoginForm = {
         email: "",
         password: ""
@@ -90,20 +89,17 @@ darg.controller('DargUserCtrl',
     };
 
     $scope.getCurrentUser = function() {
-        url = "/api/v1/user/" + $cookieStore.get('id');
-        $http({
-            method: "get",
-            url: url
-        })
-        .success(function(data) {
+        user.getCurrentUser()
+        .then(function(data) {
             user.info = data;
-            $scope.currentUser = data;
             $scope.UserProfile.name = data.name;
             $scope.UserProfile.email = data.email;
             $scope.UserProfile.timezone = data.timezone;
             $scope.UserProfile.email_hour = data.email_hour;
             user.current_team = getDefaultTeam();
-        })
+        }, function(data) {
+            console.log(data)
+        });
     };
 
     $scope.isCurrentUser = function(id) {
@@ -127,15 +123,21 @@ darg.controller('DargUserCtrl',
     /* watchers */
     $scope.$watch(function() {
         return $scope.loggedIn()
-    }, function(oldValue, newValue) {
+    }, function(newValue, oldValue) {
         if ($scope.loggedIn() == true) {
             $scope.getCurrentUser();
         }
     });
 
     $scope.$watch(function() {
+        return user.info
+    }, function(newValue, oldValue) {
+        $scope.currentUser = newValue;
+    });
+
+    $scope.$watch(function() {
         return getDefaultTeam()
-    }, function(oldValue, newValue) {
+    }, function(newValue, oldValue) {
         user.current_team = getDefaultTeam();
     });
 }]);

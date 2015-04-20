@@ -24,20 +24,21 @@
 
 (defroutes routes
   ;; site
-  (GET    "/"                         [] darg-spa)
-  (GET    "/team/:team_id"            [] darg-spa)
-  (GET    "/team/:team_id/timeline"   [] darg-spa)
-  (GET    "/about"                    [] darg-spa)
-  (GET    "/api"                      [] darg-spa)
-  (GET    "/faq"                      [] darg-spa)
-  (GET    "/integrations"             [] darg-spa)
+  (GET    "/"                               [] darg-spa)
+  (GET    "/team/:team_id"                  [] darg-spa)
+  (GET    "/team/:team_id/timeline"         [] darg-spa)
+  (GET    "/team/:team_id/timeline/:date"   [] darg-spa)
+  (GET    "/about"                          [] darg-spa)
+  (GET    "/api"                            [] darg-spa)
+  (GET    "/faq"                            [] darg-spa)
+  (GET    "/integrations"                   [] darg-spa)
 
-  (GET    "/password_reset"           [] darg-spa)
-  (GET    "/new_password"             [] darg-spa)
+  (GET    "/password_reset"                 [] darg-spa)
+  (GET    "/new_password"                   [] darg-spa)
 
-  (GET    "/team"                     [] darg-spa)
-  (GET    "/settings"                 [] darg-spa)
-  (GET    "/settings/:settings_page"  [] darg-spa)
+  (GET    "/team"                           [] darg-spa)
+  (GET    "/settings"                       [] darg-spa)
+  (GET    "/settings/:settings_page"        [] darg-spa)
 
   ;; debug
   (ANY    "/debug"                          request (debug request))
@@ -50,17 +51,25 @@
   (GET    "/api/v1/logout"                  request (auth/logout request))
   (POST   "/api/v1/password_reset"          request (auth/password-reset request))
   
-  (POST   "/api/v1/email"                   request (email/email request))
-  (GET    "/api/v1/darg/:team_id"           request (darg/get-darg request))
-  (GET    "/api/v1/darg/team/:team_id"      request (darg/get-team-darg request))
-  (POST   "/api/v1/task"                    request (task/create! request))
+  (POST   "/api/v1/email"                        request (email/email request))
 
-  (POST   "/api/v1/team"                    request (team/create! request))
-  (GET    "/api/v1/team/:id"                request (team/fetch request))
+  (GET    "/api/v1/darg/:team_id"                request 
+       (darg/get-darg request))
+  (GET    "/api/v1/darg/team/:team_id"           request 
+       (darg/get-team-darg request))
+  (GET    "/api/v1/darg/team/:team_id/:date"     request 
+       (darg/get-team-darg-by-date request))
+
+  (POST   "/api/v1/task"                         request (task/create! request))
+
+  (POST   "/api/v1/team"                         request (team/create! request))
+  (GET    "/api/v1/team/:id"                     request (team/fetch request))
+  (POST   "/api/v1/team/:id"                     request (team/update! request))
 
   (GET    "/api/v1/team/:team_id/user"           request (role/fetch-all request))
   (POST   "/api/v1/team/:team_id/user"           request (role/create! request))
   (GET    "/api/v1/team/:team_id/user/:user_id"  request (role/fetch-one request))
+  (POST   "/api/v1/team/:team_id/user/:user_id"  request (role/update! request))
   (DELETE "/api/v1/team/:team_id/user/:user_id"  request (role/delete! request))
 
   (POST   "/api/v1/user"                    request (user/create! request))

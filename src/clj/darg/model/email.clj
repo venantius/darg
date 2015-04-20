@@ -41,7 +41,7 @@
 (defn todays-subject-line
   [{:keys [timezone] :as user}]
   (let [today (dt/local-time (t/now) timezone)]
-    (str "Darg.io: What did you do today? [" (f/unparse (f/formatter "MMMM dd YYYY") today) "]")))
+    (str "Darg.io: What did you do today? [" (f/unparse (f/formatter-local "MMMM dd YYYY") today) "]")))
 
 (defn from
   [{:keys [email name] :as team}]

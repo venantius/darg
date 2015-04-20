@@ -1,30 +1,54 @@
 darg.controller('DargTimelineCtrl', 
-    ['$cookies',
-     '$cookieStore',
-     '$http', 
+    ['$http',
      '$location',
      '$routeParams',
      '$scope',
+     'datepicker',
+     'task',
+     'timeline',
      'user',
      function(
-         $cookies, 
-         $cookieStore, 
          $http,
          $location,
          $routeParams,
-         $scope, 
+         $scope,
+         datepicker,
+         task,
+         timeline,
          user) {
-
-    /*
-     * This is the date for the Datepicker. It has to be at $scope,
-     * because of how the Angular UI folks wrote the datepicker. 
-     * I loathe this.
-     */
-    $scope.date = new Date();
+    
+    var self = this;
 
     $scope.formatDateString = function(date) {
-        return Date.parse(date);
+        return moment(date)._d;
     }
+
+    /*
+     * This is for the Datepicker. It has to be at $scope,
+     * because of how the Angular UI folks wrote the datepicker. 
+     */
+    this.show = datepicker.show;
+
+    this.setDate = function() {
+        if ($routeParams.date != null) {
+            $scope.date = moment($routeParams.date)._d;
+        } else {
+            $scope.date = new Date();
+        }
+    }
+    this.setDate();
+
+    $scope.open = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        $scope.opened = true;
+    };
+    $scope.dateOptions = {
+        formatYear: 'yy',
+        startingDay: 1,
+        maxMode: 'day'
+    };
 
     /* 
      * Display this user if they have content, or if they're the currently
@@ -49,31 +73,43 @@ darg.controller('DargTimelineCtrl',
         }
     }
 
-    $scope.GetTimeline = function(id) {
-        if (id != null) {
-            url = "/api/v1/darg/team/" + id
-            $http({
-                method: "get",
-                url: url
-            })
-            .success(function(data) {
-                url = "/team/" + id + "/timeline";
-                $location.path(url);
-                $scope.Timeline = data;
-            })
-            .error(function(data) {
-                console.log("Failed to get timeline");
-            });
-        } else {
-            console.log("Something is fucked");
+    this._refreshTimeline = function () {
+        timeline.getTimeline($routeParams.teamId, $routeParams.date)
+        .then(function(data) {
+            self.events = data;
+        }, function(data) {
+            console.log(data) 
+        });
+    }
+
+    this.postTask = function(date, taskString) {
+        var params = {
+            "date": date,
+            "team_id": $routeParams.teamId,
+            "task": taskString
         }
-    };
+        task.createTask(params)
+        .then(function(data) {
+            self._refreshTimeline();
+        }, function(data) {
+            console.log(data)
+        });
+    }
 
     $scope.$watch(function() {
-        return user.current_team
-    }, function(oldValue, newValue) {
-        if (user.current_team != null) {
-            $scope.GetTimeline(user.current_team);
+        return $routeParams.teamId;
+    }, function(newValue, oldValue) {
+        self._refreshTimeline();
+    });
+
+    $scope.$watch(function() {
+        return $scope.date;
+    }, function(newValue, oldValue) {
+        if (newValue != null) {
+            date = moment(newValue).format('YYYY-MM-DD');
+            url = "/team/" + $routeParams.teamId
+                + "/timeline/" + date;
+            $location.url(url);
         }
     });
 }]);

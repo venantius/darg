@@ -85,14 +85,16 @@
    (first
     (select entities/user
             (fields :id :active :bot :admin :name :email :timezone :email_hour)
-            (with entities/team)
+            (with entities/team
+                  (order :team.name :asc))
             (where params))))
   ([params team-ids]
    (first
     (select entities/user
             (fields :id :active :bot :admin :name :email :timezone :email_hour)
             (with entities/team
-                  (where {:team.id [in team-ids]}))
+                  (where {:team.id [in team-ids]})
+                  (order :team.name :asc))
             (where params)))))
 
 ; Github Account
@@ -122,8 +124,8 @@
   "Returns the map of teams that a user belongs to."
   [user]
   (:team (first (select entities/user
-                         (where user)
-                         (with entities/team)))))
+                        (where user)
+                        (with entities/team)))))
 
 (defn team-overlap
   "Returns a seq of team-maps that two users have in common
