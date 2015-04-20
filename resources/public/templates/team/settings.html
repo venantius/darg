@@ -38,10 +38,12 @@
           Name
           <input type="text" class="form-control" ng-model="Team.currentTeam.name">
         </div>
+        <!-- At the moment we don't let people change this. 
         <div class="form-group">
           Email
           <input type="text" disabled="disabled" class="form-control" ng-model="Team.currentTeam.email">
         </div>
+        --> 
         <div class="form-group">
           <button class="btn btn-primary" ng-click="Team.updateTeam(Team.currentTeam)">Save</button>
         </div>
@@ -68,21 +70,26 @@
 
                 <input class="form-control" ng-model=role.role placeholder="What is this person's role on your team?">
               </div>
-              <div class="form-group">
-                <label class="checkbox">
-                  <input type="checkbox" ng-model="role.admin" ng-disabled="{{!Team.canDelete(role)}}" class="custom-checkbox">
-                  <span class="icons">
-                    <span class="icon-unchecked">
+
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <label class="checkbox">
+                    <input type="checkbox" ng-model="role.admin" ng-disabled="{{!Team.canDelete(role)}}" class="custom-checkbox">
+                    <span class="icons">
+                      <span class="icon-unchecked">
+                      </span>
+                      <span class="icon-checked">
+                      </span>
                     </span>
-                    <span class="icon-checked">
-                    </span>
-                  </span>
-                  Admin
-                </label>
+                    Admin
+                  </label>
+                </div>
               </div>
-              <div class="form-group">
-                <button type="button" class="btn btn-primary" ng-click="Team.updateRole(role.team_id, role.user_id, role)" ng-show="Team.canDelete(role.user_id)">Save</button>
-                <button type="button" class="btn btn-danger" ng-click="Team.deleteRole(role.team_id, role.user_id)" ng-show="Team.canDelete(role.user_id)">Remove</button>
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <button type="button" class="btn btn-primary" ng-click="Team.updateRole(role.team_id, role.user_id, role)" ng-show="Team.canDelete(role.user_id)">Save</button>
+                  <button type="button" class="btn btn-danger" ng-click="Team.deleteRole(role.team_id, role.user_id)" ng-show="Team.canDelete(role.user_id)">Remove</button>
+                </div>
               </div>
             </form>
           </div>

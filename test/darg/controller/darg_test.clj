@@ -1,7 +1,9 @@
 (ns darg.controller.darg-test
-  (:require [clojure.test :refer :all]
+  (:require [clj-time.format :as f]
+            [clojure.test :refer :all]
             [darg.fixtures :refer [with-db-fixtures]]
-            [darg.controller.darg :as api]))
+            [darg.controller.darg :as api]
+            [darg.model.darg :as darg]))
 
 (with-db-fixtures)
 
@@ -29,7 +31,12 @@
            {:message "You are not a member of this team."}))))
 
 (deftest get-team-darg-by-date-works
-  (is (= 0 1)))
+  (let [request {:user {:id 4 :email "test-user2@darg.io"}
+                        :params {:team_id "1" :date "2015-04-30"}
+                        :request-method :get}
+        {:keys [status body]} (api/get-team-darg-by-date request)]
+    (is (= 200 status))
+    (is (= body (darg/team-timeline 1 (f/parse "2015-04-30"))))))
 
 (deftest get-team-darg-by-date-returns-401-on-unauthorized
   (let [request {:user {:id 5 :email "test@darg.io"}
