@@ -1,0 +1,17 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Authentication": {
+    "Bucket": "ursacorp-credentials",
+    "Key": "quay.io"
+  },
+  "Image": {
+    "Name": "quay.io/venantius/darg",
+    "Update": "true"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "8080"
+    }
+  ],
+  "Logging": "/var/log/nginx"
+}

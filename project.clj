@@ -86,9 +86,7 @@
              {:env {:darg-environment "production"}}
 
              :uberjar
-             {:aot [darg.core]
-              :env {:darg-environment "production"
-                    :session-key "antarctica--bear"}}}
+             {:aot [darg.core]}}
 
   :uberjar-name "darg.jar"
   :repl-options {:port 6001}
