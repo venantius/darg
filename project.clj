@@ -40,10 +40,9 @@
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]
 
                  ;; webserver
-                 [ring "1.3.1"]
+                 [ring "1.3.2"]
                  [ring/ring-json "0.3.1"]
                  [compojure "1.1.8"]
-                 [http-kit "2.1.18"]
 
                  ;; templating
                  [enlive "1.1.5"]
@@ -87,6 +86,10 @@
              {:env {:darg-environment "production"}}
 
              :uberjar
-             {:aot [darg.core]}}
+             {:aot [darg.core]
+              :env {:darg-environment "production"
+                    :session-key "antarctica--bear"}}}
+
+  :uberjar-name "darg.jar"
   :repl-options {:port 6001}
   :main darg.core)
