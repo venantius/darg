@@ -8,7 +8,11 @@ test:
     - lein trampoline test :all
 
 deployment:
-  production:
+  heroku:
     branch: master
     heroku:
       appname: darg
+  beanstalk:
+    branch: master
+    commands: 
+      - ./deploy.sh

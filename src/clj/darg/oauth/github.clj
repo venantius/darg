@@ -11,7 +11,7 @@
             [darg.model.github-token :as gh-token]
             [darg.api.responses :as responses]
             [environ.core :as env]
-            [org.httpkit.client :as http]
+            [clj-http.client :as http]
             [slingshot.slingshot :refer [try+]]
             [tentacles.oauth :as t-oauth]))
 
@@ -63,7 +63,7 @@
                  :query-params {:code (-> request :params :code)
                                 :client_id client-id
                                 :client_secret client-secret}}
-        {:keys [status body error] :as resp} @(http/post "https://github.com/login/oauth/access_token" options)]
+        {:keys [status body error] :as resp} (http/post "https://github.com/login/oauth/access_token" options)]
     (cond (= status 200)
           (try
             (insert-and-link-github-user userid body)

@@ -7,18 +7,9 @@
             [darg.middleware.authentication :as authn]
             [darg.routes :refer [routes]]
             [environ.core :as env]
-            [org.httpkit.server :as server]
+            [ring.adapter.jetty :refer [run-jetty]]
             [ring.middleware.json :refer [wrap-json-response]]
             [ring.middleware.session.cookie :as cookie]))
-
-(def server (atom nil))
-
-(defn stop-web-server
-  "Stop the Darg.io web server process."
-  []
-  (when-not (nil? @server)
-    (@server :timeout 0)
-    (reset! server nil)))
 
 (def app
   (-> routes
@@ -36,4 +27,4 @@
   (init/configure)
   (let [port (Integer. (or (env/env :port) "8080"))]
     (logging/info "Starting Darg server on port" port)
-    (reset! server (server/run-server #'app {:port port}))))
+    (run-jetty #'app {:port port})))
