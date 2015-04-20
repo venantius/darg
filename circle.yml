@@ -12,7 +12,11 @@ deployment:
     branch: master
     heroku:
       appname: darg
+  quay.io:
+    branch: master
+    commands:
+      - ./scripts/quay-deploy.sh
   beanstalk:
     branch: master
     commands: 
-      - ./deploy.sh
+      - ./scripts/deploy.sh
