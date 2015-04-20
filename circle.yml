@@ -10,8 +10,7 @@ test:
 deployment:
   heroku:
     branch: master
-    heroku:
-      appname: darg
     commands:
+      - git push git@heroku.com:darg.git $CIRCLE_SHA1:master
       - ./scripts/quay-deploy.sh
       - ./scripts/deploy.sh
