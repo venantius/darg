@@ -10,10 +10,6 @@ export EB_ENVIRONMENT_NAME="$CIRCLE_PROJECT_REPONAME-env"
 export EB_RETRIES=10
 export EB_DELAY=10
 
-docker build -t $CIRCLE_PROJECT_REPONAME:$APPLICATION_VERSION
-
-sed "s#<BUCKET>#$EB_BUCKET#;s#<TAG>#$DOCKER_TAG#;s#<PORT>#$DOCKER_PORT#" < ./Dockerrun.aws.json.template > Dockerrun.aws.json
-
 zip -q -r eb.zip Dockerrun.aws.json
 aws s3 cp eb.zip $EB_DESTINATION
 
