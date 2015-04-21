@@ -4,6 +4,10 @@ machine:
   services:
     - docker
 
+dependencies:
+  pre:
+    - pip install -q awscli
+
 test:
   override:
     - lein trampoline eastwood
@@ -15,4 +19,4 @@ deployment:
     commands:
       - git push git@heroku.com:darg.git $CIRCLE_SHA1:master
       - source ./scripts/quay-deploy.sh
-      - source ./scripts/deploy.sh
+      - source ./scripts/eb-deploy.sh
