@@ -2,7 +2,7 @@
   "AWSEBDockerrunVersion": "1",
   "Authentication": {
     "Bucket": "ursacorp-credentials",
-    "Key": ".dockercfg"
+    "Key": "dockercfg"
   },
   "Image": {
     "Name": "quay.io/venantius/darg",
