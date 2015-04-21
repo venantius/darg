@@ -33,9 +33,10 @@
 
                  ;; db
                  [korma "0.4.0"]
-                 [ragtime/ragtime.core "0.3.8"]
-                 [ragtime/ragtime.sql "0.3.8"]
-                 [ragtime/ragtime.sql.files "0.3.8"]
+                 [ursacorp/ragtime.core "0.4.0"]
+                 [ursacorp/ragtime.sql "0.4.0"]
+                 [ursacorp/ragtime.sql.files "0.4.0"]
+                 [ursacorp/ragtime.sql.resources "0.4.0"]
                  [org.clojure/java.jdbc "0.3.5"]
                  [org.postgresql/postgresql "9.2-1004-jdbc4"]
 

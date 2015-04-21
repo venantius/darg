@@ -4,14 +4,19 @@
             [darg.db :as db]
             [ragtime.core :as ragtime]
             [ragtime.sql.database] ;; import side effects
-            [ragtime.sql.files :refer [migrations]]))
+            [ragtime.sql.resources :refer [migrations]]))
+
+(def migration-list
+  ["2015-03-24-initial-data"
+   "2015-03-25-github-integration"
+   "2015-04-09-role-title"])
 
 (defn migrate-all
   "Run all of our migrations."
   []
   (let [db-str (:jdbc-url (db/construct-db-map))]
     (sql/with-db-connection [db (ragtime/connection db-str)]
-      (ragtime/migrate-all db (migrations)))))
+      (ragtime/migrate-all db ((migrations migration-list))))))
 
 (defn- update-defined-migrations
   "Ragtime has a bug wherein it keeps a list of migrations in two places.
@@ -20,7 +25,7 @@
   []
   (let [db-str (:jdbc-url (db/construct-db-map))]
     (sql/with-db-connection [db (ragtime/connection db-str)]
-      (let [migrations (ragtime.sql.files/migrations)
+      (let [migrations ((migrations migration-list))
             applied-ids (set (.applied-migration-ids db))]
         (doall 
           (map ragtime/remember-migration
@@ -34,4 +39,3 @@
     (sql/with-db-connection [db (ragtime/connection db-str)]
       (let [n (count (.applied-migration-ids db))]
         (ragtime/rollback-last db n)))))
-
