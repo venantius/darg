@@ -1,0 +1,30 @@
+body { 
+  padding-top: 53px; 
+}
+
+div.outer-bg {
+  background-image: url("/images/outer/foggy-read.jpg");
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  // Holy shit this next bit is awesome. Gets rid of choppy scrolling in 
+  // Chrome on OS X.
+  -webkit-transform: translate3d(0,0,0);
+}
+
+div.call-to-action {
+  height: 100vh;
+  padding-top: 25vh;
+  text-align: center;
+
+  h3 {
+    color: @clouds;
+  }
+
+  p {
+    color: @clouds;
+    font-size: 18px;
+  }
+  display:block;
+}
+

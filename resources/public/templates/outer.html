@@ -1,59 +1,21 @@
-<div class="container">
-  <div class="row ptl pbl">
-    <div class="col-xs-12 ptl">
-    </div>
-  </div>
-
-  <div class="row ptl">
-    <div class="col-xs-1"></div>
-    <div class="col-xs-3">
-      <h2 class="dictionary-header">Darg</h2>
-    </div>
-    <div class="col-xs-8 ptl">
-      /dɑːɡ/  <b>noun</b><br>
-      <p class="dictionary-text">1. <i>Scot. and North English.</i> a day's work</p>
-      <p class="dictionary-text">2. <i>Australian.</i> a fixed or definite amount of work; a work quota.</p>
-    </div>
-  </div>
-
-  <div class="row ptl pbl">
-    <div class="col-xs-12 text-center">
-      <h4> 
-        What's your Darg?
-      </h4>
-    </div>
-  </div>
-
-  <!-- definition and signup form -->
-  <div class="row ptl mtl pbl mbl">
-    <!-- definition -->
-    <div class="col-xs-7 prl">
-      <p><b>Say goodbye to status meetings.</b></p>
-      <p>With Darg.io, we send you a daily e-mail asking what you did that day - all you have to do is reply, and your Darg is rolled up and sent to everybody on your team.</p>
-
-      <p>Don't want to reply to an e-mail? No problem! We've got easy to set up integrations with GitHub and Trello that tie into your existing workflow.</p>
-
-    </div>
-    <!-- /definition -->
-    <!-- signup form -->
-    <div class="col-xs-5 pll" ng-controller="DargSignupCtrl">
-      <form class="login-form">
-        <div class="form-group">
-          <input type="text" class="form-control login-field" placeholder="Your name" ng-model="SignupForm.name"/>
-          <label class="login-field-icon fui-user" for="signup-name"></label>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control login-field" placeholder="Your e-mail" ng-model="SignupForm.email"/>
-          <label class="login-field-icon fui-mail" for="signup-email"></label>
-        </div>
-        <div class="form-group">
-          <input type="password" class="form-control login-field" placeholder="Your password" ng-model="SignupForm.password"/>
-          <label class="login-field-icon fui-lock" for="signup-pass"></label>
-        </div>
-        <button class="btn btn-primary btn-lg btn-block" ng-click="Signup()"> 
-          Sign Up 
-        </button>
-      </form>
+<div class="outer-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 call-to-action">
+        <h3>
+          Say goodbye to status meetings.
+        </h3>
+        <br>
+        <p>
+          Automated status reports, built on tools you already use.
+        </p>
+        <br>
+        <form action="/signup">
+          <button class="btn btn-primary btn-lg">
+            Get started
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </div>

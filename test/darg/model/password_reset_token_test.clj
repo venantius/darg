@@ -25,9 +25,3 @@
         expired-token (password-reset-token/fetch-one-valid {:user_id 2})]
     (is (some? valid-token))
     (is (nil? expired-token))))
-
-(deftest valid-token?-works
-  (let [valid-token (fetch-one {:user_id 1})
-        expired-token (fetch-one {:user_id 2})]
-    (is (false? (password-reset-token/valid-token? expired-token)))
-    (is (true? (password-reset-token/valid-token? valid-token)))))

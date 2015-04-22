@@ -29,7 +29,10 @@
   </head>
   <body>
     <div ng-controller="DargUserCtrl">
-      <div ng-include src='"/templates/header.html"'></div>
+      <header>
+        <div ng-include src='"/templates/header.html"'></div>
+      </header>
+
       <div ng-view></div>
 
       <footer class="footer">

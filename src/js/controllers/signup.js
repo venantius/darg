@@ -1,27 +1,27 @@
-darg.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
-               function($scope, $http, $cookies, $cookieStore) {
+darg.controller('DargSignupCtrl', 
+    ['$scope', 
+     '$http',
+     '$location',
+     function($scope, $http, $location) {
 
-    $scope.SignupForm = {
+    this.SignupForm = {
         name: "",
         email: "",
         password: ""
     };
 
-    $scope.Signup = function() {
+    this.Signup = function() {
         $http({
             method: "post",
             url: '/api/v1/user', 
-            data: $.param($scope.SignupForm),
+            data: $.param(this.SignupForm),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
-            $scope.loadGravatar("navbar", 40)
-            $scope.loadGravatar("timeline", 100)
-            $scope.getCurrentUser();
+            $location.path('/');
         })
         .error(function(data) {
-            console.log("Error signing up");
-            console.log(data);
+            console.log(data)
         });
     };
 }]);

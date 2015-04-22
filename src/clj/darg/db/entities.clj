@@ -84,3 +84,8 @@
   (table :github.pull_request :github_pull_request)
   (belongs-to github-user)
   (belongs-to github-repo {:fk :github_repo_id}))
+
+(defentity team-invitation
+  (table :darg.team_invitation)
+  (belongs-to user)
+  (belongs-to team))

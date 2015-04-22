@@ -27,18 +27,22 @@
 (defroutes routes
   ;; site
   (GET    "/"                               [] (darg-spa))
-  (GET    "/team/:team_id"                  [] (darg-spa))
-  (GET    "/team/:team_id/timeline"         [] (darg-spa))
-  (GET    "/team/:team_id/timeline/:date"   [] (darg-spa))
+
   (GET    "/about"                          [] (darg-spa))
   (GET    "/api"                            [] (darg-spa))
   (GET    "/faq"                            [] (darg-spa))
   (GET    "/integrations"                   [] (darg-spa))
 
+  (GET    "/signup"                         [] (darg-spa))
+
   (GET    "/password_reset"                 [] (darg-spa))
   (GET    "/new_password"                   [] (darg-spa))
 
   (GET    "/team"                           [] (darg-spa))
+  (GET    "/team/:team_id"                  [] (darg-spa))
+  (GET    "/team/:team_id/timeline"         [] (darg-spa))
+  (GET    "/team/:team_id/timeline/:date"   [] (darg-spa))
+
   (GET    "/settings"                       [] (darg-spa))
   (GET    "/settings/:settings_page"        [] (darg-spa))
 
