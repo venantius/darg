@@ -13,3 +13,8 @@
             (assoc params
                    :expires_at (c/to-sql-time (t/plus (t/now) (t/days 1)))
                    :token (token/generate-token)))))
+
+(defn fetch-one-team-invitation
+  [params]
+  (first (select team-invitation
+                 (where params))))

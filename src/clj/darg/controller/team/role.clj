@@ -4,6 +4,7 @@
             [darg.model.user :as user]
             [darg.model.role :as role]
             [darg.model.team :as team]
+            [darg.model.team.invitation :as invitation]
             [darg.api.responses :refer [conflict ok unauthorized]]))
 
 (defn create!
@@ -29,11 +30,13 @@
        "A user with that email address is already a member of this team.")
       :else
       (do
-        (when (some? (user/fetch-one-user {:email email}))
+        (when (some? maybe-user)
           (role/create-role! {:user_id (:id maybe-user)
                               :team_id team-id}))
-        (email/send-team-invitation email team)
-        (ok {:message "Invitation sent."})))))
+        (let [invite (invitation/create-team-invitation! 
+                       {:team_id team-id})]
+          (email/send-team-invitation email team invite)
+          (ok {:message "Invitation sent."}))))))
 
 (defn fetch-all
   "/api/v1/team/:team_id/user

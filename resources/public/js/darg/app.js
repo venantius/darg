@@ -170,7 +170,8 @@ darg.controller('DargSignupCtrl',
     this.SignupForm = {
         name: "",
         email: "",
-        password: ""
+        password: "",
+        token: $location.search().token
     };
 
     this.Signup = function() {

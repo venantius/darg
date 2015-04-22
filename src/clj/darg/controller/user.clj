@@ -2,6 +2,7 @@
   (:refer-clojure :exclude [get])
   (:require [clojure.tools.logging :as log]
             [darg.api.responses :as responses]
+            [darg.model.role :as role]
             [darg.model.user :as user]))
 
 ;; TODO: for both get-user and get-user-profile (which should probably be
@@ -17,9 +18,9 @@
 
   Signs a user up. This creates an account in our db and authenticates
   the user."
-  [request-map]
-  (let [params (:params request-map)
-        email (:email params)]
+  [{:keys [params] :as request-map}]
+  (log/info params)
+  (let [{:keys [email token]} params]
     (cond
       (some? (user/fetch-one-user {:email email}))
       (responses/conflict "A user with that e-mail already exists.")
@@ -28,6 +29,8 @@
        "The signup form needs an e-mail, a name, and a password.")
       :else
       (let [user (user/create-user-from-signup-form params)]
+        (if (some? token)
+          (role/create-role-from-token! user token))
         {:body {:message "Account successfully created"}
          :cookies {"logged-in" {:value true :path "/"}
                    "id" {:value (:id user) :path "/"}}

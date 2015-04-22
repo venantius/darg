@@ -20,6 +20,9 @@
       (is (some? (role/fetch-one-role {:team_id 2
                                        :user_id 7}))))))
 
+(deftest create!-makes-an-invite-token
+  (is (= 0 1)))
+
 (deftest create!-returns-conflict-if-the-role-already-exists
   (is (some? (role/fetch-one-role {:team_id 1 :user_id 7})))
   (let [request {:request-method :post
