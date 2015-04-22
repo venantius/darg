@@ -3,13 +3,14 @@ var darg = angular.module('darg',
                            'ngRoute', 
                            'ngLoadScript',
                            'ui.bootstrap',
-                           'ui.gravatar']);
+                           'ui.gravatar'
+                          ]);
 
 darg.config(['$routeProvider', '$locationProvider', 
            function AppConfig($routeProvider, $locationProvider) {
 
     $routeProvider
-        // outer
+        // Outer
         .when('/', {
             templateUrl: '/templates/home.html'
         })
@@ -25,13 +26,27 @@ darg.config(['$routeProvider', '$locationProvider',
         .when('/integrations', {
             templateUrl: '/templates/integrations.html'
         })
+
+        // Password reset flow
         .when('/password_reset', {
             templateUrl: '/templates/password_reset.html',
             controller: 'DargPasswordResetCtrl',
             controllerAs: 'PasswordReset'
         })
+        .when('/new_password', {
+            tempalteUrl: '/templates/new_password.html',
+            controller: 'DargPasswordResetCtrl',
+            controllerAs: 'PasswordReset'
+        })
 
-        // inner
+        // Signup
+        .when('/signup', {
+            templateUrl: '/templates/signup.html',
+            controller: 'DargSignupCtrl',
+            controllerAs: 'Signup'
+        })
+
+        // Inner
         .when('/team', {
             templateUrl: '/templates/team.html',
             controller: 'DargTeamCtrl',
@@ -146,30 +161,30 @@ darg.controller('DargSettingsCtrl',
 
 }]);
 
-darg.controller('DargSignupCtrl', ['$scope', '$http', '$cookies', '$cookieStore',
-               function($scope, $http, $cookies, $cookieStore) {
+darg.controller('DargSignupCtrl', 
+    ['$scope', 
+     '$http',
+     '$location',
+     function($scope, $http, $location) {
 
-    $scope.SignupForm = {
+    this.SignupForm = {
         name: "",
         email: "",
         password: ""
     };
 
-    $scope.Signup = function() {
+    this.Signup = function() {
         $http({
             method: "post",
             url: '/api/v1/user', 
-            data: $.param($scope.SignupForm),
+            data: $.param(this.SignupForm),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
-            $scope.loadGravatar("navbar", 40)
-            $scope.loadGravatar("timeline", 100)
-            $scope.getCurrentUser();
+            $location.path('/');
         })
         .error(function(data) {
-            console.log("Error signing up");
-            console.log(data);
+            console.log(data)
         });
     };
 }]);
@@ -814,6 +829,24 @@ darg.service('team', function($http, $location, $q) {
         })
         return deferred.promise;
     };
+});
+
+darg.service('teamInvitation', function($http, $q) {
+
+    this.getToken = function(token) {
+        url = "/api/v1/team/invitation/" + token
+        $http({
+            method: "get",
+            url: url
+        })
+        .success(function(data) {
+            console.log(data)
+        })
+        .error(function(data) {
+            console.log(data) 
+        })
+    };
+            
 });
 
 darg.service('timeline', function($http, $q) {

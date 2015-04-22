@@ -24,6 +24,7 @@
      (= path "/integrations")
      (= path "/password_reset")
       (.startsWith path "/new_password")
+      (.startsWith path "/signup")
 
      (= path "/debug")
      (= path "/api/v1/email")

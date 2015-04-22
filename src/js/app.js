@@ -3,13 +3,14 @@ var darg = angular.module('darg',
                            'ngRoute', 
                            'ngLoadScript',
                            'ui.bootstrap',
-                           'ui.gravatar']);
+                           'ui.gravatar'
+                          ]);
 
 darg.config(['$routeProvider', '$locationProvider', 
            function AppConfig($routeProvider, $locationProvider) {
 
     $routeProvider
-        // outer
+        // Outer
         .when('/', {
             templateUrl: '/templates/home.html'
         })
@@ -25,13 +26,27 @@ darg.config(['$routeProvider', '$locationProvider',
         .when('/integrations', {
             templateUrl: '/templates/integrations.html'
         })
+
+        // Password reset flow
         .when('/password_reset', {
             templateUrl: '/templates/password_reset.html',
             controller: 'DargPasswordResetCtrl',
             controllerAs: 'PasswordReset'
         })
+        .when('/new_password', {
+            tempalteUrl: '/templates/new_password.html',
+            controller: 'DargPasswordResetCtrl',
+            controllerAs: 'PasswordReset'
+        })
 
-        // inner
+        // Signup
+        .when('/signup', {
+            templateUrl: '/templates/signup.html',
+            controller: 'DargSignupCtrl',
+            controllerAs: 'Signup'
+        })
+
+        // Inner
         .when('/team', {
             templateUrl: '/templates/team.html',
             controller: 'DargTeamCtrl',
