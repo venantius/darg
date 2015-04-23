@@ -19,6 +19,7 @@ darg.controller('DargSignupCtrl',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
+            $location.search('token', null);
             $location.path('/');
         })
         .error(function(data) {

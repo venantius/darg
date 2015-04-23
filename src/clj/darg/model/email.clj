@@ -11,6 +11,13 @@
             [darg.util.datetime :as dt]
             [darg.services.mailgun :as mailgun]))
 
+(defn within-the-hour
+  "Is the provided datetime within an hour of the user's e-mail time?"
+  [dt {:keys [timezone email_hour] :as user}]
+  (let [email-hour (get dt/hour-map (clojure.string/lower-case email_hour))
+        current-local-hour (t/hour (dt/local-time dt timezone))]
+    (if (= email-hour current-local-hour) true false)))
+
 (defn user-can-email-this-team?
   "Is the user who owns this e-mail authorized to post to this e-mail address?
 

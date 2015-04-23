@@ -10,6 +10,15 @@ div.outer-bg {
   // Holy shit this next bit is awesome. Gets rid of choppy scrolling in 
   // Chrome on OS X.
   -webkit-transform: translate3d(0,0,0);
+
+
+}
+
+@media only screen and (max-device-width: 768px) {
+  div.outer-bg {
+    background-position: left top;
+    background-image: url("/images/outer/foggy-read-sm.jpg");
+  }
 }
 
 div.call-to-action {

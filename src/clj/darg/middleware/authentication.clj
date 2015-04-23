@@ -28,6 +28,7 @@
 
      (= path "/debug")
      (= path "/api/v1/email")
+     (= path "/api/v1/email/send")
      (= path "/api/v1/login")
      (= path "/api/v1/user")
      (= path "/api/v1/gravatar")

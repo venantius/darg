@@ -19529,6 +19529,12 @@ div.outer-bg {
   background-size: cover;
   -webkit-transform: translate3d(0, 0, 0);
 }
+@media only screen and (max-device-width: 768px) {
+  div.outer-bg {
+    background-position: left top;
+    background-image: url("/images/outer/foggy-read-sm.jpg");
+  }
+}
 div.call-to-action {
   height: 100vh;
   padding-top: 25vh;

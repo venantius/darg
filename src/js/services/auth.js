@@ -9,6 +9,9 @@ darg.service('auth', function($cookieStore, $http, $location) {
             data: $.param(params),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
+        .success(function(data) {
+            $location.path('/');
+        })
     };
 
     this.logout = function() {
