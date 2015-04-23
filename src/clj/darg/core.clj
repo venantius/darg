@@ -2,7 +2,6 @@
   (:gen-class)
   (:require [clojure.tools.cli :refer [parse-opts]]
             [darg.init :as init]
-            [darg.process.email :as email]
             [darg.process.server :as server]))
 
 (defn -main [& args]
