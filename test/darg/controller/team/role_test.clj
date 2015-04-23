@@ -3,7 +3,8 @@
             [darg.controller.team.role :as api]
             [darg.fixtures :refer [with-db-fixtures]]
             [darg.model.role :as role]
-            [darg.model.team :as team]))
+            [darg.model.team :as team]
+            [darg.model.team.invitation :as invitation]))
 
 (with-db-fixtures)
 
@@ -21,7 +22,16 @@
                                        :user_id 7}))))))
 
 (deftest create!-makes-an-invite-token
-  (is (= 0 1)))
+  (with-redefs [darg.services.mailgun/send-message (constantly nil)]
+    (is (nil? (role/fetch-one-role {:team_id 2 :user_id 7})))
+    (let [request {:request-method :post
+                   :params {:team_id "2" :email "willied@gmail.com"}
+                   :user {:id 4 :email "test-user2@darg.io"}}
+          {:keys [status body]} (api/create! request)]
+      (is (= status 200))
+      (is (= body
+             {:message "Invitation sent."}))
+      (is (= 1 (count (invitation/fetch-team-invitation {:team_id 2})))))))
 
 (deftest create!-returns-conflict-if-the-role-already-exists
   (is (some? (role/fetch-one-role {:team_id 1 :user_id 7})))

@@ -25,6 +25,5 @@
 
 (defn render-team-invite
   [{:keys [name] :as team} invite]
-  (log/warn invite)
   (render team-invite {:team_name name 
                        :token (:token invite)}))
