@@ -14,6 +14,8 @@
             [darg.controller.team.role :as role]
             [darg.controller.user :as user]
             [darg.oauth.github :as gh-oauth]
+            [ring.middleware.basic-authentication :refer
+             [wrap-basic-authentication]]
             [ring.util.response :refer [resource-response]]))
 
 (defn darg-spa 
@@ -58,6 +60,7 @@
   (POST   "/api/v1/password_reset"          request (auth/password-reset request))
   
   (POST   "/api/v1/email"                        request (email/email request))
+  (POST   "/api/v1/email/send"                   request (email/send-email request))
 
   (GET    "/api/v1/darg/:team_id"                request 
        (darg/get-darg request))

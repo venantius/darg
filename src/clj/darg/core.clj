@@ -2,7 +2,6 @@
   (:gen-class)
   (:require [clojure.tools.cli :refer [parse-opts]]
             [darg.init :as init]
-            [darg.process.email :as email]
             [darg.process.server :as server]))
 
 (defn -main [& args]
@@ -10,5 +9,4 @@
                                                                 :in-order true)]
     (case (first arguments)
       "server" (server/run-web-server (rest arguments))
-      "email" (email/send-emails (rest arguments))
-      (println "ERROR: `lein run` requires one of two arguments: `server` or `email`"))))
+      (println "ERROR: `lein run` requires one of the following arguments: `server`"))))

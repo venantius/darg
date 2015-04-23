@@ -19516,15 +19516,6 @@ p.answer {
 div.inner {
   padding-top: 20px;
 }
-.navbar-favicon {
-  padding-right: 15px;
-}
-.navbar-favicon > li > a {
-  padding-top: 6px;
-  padding-bottom: 6px;
-  padding-right: 15px;
-  padding-left: 15px;
-}
 .navbar-icons {
   font-size: 16px;
 }
@@ -19532,11 +19523,17 @@ body {
   padding-top: 53px;
 }
 div.outer-bg {
-  background-image: url("/images/outer/foggy-read.jpg");
+  background-image: url("http://d2yu8ejyleglk0.cloudfront.net/foggy-read.jpg");
   background-position: center top;
   background-repeat: no-repeat;
   background-size: cover;
   -webkit-transform: translate3d(0, 0, 0);
+}
+@media only screen and (max-device-width: 768px) {
+  div.outer-bg {
+    background-position: left top;
+    background-image: url("/images/outer/foggy-read-sm.jpg");
+  }
 }
 div.call-to-action {
   height: 100vh;

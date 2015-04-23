@@ -10,7 +10,8 @@
   ["2015-03-24-initial-data"
    "2015-03-25-github-integration"
    "2015-04-09-role-title"
-   "2015-04-21-team-invitations"])
+   "2015-04-21-team-invitations"
+   "2015-04-21-team-invitations-expiry"])
 
 (defn migrate-all
   "Run all of our migrations."

@@ -120,6 +120,10 @@ darg.controller('DargUserCtrl',
 
     $scope.resetPassword = user.resetPassword;
 
+    $scope.goToSignupPage = function() {
+        $location.path('/signup');
+    };
+
     /* watchers */
     $scope.$watch(function() {
         return $scope.loggedIn()

@@ -28,6 +28,7 @@
 
      (= path "/debug")
      (= path "/api/v1/email")
+     (= path "/api/v1/email/send")
      (= path "/api/v1/login")
      (= path "/api/v1/user")
      (= path "/api/v1/gravatar")
@@ -43,7 +44,7 @@
        :email email})))
 
 (defn wrap-authentication
-  "Wraps authentication for Darg. If a user is successfually authenticated,
+  "Wraps authentication for Darg. If a user is successfully authenticated,
   then a map of their id and email is assoc'd onto the :user key of the request
   map."
   [handler auth-fn & {:keys [whitelist]

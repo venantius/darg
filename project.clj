@@ -43,6 +43,7 @@
                  ;; webserver
                  [ring "1.3.2"]
                  [ring/ring-json "0.3.1"]
+                 [ring-basic-authentication "1.0.5"]
                  [compojure "1.1.8"]
 
                  ;; templating
@@ -69,14 +70,16 @@
                     :database-url "postgres://localhost:5432/darg"
                     :reload-db-on-run true
                     :port "8080"
-                    :session-key "california--bear"}
+                    :session-key "california--bear"
+                    :email-password "huxtables"}
               :plugins [[jonase/eastwood "0.1.4"]]}
 
              :test 
              {:env {:darg-environment "test"
                     :database-url "postgres://localhost:5432/darg_test"
                     :port "8080"
-                    :session-key "antarctica--bear"}
+                    :session-key "antarctica--bear"
+                    :email-password "huxtables"}
               :plugins [[jonase/eastwood "0.1.4"]]
               :jvm-opts ["-Dlog4j.configuration=log4j-test.properties"]}
 

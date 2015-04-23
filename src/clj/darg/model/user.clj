@@ -76,6 +76,10 @@
     (update entities/user (where {:id id}) (set-fields params))
     (fetch-one-user {:id id})))
 
+(defn delete-user!
+  [params]
+  (delete entities/user (where params)))
+
 (defn profile
   "Returns the profile for a given user, including the teams that they're on.
 

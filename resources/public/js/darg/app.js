@@ -170,7 +170,8 @@ darg.controller('DargSignupCtrl',
     this.SignupForm = {
         name: "",
         email: "",
-        password: ""
+        password: "",
+        token: $location.search().token
     };
 
     this.Signup = function() {
@@ -181,6 +182,7 @@ darg.controller('DargSignupCtrl',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
+            $location.search('token', null);
             $location.path('/');
         })
         .error(function(data) {
@@ -593,6 +595,10 @@ darg.controller('DargUserCtrl',
 
     $scope.resetPassword = user.resetPassword;
 
+    $scope.goToSignupPage = function() {
+        $location.path('/signup');
+    };
+
     /* watchers */
     $scope.$watch(function() {
         return $scope.loggedIn()
@@ -626,6 +632,9 @@ darg.service('auth', function($cookieStore, $http, $location) {
             url: '/api/v1/login', 
             data: $.param(params),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+            $location.path('/');
         })
     };
 

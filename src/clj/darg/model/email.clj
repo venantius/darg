@@ -11,6 +11,13 @@
             [darg.util.datetime :as dt]
             [darg.services.mailgun :as mailgun]))
 
+(defn within-the-hour
+  "Is the provided datetime within an hour of the user's e-mail time?"
+  [dt {:keys [timezone email_hour] :as user}]
+  (let [email-hour (get dt/hour-map (clojure.string/lower-case email_hour))
+        current-local-hour (t/hour (dt/local-time dt timezone))]
+    (if (= email-hour current-local-hour) true false)))
+
 (defn user-can-email-this-team?
   "Is the user who owns this e-mail authorized to post to this e-mail address?
 
@@ -69,11 +76,11 @@
 
 (defn send-team-invitation
   "Send an invitation to join a team to a particular user."
-  [email-address team]
+  [email-address team token]
   (log/info "Sending an invitation for" email-address
             "to join team" team)
   (let [from (from team)
-        content (template/render-team-invite team)
+        content (template/render-team-invite team token)
         subject (str "You've been invited to join " (:name team) " on Darg.io!")]
     (mailgun/send-message {:from from
                            :to email-address

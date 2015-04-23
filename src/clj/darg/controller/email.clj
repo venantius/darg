@@ -1,9 +1,15 @@
 (ns darg.controller.email
-  (:require [clojure.tools.logging :as log]
+  (:require [clj-time.core :as t]
+            [clojure.tools.logging :as log]
             [darg.api.responses :refer [bad-request ok unauthorized]] 
             [darg.model.email :as email]
+            [darg.model.user :as user]
             [darg.services.mailgun :as mailgun]
-            [darg.util.stacktrace]))
+            [darg.util.datetime :as dt]
+            [darg.util.stacktrace]
+            [environ.core :as env]
+            [ring.middleware.basic-authentication :refer 
+             [basic-authentication-request]]))
 
 (defn email
   "/api/v1/email
@@ -32,3 +38,27 @@
         (darg.util.stacktrace/print-stacktrace e)
         (bad-request "Failed to parse e-mail.")))))
 
+(defn- send-email-fn
+  [{:keys [params basic-authentication] :as request}]
+  (if (not basic-authentication)
+    (unauthorized "Incorrect email task password")
+    (do
+      (log/info "Sending emails...")
+      (let [start-time (t/now)]
+        (println "Current JVM time" (t/now))
+        (println "Current JVM hour" (dt/nearest-hour))
+        (dorun (map println (map #(email/within-the-hour start-time %) 
+                                 (user/fetch-user {}))))
+        (dorun (map email/send-personal-emails
+                    (filter #(email/within-the-hour start-time %) 
+                            (user/fetch-user {}))))
+        (println "Sent email!")))))
+
+(defn email-auth-fn
+  [user pass]
+  (= pass (env/env :email-password)))
+
+(defn send-email
+  [request]
+  (send-email-fn
+    (basic-authentication-request request email-auth-fn)))
