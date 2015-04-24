@@ -52,7 +52,7 @@
         (dorun (map email/send-personal-emails
                     (filter #(email/within-the-hour start-time %) 
                             (user/fetch-user {}))))
-        (println "Sent email!")))))
+        (ok "Sent email!")))))
 
 (defn email-auth-fn
   [user pass]
