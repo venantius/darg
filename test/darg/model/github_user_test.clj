@@ -12,7 +12,7 @@
 
 
 ; API test
-(deftest we-can-get-a-user-from-the-github-api
+(deftest ^:integration we-can-get-a-user-from-the-github-api
   (is (not-empty (gh-user/github-api-get-user "dargtester1"))))
 
 #_(deftest we-can-get-the-current-user

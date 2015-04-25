@@ -133,6 +133,8 @@ darg.controller('DargSettingsCtrl',
          $scope,
          user) {
 
+    var self = this;
+
     $scope.isSettingsProfile = function() {
         if ($routeParams.settingPage == "profile") {
             return true;
@@ -158,6 +160,25 @@ darg.controller('DargSettingsCtrl',
     $scope.gotoSettingsAccount = function() {
         $location.path("/settings/account");
     }
+
+    this.emailConfirmationAlerts = [];
+    this.setAlert = function(alert_list, alert_content) {
+        alert_list[0] = {msg: alert_content};
+    };
+
+    $scope.$watch(function() {
+        return $location.search().confirmation_token
+    }, function(newValue, oldValue) {
+        if (newValue != null) {
+            user.confirmEmail(newValue)
+            .then(function(data) {
+                self.setAlert(self.emailConfirmationAlerts,
+                          "E-mail address confirmed!");
+            }, function(data) {
+                console.log(data) 
+            });
+        };
+    });
 
 }]);
 
@@ -840,24 +861,6 @@ darg.service('team', function($http, $location, $q) {
     };
 });
 
-darg.service('teamInvitation', function($http, $q) {
-
-    this.getToken = function(token) {
-        url = "/api/v1/team/invitation/" + token
-        $http({
-            method: "get",
-            url: url
-        })
-        .success(function(data) {
-            console.log(data)
-        })
-        .error(function(data) {
-            console.log(data) 
-        })
-    };
-            
-});
-
 darg.service('timeline', function($http, $q) {
     this.getTimeline = function(team_id, date) {
         url = "/api/v1/darg/team/" + team_id
@@ -927,6 +930,24 @@ darg.service('user', function($cookieStore, $http, $q) {
         })
         return deferred.promise;
     }
+
+    this.confirmEmail = function(token) {
+        var deferred = $q.defer();
+        url = "/api/v1/user/" + $cookieStore.get('id') + "/email"
+        $http({
+            method: "post",
+            url: url,
+            data: $.param({"token": token}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        })
+        return deferred.promise;
+    };
 });
 
 /* 

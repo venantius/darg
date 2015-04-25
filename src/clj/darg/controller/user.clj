@@ -2,14 +2,10 @@
   (:refer-clojure :exclude [get])
   (:require [clojure.tools.logging :as log]
             [darg.api.responses :as responses]
+            [darg.model.email :as email]
             [darg.model.role :as role]
-            [darg.model.user :as user]))
-
-;; TODO: for both get-user and get-user-profile (which should probably be
-;; renamed to get-current-user and get-any-user) we should add in a list of
-;; teams that they're on (as well as some thinking around which of those teams
-;; they can actually see.
-;; https://github.com/ursacorp/darg/issues/178
+            [darg.model.user :as user]
+            [darg.model.user.email-confirmation :as email-conf]))
 
 (defn create!
   "/api/v1/user
@@ -28,9 +24,12 @@
       (responses/bad-request
        "The signup form needs an e-mail, a name, and a password.")
       :else
-      (let [user (user/create-user-from-signup-form params)]
+      (let [user (user/create-user-from-signup-form params)
+            conf (email-conf/create-user-email-confirmation! {:user_id (:id user)})]
+        (log/info token)
         (if (some? token)
           (role/create-role-from-token! user token))
+        (email-conf/send-email-confirmation user conf)
         {:body {:message "Account successfully created"}
          :cookies {"logged-in" {:value true :path "/"}
                    "id" {:value (:id user) :path "/"}}
@@ -64,12 +63,14 @@
   [{:keys [user params session]}]
   (let [session-email (-> user :email clojure.string/lower-case)
         current-user (user/fetch-one-user {:email session-email})
-        target-user-id (-> params :id read-string)]
+        params (-> params
+                   (update-in [:id] read-string)
+                   (dissoc :confirmed_email))]
     (if (or (= session-email (:email params))
             (nil? (user/fetch-one-user {:email (:email params)})))
       (let [updated-user (user/update-user! 
-                           target-user-id 
-                           (assoc params :id target-user-id))]
+                           (:id params)
+                           params)]
         {:status 200
          :session (assoc session :email (:email params))
          :body updated-user})

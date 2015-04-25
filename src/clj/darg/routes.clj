@@ -13,6 +13,7 @@
             [darg.controller.team :as team]
             [darg.controller.team.role :as role]
             [darg.controller.user :as user]
+            [darg.controller.user.email-confirmation :as conf]
             [darg.oauth.github :as gh-oauth]
             [ring.middleware.basic-authentication :refer
              [wrap-basic-authentication]]
@@ -84,5 +85,6 @@
   (POST   "/api/v1/user"                    request (user/create! request))
   (GET    "/api/v1/user/:id"                request (user/get request))
   (POST   "/api/v1/user/:id"                request (user/update! request))
+  (POST   "/api/v1/user/:id/email"          request (conf/confirm! request))
   
   (route/resources "/"))

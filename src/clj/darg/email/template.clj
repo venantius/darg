@@ -1,4 +1,4 @@
-(ns darg.model.email.template
+(ns darg.email.template
   "Code and templates for e-mailing users"
   (:require [clojure.java.io :as io]
             [clojure.tools.logging :as log]
@@ -23,7 +23,23 @@
   (construct-email 
     (slurp (io/resource "email/templates/team_invite.html"))))
 
+(def welcome-email
+  (construct-email
+    (slurp (io/resource "email/templates/welcome.html"))))
+
+(def email-confirmation-email
+  (construct-email
+    (slurp (io/resource "email/templates/email_confirmation.html"))))
+
 (defn render-team-invite
   [{:keys [name] :as team} invite]
   (render team-invite {:team_name name 
                        :token (:token invite)}))
+
+(defn render-welcome-email
+  [{:keys [name] :as user}]
+  (render welcome-email {:name name}))
+
+(defn render-confirmation-email
+  [{:keys [name] :as user} link]
+  (render email-confirmation-email {:name name :link link}))

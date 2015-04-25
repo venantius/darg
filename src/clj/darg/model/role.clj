@@ -9,7 +9,7 @@
 
 (defn create-role-from-token!
   [user token]
-  (let [invitation (invitation/fetch-one-team-invitation {:token token})]
+  (when-let [invitation (invitation/fetch-one-team-invitation {:token token})]
     (create-role! {:user_id (:id user)
                    :team_id (:team_id invitation)})))
 
