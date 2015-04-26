@@ -511,6 +511,7 @@ darg.controller('DargUserCtrl',
          auth,
          user) {
 
+    var self = this;
 
     $scope.auth = auth;
 
@@ -620,6 +621,12 @@ darg.controller('DargUserCtrl',
         $location.path('/signup');
     };
 
+    this.emailConfirmationAlerts = [];
+    this.setAlert = function(alert_list, alert_content) {
+        alert_list[0] = {msg: alert_content}
+    };
+    this.sendEmailConfirmation = user.sendEmailConfirmation;
+
     /* watchers */
     $scope.$watch(function() {
         return $scope.loggedIn()
@@ -632,7 +639,13 @@ darg.controller('DargUserCtrl',
     $scope.$watch(function() {
         return user.info
     }, function(newValue, oldValue) {
-        $scope.currentUser = newValue;
+        if (newValue != null) {
+            $scope.currentUser = newValue;
+            if ($scope.currentUser.confirmed_email == false) {
+                self.setAlert(self.emailConfirmationAlerts,
+                              user.emailConfirmationMessage);
+            };
+        }
     });
 
     $scope.$watch(function() {
@@ -933,12 +946,10 @@ darg.service('user', function($cookieStore, $http, $q) {
 
     this.confirmEmail = function(token) {
         var deferred = $q.defer();
-        url = "/api/v1/user/" + $cookieStore.get('id') + "/email"
+        url = "/api/v1/user/" + $cookieStore.get('id') + "/email/" + token
         $http({
             method: "post",
-            url: url,
-            data: $.param({"token": token}),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            url: url
         })
         .success(function(data) {
             deferred.resolve(data);
@@ -948,6 +959,26 @@ darg.service('user', function($cookieStore, $http, $q) {
         })
         return deferred.promise;
     };
+
+    this.emailConfirmationMessage = "We've e-mailed you with a link to confirm your e-mail address. Didn't get it?"
+
+    this.sendEmailConfirmation = function() {
+        var deferred = $q.defer();
+        url = "/api/v1/user/" + $cookieStore.get('id') + "/email"
+        $http({
+            method: "post",
+            url: url
+        })
+        .success(function(data) {
+            console.log(data);
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            console.log(data);
+            deferred.reject(data);
+        })
+        return deferred.promise;
+    }
 });
 
 /* 

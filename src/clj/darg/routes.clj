@@ -85,6 +85,8 @@
   (POST   "/api/v1/user"                    request (user/create! request))
   (GET    "/api/v1/user/:id"                request (user/get request))
   (POST   "/api/v1/user/:id"                request (user/update! request))
-  (POST   "/api/v1/user/:id/email"          request (conf/confirm! request))
+
+  (POST   "/api/v1/user/:id/email"          request (conf/create! request))
+  (POST   "/api/v1/user/:id/email/:token"   request (conf/confirm! request))
   
   (route/resources "/"))

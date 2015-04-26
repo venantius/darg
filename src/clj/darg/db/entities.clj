@@ -100,5 +100,7 @@
 (defentity user-email-confirmation
   (table :darg.email_confirmation)
   (prepare (fn [ec]
-             (assoc ec :token (token/generate-token))))
+             (if (:token ec)
+               ec
+               (assoc ec :token (token/generate-token)))))
   (belongs-to user))

@@ -236,3 +236,10 @@
 (def test-password-reset-tokens
   [test-password-reset-token-1
    test-password-reset-token-2])
+
+(def test-user-email-confirmation-1
+  {:user_id 4
+   :token "KJGWF37QJ3A7FRTMVGFGHC7Y3X4CCLOANY6QCJYVVDIWDF4TXF65LL52"})
+
+(def test-user-email-confirmations
+  [test-user-email-confirmation-1])
