@@ -1,49 +1,57 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container">
+  <div class="">
     <div class="navbar-header">
       <a class="navbar-brand" href="/">
         <i class="fa fa-home navbar-icons"></i>
       </a>
+
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+      </button>
     </div>
 
-    <div class="" id="navbar-collapse-11"> 
-      <!-- Show log in form if not logged-in -->
-      <div ng-hide="loggedIn()">
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            <form role="search" class="navbar-form">
-              <div class="form-group">
-                <input type="text" placeholder="Email" class="form-control input-sm" ng-model="LoginForm.email">
-              </div>
-              <div class="form-group">
-                <input type="password" size="8" placeholder="Password" class="form-control input-sm" ng-model="LoginForm.password">
-              </div>
-              <button class="btn btn-primary" ng-click="auth.login(LoginForm)">Login</button>
-              <button class="btn btn-danger" data-toggle="tooltip" title="Forgot your password?" data-placement="bottom" type="button" ng-click="LoadPasswordResetPage()">!</button>
-            </form>
-          </li>
-        </ul>
-      </div>
-      <div ng-show="loggedIn()" class="nav navbar-nav navbar-right">
-        <ul class="navbar-nav nav">
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              menu &nbsp;&nbsp;
-              <i class="fa fa-bars navbar-icons"></i>
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <a href="/settings/profile">Settings</a>
-              </li>
-              <li class="divider">
-              </li>
-              <li>
-                <a ng-click="auth.logout()">Logout</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+      <ul class="nav navbar-nav navbar-right" ng-hide="loggedIn()">
+        <li>
+          <form role="search" class="navbar-form">
+            <div class="form-group">
+              <input type="text" placeholder="Email" class="form-control input-sm" ng-model="LoginForm.email">
+            </div>
+            <div class="form-group">
+              <input type="password" size="8" placeholder="Password" class="form-control input-sm" ng-model="LoginForm.password">
+            </div>
+            <button class="btn btn-primary" ng-click="auth.login(LoginForm)">Login</button>
+            <button class="btn btn-danger" data-toggle="tooltip" title="Forgot your password?" data-placement="bottom" type="button" ng-click="LoadPasswordResetPage()">!</button>
+          </form>
+        </li>
+      </ul>
+      <div class="navbar-right">
+      <ul class="navbar-nav nav" ng-show="loggedIn()">
+        <li class="dropdown">
+          <a href="#" class="hidden-xs dropdown-toggle darg-navbar-dropdown" data-toggle="dropdown">
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="/settings/profile">Settings</a>
+            </li>
+            <li class="divider">
+            </li>
+            <li>
+              <a ng-click="auth.logout()">Logout</a>
+            </li>
+          </ul>
+        </li>
+        <li class="visible-xs">
+          <a href="/settings/profile">Settings</a>
+        </li>
+        <li class="divider visible-xs"></li>
+        <li class="visible-xs">
+          <a ng-click="auth.logout()">Logout</a>
+        </li>
+      </ul>
     </div>
+    </div><!-- /.navbar-collapse -->
   </div>
 </nav>

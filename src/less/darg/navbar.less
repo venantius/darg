@@ -1,3 +1,23 @@
 .navbar-icons {
   font-size: 16px;
 }
+
+.darg-navbar-dropdown {
+  border: none;
+  color: @brand-primary;
+  margin: 0 0 0 0px;
+  padding: 0 21px;
+  height: @navbar-height-base;
+  line-height: @navbar-height-base;
+
+  &:before {
+    content: "\e61a";
+    font-family: "Flat-UI-Pro-Icons";
+    font-size: floor((@component-font-size-base * 1.467)); // ~22px
+    font-style: normal;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: color .25s linear;
+  }
+}
