@@ -27,6 +27,10 @@
   []
   (insert github-user (values fmodel/test-github-users)))
 
+(defn insert-test-user-email-confirmations
+  []
+  (insert user-email-confirmation (values fmodel/test-user-email-confirmations)))
+
 (defn insert-db-fixture-data
   []
   (insert-user-fixture-data)
@@ -34,6 +38,6 @@
   (insert-task-fixture-data)
   (insert-role-fixture-data)
   (insert-password-reset-token-fixture-data)
-  
-  (insert-github-user-fixture-data))
+  (insert-github-user-fixture-data)
+  (insert-test-user-email-confirmations))
 

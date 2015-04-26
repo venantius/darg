@@ -133,6 +133,8 @@ darg.controller('DargSettingsCtrl',
          $scope,
          user) {
 
+    var self = this;
+
     $scope.isSettingsProfile = function() {
         if ($routeParams.settingPage == "profile") {
             return true;
@@ -158,6 +160,25 @@ darg.controller('DargSettingsCtrl',
     $scope.gotoSettingsAccount = function() {
         $location.path("/settings/account");
     }
+
+    this.emailConfirmationAlerts = [];
+    this.setAlert = function(alert_list, alert_content) {
+        alert_list[0] = {msg: alert_content};
+    };
+
+    $scope.$watch(function() {
+        return $location.search().confirmation_token
+    }, function(newValue, oldValue) {
+        if (newValue != null) {
+            user.confirmEmail(newValue)
+            .then(function(data) {
+                self.setAlert(self.emailConfirmationAlerts,
+                          "E-mail address confirmed!");
+            }, function(data) {
+                console.log(data) 
+            });
+        };
+    });
 
 }]);
 
@@ -490,6 +511,7 @@ darg.controller('DargUserCtrl',
          auth,
          user) {
 
+    var self = this;
 
     $scope.auth = auth;
 
@@ -599,6 +621,12 @@ darg.controller('DargUserCtrl',
         $location.path('/signup');
     };
 
+    this.emailConfirmationAlerts = [];
+    this.setAlert = function(alert_list, alert_content) {
+        alert_list[0] = {msg: alert_content}
+    };
+    this.sendEmailConfirmation = user.sendEmailConfirmation;
+
     /* watchers */
     $scope.$watch(function() {
         return $scope.loggedIn()
@@ -611,7 +639,13 @@ darg.controller('DargUserCtrl',
     $scope.$watch(function() {
         return user.info
     }, function(newValue, oldValue) {
-        $scope.currentUser = newValue;
+        if (newValue != null) {
+            $scope.currentUser = newValue;
+            if ($scope.currentUser.confirmed_email == false) {
+                self.setAlert(self.emailConfirmationAlerts,
+                              user.emailConfirmationMessage);
+            };
+        }
     });
 
     $scope.$watch(function() {
@@ -840,24 +874,6 @@ darg.service('team', function($http, $location, $q) {
     };
 });
 
-darg.service('teamInvitation', function($http, $q) {
-
-    this.getToken = function(token) {
-        url = "/api/v1/team/invitation/" + token
-        $http({
-            method: "get",
-            url: url
-        })
-        .success(function(data) {
-            console.log(data)
-        })
-        .error(function(data) {
-            console.log(data) 
-        })
-    };
-            
-});
-
 darg.service('timeline', function($http, $q) {
     this.getTimeline = function(team_id, date) {
         url = "/api/v1/darg/team/" + team_id
@@ -923,6 +939,42 @@ darg.service('user', function($cookieStore, $http, $q) {
             deferred.resolve(data);
         })
         .error(function(data) {
+            deferred.reject(data);
+        })
+        return deferred.promise;
+    }
+
+    this.confirmEmail = function(token) {
+        var deferred = $q.defer();
+        url = "/api/v1/user/" + $cookieStore.get('id') + "/email/" + token
+        $http({
+            method: "post",
+            url: url
+        })
+        .success(function(data) {
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            deferred.reject(data);
+        })
+        return deferred.promise;
+    };
+
+    this.emailConfirmationMessage = "We've e-mailed you with a link to confirm your e-mail address. Didn't get it?"
+
+    this.sendEmailConfirmation = function() {
+        var deferred = $q.defer();
+        url = "/api/v1/user/" + $cookieStore.get('id') + "/email"
+        $http({
+            method: "post",
+            url: url
+        })
+        .success(function(data) {
+            console.log(data);
+            deferred.resolve(data);
+        })
+        .error(function(data) {
+            console.log(data);
             deferred.reject(data);
         })
         return deferred.promise;

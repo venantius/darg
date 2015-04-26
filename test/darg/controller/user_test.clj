@@ -1,5 +1,6 @@
 (ns darg.controller.user-test
-  (:require [cheshire.core :as json]
+  (:require [bond.james :as bond]
+            [cheshire.core :as json]
             [clojure.test :refer :all]
             [darg.controller.user :as api]
             [darg.fixtures :refer [with-db-fixtures]]
@@ -10,20 +11,29 @@
 
 (with-db-fixtures)
 
-;; create
+(deftest i-can-signup-and-it-wrote-to-the-database-and-cookies
+  (with-redefs [darg.services.mailgun/send-message (constantly true)]
+    (let [auth-response (server/app (mock-request/request
+                                     :post "/api/v1/user"
+                                     {:email "dummy@darg.io"
+                                      :password "test"
+                                      :name "Crash dummy"}))]
+      (is (= (json/parse-string (:body auth-response) true)
+             {:message "Account successfully created"}))
+      (is (= (:status auth-response) 200))
+      (is (not (empty? (user/fetch-user {:email "dummy@darg.io"}))))
+      (is (some #{"logged-in=true;Path=/"}
+                (get (:headers auth-response) "Set-Cookie"))))))
 
-(deftest i-can-register-and-it-wrote-to-the-database-and-cookies
-  (let [auth-response (server/app (mock-request/request
-                                   :post "/api/v1/user"
-                                   {:email "dummy@darg.io"
-                                    :password "test"
-                                    :name "Crash dummy"}))]
-    (is (= (json/parse-string (:body auth-response) true)
-           {:message "Account successfully created"}))
-    (is (= (:status auth-response) 200))
-    (is (not (empty? (user/fetch-user {:email "dummy@darg.io"}))))
-    (is (some #{"logged-in=true;Path=/"}
-              (get (:headers auth-response) "Set-Cookie")))))
+(deftest ^:integration signup-sends-confirmation-email
+  (with-redefs [darg.services.mailgun/send-message (constantly true)]
+    (bond/with-spy [darg.services.mailgun/send-message]
+      (let [auth-response (server/app (mock-request/request
+                                       :post "/api/v1/user"
+                                       {:email "dummy@darg.io"
+                                        :password "test"
+                                        :name "Crash dummy"}))]
+        (is (= 1 (-> darg.services.mailgun/send-message bond/calls count)))))))
 
 (deftest i-cant-write-the-same-thing-twice
   (let [user (select-keys model-fixtures/test-user-4
@@ -46,8 +56,6 @@
     (is (not (some #{"logged-in=true;Path=/"}
                    (get (:headers auth-response) "Set-Cookie"))))))
 
-;; update
-
 (deftest update-user-works
   (let [params {:email "test-user5@darg.io"
                 :name "Fiona the Human"
@@ -69,8 +77,6 @@
         response (api/update! sample-request)]
     (is (= (:status response) 409))
     (is (= 1 (count (user/fetch-user {:email "david@ursacorp.io"}))))))
-
-;; fetch 
 
 (deftest user-can-get-teammates-profile
   (let [sample-request {:user {:email "test-user2@darg.io" :id 4}

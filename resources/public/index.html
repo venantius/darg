@@ -27,10 +27,12 @@
 
   </head>
   <body>
-    <div ng-controller="DargUserCtrl">
+    <div ng-controller="DargUserCtrl as User">
       <header>
         <div ng-include src='"/templates/header.html"'></div>
       </header>
+
+      <div ng-include src='"/templates/alerts.html"'></div>
 
       <div ng-view></div>
 

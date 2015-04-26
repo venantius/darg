@@ -1,5 +1,8 @@
 (ns darg.db.entities
-  (:require [clojure.tools.logging :as log]
+  (:require [clj-time.core :as t]
+            [clj-time.coerce :as c]
+            [clojure.tools.logging :as log]
+            [darg.util.token :as token]
             [korma.core :refer :all]))
 
 (declare
@@ -88,4 +91,16 @@
 (defentity team-invitation
   (table :darg.team_invitation)
   (belongs-to user)
-  (belongs-to team))
+  (belongs-to team)
+  (prepare (fn [i]
+             (assoc i 
+                    :token (token/generate-token)
+                    :expires_at (c/to-sql-time (t/plus (t/now) (t/days 1)))))))
+
+(defentity user-email-confirmation
+  (table :darg.email_confirmation)
+  (prepare (fn [ec]
+             (if (:token ec)
+               ec
+               (assoc ec :token (token/generate-token)))))
+  (belongs-to user))

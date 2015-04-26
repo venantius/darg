@@ -58,7 +58,7 @@
   Takes a map of fields for use in db lookup"
   [params]
   (select entities/user
-          (fields :active :bot :admin :email :timezone :email_hour)
+          (fields :active :bot :admin :email :timezone :email_hour :confirmed_email)
           (where params)))
 
 (defn fetch-one-user
@@ -88,14 +88,14 @@
   ([params]
    (first
     (select entities/user
-            (fields :id :active :bot :admin :name :email :timezone :email_hour)
+            (fields :id :active :bot :admin :name :email :timezone :email_hour :confirmed_email)
             (with entities/team
                   (order :team.name :asc))
             (where params))))
   ([params team-ids]
    (first
     (select entities/user
-            (fields :id :active :bot :admin :name :email :timezone :email_hour)
+            (fields :id :active :bot :admin :name :email :timezone :email_hour :confirmed_email)
             (with entities/team
                   (where {:team.id [in team-ids]})
                   (order :team.name :asc))

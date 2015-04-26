@@ -4,7 +4,7 @@
             [clojure.string :as str]
             [clojure.tools.logging :as log]
             [darg.db-util :as dbutil]
-            [darg.model.email.template :as template]
+            [darg.email.template :as template]
             [darg.model.task :as task]
             [darg.model.team :as team]
             [darg.model.user :as user]
@@ -50,14 +50,14 @@
   (let [today (dt/local-time (t/now) timezone)]
     (str "Darg.io: What did you do today? [" (f/unparse (f/formatter-local "MMMM dd YYYY") today) "]")))
 
-(defn from
+(defn from-team
   [{:keys [email name] :as team}]
   (str name " (Darg.io) <" email ">"))
 
 (defn send-one-personal-email
   "Send an e-mail for each team this user is on asking what they did today."
   [user team]
-  (let [from (from team)
+  (let [from (from-team team)
         to (:email user)
         subject (todays-subject-line user)]
     (log/info "Emailing" to "from" from)
@@ -79,10 +79,28 @@
   [email-address team token]
   (log/info "Sending an invitation for" email-address
             "to join team" team)
-  (let [from (from team)
+  (let [from (from-team team)
         content (template/render-team-invite team token)
         subject (str "You've been invited to join " (:name team) " on Darg.io!")]
     (mailgun/send-message {:from from
                            :to email-address
+                           :subject subject
+                           :html content})))
+
+(defn from-darg
+  "The 'from' email header for the main Darg site."
+  []
+  (str "David Jarvis (Darg.io) <david@darg.io>"))
+
+(defn send-welcome-email
+  "Send an email to a new user welcoming them to Darg and asking them to
+   confirm their email address."
+  [user]
+  (let [from (from-darg)
+        to (:email user)
+        subject "Welcome to Darg.io!"
+        content (template/render-welcome-email user)]
+    (mailgun/send-message {:from from
+                           :to to
                            :subject subject
                            :html content})))

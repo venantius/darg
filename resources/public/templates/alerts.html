@@ -1,0 +1,8 @@
+<div class="" ng-repeat="alert in User.emailConfirmationAlerts">
+  <div class="dialog dialog-success">
+    {{alert.msg}}
+    <button class="btn btn-primary" ng-click="User.sendEmailConfirmation()">
+      Send me another!
+    </button>
+  </div>
+</div>
