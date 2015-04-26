@@ -1,5 +1,6 @@
 (ns darg.controller.user-test
-  (:require [cheshire.core :as json]
+  (:require [bond.james :as bond]
+            [cheshire.core :as json]
             [clojure.test :refer :all]
             [darg.controller.user :as api]
             [darg.fixtures :refer [with-db-fixtures]]
@@ -25,7 +26,14 @@
                 (get (:headers auth-response) "Set-Cookie"))))))
 
 (deftest ^:integration signup-sends-confirmation-email
-  (is (= 0 1)))
+  (with-redefs [darg.services.mailgun/send-message (constantly true)]
+    (bond/with-spy [darg.services.mailgun/send-message]
+      (let [auth-response (server/app (mock-request/request
+                                       :post "/api/v1/user"
+                                       {:email "dummy@darg.io"
+                                        :password "test"
+                                        :name "Crash dummy"}))]
+        (is (= 1 (-> darg.services.mailgun/send-message bond/calls count)))))))
 
 (deftest i-cant-write-the-same-thing-twice
   (let [user (select-keys model-fixtures/test-user-4

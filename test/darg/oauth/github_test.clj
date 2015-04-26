@@ -13,6 +13,8 @@
 
 (def test-username (str (env/env :darg-gh-username))) ;Github username
 (def test-password (str (env/env :darg-gh-password))) ;Github password
+(def test-github-oauth (oauth-github/create-auth-token test-username test-password "Temp Token For Testing22"))
+(def access-token (:access_token (oauth-github/parse-oauth-response test-github-oauth)))
 
 (defn cleanup-auth-tokens
   [f]
@@ -25,16 +27,11 @@
 (use-fixtures :once cleanup-auth-tokens)
 
 (deftest ^:integration we-can-successfully-get-an-oauth-token
-  (let [test-github-oauth (oauth-github/create-auth-token test-username test-password "temp Token For Testing22")
-        access-token (:access-token (oauth-github/parse-oauth-response test-github-oauth))]
-    (is (some? access-token))))
+  (is (some? access-token)))
 
 (deftest we-can-insert-and-link-a-github-user
-  (let [userid 3
-        test-github-oauth (oauth-github/create-auth-token test-username test-password "temp Token For Testing22")
-        access-token (:access-token (oauth-github/parse-oauth-response test-github-oauth))]
+  (let [userid 3]
     (oauth-github/insert-and-link-github-user userid test-github-oauth)
     ;; Github token is linked to github user
     (is (= (:github_token_id (gh-user/fetch-one-github-user {:gh_login test-username})) 
            (gh-token/fetch-github-token-id {:gh_token access-token})))))
-

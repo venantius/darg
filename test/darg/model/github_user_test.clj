@@ -15,9 +15,6 @@
 (deftest ^:integration we-can-get-a-user-from-the-github-api
   (is (not-empty (gh-user/github-api-get-user "dargtester1"))))
 
-#_(deftest we-can-get-the-current-user
-    (is (not-empty (gh-user/github-api-get-current-user authtoken))))
-
 ; DB tests
 
 (deftest we-can-retrieve-github-users-from-db

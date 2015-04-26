@@ -51,7 +51,8 @@
                  [selmer "0.8.2"]
 
                  ;; testing
-                 [ring-mock "0.1.5"]]
+                 [ring-mock "0.1.5"]
+                 [bond "0.2.5"]]
 
   :plugins [[com.jakemccrary/lein-test-refresh "0.5.1"]
             [lein-environ "1.0.0"]]
