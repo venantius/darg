@@ -19495,6 +19495,24 @@ div.inner {
 .navbar-icons {
   font-size: 16px;
 }
+.darg-navbar-dropdown {
+  border: none;
+  color: #34495e;
+  margin: 0 0 0 0px;
+  padding: 0 21px;
+  height: 53px;
+  line-height: 53px;
+}
+.darg-navbar-dropdown:before {
+  content: "\e61a";
+  font-family: "Flat-UI-Pro-Icons";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: color .25s linear;
+}
 body {
   padding-top: 53px;
 }
@@ -19523,6 +19541,11 @@ div.call-to-action h3 {
 div.call-to-action p {
   color: #ecf0f1;
   font-size: 18px;
+}
+@media only screen and (max-device-width: 768px) {
+  div.call-to-action {
+    padding-top: 10vh;
+  }
 }
 .img-portrait {
   border-radius: 50%;
