@@ -3,8 +3,11 @@
  */
 darg.service('alert', function() {
 
-    this.setAlert = function(alert_list, alert_content) {
-        alert_list[0] = {msg: alert_content}
+    this.setAlert = function(alert_list, alert_content, alert_class) {
+        alert_list[0] = {
+            msg: alert_content,
+            class: alert_class
+        }
     };
 
     this.emailConfirmationAlerts = [];

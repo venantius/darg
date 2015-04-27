@@ -95,9 +95,9 @@
         (unauthorized "You do not have deletion permissions for this role.")
         :else
         (let [fields (select-keys params [:admin :role])
-              fields (if (some? (:admin fields))
+              fields (if (not-empty (:admin fields))
                        (update-in fields [:admin] read-string)
-                       fields)]
+                       (assoc fields :admin false))]
           (log/info fields)
           (ok (role/update-role! (:id target-role) fields)))))))
 

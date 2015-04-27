@@ -1,8 +1,15 @@
+/*
+ * Shared data and functions for the current user
+ */
 darg.service('user', function($cookieStore, $http, $q) {
-    this.info = null;
+    this.info = {
+        "confirmed_email": null,
+        "team": {}
+    };
     this.current_team = null;
 
     this.updateProfile = function(params) {
+        var deferred = $q.defer();
         url = "/api/v1/user/" + $cookieStore.get('id');
         $http({
             method: "post",
@@ -11,7 +18,12 @@ darg.service('user', function($cookieStore, $http, $q) {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
+            deferred.resolve(data);
         })
+        .error(function(data) {
+            deferred.reject(data) 
+        })
+        return deferred.promise;
     };
 
     this.resetPassword = function(params) {

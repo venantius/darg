@@ -115,22 +115,37 @@ darg.controller('DargAlertCtrl',
     ['$location',
      '$scope',
      'alert',
+     'user',
      function(
          $location,
          $scope,
-         alert) {
+         alert,
+         user) {
 
     this.alerts = alert;
 
+    /*
+     * watchers
+     */
     $scope.$watch(function() {
         return $location.search().failed_login;
     }, function(newValue, oldValue) {
-        console.log("nuts");
         if (newValue != null) {
             alert.setAlert(alert.failedLoginAlerts,
                            alert.failedLoginMessage);
         } else {
             alert.failedLoginAlerts = [];
+        }
+    });
+
+    $scope.$watch(function() {
+        return user.info.confirmed_email
+    }, function(newValue, oldValue) {
+        if (newValue == false) {
+            alert.setAlert(alert.emailConfirmationAlerts,
+                           alert.emailConfirmationMessage);
+        } else {
+            alert.emailConfirmationAlerts = []
         }
     });
 
@@ -151,6 +166,7 @@ darg.controller('DargSettingsCtrl',
      '$location',
      '$routeParams',
      '$scope', 
+     'alert',
      'user',
      function(
          $cookies, 
@@ -159,53 +175,94 @@ darg.controller('DargSettingsCtrl',
          $location,
          $routeParams,
          $scope,
+         alert,
          user) {
 
     var self = this;
 
-    $scope.isSettingsProfile = function() {
-        if ($routeParams.settingPage == "profile") {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    $scope.timezones = moment.tz.names();
-
-    $scope.gotoSettingsProfile = function() {
-        $location.path("/settings/profile");
-    }
-
-    $scope.isSettingsAccount = function() {
-        if ($routeParams.settingPage == "account") {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    $scope.gotoSettingsAccount = function() {
-        $location.path("/settings/account");
-    }
+    this.timezones = moment.tz.names();
+    this.times = [
+        "midnight",
+        "1am",
+        "2am",
+        "3am",
+        "4am",
+        "5am",
+        "6am",
+        "7am",
+        "8am",
+        "9am",
+        "10am",
+        "11am",
+        "noon",
+        "1pm",
+        "2pm",
+        "3pm",
+        "4pm",
+        "5pm",
+        "6pm",
+        "7pm",
+        "8pm",
+        "9pm",
+        "10pm",
+        "11pm"];
 
     this.emailConfirmationAlerts = [];
-    this.setAlert = function(alert_list, alert_content) {
-        alert_list[0] = {msg: alert_content};
+    this.profileUpdateAlerts = [];
+
+    this.userProfile = {
+        "name": "",
+        "email": "",
+        "timezone": "",
+        "email_hour": ""
     };
 
+    this.updateTimezoneSetting = function(tz) {
+        this.userProfile.timezone = tz;
+    }
+    this.updateEmailHourSettings = function(hour) {
+        this.userProfile.email_hour = hour;
+    }
+    this.updateProfile = function(user_profile) {
+        user.updateProfile(user_profile)
+        .then(function(data) {
+            console.log("success!");
+            alert.setAlert(self.profileUpdateAlerts,
+                           "Profile updated!",
+                          "alert-success");
+        }, function(data) {
+            message = "Failed to update profile: " + data.message;
+            alert.setAlert(self.profileUpdateAlerts,
+                           message,
+                           "alert-danger");
+        });
+    }
+
+    /*
+     * Watchers
+     */
     $scope.$watch(function() {
         return $location.search().confirmation_token
     }, function(newValue, oldValue) {
         if (newValue != null) {
             user.confirmEmail(newValue)
             .then(function(data) {
-                self.setAlert(self.emailConfirmationAlerts,
+                alert.setAlert(self.emailConfirmationAlerts,
                           "E-mail address confirmed!");
+                user.info.confirmed_email = true;
             }, function(data) {
                 console.log(data) 
             });
         };
+    });
+
+    $scope.$watch(function() {
+        return user.info
+    }, function(newValue, oldValue) {
+        self.userProfile.name = newValue.name;
+        self.userProfile.email = newValue.email;
+        self.userProfile.timezone = newValue.timezone;
+        self.userProfile.email_hour = newValue.email_hour;
     });
 
 }]);
@@ -558,72 +615,10 @@ darg.controller('DargUserCtrl',
         password: ""
     };
 
-
-
-    $scope.UserProfile = {
-        "name": "",
-        "email": "",
-        "timezone": "",
-        "email_hour": ""
-    };
-
-    $scope.times = [
-        "midnight",
-        "1am",
-        "2am",
-        "3am",
-        "4am",
-        "5am",
-        "6am",
-        "7am",
-        "8am",
-        "9am",
-        "10am",
-        "11am",
-        "noon",
-        "1pm",
-        "2pm",
-        "3pm",
-        "4pm",
-        "5pm",
-        "6pm",
-        "7pm",
-        "8pm",
-        "9pm",
-        "10pm",
-        "11pm"];
-
-
-    $scope.updateTimezoneSetting = function(tz) {
-        $scope.UserProfile.timezone = tz;
-    }
-
-    $scope.updateEmailHourSettings = function(hour) {
-        $scope.UserProfile.email_hour = hour;
-    }
-
-    $scope.updateProfile = user.updateProfile;
-    getDefaultTeam = function() {
-        if (user.info != null) {
-            if (user.info.team.length == 0) {
-                return null; 
-            } else if ($routeParams.teamId != null) {
-                return $routeParams.teamId
-            } else {
-                return user.info.team[0].id;
-            }
-        };
-    };
-
     $scope.getCurrentUser = function() {
         user.getCurrentUser()
         .then(function(data) {
             user.info = data;
-            $scope.UserProfile.name = data.name;
-            $scope.UserProfile.email = data.email;
-            $scope.UserProfile.timezone = data.timezone;
-            $scope.UserProfile.email_hour = data.email_hour;
-            user.current_team = getDefaultTeam();
         }, function(data) {
             console.log(data)
         });
@@ -668,17 +663,7 @@ darg.controller('DargUserCtrl',
     }, function(newValue, oldValue) {
         if (newValue != null) {
             $scope.currentUser = newValue;
-            if ($scope.currentUser.confirmed_email == false) {
-                alert.setAlert(alert.emailConfirmationAlerts,
-                               alert.emailConfirmationMessage);
-            };
         }
-    });
-
-    $scope.$watch(function() {
-        return getDefaultTeam()
-    }, function(newValue, oldValue) {
-        user.current_team = getDefaultTeam();
     });
 }]);
 
@@ -688,8 +673,11 @@ darg.controller('DargUserCtrl',
  */
 darg.service('alert', function() {
 
-    this.setAlert = function(alert_list, alert_content) {
-        alert_list[0] = {msg: alert_content}
+    this.setAlert = function(alert_list, alert_content, alert_class) {
+        alert_list[0] = {
+            msg: alert_content,
+            class: alert_class
+        }
     };
 
     this.emailConfirmationAlerts = [];
@@ -943,11 +931,18 @@ darg.service('timeline', function($http, $q) {
     };
 });
 
+/*
+ * Shared data and functions for the current user
+ */
 darg.service('user', function($cookieStore, $http, $q) {
-    this.info = null;
+    this.info = {
+        "confirmed_email": null,
+        "team": {}
+    };
     this.current_team = null;
 
     this.updateProfile = function(params) {
+        var deferred = $q.defer();
         url = "/api/v1/user/" + $cookieStore.get('id');
         $http({
             method: "post",
@@ -956,7 +951,12 @@ darg.service('user', function($cookieStore, $http, $q) {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
+            deferred.resolve(data);
         })
+        .error(function(data) {
+            deferred.reject(data) 
+        })
+        return deferred.promise;
     };
 
     this.resetPassword = function(params) {
