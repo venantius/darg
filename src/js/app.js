@@ -39,11 +39,14 @@ darg.config(['$routeProvider', '$locationProvider',
             controllerAs: 'PasswordReset'
         })
 
-        // Signup
+        // Signup and Login
         .when('/signup', {
             templateUrl: '/templates/signup.html',
             controller: 'DargSignupCtrl',
             controllerAs: 'Signup'
+        })
+        .when('/login', {
+            templateUrl: '/templates/login.html'
         })
 
         // Inner

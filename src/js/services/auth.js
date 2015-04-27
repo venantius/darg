@@ -12,6 +12,9 @@ darg.service('auth', function($cookieStore, $http, $location) {
         .success(function(data) {
             $location.path('/');
         })
+        .error(function(data) {
+            $location.path('/login');
+        })
     };
 
     this.logout = function() {

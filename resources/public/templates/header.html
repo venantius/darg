@@ -1,5 +1,5 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="">
+  <div class="container">
     <div class="navbar-header">
       <a class="navbar-brand" href="/">
         <i class="fa fa-home navbar-icons"></i>
@@ -22,7 +22,7 @@
             <div class="form-group">
               <input type="password" size="8" placeholder="Password" class="form-control input-sm" ng-model="LoginForm.password">
             </div>
-            <button class="btn btn-primary" ng-click="auth.login(LoginForm)">Login</button>
+            <button class="btn btn-primary" ng-click="auth.login(LoginForm)">Sign in</button>
             <button class="btn btn-danger" data-toggle="tooltip" title="Forgot your password?" data-placement="bottom" type="button" ng-click="LoadPasswordResetPage()">!</button>
           </form>
         </li>

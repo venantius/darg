@@ -23,6 +23,7 @@
      (= path "/faq")
      (= path "/integrations")
      (= path "/password_reset")
+      (.startsWith path "/login")
       (.startsWith path "/new_password")
       (.startsWith path "/signup")
 
