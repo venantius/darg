@@ -34,72 +34,10 @@ darg.controller('DargUserCtrl',
         password: ""
     };
 
-
-
-    $scope.UserProfile = {
-        "name": "",
-        "email": "",
-        "timezone": "",
-        "email_hour": ""
-    };
-
-    $scope.times = [
-        "midnight",
-        "1am",
-        "2am",
-        "3am",
-        "4am",
-        "5am",
-        "6am",
-        "7am",
-        "8am",
-        "9am",
-        "10am",
-        "11am",
-        "noon",
-        "1pm",
-        "2pm",
-        "3pm",
-        "4pm",
-        "5pm",
-        "6pm",
-        "7pm",
-        "8pm",
-        "9pm",
-        "10pm",
-        "11pm"];
-
-
-    $scope.updateTimezoneSetting = function(tz) {
-        $scope.UserProfile.timezone = tz;
-    }
-
-    $scope.updateEmailHourSettings = function(hour) {
-        $scope.UserProfile.email_hour = hour;
-    }
-
-    $scope.updateProfile = user.updateProfile;
-    getDefaultTeam = function() {
-        if (user.info != null) {
-            if (user.info.team.length == 0) {
-                return null; 
-            } else if ($routeParams.teamId != null) {
-                return $routeParams.teamId
-            } else {
-                return user.info.team[0].id;
-            }
-        };
-    };
-
     $scope.getCurrentUser = function() {
         user.getCurrentUser()
         .then(function(data) {
             user.info = data;
-            $scope.UserProfile.name = data.name;
-            $scope.UserProfile.email = data.email;
-            $scope.UserProfile.timezone = data.timezone;
-            $scope.UserProfile.email_hour = data.email_hour;
-            user.current_team = getDefaultTeam();
         }, function(data) {
             console.log(data)
         });
@@ -144,17 +82,7 @@ darg.controller('DargUserCtrl',
     }, function(newValue, oldValue) {
         if (newValue != null) {
             $scope.currentUser = newValue;
-            if ($scope.currentUser.confirmed_email == false) {
-                alert.setAlert(alert.emailConfirmationAlerts,
-                               alert.emailConfirmationMessage);
-            };
         }
-    });
-
-    $scope.$watch(function() {
-        return getDefaultTeam()
-    }, function(newValue, oldValue) {
-        user.current_team = getDefaultTeam();
     });
 }]);
 

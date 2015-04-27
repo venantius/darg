@@ -9,24 +9,29 @@
         <button type="button" class="close fui-cross" data-dismiss="alert">
         </button>
       </div>
+      <div class="alert" ng-class="alert.class" ng-repeat="alert in Settings.profileUpdateAlerts">
+        {{alert.msg}}
+        <button type="button" class="close fui-cross" data-dismiss="alert">
+        </button>
+      </div>
 
       <form >
         <div class="form-group">
           Name
-          <input type="text" class="form-control" ng-model="UserProfile.name"/>
+          <input type="text" class="form-control" ng-model="Settings.userProfile.name"/>
         </div>
         <div class="form-group">
           Email
-          <input type="text" class="form-control" ng-model="UserProfile.email"/>
+          <input type="text" class="form-control" ng-model="Settings.userProfile.email"/>
         </div>
 
         <div>Timezone</div>
         <div class="btn-group form-group">
           <button class="btn btn-inverse dropdown-toggle" type="button" data-toggle="dropdown">
-            {{UserProfile.timezone}}<span class="caret"></span>
+            {{Settings.userProfile.timezone}}<span class="caret"></span>
           </button>
           <ul class="dropdown-menu dropdown-menu-inverse scrollable-menu" role="menu"> 
-            <li ng-repeat="tz in timezones" ng-click="updateTimezoneSetting(tz)">
+            <li ng-repeat="tz in Settings.timezones" ng-click="Settings.updateTimezoneSetting(tz)">
               <a href="#">{{tz}}</a>
             </li>
           </ul>
@@ -35,20 +40,17 @@
         <div>Reminder email time</div>
         <div class="btn-group form-group">
           <button class="btn btn-inverse dropdown-toggle" type="button" data-toggle="dropdown">
-            {{UserProfile.email_hour}}<span class="caret"></span>
+            {{Settings.userProfile.email_hour}}<span class="caret"></span>
           </button>
           <ul class="dropdown-menu dropdown-menu-inverse scrollable-menu" role="menu">
-            <li ng-repeat="time in times" ng-click="updateEmailHourSettings(time)">
+            <li ng-repeat="time in Settings.times" ng-click="Settings.updateEmailHourSettings(time)">
               <a href="#">{{time}}</a>
             </li>
           </ul>
         </div>
 
-
-
-
         <div class="form-group">
-          <button class="btn btn-primary" ng-click="updateProfile(UserProfile)">Update profile</button>
+          <button class="btn btn-primary" ng-click="Settings.updateProfile(Settings.userProfile)">Update profile</button>
         </div>
       </form>
     </div>
