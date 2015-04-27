@@ -1,2 +1,3 @@
 resources/dependencies/* linguist-vendored
 resources/public/js/flatui/* linguist-vendored
+resources/bower_components/* linguist-vendored
