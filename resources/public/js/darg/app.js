@@ -39,11 +39,14 @@ darg.config(['$routeProvider', '$locationProvider',
             controllerAs: 'PasswordReset'
         })
 
-        // Signup
+        // Signup and Login
         .when('/signup', {
             templateUrl: '/templates/signup.html',
             controller: 'DargSignupCtrl',
             controllerAs: 'Signup'
+        })
+        .when('/login', {
+            templateUrl: '/templates/login.html'
         })
 
         // Inner
@@ -107,6 +110,31 @@ darg.config(function($provide) {
       return $delegate;
   });
 });
+
+darg.controller('DargAlertCtrl',
+    ['$location',
+     '$scope',
+     'alert',
+     function(
+         $location,
+         $scope,
+         alert) {
+
+    this.alerts = alert;
+
+    $scope.$watch(function() {
+        return $location.search().failed_login;
+    }, function(newValue, oldValue) {
+        console.log("nuts");
+        if (newValue != null) {
+            alert.setAlert(alert.failedLoginAlerts,
+                           alert.failedLoginMessage);
+        } else {
+            alert.failedLoginAlerts = [];
+        }
+    });
+
+ }]);
 
 darg.controller('DargPasswordResetCtrl',
     ['$scope',
@@ -500,6 +528,7 @@ darg.controller('DargUserCtrl',
      '$scope', 
      '$http',
      '$routeParams',
+     'alert',
      'auth',
      'user',
      function(
@@ -508,6 +537,7 @@ darg.controller('DargUserCtrl',
          $scope, 
          $http, 
          $routeParams,
+         alert,
          auth,
          user) {
 
@@ -613,6 +643,7 @@ darg.controller('DargUserCtrl',
 
     $scope.LoadPasswordResetPage = function() {
         $location.path('/password_reset');
+        $location.search('failed_login', null);
     };
 
     $scope.resetPassword = user.resetPassword;
@@ -621,10 +652,6 @@ darg.controller('DargUserCtrl',
         $location.path('/signup');
     };
 
-    this.emailConfirmationAlerts = [];
-    this.setAlert = function(alert_list, alert_content) {
-        alert_list[0] = {msg: alert_content}
-    };
     this.sendEmailConfirmation = user.sendEmailConfirmation;
 
     /* watchers */
@@ -642,8 +669,8 @@ darg.controller('DargUserCtrl',
         if (newValue != null) {
             $scope.currentUser = newValue;
             if ($scope.currentUser.confirmed_email == false) {
-                self.setAlert(self.emailConfirmationAlerts,
-                              user.emailConfirmationMessage);
+                alert.setAlert(alert.emailConfirmationAlerts,
+                               alert.emailConfirmationMessage);
             };
         }
     });
@@ -655,6 +682,23 @@ darg.controller('DargUserCtrl',
     });
 }]);
 
+
+/*
+ * Alerts
+ */
+darg.service('alert', function() {
+
+    this.setAlert = function(alert_list, alert_content) {
+        alert_list[0] = {msg: alert_content}
+    };
+
+    this.emailConfirmationAlerts = [];
+    this.emailConfirmationMessage = "We've e-mailed you with a link to confirm your e-mail address. Didn't get it?"
+
+    this.failedLoginAlerts = [];
+    this.failedLoginMessage = "Incorrect e-mail or password."
+
+});
 
 /*
  * Service for authentication (login/logout)
@@ -669,6 +713,10 @@ darg.service('auth', function($cookieStore, $http, $location) {
         })
         .success(function(data) {
             $location.path('/');
+        })
+        .error(function(data) {
+            $location.path('/login');
+            $location.search('failed_login', 'true');
         })
     };
 
@@ -959,8 +1007,6 @@ darg.service('user', function($cookieStore, $http, $q) {
         })
         return deferred.promise;
     };
-
-    this.emailConfirmationMessage = "We've e-mailed you with a link to confirm your e-mail address. Didn't get it?"
 
     this.sendEmailConfirmation = function() {
         var deferred = $q.defer();

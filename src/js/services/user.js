@@ -63,8 +63,6 @@ darg.service('user', function($cookieStore, $http, $q) {
         return deferred.promise;
     };
 
-    this.emailConfirmationMessage = "We've e-mailed you with a link to confirm your e-mail address. Didn't get it?"
-
     this.sendEmailConfirmation = function() {
         var deferred = $q.defer();
         url = "/api/v1/user/" + $cookieStore.get('id') + "/email"

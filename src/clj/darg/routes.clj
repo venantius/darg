@@ -30,12 +30,12 @@
 (defroutes routes
   ;; site
   (GET    "/"                               [] (darg-spa))
-
   (GET    "/about"                          [] (darg-spa))
   (GET    "/api"                            [] (darg-spa))
   (GET    "/faq"                            [] (darg-spa))
   (GET    "/integrations"                   [] (darg-spa))
 
+  (GET    "/login"                          [] (darg-spa))
   (GET    "/signup"                         [] (darg-spa))
 
   (GET    "/password_reset"                 [] (darg-spa))

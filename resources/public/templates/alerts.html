@@ -1,8 +1,21 @@
-<div class="" ng-repeat="alert in User.emailConfirmationAlerts">
-  <div class="dialog dialog-success">
-    {{alert.msg}}
-    <button class="btn btn-primary" ng-click="User.sendEmailConfirmation()">
-      Send me another!
-    </button>
+<div ng-controller="DargAlertCtrl as Alert">
+  <div class="" 
+    ng-repeat="alert in Alert.alerts.emailConfirmationAlerts" 
+    ng-show="loggedIn()">
+    <div class="dialog dialog-success">
+      {{alert.msg}}
+      <button class="btn btn-primary" ng-click="User.sendEmailConfirmation()">
+        Send me another!
+      </button>
+    </div>
   </div>
+
+  <div ng-repeat="alert in Alert.alerts.failedLoginAlerts"
+    ng-hide="loggedIn()">
+    <div class="dialog dialog-danger">
+      {{alert.msg}}
+      <button class="btn btn-danger" ng-click="LoadPasswordResetPage()">
+        Forgot your password?
+      </button>
+    </div>
 </div>
