@@ -119,6 +119,7 @@ darg.controller('DargUserCtrl',
 
     $scope.LoadPasswordResetPage = function() {
         $location.path('/password_reset');
+        $location.search('failed_login', null);
     };
 
     $scope.resetPassword = user.resetPassword;
@@ -127,7 +128,6 @@ darg.controller('DargUserCtrl',
         $location.path('/signup');
     };
 
-    this.emailConfirmationAlerts = alert.emailConfirmationAlerts;
     this.sendEmailConfirmation = user.sendEmailConfirmation;
 
     /* watchers */

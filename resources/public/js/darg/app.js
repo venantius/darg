@@ -111,6 +111,31 @@ darg.config(function($provide) {
   });
 });
 
+darg.controller('DargAlertCtrl',
+    ['$location',
+     '$scope',
+     'alert',
+     function(
+         $location,
+         $scope,
+         alert) {
+
+    this.alerts = alert;
+
+    $scope.$watch(function() {
+        return $location.search().failed_login;
+    }, function(newValue, oldValue) {
+        console.log("nuts");
+        if (newValue != null) {
+            alert.setAlert(alert.failedLoginAlerts,
+                           alert.failedLoginMessage);
+        } else {
+            alert.failedLoginAlerts = [];
+        }
+    });
+
+ }]);
+
 darg.controller('DargPasswordResetCtrl',
     ['$scope',
      'auth',
@@ -618,6 +643,7 @@ darg.controller('DargUserCtrl',
 
     $scope.LoadPasswordResetPage = function() {
         $location.path('/password_reset');
+        $location.search('failed_login', null);
     };
 
     $scope.resetPassword = user.resetPassword;
@@ -626,7 +652,6 @@ darg.controller('DargUserCtrl',
         $location.path('/signup');
     };
 
-    this.emailConfirmationAlerts = alert.emailConfirmationAlerts;
     this.sendEmailConfirmation = user.sendEmailConfirmation;
 
     /* watchers */
@@ -670,6 +695,9 @@ darg.service('alert', function() {
     this.emailConfirmationAlerts = [];
     this.emailConfirmationMessage = "We've e-mailed you with a link to confirm your e-mail address. Didn't get it?"
 
+    this.failedLoginAlerts = [];
+    this.failedLoginMessage = "Incorrect e-mail or password."
+
 });
 
 /*
@@ -688,6 +716,7 @@ darg.service('auth', function($cookieStore, $http, $location) {
         })
         .error(function(data) {
             $location.path('/login');
+            $location.search('failed_login', 'true');
         })
     };
 

@@ -10,4 +10,7 @@ darg.service('alert', function() {
     this.emailConfirmationAlerts = [];
     this.emailConfirmationMessage = "We've e-mailed you with a link to confirm your e-mail address. Didn't get it?"
 
+    this.failedLoginAlerts = [];
+    this.failedLoginMessage = "Incorrect e-mail or password."
+
 });

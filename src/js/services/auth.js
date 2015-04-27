@@ -14,6 +14,7 @@ darg.service('auth', function($cookieStore, $http, $location) {
         })
         .error(function(data) {
             $location.path('/login');
+            $location.search('failed_login', 'true');
         })
     };
 
