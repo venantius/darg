@@ -31,6 +31,10 @@
   (construct-email
     (slurp (io/resource "email/templates/email_confirmation.html"))))
 
+(def digest-email
+  (construct-email
+    (slurp (io/resource "email/templates/digest.html"))))
+
 (defn render-team-invite
   [{:keys [name] :as team} invite]
   (render team-invite {:team_name name 
@@ -43,3 +47,7 @@
 (defn render-confirmation-email
   [{:keys [name] :as user} link]
   (render email-confirmation-email {:name name :link link}))
+
+(defn render-digest-email
+  [darg]
+  (render digest-email {:timeline darg}))

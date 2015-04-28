@@ -1,0 +1,13 @@
+<head>
+  <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../public/css/flat-ui.css" rel="stylesheet">
+</head>
+
+{{timeline.date}}
+{% for user in timeline.user %}
+
+{% if user.task|not-empty %}
+{{user}}<br><br>
+{% endif %}
+
+{% endfor %}

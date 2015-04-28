@@ -21,6 +21,16 @@ module.exports = function(grunt) {
       }
     },
 
+    uncss: {
+      dist: {
+        files: {
+          "./resources/email/css/email.css":
+            ['./resources/email/templates/digest.html']
+        }
+      }
+    },
+    
+
     // running `grunt watch` will watch for changes to both js and less
     watch: {
       concat: {
@@ -30,11 +40,16 @@ module.exports = function(grunt) {
       less: {
         files: "./src/less/**/*.less",
         tasks: ["less"]
+      },
+      uncss: {
+        files: "./resources/email/templates/**/*.html",
+        tasks: ["uncss"]
       }
     }
   });
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-uncss');
 };
 

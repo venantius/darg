@@ -19456,11 +19456,12 @@ img.pawnstars {
   margin-bottom: 25px;
 }
 img.logo {
-  width: 300px;
+  width: 100px;
   margin-left: auto;
   margin-right: auto;
   display: block;
-  margin-bottom: 60px;
+  margin-top: 60px;
+  margin-bottom: 30px;
 }
 .ui-datepicker {
   outline-width: 0;
