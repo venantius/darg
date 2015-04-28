@@ -8,6 +8,7 @@ Say goodbye to status meetings.
 
     brew install postgres
     brew install leiningen
+    gem install premailer
     npm install
 
 ## Development Flow

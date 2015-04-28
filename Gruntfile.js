@@ -21,6 +21,7 @@ module.exports = function(grunt) {
       }
     },
 
+    // `grunt uncss` to compile a minified, JIT css file for email
     uncss: {
       dist: {
         files: {
@@ -29,7 +30,27 @@ module.exports = function(grunt) {
         }
       }
     },
-    
+
+    // replace stylesheet with economy version
+    processhtml: {
+      dist: {
+        files: {
+          'resources/email/templates/processed/digest.html': ['resources/email/templates/digest.html']
+        }
+      }
+    },
+
+    premailer: {
+      main: {
+        options: {
+          verbose: true
+        },
+        files: {
+          'resources/email/templates/inlined/digest.html': 
+            ['resources/email/templates/processed/digest.html']
+        }
+      }
+    },
 
     // running `grunt watch` will watch for changes to both js and less
     watch: {
@@ -41,9 +62,9 @@ module.exports = function(grunt) {
         files: "./src/less/**/*.less",
         tasks: ["less"]
       },
-      uncss: {
+      email: {
         files: "./resources/email/templates/**/*.html",
-        tasks: ["uncss"]
+        tasks: ["uncss", "processhtml", "premailer"]
       }
     }
   });
@@ -51,5 +72,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-uncss');
+  grunt.loadNpmTasks('grunt-processhtml');
+  grunt.loadNpmTasks('grunt-premailer');
 };
 

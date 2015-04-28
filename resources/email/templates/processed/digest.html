@@ -1,0 +1,12 @@
+<head>
+   <link rel="stylesheet" href="../../css/email.css">
+</head>
+
+{{timeline.date}}
+{% for user in timeline.user %}
+
+{% if user.task|not-empty %}
+{{user}}<br><br>
+{% endif %}
+
+{% endfor %}
