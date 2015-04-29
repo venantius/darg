@@ -40,28 +40,29 @@
                   </td>
                 </tr>
               </table>
-              <table class="row">
-                <tr>
-                  <td> 
-                      <ul class="timeline-email timeline-email-icons timeline-email-sm">
-                        <div class="timeline-email-line"></div>
-                        {% for task in user.task %}
 
-                        <li>
-                          <div class="timeline-email-icon"></div>
+              <ul class="timeline-email timeline-email-icons timeline-email-sm">
+                {% for task in user.task %}
+                  <table class="row">
+                    <tr>
+                      <td> 
+                            <div class="timeline-email-line"></div>
 
-                          <p>
-                            {{task.task}}
-                            <span class="timeline-email-date">{{task.date}}</span>
-                          </p>
-                        </li>
 
-                        {% endfor %}
+                            <li>
+                              <div class="timeline-email-icon"></div>
 
-                      </ul>
-                  </td>
-                </tr>
-              </table>
+                              <p>
+                                {{task.task}}
+                                <span class="timeline-email-date">{{task.date}}</span>
+                              </p>
+                            </li>
+                      </td>
+                    </tr>
+                  </table>
+                {% endfor %}
+              </ul>
+
             </td>
           </tr>
         </table>
