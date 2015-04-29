@@ -1,5 +1,9 @@
 <head>
-  <link rel="stylesheet" href="../../css/email.css">
+  <!-- build:css ../../css/email.css -->
+  <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../public/css/flat-ui.css" rel="stylesheet">
+  <link href="../css/ink.css" rel="stylesheet">
+  <!-- /build -->
 </head>
 <body>
   {{timeline.date}}
@@ -21,10 +25,8 @@
                     <table class="twelve columns">
                       <tr>
                         <td>
-                          <!--
 
                           <img class="img-portrait timeline-profile-email" gravatar-src="user.email" gravatar-size="64">
-                          -->
                           <div class="timeline-profile-text">
                             {{user.name}}
                           </div>
@@ -38,23 +40,37 @@
               </table>
               <table class="row">
                 <tr>
-                  <td> 
-                          <ul class="timeline-email timeline-email-icons timeline-email-sm">
+                  <td class="wrapper">
+                    <table class="three columns">
+                      <tr>
+                        <td>
+                          &nbsp;
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td class="wrapper">
+                    <table class="nine columns">
+                      <tr>
+                        <td>
+                          <ul class="timeline timeline-icons timeline-sm">
 
                             {% for task in user.task %}
 
                             <li>
-                              <div class="timeline-email-icon"></div>
-                              <div class="timeline-email-line"></div>
                               <p>
                                 {{task.task}}
-                                <span class="timeline-email-date">{{task.date}}</span>
+                                <span class="timeline-icon octicon octicon-check"></span>
+                                <span class="timeline-date">{{task.date}}</span>
                               </p>
                             </li>
 
                             {% endfor %}
 
                           </ul>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>

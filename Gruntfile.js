@@ -63,7 +63,7 @@ module.exports = function(grunt) {
         tasks: ["less"]
       },
       email: {
-        files: "./resources/email/templates/**/*.html",
+        files: ["./resources/email/templates/**/*.html", "./src/less/**/*.less"],
         tasks: ["uncss", "processhtml", "premailer"]
       }
     }

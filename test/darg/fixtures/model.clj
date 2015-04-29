@@ -7,7 +7,7 @@
             [korma.core :refer :all]))
 
 (def test-user-1
-  {:email "savelago@gmail.com"
+  {:email "savelago@darg.io"
    :password (encrypt-password "butts")
    :name "John Lago"
    :timezone "UTC"
@@ -27,7 +27,7 @@
    :active true})
 
 (def test-user-3
-  {:email "david@standardtreasury.com"
+  {:email "davidst@darg.io"
    :password (encrypt-password "nihon")
    :name "The Couch"
    :timezone "UTC"
@@ -154,6 +154,12 @@
    :team_id 2
    :task "Got a banking charter!"})
 
+(def test-task-8
+  {:date (c/to-sql-date (t/today))
+   :user_id 4
+   :team_id 2
+   :task "Rescued Princess Bubblegum and saved the candy kingdom from disaster once again. It's a wonder they get anything done over there."})
+
 (def test-tasks
   [test-task-1
    test-task-2
@@ -161,7 +167,8 @@
    test-task-4
    test-task-5
    test-task-6
-   test-task-7])
+   test-task-7
+   test-task-8])
 
 (def test-role-pair-1
   {:user_id 1
