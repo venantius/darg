@@ -13,7 +13,7 @@
   Retrieve a timeline for a particular date"
   [{:keys [params user]}]
   (let [team-id (-> params :team_id read-string)
-        user (-> (user/fetch-one-user {:id (:id user)}))
+        user (user/fetch-one-user {:id (:id user)})
         date (-> params :date f/parse)]
     (cond
       (not (user/user-in-team? (:id user) team-id))

@@ -549,7 +549,7 @@ darg.controller('DargTimelineCtrl',
 
     this.postTask = function(date, taskString) {
         var params = {
-            "date": date,
+            "timestamp": date,
             "team_id": $routeParams.teamId,
             "task": taskString
         }

@@ -3,7 +3,8 @@
   (:require [clj-time.coerce :as c]
             [clj-time.core :as t]
             [clj-time.format :as f]
-            [clj-time.local :as l]))
+            [clj-time.local :as l]
+            [clojure.tools.logging :as log]))
 
 (def hour-map
   {"1am" 1
@@ -85,6 +86,7 @@
 (defn sql-time-from-task
   "Convert a string into a SQL timestamp."
   [string]
+  (log/warn string)
   (c/to-sql-time
     (c/from-string string)))
 

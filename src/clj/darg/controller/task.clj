@@ -1,5 +1,6 @@
 (ns darg.controller.task
-  (:require [clojure.tools.logging :as log]
+  (:require [clj-time.coerce :as c]
+            [clojure.tools.logging :as log]
             [darg.api.responses :as responses]
             [darg.model.task :as task]
             [darg.model.user :as user]
@@ -14,11 +15,16 @@
   [{:keys [params user] :as request}]
   (log/info "Creating task:" params)
   (let [task (:task params)
+        user (user/fetch-one-user {:id (:id user)})
         user-id (:id user)
         team-id (read-string (:team_id params))
-        timestamp (-> params :timestamp dt/sql-time-from-task)]
+        timestamp (-> params 
+                      :timestamp 
+                      c/from-string
+                      (dt/as-local-date (:timezone user))
+                      c/to-sql-time)]
     (cond
-      (not (and task user-id team-id timestamp))
+      (not (and task team-id timestamp))
       (responses/bad-request "Request needs to include 'task', 'team-id' and 'timestamp'.")
       (not (user/user-in-team? user-id team-id))
       (responses/unauthorized "Not authorized.")
