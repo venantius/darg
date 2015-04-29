@@ -1074,28 +1074,37 @@ Styles for the Darg emails
   left: -5px;
 }
 
+/* The user header */
+
+div.timeline-profile-text {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* The actual timeline events */
+
 div.timeline-email-icon {
   left: -4.5px;
-  margin-left: 0px;
+  padding-left: 0px;
   background-color: #FFF !important;
   color: #FFF;
   width: 32px;
   border-radius: 50px;
   position: absolute;
   height: 32px;
-  border: 1px solid #e3e3e3;
+  border: 2px solid #e3e3e3;
   top: 5px;
   z-index: 11;
 }
 
 div.timeline-email-line {
   height: 100%;
-  width: 1px;
+  width: 2px;
   background-color: #e3e3e3 !important;
   color: #e3e3e3 !important;
   position: absolute;
   top: 5px;
-  left: 12px;
+  margin-left: 12px;
 }
 
 body {
@@ -1135,6 +1144,10 @@ div.timeline-profile-text {
 /* Timline */
 
 /* timeline-section */
+
+/* Individual timeline events */
+
+/* Timeline header */
 
 /*** uncss> filename: resources/email/css/ink.css ***/
 

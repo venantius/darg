@@ -39,22 +39,22 @@
               <table class="row">
                 <tr>
                   <td> 
-                          <ul class="timeline-email timeline-email-icons timeline-email-sm">
+                      <ul class="timeline-email timeline-email-icons timeline-email-sm">
+                        <div class="timeline-email-line"></div>
+                        {% for task in user.task %}
 
-                            {% for task in user.task %}
+                        <li>
+                          <div class="timeline-email-icon"></div>
 
-                            <li>
-                              <div class="timeline-email-icon"></div>
-                              <div class="timeline-email-line"></div>
-                              <p>
-                                {{task.task}}
-                                <span class="timeline-email-date">{{task.date}}</span>
-                              </p>
-                            </li>
+                          <p>
+                            {{task.task}}
+                            <span class="timeline-email-date">{{task.date}}</span>
+                          </p>
+                        </li>
 
-                            {% endfor %}
+                        {% endfor %}
 
-                          </ul>
+                      </ul>
                   </td>
                 </tr>
               </table>
