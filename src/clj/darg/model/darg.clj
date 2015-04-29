@@ -41,12 +41,3 @@
         local-date (dt/as-local-date date (:timezone user))]
     (list (formatted-team-darg-by-date
             team-id role-ids local-date))))
-
-(defn email-timeline
-  [team-id date]
-  (log/info date)
-  (let [role-ids (map :id (team/fetch-roles team-id))
-        date (c/to-sql-date date)]
-    (log/info date)
-    (list (formatted-team-darg-by-date
-      team-id role-ids date))))

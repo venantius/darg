@@ -89,14 +89,14 @@
   "Send an e-mail for each team this user is on with a digest for the last
    24 hours."
   [user dt team]
-  (let [local-time (dt/local-time dt (:timezone user))
+  (let [current-local-time (dt/as-local-date dt (:timezone user))
+        one-day-ago (t/minus current-local-time (t/days 1))
         from (from-team team)
         to (:email user)
         subject "This is a digest"
-        darg (first (darg/email-timeline (:id team) local-time))
+        darg (first (darg/team-timeline user (:id team) one-day-ago))
         html (template/render-digest-email darg)]
-    (log/info local-time)
-    (log/info "Sending digest email to" to "from" from)
+    (log/info "Sending digest email to" to "from" from "for period starting" one-day-ago "to" current-local-time)
     (mailgun/send-message {:from from
                            :to to
                            :subject subject
