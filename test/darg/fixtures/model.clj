@@ -1,7 +1,6 @@
 (ns darg.fixtures.model
   (:require [clj-time.core :as t]
             [clj-time.coerce :as c :refer [to-sql-date]]
-            [darg.db-util :as db-util]
             [darg.db.entities :refer :all]
             [darg.model.user :refer [encrypt-password]]
             [korma.core :refer :all]))
@@ -113,49 +112,49 @@
    test-team-3])
 
 (def test-task-1
-  {:date (c/to-sql-date (t/today))
+  {:timestamp (c/to-sql-time (t/now))
    :user_id 4
    :team_id 1
    :task "Do a good deed everyday"})
 
 (def test-task-2
-  {:date (c/to-sql-date (t/today))
+  {:timestamp (c/to-sql-time (t/now))
    :user_id 2
    :team_id 2
    :task "Destroy all humans"})
 
 (def test-task-3
-  {:date (c/to-sql-date (t/minus (t/today) (t/days 1)))
+  {:timestamp (c/to-sql-time (t/minus (t/now) (t/days 1)))
    :user_id 4
    :team_id 1
    :task "Salute the shorts"})
 
 (def test-task-4
-  {:date (c/to-sql-date (t/today))
+  {:timestamp (c/to-sql-time (t/now))
    :user_id 2
    :team_id 3
    :task "Once more into the breach"})
 
 (def test-task-5
-  {:date (c/to-sql-date (t/minus (t/today) (t/days 1)))
+  {:timestamp (c/to-sql-time (t/minus (t/now) (t/days 1)))
    :user_id 4
    :team_id 1
    :task "Some folks call it a kaiser blade, me I call it a sling blade"})
 
 (def test-task-6
-  {:date (c/to-sql-date (t/today))
+  {:timestamp (c/to-sql-time (t/now))
    :user_id 4
    :team_id 2
    :task "Defeated the ice king."})
 
 (def test-task-7
-  {:date (c/to-sql-date (t/today))
+  {:timestamp (c/to-sql-time (t/now))
    :user_id 6
    :team_id 2
    :task "Got a banking charter!"})
 
 (def test-task-8
-  {:date (c/to-sql-date (t/today))
+  {:timestamp (c/to-sql-time (t/now))
    :user_id 4
    :team_id 2
    :task "Rescued Princess Bubblegum and saved the candy kingdom from disaster once again. It's a wonder they get anything done over there."})

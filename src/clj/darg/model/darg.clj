@@ -1,5 +1,6 @@
 (ns darg.model.darg
   (:require [clj-time.coerce :as c]
+            [clj-time.core :as t]
             [clojure.tools.logging :as log]
             [darg.db.entities :as db]
             [darg.model.user :as user]
@@ -11,42 +12,39 @@
 (defn team-darg-by-date
   "Generate a darg for a specific team for a specific dates"
   [team-id role-ids date]
-  (select db/user
-          (fields [:email])
-          (with db/task
-                (where {:team_id team-id
-                        :date (c/to-sql-date date)}))
-          (where {:id [in role-ids]})))
+  (let [from (c/to-sql-time date)
+        to (c/to-sql-time (t/plus date (t/days 1)))]
+    (select db/user
+            (fields [:email])
+            (with db/task
+                  (where {:team_id team-id
+                          :timestamp [between [from to]]}))
+            (where {:id [in role-ids]}))))
 
 (defn- formatted-team-darg-by-date
   "A helper function for formatting team dargs."
-  [team-id role-ids date]
-  {:date (util/sql-datetime->date-str date)
-   :user (vec (team-darg-by-date team-id role-ids date))})
+  [team-id role-ids dt]
+  {:date (dt/datetime->date-str dt)
+   :user (vec (team-darg-by-date team-id role-ids dt))})
+
+;; take a date string
+;; construct a datetime object with that date in that timezone
 
 (defn team-timeline
-  "Build a darg timeline for a given team."
-  ([team-id]
-   (let [role-ids (map :id (team/fetch-roles team-id))
-         dates (map c/to-sql-date (dt/date-range 5))]
-     (map (partial
-           formatted-team-darg-by-date
-           team-id role-ids) dates)))
-  ([team-id date]
-   (let [role-ids (map :id (team/fetch-roles team-id))
-         date (c/to-sql-date date)]
-     (list (formatted-team-darg-by-date
-       team-id role-ids date)))))
+  "Build a darg timeline for a given team. Also needs to know which user
+   is requesting the timeline, so that we can report on events in local
+   time."
+  [user team-id date]
+  (let [role-ids (map :id (team/fetch-roles team-id))
+        local-date (dt/as-local-date date (:timezone user))]
+    (list (formatted-team-darg-by-date
+            team-id role-ids local-date))))
 
-(defn personal-timeline
-  "Build a darg timeline for a single person on a single team.
-  This is a naive implementation for now that can be
-  expanded to include other darg subtypes as we go."
-  [user-id team-id]
-  (let [user (user/fetch-one-user {:id user-id})
-        dates (map c/to-sql-date (dt/date-range 5))
-        tasks-by-date (map (partial user/fetch-tasks-by-team-and-date user team-id) dates)]
-    (reduce conj []
-            (map (fn [k t] {:date (util/sql-datetime->date-str k)
-                            :tasks t})
-                 dates tasks-by-date))))
+(defn email-timeline
+  [team-id date]
+  (log/info date)
+  (let [role-ids (map :id (team/fetch-roles team-id))
+        date (c/to-sql-date date)]
+    (log/info date)
+    (list (formatted-team-darg-by-date
+      team-id role-ids date))))

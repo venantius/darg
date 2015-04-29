@@ -63,10 +63,6 @@
   (POST   "/api/v1/email"                        request (email/email request))
   (POST   "/api/v1/email/send"                   request (email/send-email request))
 
-  (GET    "/api/v1/darg/:team_id"                request 
-       (darg/get-darg request))
-  (GET    "/api/v1/darg/team/:team_id"           request 
-       (darg/get-team-darg request))
   (GET    "/api/v1/darg/team/:team_id/:date"     request 
        (darg/get-team-darg-by-date request))
 

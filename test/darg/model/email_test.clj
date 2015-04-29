@@ -17,12 +17,12 @@
 
 (deftest we-can-get-a-users-task-list
   (email/parse-email email-fixtures/test-email-2)
-  (let [test-user-id (:id (user/fetch-one-user {:email "savelago@gmail.com"}))]
+  (let [test-user-id (:id (user/fetch-one-user model-fixtures/test-user-1))]
     (is (= (count (task/fetch-tasks-by-user-id test-user-id)) 3))))
 
 (deftest we-can-get-a-teams-task-list
   (email/parse-email email-fixtures/test-email-2)
-  (let [test-team-id (:id (team/fetch-one-team {:email "darg@mail.darg.io"}))]
+  (let [test-team-id (:id (team/fetch-one-team model-fixtures/test-team-1))]
     (is (= (count (task/fetch-tasks-by-team-id test-team-id)) 6))))
 
 (deftest we-can-validate-email-posting-rights

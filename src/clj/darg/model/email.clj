@@ -3,7 +3,6 @@
             [clj-time.format :as f]
             [clojure.string :as str]
             [clojure.tools.logging :as log]
-            [darg.db-util :as dbutil]
             [darg.email.template :as template]
             [darg.model.darg :as darg]
             [darg.model.task :as task]
@@ -57,7 +56,7 @@
                       (->> (map str/trim)))
         email-metadata {:user_id (:id (user/fetch-one-user {:email sender}))
                         :team_id (:id (team/fetch-one-team {:email recipient}))
-                        :date (dbutil/sql-date-from-subject subject)}]
+                        :timestamp (dt/sql-time-from-subject subject)}]
     (task/create-task-list task-list email-metadata)))
 
 
@@ -90,11 +89,13 @@
   "Send an e-mail for each team this user is on with a digest for the last
    24 hours."
   [user dt team]
-  (let [from (from-team team)
+  (let [local-time (dt/local-time dt (:timezone user))
+        from (from-team team)
         to (:email user)
         subject "This is a digest"
-        darg (first (darg/team-timeline (:id team) dt))
+        darg (first (darg/email-timeline (:id team) local-time))
         html (template/render-digest-email darg)]
+    (log/info local-time)
     (log/info "Sending digest email to" to "from" from)
     (mailgun/send-message {:from from
                            :to to

@@ -40,7 +40,7 @@
 
 (deftest fetch-tasks-by-team-and-date-works
   (let [user (user/fetch-one-user {:id 4})
-        date (c/from-sql-date (:date fixtures/test-task-1))
+        date (c/from-sql-date (:timestamp fixtures/test-task-1))
         date_2 (t/local-date 2012 02 17)]
     (is (= (dissoc (first (user/fetch-tasks-by-team-and-date user 1 date)) :id)
            fixtures/test-task-1))

@@ -166,9 +166,9 @@
   "Find tasks for this user by date and team"
   [user team-id date]
   (select entities/task
-          (fields :id :date :user_id :team_id :task)
+          (fields :id :timestamp :user_id :team_id :task)
           (where {:user_id (:id user)
-                  :date (c/to-sql-time date)
+                  :timestamp (c/to-sql-time date)
                   :team_id team-id})))
 
 (defn authenticate

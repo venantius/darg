@@ -21,7 +21,7 @@
   [user-id]
   (select db/task
     (where {:user_id user-id})
-    (order :date :desc)))
+    (order :timestamp :desc)))
 
 (defn fetch-tasks-by-team-id
   "Returns a seq of tasks which are associated with a specific team-id.

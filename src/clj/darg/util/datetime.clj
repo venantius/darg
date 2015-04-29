@@ -2,6 +2,7 @@
   "Helper functions for dealing with date and times."
   (:require [clj-time.coerce :as c]
             [clj-time.core :as t]
+            [clj-time.format :as f]
             [clj-time.local :as l]))
 
 (def hour-map
@@ -30,11 +31,23 @@
    "11pm" 23})
 
 (defn local-time
-  "Get the current time for the given timezone (in long form, e.g.
-  \"America/Los_Angeles\"."
+  "Takes a datetime object, and returns a datetime object for the same time
+  in the given timezone (in long form, e.g. \"America/Los_Angeles\"."
   [dt tz-string]
   (t/to-time-zone
-    (t/now)
+    dt
+    (t/time-zone-for-id tz-string)))
+
+(defn as-local-date
+  "Given a date, return a localized datetime object for that date.
+   
+   Note that these will NOT have the same POSIX timestamp; rather, this
+   takes the notion of, say, '2015-04-29' in abstract and returns an object
+   corresponding to '2015-04-29' only as it relates to inhabitants of Los
+   Angeles (for instance)."
+  [dt tz-string]
+  (t/from-time-zone
+    dt
     (t/time-zone-for-id tz-string)))
 
 (defn nearest-hour
@@ -61,3 +74,22 @@
   [size & {:keys [offset] :or {offset 0}}]
   (let [most-recent-day (t/minus (t/today) (t/days offset))]
     (map (partial offset-date most-recent-day) (range size))))
+
+(defn sql-time-from-subject
+   "Used to extract dates from the subject line. Assumes date format like 'Sept 23 2013' "
+  [string]
+  (c/to-sql-time (f/parse
+                 (f/formatter "MMM dd YYY")
+                 (re-find (re-pattern "(?:January|February|March|April|May|June|July|August|September|October|November|December)\\s\\d{2}\\s\\d{4}") string))))
+
+(defn sql-time-from-task
+  "Convert a string into a SQL timestamp."
+  [string]
+  (c/to-sql-time
+    (c/from-string string)))
+
+(defn datetime->date-str
+  [dt]
+  (f/unparse
+    (f/formatters :date)
+    dt))

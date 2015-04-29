@@ -1,6 +1,5 @@
 (ns darg.model.team-test
   (:require [clojure.test :refer :all]
-            [darg.db-util :as dbutil]
             [darg.fixtures :refer [with-db-fixtures]]
             [darg.model.team :as team]
             [darg.model.task :as task]

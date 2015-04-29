@@ -1,7 +1,7 @@
 (ns darg.middleware.authentication-test
   (:require [clojure.test :refer :all]
             [darg.controller.task :as task-api]
-            [darg.controller.darg :as darg-api]
+            [darg.controller.user :as user-api]
             [darg.fixtures :refer [with-db-fixtures]]
             [darg.middleware.authentication :as authn]
             [darg.model.user :as user]
@@ -14,7 +14,7 @@
                         :request-method :post
                         :params {:task "I created a new task!"
                                  :team-id 2
-                                 :date "Mar 10 2014"}}
+                                 :timestamp "Mar 10 2014"}}
         response ((authn/wrap-authentication
                     task-api/create!
                     authn/darg-auth-fn)
@@ -23,13 +23,14 @@
     (is (= (:status response) 401))
     (is (= (:body response)
            {:message "User not authenticated."}))
-    (is (= (count (task/fetch-tasks-by-user-id test-user-id)) 4))))
+    (is (= (count (task/fetch-tasks-by-user-id test-user-id)) 5))))
 
 (deftest user-cant-view-a-darg-without-an-email
-  (let [sample-request {:session {:authenticated true}
+  (let [sample-request {:session {:authenticated true :id 4}
+                        :params {:id "4"}
                         :request-method :get}
         response ((authn/wrap-authentication
-                    darg-api/get-darg
+                    user-api/get
                     authn/darg-auth-fn)
                   sample-request)]
     (is (= (:status response) 401))

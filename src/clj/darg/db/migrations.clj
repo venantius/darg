@@ -13,7 +13,8 @@
    "2015-04-21-team-invitations"
    "2015-04-21-team-invitations-expiry"
    "2015-04-24-email-confirmation"
-   "2015-04-27-daily-digest"])
+   "2015-04-27-daily-digest"
+   "2015-04-28-timestamp-tasks"])
 
 (defn migrate-all
   "Run all of our migrations."
