@@ -11,64 +11,52 @@
   {% for user in timeline.user %}
 
   {% if user.task|not-empty %}
-  <table class="body">
-    <tr>
-      <td class="center" align="center" valign="top">
-        <table class="container">
+
+      <!--
+      <img class="img-portrait timeline-profile-email" gravatar-src="user.email" gravatar-size="64">
+      -->
+      <div class="timeline-profile-text">
+        {{user.name}}
+      </div>
+
+
+
+      {% for task in user.task %}
+      <table class="row timeline-email timeline-email-icons timeline-email-sm">
           <tr>
-            <td>
+            {% ifequal user.task|last task %}
+            <td width="32">
+            {% else %}
+            <td width="32" 
+              background="https://s3-us-west-2.amazonaws.com/ursacorp-cloudfront-assets/email/bg.jpg">
+            {% endifequal %}
 
-              <table class="row">
+              <table>
                 <tr>
-                  <td class="wrapper">
-
-                    <table class="twelve columns">
-                      <tr>
-                        <td>
-                          <!--
-
-                          <img class="img-portrait timeline-profile-email" gravatar-src="user.email" gravatar-size="64">
-                          -->
-                          <div class="timeline-profile-text">
-                            {{user.name}}
-                          </div>
-
-                        </td>
-                      </tr>
-                    </table>
-
+                  <td 
+                    width="32"
+                    height="32"
+                    background="https://s3-us-west-2.amazonaws.com/ursacorp-cloudfront-assets/email/node.jpg">
                   </td>
                 </tr>
               </table>
-
-              <ul class="timeline-email timeline-email-icons timeline-email-sm">
-                {% for task in user.task %}
-                  <table class="row">
-                    <tr>
-                      <td> 
-                            <div class="timeline-email-line"></div>
-
-
-                            <li>
-                              <div class="timeline-email-icon"></div>
-
-                              <p>
-                                {{task.task}}
-                                <span class="timeline-email-date">{{task.date}}</span>
-                              </p>
-                            </li>
-                      </td>
-                    </tr>
-                  </table>
-                {% endfor %}
-              </ul>
-
+            </td>
+            <td> 
+              <li>
+                <p>
+                  {% ifequal user.task|last task %}
+                  last
+                  {% endifequal %}
+                  {{ forloop.counter }}
+                  {{ forloop.length }}
+                  {{task.task}}
+                  <span class="timeline-email-date">{{task.date}}</span>
+                </p>
+              </li>
             </td>
           </tr>
         </table>
-      </td>
-    </tr>
-  </table>
+        {% endfor %}
 
   {% endif %}
 

@@ -20,20 +20,11 @@ font-family: 'Glyphicons Halflings'; src: url(../fonts/glyphicons-halflings-regu
 body {
 font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; font-size: 14px; line-height: 1.42857143; color: #333; background-color: #fff;
 }
-.container:before {
-display: table; content: " ";
-}
-.container:after {
-display: table; content: " ";
-}
 .row:before {
 display: table; content: " ";
 }
 .row:after {
 display: table; content: " ";
-}
-.container:after {
-clear: both;
 }
 .row:after {
 clear: both;
@@ -113,15 +104,6 @@ font-family: 'Flat-UI-Pro-Icons'; src: url('../fonts/glyphicons/flat-ui-pro-icon
 body {
 font-family: "Lato", Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.72222; color: #34495e; background-color: #ffffff;
 }
-.timeline-email:after {
-content: ""; height: auto; width: 1px; background: #e3e3e3; position: absolute; top: 5px; left: 30px;
-}
-.timeline-email.timeline-email-sm:after {
-left: 41px;
-}
-.timeline-email.timeline-email-icons.timeline-email-sm li:after {
-left: -5px;
-}
 body {
 padding-top: 53px;
 }
@@ -137,102 +119,55 @@ color: #222222; font-family: "Helvetica", "Arial", sans-serif; font-weight: norm
 body {
 font-size: 14px; line-height: 19px;
 }
-@media (min-width:768px) {
-  .container {
-    width: 750px;
-  }
-}
-@media (min-width:992px) {
-  .container {
-    width: 970px;
-  }
-}
-@media (min-width:1200px) {
-  .container {
-    width: 1170px;
-  }
-}
-@media only screen and (max-width: 600px) {
-  table[class="body"] .container {
-    width: 95% !important;
-  }
-  table[class="body"] .row {
-    width: 100% !important; display: block !important;
-  }
-  table[class="body"] .wrapper {
-    display: block !important; padding-right: 0 !important;
-  }
-  table[class="body"] .columns {
-    table-layout: fixed !important; float: none !important; width: 100% !important; padding-right: 0px !important; padding-left: 0px !important; display: block !important;
-  }
-  table[class="body"] table.columns td {
-    width: 100% !important;
-  }
-}
 </style>
   {{timeline.date}}
 
   {% for user in timeline.user %}
 
   {% if user.task|not-empty %}
-  <table class="body" style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; border-collapse: collapse; border-spacing: 0; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-family: 'Helvetica', 'Arial', sans-serif; font-size: 14px; font-weight: normal; height: 100%; line-height: 19px; margin: 0; padding: 0; text-align: left; text-shadow: none !important; vertical-align: top; width: 100%" bgcolor="transparent">
-    <tr style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; padding: 0; page-break-inside: avoid; text-align: left; text-shadow: none !important; vertical-align: top" align="left" bgcolor="transparent">
-      <td class="center" align="center" valign="top" style="-moz-box-sizing: border-box; -moz-hyphens: auto; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; -webkit-hyphens: auto; background-color: transparent !important; border-collapse: collapse !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-family: 'Helvetica', 'Arial', sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 19px; margin: 0; padding: 0; text-align: center; text-shadow: none !important; vertical-align: top; word-break: break-word" bgcolor="transparent">
-        <table class="container" style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; border-collapse: collapse; border-spacing: 0; box-shadow: none !important; box-sizing: border-box; color: #000 !important; margin: 0 auto; padding: 0 15px; text-align: inherit; text-shadow: none !important; vertical-align: top; width: 580px" bgcolor="transparent">
+
+      <!--
+      <img class="img-portrait timeline-profile-email" gravatar-src="user.email" gravatar-size="64">
+      -->
+      <div class="timeline-profile-text" style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; display: block; font-size: 16px; font-weight: 500; text-align: center; text-shadow: none !important" align="center">
+        {{user.name}}
+      </div>
+
+
+
+      {% for task in user.task %}
+      <table class="row timeline-email timeline-email-icons timeline-email-sm" style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; border-collapse: collapse; border-spacing: 0; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-size: 15px; list-style: none; margin-left: -15px; margin-right: -15px; padding: 0px; position: relative; text-align: left; text-shadow: none !important; vertical-align: top; width: 100%" bgcolor="transparent">
           <tr style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; padding: 0; page-break-inside: avoid; text-align: left; text-shadow: none !important; vertical-align: top" align="left" bgcolor="transparent">
-            <td style="-moz-box-sizing: border-box; -moz-hyphens: auto; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; -webkit-hyphens: auto; background-color: transparent !important; border-collapse: collapse !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-family: 'Helvetica', 'Arial', sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 19px; margin: 0; padding: 0; text-align: left; text-shadow: none !important; vertical-align: top; word-break: break-word" align="left" bgcolor="transparent" valign="top">
+            {% ifequal user.task|last task %}
+            <td width="32" style="-moz-box-sizing: border-box; -moz-hyphens: auto; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; -webkit-hyphens: auto; background-color: transparent !important; border-collapse: collapse !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-family: 'Helvetica', 'Arial', sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 19px; margin: 0; padding: 0; text-align: left; text-shadow: none !important; vertical-align: top; word-break: break-word" align="left" bgcolor="transparent" valign="top">
+            {% else %}
+            </td>
+<td width="32" background="https://s3-us-west-2.amazonaws.com/ursacorp-cloudfront-assets/email/bg.jpg" style="-moz-box-sizing: border-box; -moz-hyphens: auto; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; -webkit-hyphens: auto; background-color: transparent !important; border-collapse: collapse !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-family: 'Helvetica', 'Arial', sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 19px; margin: 0; padding: 0; text-align: left; text-shadow: none !important; vertical-align: top; word-break: break-word" align="left" bgcolor="transparent" valign="top">
+            {% endifequal %}
 
-              <table class="row" style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; border-collapse: collapse; border-spacing: 0; box-shadow: none !important; box-sizing: border-box; color: #000 !important; display: block; margin-left: -15px; margin-right: -15px; padding: 0px; position: relative; text-align: left; text-shadow: none !important; vertical-align: top; width: 100%" bgcolor="transparent">
+              <table style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; border-collapse: collapse; border-spacing: 0; box-shadow: none !important; box-sizing: border-box; color: #000 !important; padding: 0; text-align: left; text-shadow: none !important; vertical-align: top" bgcolor="transparent">
                 <tr style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; padding: 0; page-break-inside: avoid; text-align: left; text-shadow: none !important; vertical-align: top" align="left" bgcolor="transparent">
-                  <td class="wrapper" style="-moz-box-sizing: border-box; -moz-hyphens: auto; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; -webkit-hyphens: auto; background-color: transparent !important; border-collapse: collapse !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-family: 'Helvetica', 'Arial', sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 19px; margin: 0; padding: 10px 20px 0px 0px; position: relative; text-align: left; text-shadow: none !important; vertical-align: top; word-break: break-word" align="left" bgcolor="transparent" valign="top">
-
-                    <table class="twelve columns" style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; border-collapse: collapse; border-spacing: 0; box-shadow: none !important; box-sizing: border-box; color: #000 !important; margin: 0 auto; padding: 0; text-align: left; text-shadow: none !important; vertical-align: top; width: 580px" bgcolor="transparent">
-                      <tr style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; padding: 0; page-break-inside: avoid; text-align: left; text-shadow: none !important; vertical-align: top" align="left" bgcolor="transparent">
-                        <td style="-moz-box-sizing: border-box; -moz-hyphens: auto; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; -webkit-hyphens: auto; background-color: transparent !important; border-collapse: collapse !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-family: 'Helvetica', 'Arial', sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 19px; margin: 0; padding: 0px 0px 10px; text-align: left; text-shadow: none !important; vertical-align: top; word-break: break-word" align="left" bgcolor="transparent" valign="top">
-                          <!--
-
-                          <img class="img-portrait timeline-profile-email" gravatar-src="user.email" gravatar-size="64">
-                          -->
-                          <div class="timeline-profile-text" style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; display: block; font-size: 16px; font-weight: 500; text-align: center; text-shadow: none !important" align="center">
-                            {{user.name}}
-                          </div>
-
-                        </td>
-                      </tr>
-                    </table>
-
+                  <td width="32" height="32" background="https://s3-us-west-2.amazonaws.com/ursacorp-cloudfront-assets/email/node.jpg" style="-moz-box-sizing: border-box; -moz-hyphens: auto; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; -webkit-hyphens: auto; background-color: transparent !important; border-collapse: collapse !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-family: 'Helvetica', 'Arial', sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 19px; margin: 0; padding: 0; text-align: left; text-shadow: none !important; vertical-align: top; word-break: break-word" align="left" bgcolor="transparent" valign="top">
                   </td>
                 </tr>
               </table>
-
-              <ul class="timeline-email timeline-email-icons timeline-email-sm" style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-size: 15px; list-style: none; margin-bottom: 13.5px; margin-top: 0; padding-left: 30px; position: relative; text-shadow: none !important">
-                {% for task in user.task %}
-                  <table class="row" style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; border-collapse: collapse; border-spacing: 0; box-shadow: none !important; box-sizing: border-box; color: #000 !important; display: block; margin-left: -15px; margin-right: -15px; padding: 0px; position: relative; text-align: left; text-shadow: none !important; vertical-align: top; width: 100%" bgcolor="transparent">
-                    <tr style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; padding: 0; page-break-inside: avoid; text-align: left; text-shadow: none !important; vertical-align: top" align="left" bgcolor="transparent">
-                      <td style="-moz-box-sizing: border-box; -moz-hyphens: auto; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; -webkit-hyphens: auto; background-color: transparent !important; border-collapse: collapse !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-family: 'Helvetica', 'Arial', sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 19px; margin: 0; padding: 0; text-align: left; text-shadow: none !important; vertical-align: top; word-break: break-word" align="left" bgcolor="transparent" valign="top"> 
-                            <div class="timeline-email-line" style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: #e3e3e3 !important; box-shadow: none !important; box-sizing: border-box; color: #e3e3e3 !important; height: 100%; margin-left: 12px; position: absolute; text-shadow: none !important; top: 5px; width: 2px"></div>
-
-
-                            <li style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-size: 15px; margin-bottom: 10px; padding-left: 40px; padding-top: 7px; position: relative; text-shadow: none !important">
-                              <div class="timeline-email-icon" style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: #FFF !important; border-radius: 50px; border: 2px solid #e3e3e3; box-shadow: none !important; box-sizing: border-box; color: #000 !important; height: 32px; left: -4.5px; padding-left: 0px; position: absolute; text-shadow: none !important; top: 5px; width: 32px; z-index: 11"></div>
-
-                              <p style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-family: 'Helvetica', 'Arial', sans-serif; font-size: 15px; font-weight: normal; line-height: 19px; margin: 0 0 10px; orphans: 3; padding: 0; text-align: left; text-shadow: none !important; widows: 3" align="left">
-                                {{task.task}}
-                                <span class="timeline-email-date" style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; display: inline-block; font-size: 13px; font-style: italic; text-shadow: none !important; width: 100%">{{task.date}}</span>
-                              </p>
-                            </li>
-                      </td>
-                    </tr>
-                  </table>
-                {% endfor %}
-              </ul>
-
+            </td>
+            <td style="-moz-box-sizing: border-box; -moz-hyphens: auto; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; -webkit-hyphens: auto; background-color: transparent !important; border-collapse: collapse !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-family: 'Helvetica', 'Arial', sans-serif; font-size: 14px; font-weight: normal; hyphens: auto; line-height: 19px; margin: 0; padding: 0; text-align: left; text-shadow: none !important; vertical-align: top; word-break: break-word" align="left" bgcolor="transparent" valign="top"> 
+              <li style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-size: 15px; margin-bottom: 10px; padding-left: 20px; padding-top: 7px; position: relative; text-shadow: none !important">
+                <p style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; font-family: 'Helvetica', 'Arial', sans-serif; font-size: 15px; font-weight: normal; line-height: 19px; margin: 0 0 10px; orphans: 3; padding: 0; text-align: left; text-shadow: none !important; widows: 3" align="left">
+                  {% ifequal user.task|last task %}
+                  last
+                  {% endifequal %}
+                  {{ forloop.counter }}
+                  {{ forloop.length }}
+                  {{task.task}}
+                  <span class="timeline-email-date" style="-moz-box-sizing: border-box; -webkit-box-shadow: none !important; -webkit-box-sizing: border-box; background-color: transparent !important; box-shadow: none !important; box-sizing: border-box; color: #000 !important; display: inline-block; font-size: 13px; font-style: italic; text-shadow: none !important; width: 100%">{{task.date}}</span>
+                </p>
+              </li>
             </td>
           </tr>
         </table>
-      </td>
-    </tr>
-  </table>
+        {% endfor %}
 
   {% endif %}
 

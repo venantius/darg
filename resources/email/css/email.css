@@ -88,36 +88,6 @@ p {
   margin: 0 0 10px;
 }
 
-ul {
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-.container {
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
-@media (min-width:768px) {
-  .container {
-    width: 750px;
-  }
-}
-
-@media (min-width:992px) {
-  .container {
-    width: 970px;
-  }
-}
-
-@media (min-width:1200px) {
-  .container {
-    width: 1170px;
-  }
-}
-
 .row {
   margin-right: -15px;
   margin-left: -15px;
@@ -136,15 +106,12 @@ table {
   color: #777;
 }
 
-.container:before,
-.container:after,
 .row:before,
 .row:after {
   display: table;
   content: " ";
 }
 
-.container:after,
 .row:after {
   clear: both;
 }
@@ -325,10 +292,6 @@ p {
   font-size: 16px;
   line-height: 1.72222;
   margin: 0 0 13.5px;
-}
-
-ul {
-  margin-bottom: 13.5px;
 }
 
 .form-control::-moz-placeholder,
@@ -720,10 +683,6 @@ p {
   margin: 0 0 13.5px;
 }
 
-ul {
-  margin-bottom: 13.5px;
-}
-
 .form-control::-moz-placeholder,
 .select2-search input[type="text"]::-moz-placeholder,
 .select2-search input[type="text"]::-moz-placeholder {
@@ -1027,23 +986,8 @@ Styles for the Darg emails
   font-size: 15px;
 }
 
-.timeline-email:after {
-  content: "";
-  height: auto;
-  width: 1px;
-  background: #e3e3e3;
-  position: absolute;
-  top: 5px;
-  left: 30px;
-}
-
-.timeline-email.timeline-email-sm:after {
-  left: 41px;
-}
-
 .timeline-email li {
   position: relative;
-  padding-left: 70px;
   margin-bottom: 20px;
 }
 
@@ -1065,13 +1009,9 @@ Styles for the Darg emails
 }
 
 .timeline-email.timeline-email-icons.timeline-email-sm li {
-  padding-left: 40px;
+  padding-left: 20px;
   margin-bottom: 10px;
   font-size: 15px;
-}
-
-.timeline-email.timeline-email-icons.timeline-email-sm li:after {
-  left: -5px;
 }
 
 /* The user header */
@@ -1082,30 +1022,6 @@ div.timeline-profile-text {
 }
 
 /* The actual timeline events */
-
-div.timeline-email-icon {
-  left: -4.5px;
-  padding-left: 0px;
-  background-color: #FFF !important;
-  color: #FFF;
-  width: 32px;
-  border-radius: 50px;
-  position: absolute;
-  height: 32px;
-  border: 2px solid #e3e3e3;
-  top: 5px;
-  z-index: 11;
-}
-
-div.timeline-email-line {
-  height: 100%;
-  width: 2px;
-  background-color: #e3e3e3 !important;
-  color: #e3e3e3 !important;
-  position: absolute;
-  top: 5px;
-  margin-left: 12px;
-}
 
 body {
   padding-top: 53px;
@@ -1193,56 +1109,19 @@ td {
 
 /* Responsive Grid */
 
-table.body {
-  height: 100%;
-  width: 100%;
-}
-
-table.container {
-  width: 580px;
-  margin: 0 auto;
-  text-align: inherit;
-}
-
 table.row {
   padding: 0px;
   width: 100%;
   position: relative;
 }
 
-table.container table.row {
-  display: block;
-}
-
-td.wrapper {
-  padding: 10px 20px 0px 0px;
-  position: relative;
-}
-
-table.columns {
-  margin: 0 auto;
-}
-
-table.columns td {
-  padding: 0px 0px 10px;
-}
-
-table.twelve {
-  width: 580px;
-}
-
 /* Block Grid */
 
 /* Alignment & Visibility Classes */
 
-td.center {
-  text-align: center;
-}
-
 /* Typography */
 
 body,
-table.body,
 p,
 td {
   color: #222222;
@@ -1255,7 +1134,6 @@ td {
 }
 
 body,
-table.body,
 p,
 td {
   font-size: 14px;
@@ -1273,32 +1151,3 @@ p {
 /* Outlook First */
 
 /*  Media Queries */
-
-@media only screen and (max-width: 600px) {
-  table[class="body"] .container {
-    width: 95% !important;
-  }
-
-  table[class="body"] .row {
-    width: 100% !important;
-    display: block !important;
-  }
-
-  table[class="body"] .wrapper {
-    display: block !important;
-    padding-right: 0 !important;
-  }
-
-  table[class="body"] .columns {
-    table-layout: fixed !important;
-    float: none !important;
-    width: 100% !important;
-    padding-right: 0px !important;
-    padding-left: 0px !important;
-    display: block !important;
-  }
-
-  table[class="body"] table.columns td {
-    width: 100% !important;
-  }
-}
