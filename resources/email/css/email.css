@@ -84,13 +84,49 @@ body {
   background-color: #fff;
 }
 
+h6 {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+}
+
+h6 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+h6 {
+  font-size: 12px;
+}
+
 p {
   margin: 0 0 10px;
 }
 
-.row {
-  margin-right: -15px;
-  margin-left: -15px;
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width:768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+@media (min-width:992px) {
+  .container {
+    width: 970px;
+  }
+}
+
+@media (min-width:1200px) {
+  .container {
+    width: 1170px;
+  }
 }
 
 table {
@@ -106,13 +142,13 @@ table {
   color: #777;
 }
 
-.row:before,
-.row:after {
+.container:before,
+.container:after {
   display: table;
   content: " ";
 }
 
-.row:after {
+.container:after {
   clear: both;
 }
 
@@ -286,6 +322,26 @@ body {
   line-height: 1.72222;
   color: #34495e;
   background-color: #ffffff;
+}
+
+h6 {
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.1;
+  color: inherit;
+}
+
+h6 {
+  margin-top: 13.5px;
+  margin-bottom: 13.5px;
+}
+
+h6 {
+  font-weight: normal;
+}
+
+h6 {
+  font-size: 22px;
 }
 
 p {
@@ -677,6 +733,26 @@ body {
   background-color: #ffffff;
 }
 
+h6 {
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.1;
+  color: inherit;
+}
+
+h6 {
+  margin-top: 13.5px;
+  margin-bottom: 13.5px;
+}
+
+h6 {
+  font-weight: normal;
+}
+
+h6 {
+  font-size: 22px;
+}
+
 p {
   font-size: 16px;
   line-height: 1.72222;
@@ -975,49 +1051,55 @@ Styles for the Darg emails
 
 */
 
-/* -----------------------------------------
-   Timeline
------------------------------------------ */
-
-.timeline-email {
-  list-style: none;
-  padding-left: 30px;
-  position: relative;
-  font-size: 15px;
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  vertical-align: top;
 }
 
-.timeline-email li {
-  position: relative;
-  margin-bottom: 20px;
+table {
+  margin: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 0;
+  padding: 0;
+  table-layout: auto;
 }
 
-.timeline-email li .timeline-email-date {
-  display: inline-block;
-  width: 100%;
-  color: #a8bccf;
-  font-style: italic;
-  font-size: 13px;
+table.container {
+  width: 580px;
+  margin: 0 auto;
+  text-align: inherit;
 }
 
-.timeline-email.timeline-email-icons li {
-  padding-top: 7px;
-  padding-left: 80px;
+body {
+  font-family: "Lato", Helvetica, Arial, sans-serif;
+  color: #34495e !important;
+  margin: 0px !important;
+  padding-top: 0px !important;
 }
 
-.timeline-email.timeline-email-icons.timeline-email-sm p {
-  font-size: 15px;
-}
-
-.timeline-email.timeline-email-icons.timeline-email-sm li {
+div.timeline-email-event-data {
+  margin-top: 4px;
   padding-left: 20px;
-  margin-bottom: 10px;
+  position: relative;
+}
+
+p.timeline-email-event-text {
   font-size: 15px;
+  font-family: "Lato", Helvetica, Arial, sans-serif;
+  color: #34495e !important;
 }
 
 /* The user header */
 
-div.timeline-profile-text {
-  font-size: 16px;
+h6.timeline-email-name {
+  text-align: center;
+  color: #34495e !important;
+  margin-bottom: 30px;
   font-weight: bold;
 }
 
@@ -1049,12 +1131,6 @@ The Timeline is divided into the following hierarchy:
 
 /* Profile image at the top */
 
-div.timeline-profile-text {
-  font-weight: 500;
-  display: block;
-  text-align: center;
-}
-
 /* Timeline menu */
 
 /* Timline */
@@ -1064,90 +1140,3 @@ div.timeline-profile-text {
 /* Individual timeline events */
 
 /* Timeline header */
-
-/*** uncss> filename: resources/email/css/ink.css ***/
-
-/**********************************************
-* Ink v1.0.5 - Copyright 2013 ZURB Inc        *
-**********************************************/
-
-/* Client-specific Styles & Reset */
-
-body {
-  width: 100% !important;
-  min-width: 100%;
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-p {
-  margin: 0 0 0 10px;
-}
-
-table {
-  border-spacing: 0;
-  border-collapse: collapse;
-}
-
-td {
-  word-break: break-word;
-  -webkit-hyphens: auto;
-  -moz-hyphens: auto;
-  hyphens: auto;
-  border-collapse: collapse !important;
-}
-
-table,
-tr,
-td {
-  padding: 0;
-  vertical-align: top;
-  text-align: left;
-}
-
-/* Responsive Grid */
-
-table.row {
-  padding: 0px;
-  width: 100%;
-  position: relative;
-}
-
-/* Block Grid */
-
-/* Alignment & Visibility Classes */
-
-/* Typography */
-
-body,
-p,
-td {
-  color: #222222;
-  font-family: "Helvetica", "Arial", sans-serif;
-  font-weight: normal;
-  padding: 0;
-  margin: 0;
-  text-align: left;
-  line-height: 1.3;
-}
-
-body,
-p,
-td {
-  font-size: 14px;
-  line-height: 19px;
-}
-
-p {
-  margin-bottom: 10px;
-}
-
-/* Panels */
-
-/* Buttons */
-
-/* Outlook First */
-
-/*  Media Queries */

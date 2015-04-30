@@ -19493,41 +19493,48 @@ img.timeline-profile-email {
   width: 64px;
   height: 64px;
 }
-/* -----------------------------------------
-   Timeline
------------------------------------------ */
-.timeline-email {
-  list-style: none;
-  padding-left: 30px;
-  position: relative;
-  font-size: 15px;
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  vertical-align: top;
 }
-.timeline-email li {
-  position: relative;
-  margin-bottom: 20px;
+table {
+  margin: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 0;
+  padding: 0;
+  table-layout: auto;
 }
-.timeline-email li .timeline-email-date {
-  display: inline-block;
-  width: 100%;
-  color: #a8bccf;
-  font-style: italic;
-  font-size: 13px;
+table.container {
+  width: 580px;
+  margin: 0 auto;
+  text-align: inherit;
 }
-.timeline-email.timeline-email-icons li {
-  padding-top: 7px;
-  padding-left: 80px;
+body {
+  font-family: "Lato", Helvetica, Arial, sans-serif;
+  color: #34495e !important;
+  margin: 0px !important;
+  padding-top: 0px !important;
 }
-.timeline-email.timeline-email-icons.timeline-email-sm p {
-  font-size: 15px;
-}
-.timeline-email.timeline-email-icons.timeline-email-sm li {
+div.timeline-email-event-data {
+  margin-top: 4px;
   padding-left: 20px;
-  margin-bottom: 10px;
+  position: relative;
+}
+p.timeline-email-event-text {
   font-size: 15px;
+  font-family: "Lato", Helvetica, Arial, sans-serif;
+  color: #34495e !important;
 }
 /* The user header */
-div.timeline-profile-text {
-  font-size: 16px;
+h6.timeline-email-name {
+  text-align: center;
+  color: #34495e !important;
+  margin-bottom: 30px;
   font-weight: bold;
 }
 /* The actual timeline events */
