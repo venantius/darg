@@ -58,7 +58,9 @@
   Takes a map of fields for use in db lookup"
   [params]
   (select entities/user
-          (fields :active :bot :admin :email :timezone :email_hour :confirmed_email)
+          (fields 
+            :active :bot :admin :email :timezone :email_hour :digest_hour
+            :confirmed_email)
           (where params)))
 
 (defn fetch-one-user
@@ -88,14 +90,16 @@
   ([params]
    (first
     (select entities/user
-            (fields :id :active :bot :admin :name :email :timezone :email_hour :confirmed_email)
+            (fields :id :active :bot :admin :name :email :timezone 
+                    :email_hour :digest_hour :confirmed_email)
             (with entities/team
                   (order :team.name :asc))
             (where params))))
   ([params team-ids]
    (first
     (select entities/user
-            (fields :id :active :bot :admin :name :email :timezone :email_hour :confirmed_email)
+            (fields :id :active :bot :admin :name :email :timezone 
+                    :email_hour :digest_hour :confirmed_email)
             (with entities/team
                   (where {:team.id [in team-ids]})
                   (order :team.name :asc))
@@ -162,9 +166,9 @@
   "Find tasks for this user by date and team"
   [user team-id date]
   (select entities/task
-          (fields :id :date :user_id :team_id :task)
+          (fields :id :timestamp :user_id :team_id :task)
           (where {:user_id (:id user)
-                  :date (c/to-sql-time date)
+                  :timestamp (c/to-sql-time date)
                   :team_id team-id})))
 
 (defn authenticate
@@ -188,7 +192,7 @@
           base-reset-url
           :query {:token token}))))
 
-(html/deftemplate password-reset-template "email/templates/password_reset.html"
+(html/deftemplate password-reset-template "email/templates/raw/password_reset.html"
   [{:keys [name] :as user}]
   [:span.name] (html/content name)
   [:span.password-reset-link] (html/content (build-password-reset-link user)))

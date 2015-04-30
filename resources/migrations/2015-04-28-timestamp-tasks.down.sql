@@ -1,0 +1,5 @@
+-- 2015-04-28
+
+ALTER TABLE darg.task RENAME COLUMN timestamp TO date;
+ALTER TABLE darg.task ALTER COLUMN date DROP DEFAULT;
+ALTER TABLE darg.task ALTER COLUMN date SET DATA TYPE date;

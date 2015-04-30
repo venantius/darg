@@ -8,5 +8,6 @@ TODO.txt
 *.jar
 *.class
 /.lein*
+**/**.npm-debug.log
 darg.sublime-project
 darg.sublime-workspace

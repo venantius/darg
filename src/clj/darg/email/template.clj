@@ -5,10 +5,10 @@
             [selmer.parser :refer [render]]))
 
 (def email-header
-  (slurp (io/resource "email/templates/header.html")))
+  (slurp (io/resource "email/templates/raw/header.html")))
 
 (def email-footer
-  (slurp (io/resource "email/templates/footer.html")))
+  (slurp (io/resource "email/templates/raw/footer.html")))
 
 (defn construct-email 
   "Add a header and footer to the template."
@@ -17,19 +17,22 @@
 
 (def daily-email
   (construct-email
-    (slurp (io/resource "email/templates/daily.html"))))
+    (slurp (io/resource "email/templates/raw/daily.html"))))
 
 (def team-invite
   (construct-email 
-    (slurp (io/resource "email/templates/team_invite.html"))))
+    (slurp (io/resource "email/templates/raw/team_invite.html"))))
 
 (def welcome-email
   (construct-email
-    (slurp (io/resource "email/templates/welcome.html"))))
+    (slurp (io/resource "email/templates/raw/welcome.html"))))
 
 (def email-confirmation-email
   (construct-email
-    (slurp (io/resource "email/templates/email_confirmation.html"))))
+    (slurp (io/resource "email/templates/raw/email_confirmation.html"))))
+
+(def digest-email
+  (slurp (io/resource "email/templates/inlined/digest.html")))
 
 (defn render-team-invite
   [{:keys [name] :as team} invite]
@@ -43,3 +46,7 @@
 (defn render-confirmation-email
   [{:keys [name] :as user} link]
   (render email-confirmation-email {:name name :link link}))
+
+(defn render-digest-email
+  [darg]
+  (render digest-email {:timeline darg}))

@@ -1,4 +1,4 @@
-(defproject darg "0.1.2"
+(defproject darg "0.1.6"
   :description "Simple Accomplishment Tracking for Teams"
   :min-lein-version "2.0.0"
   :url "http://darg.io"

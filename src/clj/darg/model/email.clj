@@ -3,20 +3,33 @@
             [clj-time.format :as f]
             [clojure.string :as str]
             [clojure.tools.logging :as log]
-            [darg.db-util :as dbutil]
             [darg.email.template :as template]
+            [darg.model.darg :as darg]
             [darg.model.task :as task]
             [darg.model.team :as team]
             [darg.model.user :as user]
             [darg.util.datetime :as dt]
             [darg.services.mailgun :as mailgun]))
 
-(defn within-the-hour
-  "Is the provided datetime within an hour of the user's e-mail time?"
-  [dt {:keys [timezone email_hour] :as user}]
-  (let [email-hour (get dt/hour-map (clojure.string/lower-case email_hour))
+(defn within-the-hour?
+  "Is the provided datetime within an hour of the desired target hour?"
+  [dt timezone target_hour]
+  (let [email-hour (get dt/hour-map (clojure.string/lower-case target_hour))
         current-local-hour (t/hour (dt/local-time dt timezone))]
     (if (= email-hour current-local-hour) true false)))
+
+
+(defn send-personal-email-now?
+  "Is now the right time to send a user an email?"
+  [dt {:keys [timezone email_hour] :as user}]
+  (within-the-hour? dt timezone email_hour))
+
+
+(defn send-digest-email-now?
+  "Is now the right time to send a user their daily digest?"
+  [dt {:keys [timezone digest_hour] :as user}]
+  (within-the-hour? dt timezone digest_hour))
+
 
 (defn user-can-email-this-team?
   "Is the user who owns this e-mail authorized to post to this e-mail address?
@@ -26,6 +39,7 @@
   (let [user-id (:id (user/fetch-one-user {:email user-email}))
         team-id (:id (team/fetch-one-team {:email team-email}))]
     (user/user-in-team? user-id team-id)))
+
 
 (defn parse-email
   "Recieves a darg email from a user, parses tasklist, and inserts the tasks into
@@ -42,37 +56,89 @@
                       (->> (map str/trim)))
         email-metadata {:user_id (:id (user/fetch-one-user {:email sender}))
                         :team_id (:id (team/fetch-one-team {:email recipient}))
-                        :date (dbutil/sql-date-from-subject subject)}]
+                        :timestamp (dt/sql-time-from-subject subject)}]
     (task/create-task-list task-list email-metadata)))
 
-(defn todays-subject-line
+
+(defn daily-subject-line
   [{:keys [timezone] :as user}]
   (let [today (dt/local-time (t/now) timezone)]
-    (str "Darg.io: What did you do today? [" (f/unparse (f/formatter-local "MMMM dd YYYY") today) "]")))
+    (str "Darg.io: What did you do today? [" 
+         (f/unparse (f/formatter-local "MMMM dd, YYYY") today) 
+         "]")))
+
+(defn digest-subject-line
+  [{:keys [timezone] :as user}]
+  (let [today (dt/local-time (t/now) timezone)]
+    (str "Darg.io: Daily activity report ["
+         (f/unparse (f/formatter-local "MMMM dd, YYYY") today)
+         "]")))
 
 (defn from-team
   [{:keys [email name] :as team}]
-  (str name " (Darg.io) <" email ">"))
+  (str name " <" email ">"))
+
 
 (defn send-one-personal-email
   "Send an e-mail for each team this user is on asking what they did today."
   [user team]
   (let [from (from-team team)
         to (:email user)
-        subject (todays-subject-line user)]
+        subject (daily-subject-line user)]
     (log/info "Emailing" to "from" from)
     (mailgun/send-message {:from from
                            :to to
                            :subject subject
                            :html template/daily-email})))
 
+
+(defn send-one-digest-email
+  "Send an e-mail for each team this user is on with a digest for the last
+   24 hours."
+  [user dt team]
+  (let [current-local-time (dt/as-local-date dt (:timezone user))
+        one-day-ago (t/minus current-local-time (t/days 1))
+        from (from-team team)
+        to (:email user)
+        subject (digest-subject-line user)
+        darg (first (darg/team-timeline user (:id team) one-day-ago))
+        html (template/render-digest-email darg)]
+    (log/info "Sending digest email to" to "from" from "for period starting" one-day-ago "to" current-local-time)
+    (spit "demo.html" html)
+    (mailgun/send-message {:from from
+                           :to to
+                           :subject subject
+                           :html html})))
+
+
 (defn send-personal-emails
   "Look at what teams a user is part of, and send them the daily personal
    email for each of those teams."
-  [user]
+  [user teams]
   (log/info "Sending daily e-mail for" user)
-  (let [teams (user/fetch-user-teams user)]
-    (doall (map #(send-one-personal-email user %) teams))))
+  (doall (map (partial send-one-personal-email user) teams)))
+
+
+(defn send-digest-emails
+  "Look at what teams a user is part of, and send them a daily digest email
+   for each of those teams."
+  [user teams dt]
+  (log/info "Sending digest emails for" user)
+  (doall (map (partial send-one-digest-email user dt) teams)))
+
+
+(defn send-emails
+  "Send any and all daily emails for this user."
+  [dt user]
+  (let [send-personal? (send-personal-email-now? dt user)
+        send-digest? (send-digest-email-now? dt user)]
+    (when (or send-personal? send-digest?)
+      (let [teams (user/fetch-user-teams user)]
+        (when send-personal?
+          (send-personal-emails user teams))
+        (when send-digest? 
+          (send-digest-emails user teams dt))))))
+
 
 (defn send-team-invitation
   "Send an invitation to join a team to a particular user."
@@ -87,10 +153,12 @@
                            :subject subject
                            :html content})))
 
+
 (defn from-darg
   "The 'from' email header for the main Darg site."
   []
   (str "David Jarvis (Darg.io) <david@darg.io>"))
+
 
 (defn send-welcome-email
   "Send an email to a new user welcoming them to Darg and asking them to

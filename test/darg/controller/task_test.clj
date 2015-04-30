@@ -10,7 +10,7 @@
 (deftest task-creation-endpoint-works
   (let [request {:request-method :post 
                  :params {:task "I created this task through the API"
-                          :date "2015-03-15"
+                          :timestamp "2015-03-15"
                           :team_id "2"}
                  :user {:id 4 :email "test-user2@darg.io"}}
         {:keys [body status]} (api/create! request)]
@@ -20,7 +20,7 @@
 (deftest we-cant-create-a-task-if-were-not-on-that-team
   (let [request {:request-method :post 
                  :params {:task "I created this task through the API"
-                          :date "2015-03-15"
+                          :timestamp "2015-03-15"
                           :team_id "6"}
                  :user {:id 4 :email "test-user2@darg.io"}}
         response (api/create! request)]

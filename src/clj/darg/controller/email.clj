@@ -38,27 +38,32 @@
         (darg.util.stacktrace/print-stacktrace e)
         (bad-request "Failed to parse e-mail.")))))
 
-(defn- send-email-fn
-  [{:keys [params basic-authentication] :as request}]
+(defn send-email-fn
+  "Sends personal and digest emails"
+  [{:keys [basic-authentication] :as request}]
   (if (not basic-authentication)
     (unauthorized "Incorrect email task password")
-    (do
-      (log/info "Sending emails...")
-      (let [start-time (t/now)]
-        (println "Current JVM time" (t/now))
-        (println "Current JVM hour" (dt/nearest-hour))
-        (dorun (map println (map #(email/within-the-hour start-time %) 
-                                 (user/fetch-user {}))))
-        (dorun (map email/send-personal-emails
-                    (filter #(email/within-the-hour start-time %) 
-                            (user/fetch-user {}))))
-        (ok "Sent email!")))))
+    (let [start-time (t/now)]
+      (log/info "Starting to send personal and digest emails at JVM time:" (t/now))
+      (log/info "Current JVM hour" (dt/nearest-hour))
+      #_(dorun (map email/send-personal-emails
+                  (filter (partial email/send-personal-email-now? start-time) 
+                          (user/fetch-user {}))))
+      (dorun (map (partial email/send-emails start-time) (user/fetch-user {})))
+      (ok "Sent email!"))))
 
 (defn email-auth-fn
+  "Authentication function used by the basic authentication middleware
+   to make sure this was triggered by our scheduler."
   [user pass]
   (= pass (env/env :email-password)))
 
 (defn send-email
+  "/api/v1/email/send
+   
+  Method: POST
+   
+  Triggers the sending of daily personal and digest e-mails."
   [request]
   (send-email-fn
     (basic-authentication-request request email-auth-fn)))

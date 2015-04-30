@@ -61,4 +61,10 @@
                                 email))]
       (is (= (:status response) 401))
       (is (= (:body response)
-             (json/encode {:message "E-mails from this address <savelago@gmail.com> are not authorized to post to this team address <jncake@mail.darg.io>."}))))))
+             (json/encode {:message "E-mails from this address <savelago@darg.io> are not authorized to post to this team address <jncake@mail.darg.io>."}))))))
+
+
+;; look at our users, make sure the count of send-personal-email and send-digest-email lines up with when we expect.
+(deftest email-send-endpoint-sends-at-the-right-times
+  (is (= 0 1))
+  )

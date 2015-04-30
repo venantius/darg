@@ -90,11 +90,14 @@
           <div class="col-xs-8 timeline-user-events">
             <ul class="timeline timeline-icons timeline-sm" ng-show="userHasTasks(user)">
               <li ng-repeat="task in user.task">
-                <p>
+                <p class=timeline-event>
                   {{task.task}}
-                  <span class="timeline-icon octicon octicon-check"></span>
-                  <span class="timeline-date">{{task.date}}</span>
                 </p>
+                  <span class="timeline-icon octicon octicon-check"></span>
+                  <p class="timeline-timestamp">
+                    {{task.timestamp | date: 'shortTime'}}
+                  </p>
+
               </li>
             </ul>
 

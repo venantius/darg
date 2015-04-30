@@ -1,0 +1,1155 @@
+/*** uncss> filename: resources/public/css/bootstrap.min.css ***/
+
+/*!
+ * Bootstrap v3.2.0 (http://getbootstrap.com)
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+/*! normalize.css v3.0.1 | MIT License | git.io/normalize */
+
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+img {
+  border: 0;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 0;
+}
+
+@media print {
+  * {
+    color: #000!important;
+    text-shadow: none!important;
+    background: transparent!important;
+    -webkit-box-shadow: none!important;
+    box-shadow: none!important;
+  }
+
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+
+  img {
+    max-width: 100%!important;
+  }
+
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+}
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url(../fonts/glyphicons-halflings-regular.eot);
+  src: url(../fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'),url(../fonts/glyphicons-halflings-regular.woff) format('woff'),url(../fonts/glyphicons-halflings-regular.ttf) format('truetype'),url(../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg');
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+:before,
+:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 10px;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+body {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333;
+  background-color: #fff;
+}
+
+img {
+  vertical-align: middle;
+}
+
+h6 {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+}
+
+h6 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+h6 {
+  font-size: 12px;
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width:768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+@media (min-width:992px) {
+  .container {
+    width: 970px;
+  }
+}
+
+@media (min-width:1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+
+table {
+  background-color: transparent;
+}
+
+.form-control::-moz-placeholder {
+  color: #777;
+  opacity: 1;
+}
+
+.form-control:-ms-input-placeholder {
+  color: #777;
+}
+
+.container:before,
+.container:after {
+  display: table;
+  content: " ";
+}
+
+.container:after {
+  clear: both;
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+/*** uncss> filename: resources/email/css/darg.css ***/
+
+/* -----------------------------------------
+   Sparklines
+----------------------------------------- */
+
+/* -----------------------------------------
+   Code styles
+----------------------------------------- */
+
+/* -----------------------------------------
+   Back to top
+----------------------------------------- */
+
+/* -----------------------------------------
+   Circfull progress bars
+----------------------------------------- */
+
+/* -----------------------------------------
+    Sidebar panels
+----------------------------------------- */
+
+/* -----------------------------------------
+   Carousel dot style indicators
+----------------------------------------- */
+
+/* -----------------------------------------
+   Datatables row fix
+----------------------------------------- */
+
+/* -----------------------------------------
+   Pricing tables
+----------------------------------------- */
+
+/* -----------------------------------------
+   Input sizes
+----------------------------------------- */
+
+/* -----------------------------------------
+   Touchspin - spinner
+----------------------------------------- */
+
+/* -----------------------------------------
+   Bootstrap typeahead
+----------------------------------------- */
+
+/* -----------------------------------------
+   Flot charts
+----------------------------------------- */
+
+/* -----------------------------------------
+   Easy pie charts
+----------------------------------------- */
+
+/* -----------------------------------------
+  Gauges
+----------------------------------------- */
+
+/* -----------------------------------------
+   Vectormaps
+----------------------------------------- */
+
+/* -----------------------------------------
+   Highlight rows (tables, list and etc )
+----------------------------------------- */
+
+/* -----------------------------------------
+   Seperator
+----------------------------------------- */
+
+/* -----------------------------------------
+   Timeline
+----------------------------------------- */
+
+/* -----------------------------------------
+   Dividers
+----------------------------------------- */
+
+/* -----------------------------------------
+   Progressbars stats
+----------------------------------------- */
+
+/* -----------------------------------------
+   Profile
+----------------------------------------- */
+
+/* -----------------------------------------
+    Invoice page
+----------------------------------------- */
+
+/* -----------------------------------------
+   Custom progressbar
+----------------------------------------- */
+
+/* -----------------------------------------
+   Weather
+----------------------------------------- */
+
+/* -----------------------------------------
+   Recent comments
+----------------------------------------- */
+
+/* -----------------------------------------
+   Gallery page
+----------------------------------------- */
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../fonts/lato/lato-black.eot');
+  src: url('../fonts/lato/lato-black.eot?#iefix') format('embedded-opentype'), url('../fonts/lato/lato-black.woff') format('woff'), url('../fonts/lato/lato-black.ttf') format('truetype'), url('../fonts/lato/lato-black.svg#latoblack') format('svg');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../fonts/lato/lato-bold.eot');
+  src: url('../fonts/lato/lato-bold.eot?#iefix') format('embedded-opentype'), url('../fonts/lato/lato-bold.woff') format('woff'), url('../fonts/lato/lato-bold.ttf') format('truetype'), url('../fonts/lato/lato-bold.svg#latobold') format('svg');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../fonts/lato/lato-bolditalic.eot');
+  src: url('../fonts/lato/lato-bolditalic.eot?#iefix') format('embedded-opentype'), url('../fonts/lato/lato-bolditalic.woff') format('woff'), url('../fonts/lato/lato-bolditalic.ttf') format('truetype'), url('../fonts/lato/lato-bolditalic.svg#latobold-italic') format('svg');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../fonts/lato/lato-italic.eot');
+  src: url('../fonts/lato/lato-italic.eot?#iefix') format('embedded-opentype'), url('../fonts/lato/lato-italic.woff') format('woff'), url('../fonts/lato/lato-italic.ttf') format('truetype'), url('../fonts/lato/lato-italic.svg#latoitalic') format('svg');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../fonts/lato/lato-light.eot');
+  src: url('../fonts/lato/lato-light.eot?#iefix') format('embedded-opentype'), url('../fonts/lato/lato-light.woff') format('woff'), url('../fonts/lato/lato-light.ttf') format('truetype'), url('../fonts/lato/lato-light.svg#latolight') format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../fonts/lato/lato-regular.eot');
+  src: url('../fonts/lato/lato-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/lato/lato-regular.woff') format('woff'), url('../fonts/lato/lato-regular.ttf') format('truetype'), url('../fonts/lato/lato-regular.svg#latoregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Flat-UI-Pro-Icons';
+  src: url('../fonts/glyphicons/flat-ui-pro-icons-regular.eot');
+  src: url('../fonts/glyphicons/flat-ui-pro-icons-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons/flat-ui-pro-icons-regular.woff') format('woff'), url('../fonts/glyphicons/flat-ui-pro-icons-regular.ttf') format('truetype'), url('../fonts/glyphicons/flat-ui-pro-icons-regular.svg#flat-ui-pro-icons-regular') format('svg');
+}
+
+body {
+  font-family: "Lato", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.72222;
+  color: #34495e;
+  background-color: #ffffff;
+}
+
+h6 {
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.1;
+  color: inherit;
+}
+
+h6 {
+  margin-top: 13.5px;
+  margin-bottom: 13.5px;
+}
+
+h6 {
+  font-weight: normal;
+}
+
+h6 {
+  font-size: 22px;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.72222;
+  margin: 0 0 13.5px;
+}
+
+.form-control::-moz-placeholder,
+.select2-search input[type="text"]::-moz-placeholder,
+.select2-search input[type="text"]::-moz-placeholder {
+  color: #b2bcc5;
+  opacity: 1;
+}
+
+.form-control:-ms-input-placeholder,
+.select2-search input[type="text"]:-ms-input-placeholder,
+.select2-search input[type="text"]:-ms-input-placeholder {
+  color: #b2bcc5;
+}
+
+.form-control::-moz-placeholder,
+.select2-search input[type="text"]::-moz-placeholder,
+.select2-search input[type="text"]::-moz-placeholder {
+  color: #b2bcc5;
+  opacity: 1;
+}
+
+.form-control:-ms-input-placeholder,
+.select2-search input[type="text"]:-ms-input-placeholder,
+.select2-search input[type="text"]:-ms-input-placeholder {
+  color: #b2bcc5;
+}
+
+.has-success .form-control::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder {
+  color: #2ecc71;
+  opacity: 1;
+}
+
+.has-success .form-control:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #2ecc71;
+}
+
+.has-success .form-control::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder {
+  color: #2ecc71;
+  opacity: 1;
+}
+
+.has-success .form-control:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #2ecc71;
+}
+
+.has-success .form-control::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder {
+  color: #2ecc71;
+  opacity: 1;
+}
+
+.has-success .form-control:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #2ecc71;
+}
+
+.has-success .form-control::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder {
+  color: #2ecc71;
+  opacity: 1;
+}
+
+.has-success .form-control:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #2ecc71;
+}
+
+.has-warning .form-control::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder {
+  color: #f1c40f;
+  opacity: 1;
+}
+
+.has-warning .form-control:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #f1c40f;
+}
+
+.has-warning .form-control::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder {
+  color: #f1c40f;
+  opacity: 1;
+}
+
+.has-warning .form-control:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #f1c40f;
+}
+
+.has-warning .form-control::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder {
+  color: #f1c40f;
+  opacity: 1;
+}
+
+.has-warning .form-control:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #f1c40f;
+}
+
+.has-warning .form-control::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder {
+  color: #f1c40f;
+  opacity: 1;
+}
+
+.has-warning .form-control:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #f1c40f;
+}
+
+.has-error .form-control::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder {
+  color: #e74c3c;
+  opacity: 1;
+}
+
+.has-error .form-control:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #e74c3c;
+}
+
+.has-error .form-control::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder {
+  color: #e74c3c;
+  opacity: 1;
+}
+
+.has-error .form-control:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #e74c3c;
+}
+
+.has-error .form-control::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder {
+  color: #e74c3c;
+  opacity: 1;
+}
+
+.has-error .form-control:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #e74c3c;
+}
+
+.has-error .form-control::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder {
+  color: #e74c3c;
+  opacity: 1;
+}
+
+.has-error .form-control:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #e74c3c;
+}
+
+.checkbox input[type="checkbox"].custom-checkbox:hover:not(.nohover):not(:disabled) + .icons .icon-unchecked,
+.radio input[type="checkbox"].custom-checkbox:hover:not(.nohover):not(:disabled) + .icons .icon-unchecked,
+.checkbox input[type="radio"].custom-radio:hover:not(.nohover):not(:disabled) + .icons .icon-unchecked,
+.radio input[type="radio"].custom-radio:hover:not(.nohover):not(:disabled) + .icons .icon-unchecked {
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+
+.checkbox input[type="checkbox"].custom-checkbox:hover:not(.nohover):not(:disabled) + .icons .icon-checked,
+.radio input[type="checkbox"].custom-checkbox:hover:not(.nohover):not(:disabled) + .icons .icon-checked,
+.checkbox input[type="radio"].custom-radio:hover:not(.nohover):not(:disabled) + .icons .icon-checked,
+.radio input[type="radio"].custom-radio:hover:not(.nohover):not(:disabled) + .icons .icon-checked {
+  opacity: 1;
+  filter: none;
+}
+
+.navbar-default .navbar-form .form-control::-moz-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]::-moz-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]::-moz-placeholder {
+  color: #aeb6bf;
+  opacity: 1;
+}
+
+.navbar-default .navbar-form .form-control:-ms-input-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]:-ms-input-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #aeb6bf;
+}
+
+.navbar-default .navbar-form .form-control::-moz-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]::-moz-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]::-moz-placeholder {
+  color: #aeb6bf;
+  opacity: 1;
+}
+
+.navbar-default .navbar-form .form-control:-ms-input-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]:-ms-input-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #aeb6bf;
+}
+
+.navbar-inverse .navbar-form .form-control::-moz-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]::-moz-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]::-moz-placeholder {
+  color: #536a81;
+  opacity: 1;
+}
+
+.navbar-inverse .navbar-form .form-control:-ms-input-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]:-ms-input-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #536a81;
+}
+
+.navbar-inverse .navbar-form .form-control::-moz-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]::-moz-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]::-moz-placeholder {
+  color: #536a81;
+  opacity: 1;
+}
+
+.navbar-inverse .navbar-form .form-control:-ms-input-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]:-ms-input-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #536a81;
+}
+
+.twitter-typeahead .tt-query::-moz-placeholder,
+.twitter-typeahead .tt-hint::-moz-placeholder {
+  color: #b2bcc5;
+  opacity: 1;
+}
+
+.twitter-typeahead .tt-query:-ms-input-placeholder,
+.twitter-typeahead .tt-hint:-ms-input-placeholder {
+  color: #b2bcc5;
+}
+
+.twitter-typeahead .tt-query::-moz-placeholder,
+.twitter-typeahead .tt-hint::-moz-placeholder {
+  color: #b2bcc5;
+  opacity: 1;
+}
+
+.twitter-typeahead .tt-query:-ms-input-placeholder,
+.twitter-typeahead .tt-hint:-ms-input-placeholder {
+  color: #b2bcc5;
+}
+
+.twitter-typeahead .tt-query::-moz-placeholder,
+.twitter-typeahead .tt-hint::-moz-placeholder {
+  color: #b2bcc5;
+  opacity: 1;
+}
+
+.twitter-typeahead .tt-query:-ms-input-placeholder,
+.twitter-typeahead .tt-hint:-ms-input-placeholder {
+  color: #b2bcc5;
+}
+
+.twitter-typeahead .tt-query::-moz-placeholder,
+.twitter-typeahead .tt-hint::-moz-placeholder {
+  color: #b2bcc5;
+  opacity: 1;
+}
+
+.twitter-typeahead .tt-query:-ms-input-placeholder,
+.twitter-typeahead .tt-hint:-ms-input-placeholder {
+  color: #b2bcc5;
+}
+
+.todo-search-field::-moz-placeholder {
+  color: #34495e;
+  opacity: 1;
+}
+
+.todo-search-field:-ms-input-placeholder {
+  color: #34495e;
+}
+
+.todo-search-field::-moz-placeholder {
+  color: #34495e;
+  opacity: 1;
+}
+
+.todo-search-field:-ms-input-placeholder {
+  color: #34495e;
+}
+
+.video-js::-moz-full-screen {
+  position: absolute;
+}
+
+.video-js::-webkit-full-screen {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../fonts/lato/lato-black.eot');
+  src: url('../fonts/lato/lato-black.eot?#iefix') format('embedded-opentype'), url('../fonts/lato/lato-black.woff') format('woff'), url('../fonts/lato/lato-black.ttf') format('truetype'), url('../fonts/lato/lato-black.svg#latoblack') format('svg');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../fonts/lato/lato-bold.eot');
+  src: url('../fonts/lato/lato-bold.eot?#iefix') format('embedded-opentype'), url('../fonts/lato/lato-bold.woff') format('woff'), url('../fonts/lato/lato-bold.ttf') format('truetype'), url('../fonts/lato/lato-bold.svg#latobold') format('svg');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../fonts/lato/lato-bolditalic.eot');
+  src: url('../fonts/lato/lato-bolditalic.eot?#iefix') format('embedded-opentype'), url('../fonts/lato/lato-bolditalic.woff') format('woff'), url('../fonts/lato/lato-bolditalic.ttf') format('truetype'), url('../fonts/lato/lato-bolditalic.svg#latobold-italic') format('svg');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../fonts/lato/lato-italic.eot');
+  src: url('../fonts/lato/lato-italic.eot?#iefix') format('embedded-opentype'), url('../fonts/lato/lato-italic.woff') format('woff'), url('../fonts/lato/lato-italic.ttf') format('truetype'), url('../fonts/lato/lato-italic.svg#latoitalic') format('svg');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../fonts/lato/lato-light.eot');
+  src: url('../fonts/lato/lato-light.eot?#iefix') format('embedded-opentype'), url('../fonts/lato/lato-light.woff') format('woff'), url('../fonts/lato/lato-light.ttf') format('truetype'), url('../fonts/lato/lato-light.svg#latolight') format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../fonts/lato/lato-regular.eot');
+  src: url('../fonts/lato/lato-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/lato/lato-regular.woff') format('woff'), url('../fonts/lato/lato-regular.ttf') format('truetype'), url('../fonts/lato/lato-regular.svg#latoregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Flat-UI-Pro-Icons';
+  src: url('../fonts/glyphicons/flat-ui-pro-icons-regular.eot');
+  src: url('../fonts/glyphicons/flat-ui-pro-icons-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons/flat-ui-pro-icons-regular.woff') format('woff'), url('../fonts/glyphicons/flat-ui-pro-icons-regular.ttf') format('truetype'), url('../fonts/glyphicons/flat-ui-pro-icons-regular.svg#flat-ui-pro-icons-regular') format('svg');
+}
+
+body {
+  font-family: "Lato", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.72222;
+  color: #34495e;
+  background-color: #ffffff;
+}
+
+h6 {
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.1;
+  color: inherit;
+}
+
+h6 {
+  margin-top: 13.5px;
+  margin-bottom: 13.5px;
+}
+
+h6 {
+  font-weight: normal;
+}
+
+h6 {
+  font-size: 22px;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.72222;
+  margin: 0 0 13.5px;
+}
+
+.form-control::-moz-placeholder,
+.select2-search input[type="text"]::-moz-placeholder,
+.select2-search input[type="text"]::-moz-placeholder {
+  color: #b2bcc5;
+  opacity: 1;
+}
+
+.form-control:-ms-input-placeholder,
+.select2-search input[type="text"]:-ms-input-placeholder,
+.select2-search input[type="text"]:-ms-input-placeholder {
+  color: #b2bcc5;
+}
+
+.form-control::-moz-placeholder,
+.select2-search input[type="text"]::-moz-placeholder,
+.select2-search input[type="text"]::-moz-placeholder {
+  color: #b2bcc5;
+  opacity: 1;
+}
+
+.form-control:-ms-input-placeholder,
+.select2-search input[type="text"]:-ms-input-placeholder,
+.select2-search input[type="text"]:-ms-input-placeholder {
+  color: #b2bcc5;
+}
+
+.has-success .form-control::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder {
+  color: #2ecc71;
+  opacity: 1;
+}
+
+.has-success .form-control:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #2ecc71;
+}
+
+.has-success .form-control::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder {
+  color: #2ecc71;
+  opacity: 1;
+}
+
+.has-success .form-control:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #2ecc71;
+}
+
+.has-success .form-control::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder {
+  color: #2ecc71;
+  opacity: 1;
+}
+
+.has-success .form-control:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #2ecc71;
+}
+
+.has-success .form-control::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder,
+.has-success .select2-search input[type="text"]::-moz-placeholder {
+  color: #2ecc71;
+  opacity: 1;
+}
+
+.has-success .form-control:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder,
+.has-success .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #2ecc71;
+}
+
+.has-warning .form-control::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder {
+  color: #f1c40f;
+  opacity: 1;
+}
+
+.has-warning .form-control:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #f1c40f;
+}
+
+.has-warning .form-control::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder {
+  color: #f1c40f;
+  opacity: 1;
+}
+
+.has-warning .form-control:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #f1c40f;
+}
+
+.has-warning .form-control::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder {
+  color: #f1c40f;
+  opacity: 1;
+}
+
+.has-warning .form-control:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #f1c40f;
+}
+
+.has-warning .form-control::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder,
+.has-warning .select2-search input[type="text"]::-moz-placeholder {
+  color: #f1c40f;
+  opacity: 1;
+}
+
+.has-warning .form-control:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder,
+.has-warning .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #f1c40f;
+}
+
+.has-error .form-control::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder {
+  color: #e74c3c;
+  opacity: 1;
+}
+
+.has-error .form-control:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #e74c3c;
+}
+
+.has-error .form-control::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder {
+  color: #e74c3c;
+  opacity: 1;
+}
+
+.has-error .form-control:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #e74c3c;
+}
+
+.has-error .form-control::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder {
+  color: #e74c3c;
+  opacity: 1;
+}
+
+.has-error .form-control:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #e74c3c;
+}
+
+.has-error .form-control::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder,
+.has-error .select2-search input[type="text"]::-moz-placeholder {
+  color: #e74c3c;
+  opacity: 1;
+}
+
+.has-error .form-control:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder,
+.has-error .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #e74c3c;
+}
+
+.ui-spinner-input::-moz-placeholder {
+  color: #718191;
+  opacity: 1;
+}
+
+.ui-spinner-input:-ms-input-placeholder {
+  color: #718191;
+}
+
+.ui-spinner-input::-moz-placeholder {
+  color: #718191;
+  opacity: 1;
+}
+
+.ui-spinner-input:-ms-input-placeholder {
+  color: #718191;
+}
+
+.navbar-default .navbar-form .form-control::-moz-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]::-moz-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]::-moz-placeholder {
+  color: #aeb6bf;
+  opacity: 1;
+}
+
+.navbar-default .navbar-form .form-control:-ms-input-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]:-ms-input-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #aeb6bf;
+}
+
+.navbar-default .navbar-form .form-control::-moz-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]::-moz-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]::-moz-placeholder {
+  color: #aeb6bf;
+  opacity: 1;
+}
+
+.navbar-default .navbar-form .form-control:-ms-input-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]:-ms-input-placeholder,
+.navbar-default .navbar-form .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #aeb6bf;
+}
+
+.navbar-inverse .navbar-form .form-control::-moz-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]::-moz-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]::-moz-placeholder {
+  color: #536a81;
+  opacity: 1;
+}
+
+.navbar-inverse .navbar-form .form-control:-ms-input-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]:-ms-input-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #536a81;
+}
+
+.navbar-inverse .navbar-form .form-control::-moz-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]::-moz-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]::-moz-placeholder {
+  color: #536a81;
+  opacity: 1;
+}
+
+.navbar-inverse .navbar-form .form-control:-ms-input-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]:-ms-input-placeholder,
+.navbar-inverse .navbar-form .select2-search input[type="text"]:-ms-input-placeholder {
+  color: #536a81;
+}
+
+.video-js::-moz-full-screen {
+  position: absolute;
+}
+
+.video-js::-webkit-full-screen {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+input.todo-search-field::-moz-placeholder {
+  color: #34495e;
+  opacity: 1;
+}
+
+input.todo-search-field:-ms-input-placeholder {
+  color: #34495e;
+}
+
+input.todo-search-field::-moz-placeholder {
+  color: #34495e;
+  opacity: 1;
+}
+
+input.todo-search-field:-ms-input-placeholder {
+  color: #34495e;
+}
+
+/* Frustratingly the border-collapse:collapse used by Bootstrap makes the column
+   width calculations when using scrolling impossible to align columns. We have
+   to use separate
+ */
+
+/*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
+
+/* 
+
+Styles for the Darg emails
+
+*/
+
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  vertical-align: top;
+}
+
+table {
+  margin: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 0;
+  padding: 0;
+  table-layout: auto;
+}
+
+table.container {
+  width: 580px;
+  margin: 0 auto;
+  text-align: inherit;
+}
+
+body {
+  font-family: "Lato", Helvetica, Arial, sans-serif;
+  color: #34495e !important;
+  margin: 0px !important;
+  padding-top: 0px !important;
+}
+
+div.timeline-email-event-data {
+  margin-top: 4px;
+  padding-left: 20px;
+  position: relative;
+}
+
+p.timeline-email-event-text {
+  font-size: 15px;
+  font-family: "Lato", Helvetica, Arial, sans-serif;
+  color: #34495e !important;
+}
+
+/* The user header */
+
+h6.timeline-email-name {
+  text-align: center;
+  color: #34495e !important;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* The actual timeline events */
+
+body {
+  padding-top: 53px;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 108px;
+}
+
+/*
+
+The Timeline is divided into the following hierarchy:
+ 1. timeline-section
+    a. timeline-section-icon
+    b. timeline-section-date
+ 2. timeline-type-header
+ 3. timeline-header
+
+*/
+
+/* Profile image at the top */
+
+/* Timeline menu */
+
+/* Timline */
+
+/* timeline-section */
+
+/* Individual timeline events */
+
+/* Timeline header */

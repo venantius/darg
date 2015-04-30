@@ -12,7 +12,7 @@
 (defn confirmation-link
   "Build a confirmation link from a token"
   [uec]
-  (str "http://www.darg.io/settings/profile?confirmation_token=" (:token uec)))
+  (str "http://darg.io/settings/profile?confirmation_token=" (:token uec)))
 
 (defn send-email-confirmation
   "Send an email to a new user asking them to confirm their e-mail address."

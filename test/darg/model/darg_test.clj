@@ -9,41 +9,25 @@
 
 (with-db-fixtures)
 
-(deftest timeline-works
-  (is (= (darg/personal-timeline 4 1)
-         [{:date (util/sql-datetime->date-str (:date fixture-data/test-task-1))
-           :tasks (list (assoc fixture-data/test-task-1 :id 1))}
-          {:date (util/sql-datetime->date-str (:date fixture-data/test-task-3))
-           :tasks (list (assoc fixture-data/test-task-3 :id 3)
-                        (assoc fixture-data/test-task-5 :id 5))}
-          {:date (util/sql-datetime->date-str
-                   (c/to-sql-date
-                     (t/minus (t/today) (t/days 2))))
-           :tasks (list)}
-          {:date (util/sql-datetime->date-str
-                   (c/to-sql-date
-                     (t/minus (t/today) (t/days 3))))
-           :tasks (list)}
-          {:date (util/sql-datetime->date-str
-                   (c/to-sql-date
-                     (t/minus (t/today) (t/days 4))))
-           :tasks (list)}
-          ])))
-
 (deftest team-timeline-works
+  (let [task-date (c/from-sql-time 
+                    (:timestamp fixture-data/test-task-1))
+        year (t/year task-date)
+        month (t/month task-date)
+        day (t/day task-date)]
   (is (= {:user [{:task (list)
                    :name "John Lago"
-                   :email "savelago@gmail.com"
+                   :email "savelago@darg.io"
                    :id 1}
                   {:task (list)
                    :name "The Couch"
-                   :email "david@standardtreasury.com"
+                   :email "davidst@darg.io"
                    :id 3}
                   {:task (list
                             {:task "Do a good deed everyday"
                              :team_id 1
                              :user_id 4
-                             :date (:date fixture-data/test-task-1)
+                             :timestamp (:timestamp fixture-data/test-task-1)
                              :id 1})
                    :name "Finn the Human"
                    :email "test-user2@darg.io"
@@ -56,6 +40,7 @@
                    :name "Dave"
                    :email "venantius@gmail.com"
                    :id 7}]
-          :date (util/sql-datetime->date-str (:date fixture-data/test-task-1))
-          }
-          (first (darg/team-timeline 1)))))
+          :date (util/sql-datetime->date-str (:timestamp fixture-data/test-task-1))}
+          (first (darg/team-timeline 
+                   fixture-data/test-user-4 1 
+                   (t/date-time year month day)))))))
