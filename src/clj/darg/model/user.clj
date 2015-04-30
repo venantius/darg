@@ -192,7 +192,7 @@
           base-reset-url
           :query {:token token}))))
 
-(html/deftemplate password-reset-template "email/templates/password_reset.html"
+(html/deftemplate password-reset-template "email/templates/raw/password_reset.html"
   [{:keys [name] :as user}]
   [:span.name] (html/content name)
   [:span.password-reset-link] (html/content (build-password-reset-link user)))
