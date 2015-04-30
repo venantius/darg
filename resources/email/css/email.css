@@ -18,6 +18,10 @@ body {
   margin: 0;
 }
 
+img {
+  border: 0;
+}
+
 button::-moz-focus-inner,
 input::-moz-focus-inner {
   padding: 0;
@@ -42,8 +46,13 @@ td {
     box-shadow: none!important;
   }
 
-  tr {
+  tr,
+  img {
     page-break-inside: avoid;
+  }
+
+  img {
+    max-width: 100%!important;
   }
 
   p {
@@ -82,6 +91,10 @@ body {
   line-height: 1.42857143;
   color: #333;
   background-color: #fff;
+}
+
+img {
+  vertical-align: middle;
 }
 
 h6 {
@@ -156,7 +169,7 @@ table {
   width: device-width;
 }
 
-/*** uncss> filename: resources/public/css/flat-ui.css ***/
+/*** uncss> filename: resources/email/css/darg.css ***/
 
 /* -----------------------------------------
    Sparklines
@@ -1099,7 +1112,7 @@ p.timeline-email-event-text {
 h6.timeline-email-name {
   text-align: center;
   color: #34495e !important;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   font-weight: bold;
 }
 

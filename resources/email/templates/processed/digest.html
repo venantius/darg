@@ -2,8 +2,6 @@
   <link rel="stylesheet" href="../../css/email.css">
 </head>
 <body>
-  {{timeline.date}}
-
   {% for user in timeline.user %}
 
   {% if user.task|not-empty %}
@@ -28,7 +26,7 @@
       <td width="32">
       {% else %}
       <td width="32" 
-        background="https://s3-us-west-2.amazonaws.com/ursacorp-cloudfront-assets/email/bg.jpg">
+        background="https://s3-us-west-2.amazonaws.com/ursacorp-cloudfront-assets/email/images/timeline-bg-line.jpg">
       {% endifequal %}
 
         <table>
@@ -36,7 +34,8 @@
             <td 
               width="32"
               height="32"
-              background="https://s3-us-west-2.amazonaws.com/ursacorp-cloudfront-assets/email/node.jpg">
+              background="https://s3-us-west-2.amazonaws.com/ursacorp-cloudfront-assets/email/images/node.jpg">
+              <img width=32 height=32 src="https://s3-us-west-2.amazonaws.com/ursacorp-cloudfront-assets/email/images/octicon-check.png">
             </td>
           </tr>
         </table>
@@ -45,13 +44,15 @@
         <div class="timeline-email-event-data">
           <p class="timeline-email-event-text">
             {{task.task}}
-            <span class="timeline-email-date">{{task.date}}</span>
+            <!--<span class="timeline-email-date">{{task.timestamp}}</span>-->
           </p>
         </div>
       </td>
     </tr>
   </table>
   {% endfor %}
+
+  <br>
 
   {% endif %}
 

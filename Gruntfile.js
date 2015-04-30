@@ -17,6 +17,7 @@ module.exports = function(grunt) {
         },
         files: {
           "./resources/public/css/flat-ui.css": "./src/less/darg.less",
+          "./resources/email/css/darg.css": "./src/less/email.less",
         }
       }
     },
@@ -26,7 +27,7 @@ module.exports = function(grunt) {
       dist: {
         files: {
           "./resources/email/css/email.css":
-            ['./resources/email/templates/digest.html']
+            ['./resources/email/templates/raw/digest.html']
         }
       }
     },
@@ -35,7 +36,7 @@ module.exports = function(grunt) {
     processhtml: {
       dist: {
         files: {
-          'resources/email/templates/processed/digest.html': ['resources/email/templates/digest.html']
+          'resources/email/templates/processed/digest.html': ['resources/email/templates/raw/digest.html']
         }
       }
     },

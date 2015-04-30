@@ -60,16 +60,23 @@
     (task/create-task-list task-list email-metadata)))
 
 
-(defn todays-subject-line
+(defn daily-subject-line
   [{:keys [timezone] :as user}]
   (let [today (dt/local-time (t/now) timezone)]
     (str "Darg.io: What did you do today? [" 
-         (f/unparse (f/formatter-local "MMMM dd YYYY") today) 
+         (f/unparse (f/formatter-local "MMMM dd, YYYY") today) 
+         "]")))
+
+(defn digest-subject-line
+  [{:keys [timezone] :as user}]
+  (let [today (dt/local-time (t/now) timezone)]
+    (str "Darg.io: Daily activity report ["
+         (f/unparse (f/formatter-local "MMMM dd, YYYY") today)
          "]")))
 
 (defn from-team
   [{:keys [email name] :as team}]
-  (str name " (Darg.io) <" email ">"))
+  (str name " <" email ">"))
 
 
 (defn send-one-personal-email
@@ -77,7 +84,7 @@
   [user team]
   (let [from (from-team team)
         to (:email user)
-        subject (todays-subject-line user)]
+        subject (daily-subject-line user)]
     (log/info "Emailing" to "from" from)
     (mailgun/send-message {:from from
                            :to to
@@ -93,7 +100,7 @@
         one-day-ago (t/minus current-local-time (t/days 1))
         from (from-team team)
         to (:email user)
-        subject "This is a digest"
+        subject (digest-subject-line user)
         darg (first (darg/team-timeline user (:id team) one-day-ago))
         html (template/render-digest-email darg)]
     (log/info "Sending digest email to" to "from" from "for period starting" one-day-ago "to" current-local-time)
