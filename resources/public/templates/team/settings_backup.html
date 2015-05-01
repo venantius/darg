@@ -1,0 +1,133 @@
+<div class="container inner">
+  <div class="row">
+    <div class="col-xs-3">
+
+      <!-- Side navbar -->
+      <ul class="nav nav-list">
+        <li class="nav-header">Teams</li>
+        <li ng-repeat="team in currentUser.team">
+          <a class="team-timeline-link" ng-href="/team/{{team.id}}/timeline">
+            {{team.name}}
+          </a>
+          <a class="team-settings-link" ng-href="/team/{{team.id}}">
+            <i class="fa fa-cog"></i>
+          </a>
+        </li>
+        <li class="divider">
+        </li>
+        <li>
+          <form action="/team">
+            <button type="submit" class="btn btn-primary btn-block">
+              Create a new team&nbsp
+              <i class="fa fa-plus"></i>
+            </button>
+          </form>
+        </li>
+      </ul>
+
+    </div>
+
+    <!-- Team settings -->
+    <div class="col-xs-6">
+
+      <h4>Settings</h4>
+      <form>
+        <div class="form-group">
+          Name
+          <input type="text" class="form-control" ng-model="Team.currentTeam.name">
+        </div>
+        <!-- At the moment we don't let people change this. 
+        <div class="form-group">
+          Email
+          <input type="text" disabled="disabled" class="form-control" ng-model="Team.currentTeam.email">
+        </div>
+        --> 
+        <div class="form-group">
+          <button class="btn btn-primary" ng-click="Team.updateTeam(Team.currentTeam)">Save</button>
+        </div>
+      </form>
+
+      <!-- Alerts -->
+      <div class="alert alert-success" ng-repeat="alert in Team.settingsUpdatedAlerts">
+        {{alert.msg}}
+        <button type="button" class="close fui-cross" data-dismiss="alert">
+        </button>
+      </div>
+
+      <!-- User administration -->
+      <h4>Members</h4>
+      <!-- list team members -->
+      <div class="col-xs-12" ng-repeat="role in Team.roles">
+        <div class="row role-card">
+          <div class="col-xs-10 role-contents">
+            <form>
+              <div class="form-group">
+                <h6>
+                  {{role.name}}
+                </h6>
+
+                <input class="form-control" ng-model=role.role placeholder="What is this person's role on your team?">
+              </div>
+
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <label class="checkbox">
+                    <input type="checkbox" ng-model="role.admin" ng-disabled="{{!Team.canDelete(role)}}" class="custom-checkbox">
+                    <span class="icons">
+                      <span class="icon-unchecked">
+                      </span>
+                      <span class="icon-checked">
+                      </span>
+                    </span>
+                    Admin
+                  </label>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <button type="button" class="btn btn-primary" ng-click="Team.updateRole(role.team_id, role.user_id, role)" ng-show="Team.canDelete(role.user_id)">Save</button>
+                  <button type="button" class="btn btn-danger" ng-click="Team.deleteRole(role.team_id, role.user_id)" ng-show="Team.canDelete(role.user_id)">Remove</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-xs-2 tile role-profile">
+            <img class="img-portrait timeline-profile" gravatar-src="role.email" gravatr-size="64">
+          </div>
+        </div>
+      </div>
+
+      <!-- Invite new members -->
+      <div ng-show="Team.currentRole.admin">
+        <h6>Add a new member</h6>
+        <form class="form-horizontal">
+          <div class="form-group">
+            <div class="col-sm-10">
+              <input type="email" class="form-control login-field" name="email" ng-model="Team.newRole.email" placeholder="Email address"/>
+            </div>
+            <div class="col-sm-2">
+              <button class="btn btn-primary" ng-click="Team.createRole(Team.currentTeam.id, Team.newRole)" ng-submit="Team.addAlert(Team.newRole.email)">
+                Send invitation!
+              </button>
+            </div>
+          </div>
+        </form>
+        <div class="alert alert-success" ng-repeat="alert in Team.invitationSuccessAlerts">
+          <span class="fui-mail mrm"></span>
+          {{alert.msg}}
+          <button type="button" class="close fui-cross" data-dismiss="alert"></button>
+        </div>
+        <div class="alert alert-danger" ng-repeat="alert in Team.invitationFailureAlerts">{{alert.msg}}
+          <button type="button" class="close fui-cross" data-dismiss="alert"></button>
+        </div>
+      </div>
+
+      <div>
+
+      </div>
+
+      <!-- Add a new team member -->
+    </div>
+
+  </div>
+</div>

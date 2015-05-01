@@ -1,57 +1,66 @@
 <div class="container inner">
   <div class="row">
-    <div class="col-md-2">
-    </div>
+    <div class="col-xs-3">
 
-    <!-- actual content here -->
-    <div class="col-xs-12 col-md-8">
-
-      <!-- team selector -->
-      <div class="col-xs-12 col-md-7 pbl">
-          <a href="#" class="team-selector dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-            {{Timeline.currentTeam.name}}
-            <span class="octicon octicon-triangle-down team-caret"></span>
+      <!-- Side navbar -->
+      <ul class="nav nav-list">
+        <li class="nav-header">Teams</li>
+        <li ng-repeat="team in currentUser.team">
+          <a class="team-timeline-link" ng-href="/team/{{team.id}}/timeline">
+            {{team.name}}
           </a>
-          <ul class="dropdown-menu">
-            <li ng-repeat="team in currentUser.team">
-              <a ng-href="/team/{{team.id}}/timeline">
-                {{team.name}}
-              </a>
-            </li>
-            <li class="divider"></li>
-            <li>
-              <a href="/team">Create a new team</a>
-            </li>
-          </ul>
-          <a class="team-settings-link" ng-href="/team/{{Timeline.teamId}}">
+          <a class="team-settings-link" ng-href="/team/{{team.id}}">
             <i class="fa fa-cog"></i>
           </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+          <a href="/team">
+            Create a new team
+          </a>
+        </li>
+      </ul>
+
+    <!--
+    <div style="display:inline-block; min-height:290px;">
+      <datepicker ng-model="date" min-date="minDate" show-weeks="false" max-mode="day"></datepicker>
+    </div>
+    -->
+
+      <div class="form-group"> 
+        <div class="input-group" ng-click="open($event)">
+          <input type="text" 
+          class="form-control" 
+          datepicker-popup="longDate" 
+          ng-model="date" 
+          is-open="opened" 
+          max-mode="day" 
+          datepicker-options="dateOptions" 
+          show-button-bar=false
+          ng-required="true" close-text="Close" />
+          <span class="input-group-addon">
+            <span class="fui-calendar"></span>
+          </span>
+        </div>
       </div>
-      <div class="col-xs-12 col-md-5 pbl calendar-container">
-        <div class="form-group calendar"> 
-          <div class="input-group" ng-click="open($event)">
-            <input type="text" 
-            class="form-control" 
-            datepicker-popup="longDate" 
-            ng-model="date" 
-            is-open="opened" 
-            max-mode="day" 
-            datepicker-options="dateOptions" 
-            show-button-bar=false
-            ng-required="true" close-text="Close" />
-            <span class="input-group-addon">
-              <span class="fui-calendar"></span>
+
+      <!--
+      <div>
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button class="btn" type="button">
+                <span class="fui-calendar"></span>
+              </button>
             </span>
+            <input type="text" class="form-control hadDatepicker timepicker-with-dropdowns" value="14 March, 2013" id="datepicker-02"/>
           </div>
         </div>
-
       </div>
+      -->
+
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-2">
-    </div>
-    <div class="col-xs-12 col-md-8 ptm">
+    <div class="col-xs-9">
       
       <!-- timeline -->
       <div class="timeline-darg" ng-repeat="darg in Timeline.events">
@@ -65,7 +74,6 @@
             </li>
           </ul>
         </nav>
-
 
         <!-- begin user section -->
         <div class="row timeline-user" ng-repeat="user in darg.user" ng-show="showUser(user)">

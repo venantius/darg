@@ -5,6 +5,7 @@ darg.controller('DargTimelineCtrl',
      '$scope',
      'datepicker',
      'task',
+     'team',
      'timeline',
      'user',
      function(
@@ -14,6 +15,7 @@ darg.controller('DargTimelineCtrl',
          $scope,
          datepicker,
          task,
+         team,
          timeline,
          user) {
     
@@ -41,8 +43,12 @@ darg.controller('DargTimelineCtrl',
     $scope.open = function($event) {
         $event.preventDefault();
         $event.stopPropagation();
-
-        $scope.opened = true;
+        
+        if ($scope.opened != true ) {
+          $scope.opened = true;
+        } else {
+          $scope.opened = false;
+        }
     };
     $scope.dateOptions = {
         formatYear: 'yy',
@@ -72,6 +78,9 @@ darg.controller('DargTimelineCtrl',
             return false;
         }
     }
+    this.teamId = $routeParams.teamId;
+
+    this.team = team.currentTeam;
 
     this._refreshTimeline = function () {
         timeline.getTimeline($routeParams.teamId, $routeParams.date)
@@ -100,6 +109,12 @@ darg.controller('DargTimelineCtrl',
         return $routeParams.teamId;
     }, function(newValue, oldValue) {
         self._refreshTimeline();
+        team.getTeam(self.teamId)
+        .then(function(data) {
+          self.currentTeam = data;
+        }, function(data) {
+          console.log(data) 
+        });
     });
 
     $scope.$watch(function() {

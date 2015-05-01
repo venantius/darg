@@ -34,9 +34,41 @@ a.team-timeline-link {
   width: 94%;
 }
 
-a.team-settings-link {
-  display: inline-block;
+a.team-selector {
+  color: @brand-primary;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.1;
+  &:hover {
+    color: @brand-secondary;
+  }
+  &:active {
+    color: @brand-primary !important;
+  }
+}
+
+.team-caret {
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+div.calendar-container {
+  padding: 0 !important;
   float: right;
+  padding-right: 0px !important;
+}
+
+div.calendar {
+  width: 262px;
+  float: right;
+}
+
+a.team-settings-link {
+  color: @brand-primary;
+  display: inline-block;
+  font-size: 20px;
+  line-height: 0.6;
+  margin-left: 20px;
   width: 36px;
 }
 
@@ -109,3 +141,5 @@ span.timeline-item-edit-icon {
     color: @wet-asphalt;
   }
 }
+
+

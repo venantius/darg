@@ -19559,7 +19559,7 @@ p.answer {
   text-decoration: none;
 }
 div.inner {
-  padding-top: 20px;
+  padding-top: 30px;
   padding-bottom: 30px;
 }
 .navbar-icons {
@@ -19686,9 +19686,37 @@ div.timeline-profile-text {
 a.team-timeline-link {
   width: 94%;
 }
-a.team-settings-link {
-  display: inline-block;
+a.team-selector {
+  color: #34495e;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+a.team-selector:hover {
+  color: #1abc9c;
+}
+a.team-selector:active {
+  color: #34495e !important;
+}
+.team-caret {
+  font-size: 16px;
+  vertical-align: middle;
+}
+div.calendar-container {
+  padding: 0 !important;
   float: right;
+  padding-right: 0px !important;
+}
+div.calendar {
+  width: 262px;
+  float: right;
+}
+a.team-settings-link {
+  color: #34495e;
+  display: inline-block;
+  font-size: 20px;
+  line-height: 0.6;
+  margin-left: 20px;
   width: 36px;
 }
 .nav-list > li > a {
