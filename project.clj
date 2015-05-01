@@ -81,7 +81,8 @@
                     :port "8080"
                     :session-key "antarctica--bear"
                     :email-password "huxtables"}
-              :plugins [[jonase/eastwood "0.1.4"]]
+              :plugins [[jonase/eastwood "0.1.4"]
+                        [venantius/ultra "0.3.3"]]
               :jvm-opts ["-Dlog4j.configuration=log4j-test.properties"]}
 
              :staging 
