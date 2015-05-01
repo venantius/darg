@@ -20,7 +20,8 @@
             (fields [:email])
             (with db/task
                   (where {:team_id team-id
-                          :timestamp [between [from to]]}))
+                          :timestamp [>= from]})
+                  (where {:timestamp [< to]}))
             (where {:id [in role-ids]}))))
 
 (defn- formatted-team-darg-by-date
