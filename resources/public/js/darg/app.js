@@ -470,6 +470,7 @@ darg.controller('DargTimelineCtrl',
      '$scope',
      'datepicker',
      'task',
+     'team',
      'timeline',
      'user',
      function(
@@ -479,6 +480,7 @@ darg.controller('DargTimelineCtrl',
          $scope,
          datepicker,
          task,
+         team,
          timeline,
          user) {
     
@@ -506,8 +508,12 @@ darg.controller('DargTimelineCtrl',
     $scope.open = function($event) {
         $event.preventDefault();
         $event.stopPropagation();
-
-        $scope.opened = true;
+        
+        if ($scope.opened != true ) {
+          $scope.opened = true;
+        } else {
+          $scope.opened = false;
+        }
     };
     $scope.dateOptions = {
         formatYear: 'yy',
@@ -537,6 +543,9 @@ darg.controller('DargTimelineCtrl',
             return false;
         }
     }
+    this.teamId = $routeParams.teamId;
+
+    this.team = team.currentTeam;
 
     this._refreshTimeline = function () {
         timeline.getTimeline($routeParams.teamId, $routeParams.date)
@@ -565,6 +574,12 @@ darg.controller('DargTimelineCtrl',
         return $routeParams.teamId;
     }, function(newValue, oldValue) {
         self._refreshTimeline();
+        team.getTeam(self.teamId)
+        .then(function(data) {
+          self.currentTeam = data;
+        }, function(data) {
+          console.log(data) 
+        });
     });
 
     $scope.$watch(function() {
@@ -599,6 +614,7 @@ darg.controller('DargUserCtrl',
          user) {
 
     var self = this;
+    this.user = user;
 
     $scope.auth = auth;
 
@@ -649,11 +665,28 @@ darg.controller('DargUserCtrl',
 
     this.sendEmailConfirmation = user.sendEmailConfirmation;
 
+    /* Watch for the changes we need to redirect someone from the homepage */
+    this.homeRedirector = function() {
+      if ($location.path() == "/") {
+        if ($scope.loggedIn() == true ) {
+          if (user.info.name != null) {
+            return 3;
+          } else {
+            return 2;
+          }
+        } else {
+          return 1;
+        }
+      } else {
+        return 0;
+      }
+    };
+
     /* watchers */
     $scope.$watch(function() {
         return $scope.loggedIn()
     }, function(newValue, oldValue) {
-        if ($scope.loggedIn() == true) {
+        if (newValue == true) {
             $scope.getCurrentUser();
         }
     });
@@ -664,6 +697,19 @@ darg.controller('DargUserCtrl',
         if (newValue != null) {
             $scope.currentUser = newValue;
         }
+    });
+
+    $scope.$watch(function() {
+      return self.homeRedirector();
+    }, function(newValue, oldValue) {
+      if (newValue == 3) {
+        if (user.info.team.length > 0) {
+          url = '/team/' + user.info.team[0].id + '/timeline';
+        } else {
+          url = '/team'
+        }
+        $location.path(url);
+      }
     });
 }]);
 

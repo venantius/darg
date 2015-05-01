@@ -18,6 +18,7 @@ darg.controller('DargUserCtrl',
          user) {
 
     var self = this;
+    this.user = user;
 
     $scope.auth = auth;
 
@@ -68,11 +69,28 @@ darg.controller('DargUserCtrl',
 
     this.sendEmailConfirmation = user.sendEmailConfirmation;
 
+    /* Watch for the changes we need to redirect someone from the homepage */
+    this.homeRedirector = function() {
+      if ($location.path() == "/") {
+        if ($scope.loggedIn() == true ) {
+          if (user.info.name != null) {
+            return 3;
+          } else {
+            return 2;
+          }
+        } else {
+          return 1;
+        }
+      } else {
+        return 0;
+      }
+    };
+
     /* watchers */
     $scope.$watch(function() {
         return $scope.loggedIn()
     }, function(newValue, oldValue) {
-        if ($scope.loggedIn() == true) {
+        if (newValue == true) {
             $scope.getCurrentUser();
         }
     });
@@ -83,6 +101,19 @@ darg.controller('DargUserCtrl',
         if (newValue != null) {
             $scope.currentUser = newValue;
         }
+    });
+
+    $scope.$watch(function() {
+      return self.homeRedirector();
+    }, function(newValue, oldValue) {
+      if (newValue == 3) {
+        if (user.info.team.length > 0) {
+          url = '/team/' + user.info.team[0].id + '/timeline';
+        } else {
+          url = '/team'
+        }
+        $location.path(url);
+      }
     });
 }]);
 
