@@ -2,7 +2,18 @@
   (:require
    [clojure.tools.logging :as logging]
    [darg.api.responses :as responses]
+   [darg.routes :as routes]
+    [ring.util.response :as response]
    [ring.util.request :as req]))
+
+(defn is-site-route?
+  "Is this a blacklisted site route?"
+  [request]
+  (routes/matches-any-path? routes/site-paths request))
+
+(defn is-api-route?
+  "Is this a blacklisted api route?"
+  [path])
 
 (defn route-whitelist-fn
   "A function for whitelisting particular routes.
@@ -23,9 +34,9 @@
      (= path "/faq")
      (= path "/integrations")
      (= path "/password_reset")
-      (.startsWith path "/login")
-      (.startsWith path "/new_password")
-      (.startsWith path "/signup")
+     (.startsWith path "/login")
+     (.startsWith path "/new_password")
+     (.startsWith path "/signup")
 
      (= path "/debug")
      (= path "/api/v1/email")
@@ -56,4 +67,6 @@
       (let [user (auth-fn request)]
         (if user
           (handler (assoc request :user user))
-          (responses/unauthorized "User not authenticated."))))))
+          (if (is-site-route? request)
+            (response/redirect "/")
+            (responses/unauthorized "User not authenticated.")))))))

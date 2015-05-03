@@ -20,7 +20,7 @@
 
 (defentity user
   (table :darg.user :user)
-  (entity-fields :id :name)
+  (entity-fields :id :name :email)
   (has-many task)
   (has-many role)
   (belongs-to github-user)

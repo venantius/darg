@@ -44,7 +44,8 @@
                  [ring "1.3.2"]
                  [ring/ring-json "0.3.1"]
                  [ring-basic-authentication "1.0.5"]
-                 [compojure "1.1.8"]
+                 [clout "2.1.1"]
+                 [compojure "1.3.3"]
 
                  ;; templating
                  [enlive "1.1.5"]

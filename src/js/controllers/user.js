@@ -6,6 +6,7 @@ darg.controller('DargUserCtrl',
      '$routeParams',
      'alert',
      'auth',
+     'intercom',
      'user',
      function(
          $cookieStore,
@@ -15,6 +16,7 @@ darg.controller('DargUserCtrl',
          $routeParams,
          alert,
          auth,
+         intercom,
          user) {
 
     var self = this;
@@ -71,18 +73,14 @@ darg.controller('DargUserCtrl',
 
     /* Watch for the changes we need to redirect someone from the homepage */
     this.homeRedirector = function() {
-      if ($location.path() == "/") {
-        if ($scope.loggedIn() == true ) {
-          if (user.info.name != null) {
-            return 3;
-          } else {
-            return 2;
-          }
+      if ($scope.loggedIn() == true ) {
+        if (user.info.name != null) {
+          return 3;
         } else {
-          return 1;
+          return 2;
         }
       } else {
-        return 0;
+        return 1;
       }
     };
 
@@ -107,13 +105,23 @@ darg.controller('DargUserCtrl',
       return self.homeRedirector();
     }, function(newValue, oldValue) {
       if (newValue == 3) {
-        if (user.info.team.length > 0) {
-          url = '/team/' + user.info.team[0].id + '/timeline';
-        } else {
-          url = '/team'
+        intercom.notify(user.info)
+        if ($location.path() == "/") {
+          if (user.info.team.length > 0) {
+            url = '/team/' + user.info.team[0].id + '/timeline';
+          } else {
+            url = '/team'
+          }
+          $location.path(url);
         }
-        $location.path(url);
       }
     });
+
+    $scope.$watch(function() {
+      return $location.path()
+    }, function(newValue, oldValue) {
+      intercom.update()
+    });
+
 }]);
 

@@ -108,13 +108,15 @@ darg.controller('DargTimelineCtrl',
     $scope.$watch(function() {
         return $routeParams.teamId;
     }, function(newValue, oldValue) {
+      if ($routeParams.date != null) {
         self._refreshTimeline();
-        team.getTeam(self.teamId)
-        .then(function(data) {
-          self.currentTeam = data;
-        }, function(data) {
-          console.log(data) 
-        });
+      }
+      team.getTeam(self.teamId)
+      .then(function(data) {
+        self.currentTeam = data;
+      }, function(data) {
+        console.log(data) 
+      });
     });
 
     $scope.$watch(function() {

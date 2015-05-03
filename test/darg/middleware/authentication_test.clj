@@ -12,6 +12,7 @@
 (deftest unauthenticated-user-returns-401
   (let [sample-request {:session {:authenticated false :email "test-user2@darg.io" :id 4}
                         :request-method :post
+                        :path-info "/task"
                         :params {:task "I created a new task!"
                                  :team-id 2
                                  :timestamp "Mar 10 2014"}}
@@ -28,6 +29,7 @@
 (deftest user-cant-view-a-darg-without-an-email
   (let [sample-request {:session {:authenticated true :id 4}
                         :params {:id "4"}
+                        :path-info "/user/4"
                         :request-method :get}
         response ((authn/wrap-authentication
                     user-api/get

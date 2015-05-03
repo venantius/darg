@@ -4,7 +4,8 @@
    Pay attention to trailing slashes - right now the only thing that should
    end in a slash is the site root."
   (:require [clojure.tools.logging :as log]
-            [compojure.core :refer [defroutes context GET POST ANY DELETE]]
+            [clout.core :as clout]
+            [compojure.core :refer [defroutes context rfn GET POST ANY DELETE]]
             [compojure.route :as route]
             [darg.controller.auth :as auth]
             [darg.controller.darg :as darg]
@@ -19,7 +20,15 @@
              [wrap-basic-authentication]]
             [ring.util.response :refer [resource-response]]))
 
-(defn darg-spa 
+(defn matches-any-path?
+  "Does this request match any of the paths?
+   
+   Expects paths to be a coll."
+  [paths request]
+  (some #(clout/route-matches % request) paths))
+
+(defn darg-spa
+ "Our single page app." 
   []
   (resource-response "index.html" {:root "public"}))
 
@@ -27,35 +36,30 @@
   (log/info (str request))
   {:body (str request)})
 
-(defroutes routes
-  ;; site
-  (GET    "/"                               [] (darg-spa))
-  (GET    "/about"                          [] (darg-spa))
-  (GET    "/api"                            [] (darg-spa))
-  (GET    "/faq"                            [] (darg-spa))
-  (GET    "/integrations"                   [] (darg-spa))
+(def site-paths
+  ["/"
+   "/about"
+   "/api"
+   "/faq"
+   "/integrations"
+   "/login"
+   "/signup"
+   "/password_reset"
+   "/new_password"
+   "/team"
+   "/team/:team_id"
+   "/team/:team_id/timeline"
+   "/team/:team_id/timeline/:date"
+   "/settings"
+   "/settings/:settings_page"
+   "/oauth/github"])
 
-  (GET    "/login"                          [] (darg-spa))
-  (GET    "/signup"                         [] (darg-spa))
+(defroutes site-routes
+  (rfn request 
+    (when (matches-any-path? site-paths request)
+      (darg-spa))))
 
-  (GET    "/password_reset"                 [] (darg-spa))
-  (GET    "/new_password"                   [] (darg-spa))
-
-  (GET    "/team"                           [] (darg-spa))
-  (GET    "/team/:team_id"                  [] (darg-spa))
-  (GET    "/team/:team_id/timeline"         [] (darg-spa))
-  (GET    "/team/:team_id/timeline/:date"   [] (darg-spa))
-
-  (GET    "/settings"                       [] (darg-spa))
-  (GET    "/settings/:settings_page"        [] (darg-spa))
-
-  ;; debug
-  (ANY    "/debug"                          request (debug request))
-
-  ;; oauth
-  (GET    "/oauth/github"                   request (gh-oauth/callback request))
-
-  ;; api
+(defroutes api-routes
   (POST   "/api/v1/login"                   request (auth/login request))
   (GET    "/api/v1/logout"                  request (auth/logout request))
   (POST   "/api/v1/password_reset"          request (auth/password-reset request))
@@ -64,7 +68,7 @@
   (POST   "/api/v1/email/send"                   request (email/send-email request))
 
   (GET    "/api/v1/darg/team/:team_id/:date"     request 
-       (darg/get-team-darg-by-date request))
+    (darg/get-team-darg-by-date request))
 
   (POST   "/api/v1/task"                         request (task/create! request))
 
@@ -83,6 +87,11 @@
   (POST   "/api/v1/user/:id"                request (user/update! request))
 
   (POST   "/api/v1/user/:id/email"          request (conf/create! request))
-  (POST   "/api/v1/user/:id/email/:token"   request (conf/confirm! request))
-  
+  (POST   "/api/v1/user/:id/email/:token"   request (conf/confirm! request)))
+
+(defroutes routes
+  site-routes
+  api-routes
+  (ANY    "/debug"                          request (debug request))
+  (GET    "/oauth/github"                   request (gh-oauth/callback request)) 
   (route/resources "/"))

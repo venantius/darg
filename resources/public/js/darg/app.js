@@ -573,13 +573,15 @@ darg.controller('DargTimelineCtrl',
     $scope.$watch(function() {
         return $routeParams.teamId;
     }, function(newValue, oldValue) {
+      if ($routeParams.date != null) {
         self._refreshTimeline();
-        team.getTeam(self.teamId)
-        .then(function(data) {
-          self.currentTeam = data;
-        }, function(data) {
-          console.log(data) 
-        });
+      }
+      team.getTeam(self.teamId)
+      .then(function(data) {
+        self.currentTeam = data;
+      }, function(data) {
+        console.log(data) 
+      });
     });
 
     $scope.$watch(function() {
@@ -602,6 +604,7 @@ darg.controller('DargUserCtrl',
      '$routeParams',
      'alert',
      'auth',
+     'intercom',
      'user',
      function(
          $cookieStore,
@@ -611,6 +614,7 @@ darg.controller('DargUserCtrl',
          $routeParams,
          alert,
          auth,
+         intercom,
          user) {
 
     var self = this;
@@ -667,18 +671,14 @@ darg.controller('DargUserCtrl',
 
     /* Watch for the changes we need to redirect someone from the homepage */
     this.homeRedirector = function() {
-      if ($location.path() == "/") {
-        if ($scope.loggedIn() == true ) {
-          if (user.info.name != null) {
-            return 3;
-          } else {
-            return 2;
-          }
+      if ($scope.loggedIn() == true ) {
+        if (user.info.name != null) {
+          return 3;
         } else {
-          return 1;
+          return 2;
         }
       } else {
-        return 0;
+        return 1;
       }
     };
 
@@ -703,14 +703,24 @@ darg.controller('DargUserCtrl',
       return self.homeRedirector();
     }, function(newValue, oldValue) {
       if (newValue == 3) {
-        if (user.info.team.length > 0) {
-          url = '/team/' + user.info.team[0].id + '/timeline';
-        } else {
-          url = '/team'
+        intercom.notify(user.info)
+        if ($location.path() == "/") {
+          if (user.info.team.length > 0) {
+            url = '/team/' + user.info.team[0].id + '/timeline';
+          } else {
+            url = '/team'
+          }
+          $location.path(url);
         }
-        $location.path(url);
       }
     });
+
+    $scope.$watch(function() {
+      return $location.path()
+    }, function(newValue, oldValue) {
+      intercom.update()
+    });
+
 }]);
 
 
@@ -770,6 +780,26 @@ darg.service('auth', function($cookieStore, $http, $location) {
 
 darg.service('datepicker', function() {
     this.show = true;
+});
+
+/*
+ * Service for intercom (login/logout)
+ */
+darg.service('intercom', function($cookieStore, $http, $location) {
+  this.notify = function(user) {
+    window.Intercom('boot', {
+      app_id: "pt2u9jve",
+      name: user.name,
+      email: user.email,
+      // TODO: The current logged in user's sign-up date as a Unix timestamp.
+      created_at: Date.parse(user.created_at) / 1000
+    });
+  };
+
+  this.update = function() {
+    window.Intercom('update');
+  }
+
 });
 
 darg.service('role', function($http, $q) {
