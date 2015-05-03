@@ -84,7 +84,8 @@
                     :email-password "huxtables"}
               :plugins [[jonase/eastwood "0.1.4"]
                         [venantius/ultra "0.3.3"]]
-              :jvm-opts ["-Dlog4j.configuration=log4j-test.properties"]}
+              :jvm-opts ["-Dlog4j.configuration=log4j-test.properties"]
+              :eastwood {:exclude-linters [:deprecations]}}
 
              :staging 
              {:env {:darg-environment "staging"}}
