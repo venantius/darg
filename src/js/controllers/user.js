@@ -73,14 +73,18 @@ darg.controller('DargUserCtrl',
 
     /* Watch for the changes we need to redirect someone from the homepage */
     this.homeRedirector = function() {
-      if ($scope.loggedIn() == true ) {
-        if (user.info.name != null) {
-          return 3;
+      if ($location.path() == "/") {
+        if ($scope.loggedIn() == true ) {
+          if (user.info.name != null) {
+            return 3;
+          } else {
+            return 2;
+          }
         } else {
-          return 2;
+          return 1;
         }
       } else {
-        return 1;
+        return 0;
       }
     };
 
@@ -122,6 +126,5 @@ darg.controller('DargUserCtrl',
     }, function(newValue, oldValue) {
       intercom.update()
     });
-
 }]);
 

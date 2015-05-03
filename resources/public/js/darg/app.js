@@ -139,6 +139,15 @@ darg.controller('DargAlertCtrl',
     });
 
     $scope.$watch(function() {
+      return $location.path();
+    }, function(newValue, oldValue) {
+      if (newValue != "/login") {
+        alert.failedLoginAlerts = [];
+        $location.search('failed_login', null);
+      }
+    });
+
+    $scope.$watch(function() {
         return user.info.confirmed_email
     }, function(newValue, oldValue) {
         if (newValue == false) {
@@ -558,7 +567,8 @@ darg.controller('DargTimelineCtrl',
 
     this.postTask = function(date, taskString) {
         var params = {
-            "timestamp": date,
+            "date": date,
+            "timestamp": new Date().toISOString(),
             "team_id": $routeParams.teamId,
             "task": taskString
         }
@@ -671,14 +681,18 @@ darg.controller('DargUserCtrl',
 
     /* Watch for the changes we need to redirect someone from the homepage */
     this.homeRedirector = function() {
-      if ($scope.loggedIn() == true ) {
-        if (user.info.name != null) {
-          return 3;
+      if ($location.path() == "/") {
+        if ($scope.loggedIn() == true ) {
+          if (user.info.name != null) {
+            return 3;
+          } else {
+            return 2;
+          }
         } else {
-          return 2;
+          return 1;
         }
       } else {
-        return 1;
+        return 0;
       }
     };
 
@@ -720,7 +734,6 @@ darg.controller('DargUserCtrl',
     }, function(newValue, oldValue) {
       intercom.update()
     });
-
 }]);
 
 
@@ -756,7 +769,12 @@ darg.service('auth', function($cookieStore, $http, $location) {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
+          if ($location.search().redirect != null) {
+            $location.path($location.search().redirect);
+            $location.search('redirect', null);
+          } else {
             $location.path('/');
+          }
         })
         .error(function(data) {
             $location.path('/login');
@@ -791,7 +809,6 @@ darg.service('intercom', function($cookieStore, $http, $location) {
       app_id: "pt2u9jve",
       name: user.name,
       email: user.email,
-      // TODO: The current logged in user's sign-up date as a Unix timestamp.
       created_at: Date.parse(user.created_at) / 1000
     });
   };

@@ -52,25 +52,15 @@
                  (fields :id :password)
                  (where params))))
 
-(def user-fields
-  [:confirmed_email
-   :created_at
-   :active
-   :bot
-   :admin
-   :timezone
-   :email_hour
-   :digest_hour
-   :send_daily_email
-   :send_digest_email])
-
 (defn fetch-user
   "Returns a safe user record from the db.
 
   Takes a map of fields for use in db lookup"
   [params]
   (select entities/user
-          (fields user-fields)
+          (fields :timezone :email_hour :admin :bot :active
+                  :confirmed_email :digest_hour :created_at
+                  :send_daily_email :send_digest_email)
           (where params)))
 
 (defn fetch-one-user
@@ -100,7 +90,9 @@
   ([params]
    (first
     (select entities/user
-            (fields user-fields)
+            (fields :timezone :email_hour :admin :bot :active
+                  :confirmed_email :digest_hour :created_at
+                  :send_daily_email :send_digest_email)
             (with entities/team
                   (order :team.name :asc))
             (where params))))
