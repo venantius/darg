@@ -44,7 +44,8 @@
                  [ring "1.3.2"]
                  [ring/ring-json "0.3.1"]
                  [ring-basic-authentication "1.0.5"]
-                 [compojure "1.1.8"]
+                 [clout "2.1.1"]
+                 [compojure "1.3.3"]
 
                  ;; templating
                  [enlive "1.1.5"]
@@ -73,7 +74,8 @@
                     :port "8080"
                     :session-key "california--bear"
                     :email-password "huxtables"}
-              :plugins [[jonase/eastwood "0.1.4"]]}
+              :plugins [[jonase/eastwood "0.1.4"]]
+              :eastwood {:exclude-linters [:deprecations]}}
 
              :test 
              {:env {:darg-environment "test"

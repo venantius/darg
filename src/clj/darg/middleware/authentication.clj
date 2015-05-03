@@ -1,8 +1,16 @@
 (ns darg.middleware.authentication
   (:require
-   [clojure.tools.logging :as logging]
+   [cemerick.url :refer [map->query url url-encode]]
+   [clojure.tools.logging :as log]
    [darg.api.responses :as responses]
+   [darg.routes :as routes]
+   [ring.util.response :as response]
    [ring.util.request :as req]))
+
+(defn is-site-route?
+  "Is this a blacklisted site route?"
+  [request]
+  (routes/matches-any-path? routes/site-paths request))
 
 (defn route-whitelist-fn
   "A function for whitelisting particular routes.
@@ -23,9 +31,9 @@
      (= path "/faq")
      (= path "/integrations")
      (= path "/password_reset")
-      (.startsWith path "/login")
-      (.startsWith path "/new_password")
-      (.startsWith path "/signup")
+     (.startsWith path "/login")
+     (.startsWith path "/new_password")
+     (.startsWith path "/signup")
 
      (= path "/debug")
      (= path "/api/v1/email")
@@ -44,6 +52,17 @@
       {:id id
        :email email})))
 
+(defn redirect-to-signin
+  [request]
+  (let [root-target-url (req/path-info request)
+        query-str (map->query (:query-params request))
+        redirect-url (str root-target-url
+                        (when query-str
+                          (str "?" query-str)))]
+    (response/redirect 
+      (str "/login?redirect=" 
+          (url-encode redirect-url)))))
+
 (defn wrap-authentication
   "Wraps authentication for Darg. If a user is successfully authenticated,
   then a map of their id and email is assoc'd onto the :user key of the request
@@ -56,4 +75,6 @@
       (let [user (auth-fn request)]
         (if user
           (handler (assoc request :user user))
-          (responses/unauthorized "User not authenticated."))))))
+          (if (is-site-route? request)
+            (redirect-to-signin request)
+            (responses/unauthorized "User not authenticated.")))))))

@@ -93,7 +93,8 @@ darg.controller('DargTimelineCtrl',
 
     this.postTask = function(date, taskString) {
         var params = {
-            "timestamp": date,
+            "date": date,
+            "timestamp": new Date().toISOString(),
             "team_id": $routeParams.teamId,
             "task": taskString
         }
@@ -108,13 +109,15 @@ darg.controller('DargTimelineCtrl',
     $scope.$watch(function() {
         return $routeParams.teamId;
     }, function(newValue, oldValue) {
+      if ($routeParams.date != null) {
         self._refreshTimeline();
-        team.getTeam(self.teamId)
-        .then(function(data) {
-          self.currentTeam = data;
-        }, function(data) {
-          console.log(data) 
-        });
+      }
+      team.getTeam(self.teamId)
+      .then(function(data) {
+        self.currentTeam = data;
+      }, function(data) {
+        console.log(data) 
+      });
     });
 
     $scope.$watch(function() {

@@ -10,7 +10,12 @@ darg.service('auth', function($cookieStore, $http, $location) {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
+          if ($location.search().redirect != null) {
+            $location.path($location.search().redirect);
+            $location.search('redirect', null);
+          } else {
             $location.path('/');
+          }
         })
         .error(function(data) {
             $location.path('/login');

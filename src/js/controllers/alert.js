@@ -26,6 +26,15 @@ darg.controller('DargAlertCtrl',
     });
 
     $scope.$watch(function() {
+      return $location.path();
+    }, function(newValue, oldValue) {
+      if (newValue != "/login") {
+        alert.failedLoginAlerts = [];
+        $location.search('failed_login', null);
+      }
+    });
+
+    $scope.$watch(function() {
         return user.info.confirmed_email
     }, function(newValue, oldValue) {
         if (newValue == false) {

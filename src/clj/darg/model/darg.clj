@@ -14,10 +14,9 @@
   [team-id role-ids date]
   (let [from (c/to-sql-time date)
         to (c/to-sql-time (t/plus date (t/days 1)))]
-    (log/info from)
-    (log/info to)
+    (log/debug from)
+    (log/debug to)
     (select db/user
-            (fields [:email])
             (with db/task
                   (where {:team_id team-id
                           :timestamp [>= from]})
