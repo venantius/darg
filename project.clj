@@ -33,6 +33,7 @@
 
                  ;; db
                  [korma "0.4.0"]
+                 [prismatic/schema "0.4.2"]
                  [ursacorp/ragtime.core "0.4.0"]
                  [ursacorp/ragtime.sql "0.4.0"]
                  [ursacorp/ragtime.sql.files "0.4.0"]

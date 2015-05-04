@@ -6,7 +6,7 @@
             [tentacles.users :as t-users]
             [tentacles.repos :as t-repos]))
 
-(defmodel db/github-user)
+(defmodel db/github-user {})
 
 (defn fetch-github-user-id
   "Returns a github-user-id (integer)

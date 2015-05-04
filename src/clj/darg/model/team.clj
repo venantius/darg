@@ -1,9 +1,13 @@
 (ns darg.model.team
   (:require [darg.db.entities :as db]
             [darg.model :refer [defmodel]]
-            [korma.core :refer :all]))
+            [korma.core :refer :all]
+            [schema.core :as s]))
 
-(defmodel db/team)
+(defmodel db/team
+  {(s/optional-key :id) s/Int
+   (s/optional-key :name) s/Str
+   (s/optional-key :email) s/Str})
 
 (defn email-from-name
   "Figure out an email address from the name"

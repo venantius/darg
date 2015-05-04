@@ -46,9 +46,6 @@
     (let [start-time (t/now)]
       (log/info "Starting to send personal and digest emails at JVM time:" (t/now))
       (log/info "Current JVM hour" (dt/nearest-hour))
-      #_(dorun (map email/send-personal-emails
-                  (filter (partial email/send-personal-email-now? start-time) 
-                          (user/fetch-user {}))))
       (dorun (map (partial email/send-emails start-time) (user/fetch-user {})))
       (ok "Sent email!"))))
 

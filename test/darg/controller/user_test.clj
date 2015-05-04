@@ -59,7 +59,9 @@
 (deftest update-user-works
   (let [params {:email "test-user5@darg.io"
                 :name "Fiona the Human"
-                :id "4"}
+                :id "4"
+                :send_digest_email "true"
+                :send_daily_email "true"}
         sample-request {:user {:email "test-user2@darg.io"}
                         :request-method :post
                         :params params}
@@ -70,7 +72,9 @@
 (deftest we-cant-update-a-user-to-have-an-email-of-an-existing-user
   (let [params {:email "david@ursacorp.io"
                 :name "David Jarvis"
-                :id "4"}
+                :id "4"
+                :send_digest_email "true"
+                :send_daily_email "true"}
         sample-request {:user {:email "test-user2@darg.io" :id 4}
                         :request-method :post
                         :params params}

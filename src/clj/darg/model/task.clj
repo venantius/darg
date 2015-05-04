@@ -7,7 +7,7 @@
             [darg.util.datetime :as dt]
             [korma.core :refer :all]))
 
-(defmodel db/task)
+(defmodel db/task {})
 
 (defn create-task-list
   "Used to insert multiple tasks into the db with matching metadata

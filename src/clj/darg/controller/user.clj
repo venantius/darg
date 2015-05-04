@@ -61,11 +61,17 @@
 
   Update the user."
   [{:keys [user params session]}]
+  (log/info params)
   (let [session-email (-> user :email clojure.string/lower-case)
         current-user (user/fetch-one-user {:email session-email})
         params (-> params
                    (update-in [:id] read-string)
-                   (dissoc :confirmed_email))]
+                   (update-in [:send_digest_email] read-string)
+                   (update-in [:send_daily_email] read-string)
+                   (dissoc :confirmed_email :team)
+                   (select-keys [:email :timezone :name :send_daily_email
+                                 :confirmed_email :id :send_digest_email
+                                 :digest_hour :email_hour]))]
     (if (or (= session-email (:email params))
             (nil? (user/fetch-one-user {:email (:email params)})))
       (let [updated-user (user/update-user! 

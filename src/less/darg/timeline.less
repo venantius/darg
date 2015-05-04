@@ -61,6 +61,12 @@ div.calendar-container {
 div.calendar {
   width: 262px;
   float: right;
+  @media screen and (max-width: @screen-xs-max) {
+    width: 275px;
+    float: left;
+    padding-right: auto !important;
+    padding-left: 15px;
+  }
 }
 
 a.team-settings-link {

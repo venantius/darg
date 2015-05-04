@@ -5,7 +5,7 @@
             [darg.model.team.invitation :as invitation]
             [korma.core :refer [select where with]]))
 
-(defmodel db/role)
+(defmodel db/role {})
 
 (defn create-role-from-token!
   [user token]
