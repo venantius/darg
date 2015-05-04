@@ -21,14 +21,18 @@
 
 (defn send-personal-email-now?
   "Is now the right time to send a user an email?"
-  [dt {:keys [timezone email_hour] :as user}]
-  (within-the-hour? dt timezone email_hour))
+  [dt {:keys [timezone email_hour send_daily_email] :as user}]
+  (and
+    send_daily_email
+    (within-the-hour? dt timezone email_hour)))
 
 
 (defn send-digest-email-now?
   "Is now the right time to send a user their daily digest?"
-  [dt {:keys [timezone digest_hour] :as user}]
-  (within-the-hour? dt timezone digest_hour))
+  [dt {:keys [timezone digest_hour send_digest_email] :as user}]
+  (and
+    send_digest_email
+    (within-the-hour? dt timezone digest_hour)))
 
 
 (defn user-can-email-this-team?

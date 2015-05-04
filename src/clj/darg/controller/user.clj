@@ -66,9 +66,9 @@
         current-user (user/fetch-one-user {:email session-email})
         params (-> params
                    (update-in [:id] read-string)
-                   (update-in [:send_digest_email] boolean)
-                   (update-in [:send_daily_email] boolean)
-                   (dissoc :confirmed_email)
+                   (update-in [:send_digest_email] read-string)
+                   (update-in [:send_daily_email] read-string)
+                   (dissoc :confirmed_email :team)
                    (select-keys [:email :timezone :name :send_daily_email
                                  :confirmed_email :id :send_digest_email
                                  :digest_hour :email_hour]))]
