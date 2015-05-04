@@ -3,4 +3,4 @@
   (:require [darg.db.entities :refer [team-invitation]]
             [darg.model :refer [defmodel]]))
 
-(defmodel team-invitation)
+(defmodel team-invitation {})

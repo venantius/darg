@@ -10,6 +10,8 @@ darg.service('user', function($cookieStore, $http, $q) {
 
     this.updateProfile = function(params) {
         var deferred = $q.defer();
+        console.log("updating user profile...");
+        console.log(params);
         url = "/api/v1/user/" + $cookieStore.get('id');
         $http({
             method: "post",

@@ -3,7 +3,7 @@
             [darg.model :refer [defmodel]]
             [korma.core :refer :all]))
 
-(defmodel db/github-token)
+(defmodel db/github-token {})
 
 (defn fetch-github-token-id
   [params]

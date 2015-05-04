@@ -7,7 +7,7 @@
             [darg.util.token :as token]
             [korma.core :refer :all]))
 
-(defmodel db/user-email-confirmation)
+(defmodel db/user-email-confirmation {})
 
 (defn confirmation-link
   "Build a confirmation link from a token"

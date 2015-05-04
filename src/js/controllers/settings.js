@@ -53,15 +53,22 @@ darg.controller('DargSettingsCtrl',
         "name": "",
         "email": "",
         "timezone": "",
-        "email_hour": ""
+        "email_hour": "",
+        "digest_hour": "",
     };
 
     this.updateTimezoneSetting = function(tz) {
         this.userProfile.timezone = tz;
     }
+
     this.updateEmailHourSettings = function(hour) {
         this.userProfile.email_hour = hour;
     }
+
+    this.updateDigestHourSettings = function(hour) {
+      this.userProfile.digest_hour = hour;
+    }
+
     this.updateProfile = function(user_profile) {
         user.updateProfile(user_profile)
         .then(function(data) {
@@ -98,10 +105,8 @@ darg.controller('DargSettingsCtrl',
     $scope.$watch(function() {
         return user.info
     }, function(newValue, oldValue) {
-        self.userProfile.name = newValue.name;
-        self.userProfile.email = newValue.email;
-        self.userProfile.timezone = newValue.timezone;
-        self.userProfile.email_hour = newValue.email_hour;
+        self.userProfile = newValue;
+        console.log(newValue);
     });
 
 }]);
