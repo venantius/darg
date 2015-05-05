@@ -34,7 +34,7 @@ darg.config(['$routeProvider', '$locationProvider',
             controllerAs: 'PasswordReset'
         })
         .when('/new_password', {
-            tempalteUrl: '/templates/new_password.html',
+            templateUrl: '/templates/new_password.html',
             controller: 'DargPasswordResetCtrl',
             controllerAs: 'PasswordReset'
         })

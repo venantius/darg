@@ -34,7 +34,7 @@ darg.config(['$routeProvider', '$locationProvider',
             controllerAs: 'PasswordReset'
         })
         .when('/new_password', {
-            tempalteUrl: '/templates/new_password.html',
+            templateUrl: '/templates/new_password.html',
             controller: 'DargPasswordResetCtrl',
             controllerAs: 'PasswordReset'
         })
@@ -161,11 +161,30 @@ darg.controller('DargAlertCtrl',
  }]);
 
 darg.controller('DargPasswordResetCtrl',
-    ['$scope',
+    ['$location',
+     '$scope',
      'auth',
      function(
-         $scope,
-         auth) {
+       $location,
+       $scope,
+       auth) {
+    var self = this;
+
+    this.auth = auth;
+
+    this.passwordResetForm = {
+      "password": "",
+      "confirm_password": ""
+    };
+
+    $scope.$watch(function() {
+      return $location.search().token
+    }, function(newValue, oldValue) {
+      if (newValue != null) {
+        self.passwordResetForm.token = newValue
+      }
+      console.log(self.passwordResetForm);
+    });
 }]);
 
 darg.controller('DargSettingsCtrl', 
@@ -797,6 +816,21 @@ darg.service('auth', function($cookieStore, $http, $location) {
             $cookieStore.remove('logged-in');
             $location.path('/');
         })
+    };
+
+    this.setNewPassword = function(params) {
+      $http({
+        method: "post",
+        url: "/api/v1/new_password",
+        param: $.params(params),
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      })
+      .success(function(data) {
+        console.log('success!');
+      })
+      .error(function(data) {
+        console.log(data)
+      });
     };
 
 });

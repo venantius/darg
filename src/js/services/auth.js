@@ -35,4 +35,19 @@ darg.service('auth', function($cookieStore, $http, $location) {
         })
     };
 
+    this.setNewPassword = function(params) {
+      $http({
+        method: "post",
+        url: "/api/v1/new_password",
+        param: $.params(params),
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      })
+      .success(function(data) {
+        console.log('success!');
+      })
+      .error(function(data) {
+        console.log(data)
+      });
+    };
+
 });

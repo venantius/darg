@@ -33,7 +33,7 @@
   The other half of the authentication endpoint pair. This one clears
   your session cookie and your plaintext cookie, logging you out both
   in practice and appearance"
-  [request-map]
+  [request]
   {:body ""
    :status 200
    :session nil
@@ -48,10 +48,22 @@
   Initiates the password reset workflow. This will send an e-mail to the user
   with a special link that they can use to reset their password. The link will
   only remain valid for a finite amount of time."
-  [request-map]
+  [request]
   (let [email (-> request-map :params :email clojure.string/lower-case)]
     (try
       (user/send-password-reset-email email)
       (ok "Success!")
       (catch Exception e
         (bad-request "Password reset failed.")))))
+
+(defn set-new-password
+  "/api/v1/new_password
+   
+   Method: POST
+   
+   Finalize the password reset workflow."
+  [{:keys [params] :as request}]
+  (let [{:keys [password confirm_password token]} params]
+    (log/info password confirm_password token)
+    {:status 200
+     :body "Okay!"}))
