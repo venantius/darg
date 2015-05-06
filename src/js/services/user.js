@@ -28,23 +28,6 @@ darg.service('user', function($cookieStore, $http, $q) {
         return deferred.promise;
     };
 
-    this.resetPassword = function(params) {
-        var deferred = $q.defer();
-        $http({
-            method: "post",
-            url: "/api/v1/password_reset",
-            data: $.param(params),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(data) {
-            // TODO: Provide a tooltip or something on success?
-            // No, replace the entire speech bubble
-        })
-        .error(function(data) {
-            console.log("Failed to reset password.");
-        });
-    };
-
     this.getCurrentUser = function() {
         var deferred = $q.defer();
         url = "/api/v1/user/" + $cookieStore.get('id');

@@ -132,7 +132,8 @@ darg.controller('DargAlertCtrl',
     }, function(newValue, oldValue) {
         if (newValue != null) {
             alert.setAlert(alert.failedLoginAlerts,
-                           alert.failedLoginMessage);
+                           alert.failedLoginMessage,
+                          "dialog-danger");
         } else {
             alert.failedLoginAlerts = [];
         }
@@ -141,9 +142,14 @@ darg.controller('DargAlertCtrl',
     $scope.$watch(function() {
       return $location.path();
     }, function(newValue, oldValue) {
-      if (newValue != "/login") {
+      if (oldValue == "/login" && 
+          newValue != "/login") {
         alert.failedLoginAlerts = [];
         $location.search('failed_login', null);
+      }
+      if (oldValue == "/password_reset" && 
+          newValue != "/password_reset") {
+        alert.passwordResetAlerts = [];
       }
     });
 
@@ -163,14 +169,45 @@ darg.controller('DargAlertCtrl',
 darg.controller('DargPasswordResetCtrl',
     ['$location',
      '$scope',
+     'alert',
      'auth',
      function(
        $location,
        $scope,
+       alert,
        auth) {
     var self = this;
 
     this.auth = auth;
+
+    $scope.ResetForm = {
+        "email": ""
+    }
+
+    $scope.resetPassword = function(params) {
+      auth.resetPassword(params)
+      .then(function(data) {
+        console.log("success!")
+        alert.setAlert(alert.passwordResetAlerts,
+                       alert.passwordResetSuccessMessage,
+                      "dialog-success");
+      }, function(data) {
+        alert.setAlert(alert.passwordResetAlerts,
+                       data.message,
+                       "dialog-danger");
+        console.log(data)
+      })
+    };
+
+    this.setNewPassword = function(params) {
+      auth.setNewPassword(params)
+      .then(function(data) {
+        $location.path('/');
+        $location.search('token', null);
+      }, function(data) {
+        console.log(data);
+      })
+    };
 
     this.passwordResetForm = {
       "password": "",
@@ -183,7 +220,6 @@ darg.controller('DargPasswordResetCtrl',
       if (newValue != null) {
         self.passwordResetForm.token = newValue
       }
-      console.log(self.passwordResetForm);
     });
 }]);
 
@@ -669,6 +705,11 @@ darg.controller('DargUserCtrl',
         password: ""
     };
 
+    $scope.LoadPasswordResetPage = function() {
+        $location.path('/password_reset');
+        $location.search('failed_login', null);
+    };
+
     $scope.getCurrentUser = function() {
         user.getCurrentUser()
         .then(function(data) {
@@ -685,17 +726,6 @@ darg.controller('DargUserCtrl',
             return false;
         }
     };
-
-    $scope.ResetForm = {
-        "email": ""
-    }
-
-    $scope.LoadPasswordResetPage = function() {
-        $location.path('/password_reset');
-        $location.search('failed_login', null);
-    };
-
-    $scope.resetPassword = user.resetPassword;
 
     $scope.goToSignupPage = function() {
         $location.path('/signup');
@@ -774,17 +804,20 @@ darg.service('alert', function() {
     };
 
     this.emailConfirmationAlerts = [];
-    this.emailConfirmationMessage = "We've e-mailed you with a link to confirm your e-mail address. Didn't get it?"
+    this.emailConfirmationMessage = "We've e-mailed you with a link to confirm your e-mail address. Didn't get it?";
 
     this.failedLoginAlerts = [];
-    this.failedLoginMessage = "Incorrect e-mail or password."
+    this.failedLoginMessage = "Incorrect e-mail or password.";
+
+    this.passwordResetAlerts = [];
+    this.passwordResetSuccessMessage = "Password reset e-mail sent!";
 
 });
 
 /*
  * Service for authentication (login/logout)
  */
-darg.service('auth', function($cookieStore, $http, $location) {
+darg.service('auth', function($cookieStore, $http, $location, $q) {
     this.login = function(params) {
         $http({
             method: "post",
@@ -818,19 +851,38 @@ darg.service('auth', function($cookieStore, $http, $location) {
         })
     };
 
+    this.resetPassword = function(params) {
+        var deferred = $q.defer();
+        $http({
+            method: "post",
+            url: "/api/v1/password_reset",
+            data: $.param(params),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(data) {
+          deferred.resolve(data);
+        })
+        .error(function(data) {
+          deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
     this.setNewPassword = function(params) {
+      var deferred = $q.defer();
       $http({
         method: "post",
         url: "/api/v1/new_password",
-        param: $.params(params),
+        data: $.param(params),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
       })
       .success(function(data) {
-        console.log('success!');
+        deferred.resolve(data);
       })
       .error(function(data) {
-        console.log(data)
-      });
+        deferred.reject(data);
+      })
+      return deferred.promise;
     };
 
 });
@@ -1091,23 +1143,6 @@ darg.service('user', function($cookieStore, $http, $q) {
             deferred.reject(data) 
         })
         return deferred.promise;
-    };
-
-    this.resetPassword = function(params) {
-        var deferred = $q.defer();
-        $http({
-            method: "post",
-            url: "/api/v1/password_reset",
-            data: $.param(params),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(data) {
-            // TODO: Provide a tooltip or something on success?
-            // No, replace the entire speech bubble
-        })
-        .error(function(data) {
-            console.log("Failed to reset password.");
-        });
     };
 
     this.getCurrentUser = function() {

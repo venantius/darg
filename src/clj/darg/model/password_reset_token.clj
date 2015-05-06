@@ -2,8 +2,12 @@
   (:require [clj-time.coerce :as c]
             [clj-time.core :as t]
             [darg.db.entities :refer [password-reset-token]]
+            [darg.model :refer [defmodel]]
             [darg.util.token :as token]
             [korma.core :refer [insert select sqlfn values where]]))
+
+(defmodel password-reset-token
+  {})
 
 (defn create!
   "Create a password reset token. Takes a map of fields, including the
