@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="darg">
+  <head>
+
+    <title>Darg.io</title>
+    <meta charset="utf-8">
+    <meta content="Automatic status reports delivered to your e-mail inbox from the tools you already use." name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/2.2.2/octicons.css">
+
+    <!-- build:css /css/darg.css -->
+    <link href="../../public/css/solarized_dark.css" rel="stylesheet">
+    <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../public/css/flat-ui.css" rel="stylesheet">
+    <!-- /build -->
+
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="/images/favicon-bird-96x96.png">
+
+    <!-- intercom -->
+    <script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/pt2u9jve';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()</script>
+
+  </head>
+  <body>
+    <div ng-controller="DargUserCtrl as User">
+      <header>
+        <div ng-include src='"/templates/header.html"'></div>
+      </header>
+
+      <div ng-include src='"/templates/alerts.html"'></div>
+
+      <div ng-view></div>
+
+      <footer class="footer">
+        <div ng-include src='"/templates/footer.html"'></div>
+      </footer>
+    </div>
+  </body>
+    
+  <!-- Load JS here for greater good =============================-->
+  <!-- MomentJS -->
+  <script src="/js/moment/moment-with-locales.min.js"></script>
+  <script src="/js/moment/moment-timezone-with-data.min.js"></script>
+
+  <!-- jQuery -->
+  <script src="/js/flatui/jquery.min.js"></script>
+
+  <!-- AngularJS -->
+  <script src="/js/angular/angular.min.js"></script>
+  <script src="/js/angular/angular-cookies.min.js"></script>
+  <script src="/js/angular/angular-resource.min.js"></script>
+  <script src="/js/angular/angular-route.min.js"></script>
+  <script src="/js/angular/angular-gravatar.min.js"></script>
+  <script src="/js/angular/ui-bootstrap-0.12.1.js"></script>
+
+  <!-- Flat UI -->
+  <script src="/js/flatui/flat-ui-pro.min.js"></script>
+  <script src="/js/flatui/application.js"></script>
+
+  <!-- Darg JS -->
+  <script src="/js/darg/app.js"></script>
+</html>
+
+<div class="container inner">
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-xs-12 col-md-6">
+
+      <h4>About</h4>
+
+      <p class="lead">We created Darg with the goal of abolishing status meetings once and for all. </p>
+
+      <p>Darg aims to provide a beautiful and seamless communication tool so that our users can focus on what's truly important to them.</p> 
+
+      <p>Our technology stack is what we jokingly refer to as the "Angre" stack - Angular.js on the frontend, and Clojure on the backend. We are hosted on AWS, and use Postgres as our data storage engine.</p>
+
+      <p>Darg is an UrsaCorp project.</p>
+
+      <br>
+
+      <img class="logo" alt="UrsaCorp" src="/images/ursacorp/darg.png">
+    </div>
+  </div>
+</div>
+
+<div ng-controller="DargAlertCtrl as Alert">
+  <div class="" 
+    ng-repeat="alert in Alert.alerts.emailConfirmationAlerts" 
+    ng-show="loggedIn()">
+    <div class="dialog dialog-success">
+      {{alert.msg}}
+      <button class="btn btn-primary" ng-click="User.sendEmailConfirmation()">
+        Send me another!
+      </button>
+    </div>
+  </div>
+
+  <div ng-repeat="alert in Alert.alerts.failedLoginAlerts"
+    ng-hide="loggedIn()">
+    <div class="dialog dialog-danger">
+      {{alert.msg}}
+      <button class="btn btn-danger" ng-click="LoadPasswordResetPage()">
+        Forgot your password?
+      </button>
+    </div>
+  </div>
+
+  <div ng-repeat="alert in Alert.alerts.passwordResetAlerts"
+    ng-hide="loggedIn()">
+    <div class="dialog {{alert.class}}">
+      {{alert.msg}}
+    </div>
+  </div>
+</div>
+
+<div ng-switch="datepickerMode" role="application" ng-keydown="keydown($event)">
+  <daypicker ng-switch-when="day" tabindex="0"></daypicker>
+  <monthpicker ng-switch-when="month" tabindex="0"></monthpicker>
+  <yearpicker ng-switch-when="year" tabindex="0"></yearpicker>
+</div>
+
+<div class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" style="top: 123px; left: 116px; z-index: 1; display: block;">
+
+  <!-- header -->
+  <div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">
+    <a class="ui-datepicker-prev ui-corner-all ui-state-disabled" title="Prev">
+      <span class="ui-icon ui-icon-circle-triangle-w" ng-click="move(-1)">Prev</span>
+    </a> 
+    <a class="ui-datepicker-next ui-corner-all ui-state-disabled" title="Next" ng-click="move(1)">
+      <span class="ui-icon ui-icon-circle-triangle-e">Next</span>
+    </a>
+    <div class="ui-datepicker-title">
+      <div type="button" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%;">
+        <span class="ui-datepicker-month">
+          {{title}}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- main calendar -->
+  <table role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}" class="ui-datepicker-calendar">
+    <thead>
+      <tr>
+        <th ng-repeat="label in labels track by $index">
+          <span aria-label="{{label.full}}">
+            {{label.abbr}}
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="row in rows track by $index">
+        <td class="dt.customClass" ng-repeat="dt in row track by dt.date" class="" role="gridcell" id="{{dt.uid}}" aria-disabled="{{!!dt.disabled}}" ng-class="{'ui-datepicker-other-month': dt.secondary}">
+          <a 
+            class="ui-state-default" 
+            ng-class="{'ui-state-active': dt.selected, active: isActive(dt)}" 
+            href="#" 
+            ng-click="select(dt.date)">{{dt.label}}</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<table role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+  <thead>
+    <tr>
+      <th><button type="button" class="btn btn-default btn-sm pull-left" ng-click="move(-1)" tabindex="-1"><i class="glyphicon glyphicon-chevron-left"></i></button></th>
+      <th><button id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-default btn-sm" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%;"><strong>{{title}}</strong></button></th>
+      <th><button type="button" class="btn btn-default btn-sm pull-right" ng-click="move(1)" tabindex="-1"><i class="glyphicon glyphicon-chevron-right"></i></button></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="row in rows track by $index">
+      <td ng-repeat="dt in row track by dt.date" class="text-center" role="gridcell" id="{{dt.uid}}" aria-disabled="{{!!dt.disabled}}">
+        <button type="button" style="width:100%;" class="btn btn-default" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-info': dt.current}">{{dt.label}}</span></button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ul class="dropdown-menu" ng-style="{display: (isOpen && 'block') || 'none', left: position.left+'px'}" ng-keydown="keydown($event)">
+  <li ng-transclude></li>
+  <li ng-if="showButtonBar" style="padding:10px 9px 2px">
+    <span class="btn-group pull-left">
+      <button type="button" class="btn btn-sm btn-info" ng-click="select('today')">{{ getText('current') }}</button>
+      <button type="button" class="btn btn-sm btn-danger" ng-click="select(null)">{{ getText('clear') }}</button>
+    </span>
+    <button type="button" class="btn btn-sm btn-success pull-right" ng-click="close()">{{ getText('close') }}</button>
+  </li>
+</ul>
+
+<table role="grid" aria-labelledby="{{uniqueId}}-title" aria-activedescendant="{{activeDateId}}">
+  <thead>
+    <tr>
+      <th><button type="button" class="btn btn-default btn-sm pull-left" ng-click="move(-1)" tabindex="-1"><i class="glyphicon glyphicon-chevron-left"></i></button></th>
+      <th colspan="3"><button id="{{uniqueId}}-title" role="heading" aria-live="assertive" aria-atomic="true" type="button" class="btn btn-default btn-sm" ng-click="toggleMode()" ng-disabled="datepickerMode === maxMode" tabindex="-1" style="width:100%;"><strong>{{title}}</strong></button></th>
+      <th><button type="button" class="btn btn-default btn-sm pull-right" ng-click="move(1)" tabindex="-1"><i class="glyphicon glyphicon-chevron-right"></i></button></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="row in rows track by $index">
+      <td ng-repeat="dt in row track by dt.date" class="text-center" role="gridcell" id="{{dt.uid}}" aria-disabled="{{!!dt.disabled}}">
+        <button type="button" style="width:100%;" class="btn btn-default" ng-class="{'btn-info': dt.selected, active: isActive(dt)}" ng-click="select(dt.date)" ng-disabled="dt.disabled" tabindex="-1"><span ng-class="{'text-info': dt.current}">{{dt.label}}</span></button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="container">
+  <div class="row ptl mtl pbl mbl">
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <h3>API Documentation</h3>
+
+      <p>Lorem ipsum blah application blah</p>
+      <h4>Generating an API Key</h4>
+      <p>This is what you have to do to generate an API key: stuff a cucumber down your pants</p>
+
+      <h4>Dargs</h4>
+      <p>The Dargs endpoint can be used to obtain a comprehensive Darg, including any asssociated tasks, events and comments from other team members.</p>
+      <h6>Resource</h6>
+      <code>GET /api/v1/darg</code>
+      <h6>Authorization</h6>
+      API key
+      <h6>Query Parameters</h6>
+      Some table thing goes here
+      <h6>Response</h6>
+      <pre>Status-Code: 200 OK</pre>
+      <pre><code class="javascript ">{
+  "dargs":[
+    {
+      "date":"2012-05-17",
+      "tasks":[
+        {
+          "task":"Salute the shorts",
+          "team_id":1,
+          "user_id":4,
+          "date":"2012-05-17T00:00:00Z",
+          "id":3
+        },
+        {
+          "task":"Some folks call it a kaiser blade, me I call it a sling blade",
+          "team_id":1,
+          "user_id":4,
+          "date":"2012-05-17T00:00:00Z",
+          "id":5
+        }
+      ]
+    },
+    {
+      "date":"2012-02-16",
+      "tasks":[
+        {
+          "task":"Do a good deed everyday",
+          "team_id":1,
+          "user_id":4,
+          "date":
+          "2012-02-16T00:00:00Z",
+          "id":1
+        }
+      ]
+    }
+  ]
+}</code></pre>
+
+      <h4>Users</h4>
+      <p>Truffaut culpa fanny pack normcore, Carles direct trade kale chips excepteur elit anim mumblecore nisi Pitchfork. American Apparel forage pariatur DIY Etsy, ennui Neutra four loko drinking vinegar. Tote bag raw denim elit cupidatat photo booth occaecat. Freegan assumenda farm-to-table, Kickstarter voluptate occupy banjo fanny pack DIY swag mustache. Sapiente Banksy fap, sustainable Helvetica ex ennui. Tousled enim velit Vice nulla actually. Butcher cray ennui try-hard meh pop-up.</p>
+
+
+    </div>
+  </div>
+</div>
+
+<div class="container inner">
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-xs-12 col-md-6">
+      <h4>Frequently Asked Questions</h4>
+      <p class="question">Q: When are you going to support [BaseCamp, Asana, GitHub, etc.?]</p>
+      <p class="answer">A: Great question! We maintain a public development roadmap <a href="/roadmap">here</a>, but if you don't see a feature included there that you'd like us to work on, feel free to shoot us an email (<a href="mailto:support@darg.io">support@darg.io</a>) or reach out via twitter <a href="https://twitter.com/venantius">@venantius</a></p>
+
+      <p class="question">Q: Why doesn't the roadmap page load?</p>
+      <p class="answer">A: It's on the roadmap.</p>
+
+      <p class="question">Q: Are you hiring?</p>
+      <p class="answer">A: Maybe. If you're interested, shoot me an e-mail at <a href="mailto:david@darg.io">david@darg.io</a>.
+
+      <p class="question">Q: How do you feel about the 2013 film <a href="http://en.wikipedia.org/wiki/Pacific_Rim_(film)">Pacific Rim?</a></p>
+      <p class="answer">A: Don't ask.</p>
+
+    </div>
+  </div>
+</div>
+
+<div class="bottom-menu">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2 col-sm-2">
+        <h3 class="bottom-menu-brand">Darg.io</h3>
+      </div>
+      <div class="col-md-8 col-sm-2">
+        <ul class="bottom-menu-list">
+          <!--
+          <li>
+            <a href="/tour">Tour</a>
+          </li>
+          -->
+          <!--
+          <li>
+            <a href="/pricing">Pricing</a>
+          </li>
+          -->
+          <!--
+          <li>
+            <a href="/integrations">Integrations</a>
+          </li>
+          -->
+          <!--
+          <li>
+            <a href="/roadmap">Roadmap</a>
+          </li>
+          -->
+          <li>
+            <a href="/faq">FAQ</a>
+          </li>
+          <li>
+            <a href="/about">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        <i class="fa fa-home navbar-icons"></i>
+      </a>
+
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+      <ul class="nav navbar-nav navbar-right" ng-hide="loggedIn()">
+        <li>
+          <form role="search" class="navbar-form">
+            <div class="form-group">
+              <input type="text" placeholder="Email" class="form-control input-sm" ng-model="LoginForm.email">
+            </div>
+            <div class="form-group">
+              <input type="password" size="8" placeholder="Password" class="form-control input-sm" ng-model="LoginForm.password">
+            </div>
+            <button class="btn btn-primary" ng-click="auth.login(LoginForm)">Sign in</button>
+            <button class="btn btn-danger" data-toggle="tooltip" title="Forgot your password?" data-placement="bottom" type="button" ng-click="LoadPasswordResetPage()">!</button>
+          </form>
+        </li>
+      </ul>
+      <div class="navbar-right">
+      <ul class="navbar-nav nav" ng-show="loggedIn()">
+        <li class="dropdown">
+          <a href="#" class="hidden-xs dropdown-toggle darg-navbar-dropdown" data-toggle="dropdown">
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="/settings/profile">Settings</a>
+            </li>
+            <li class="divider">
+            </li>
+            <li>
+              <a ng-click="auth.logout()">Logout</a>
+            </li>
+          </ul>
+        </li>
+        <li class="visible-xs">
+          <a href="/settings/profile">Settings</a>
+        </li>
+        <li class="divider visible-xs"></li>
+        <li class="visible-xs">
+          <a ng-click="auth.logout()">Logout</a>
+        </li>
+      </ul>
+    </div>
+    </div><!-- /.navbar-collapse -->
+  </div>
+</nav>
+
+<div>
+  <div ng-hide="loggedIn()">
+    <div ng-include src='"/templates/outer.html"'></div>
+  </div>
+
+  <div ng-show="loggedIn()">
+    <div ng-include src='"/templates/team/timeline.html"'></div>
+  </div>
+</div>
+
+<div class="container inner">
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-xs-12 col-md-4">
+      <!-- Email confirmation alerts -->
+      <h4>Sign In</h4>
+      <form >
+        <div class="form-group">
+          E-mail
+          <input type="text" class="form-control" ng-model="LoginForm.email"/>
+        </div>
+        <div class="form-group">
+          Password
+          <input type="password" class="form-control" ng-model="LoginForm.password"/>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" ng-click="auth.login(LoginForm)">
+            Sign in
+          </button>
+          <button class="btn btn-info" ng-click="goToSignupPage()">
+            I don't have an account yet
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-4">
+    </div>
+  </div>
+</div>
+
+
+<div class="container inner">
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-xs-12 col-md-4">
+      <!-- Email confirmation alerts -->
+      <h4>Set new password</h4>
+      <div class="alert alert-success" ng-repeat="alert in Settings.emailConfirmationAlerts">
+        {{alert.msg}}
+        <button type="button" class="close fui-cross" data-dismiss="alert">
+        </button>
+      </div>
+
+      <form >
+        <div class="form-group">
+          Password
+          <input type="password" class="form-control" ng-model="PasswordReset.passwordResetForm.password"/>
+        </div>
+        <div class="form-group">
+          Confirm password
+          <input type="password" class="form-control" ng-model="PasswordReset.passwordResetForm.confirm_password"/>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" ng-click="PasswordReset.setNewPassword(PasswordReset.passwordResetForm)">
+            Set password and log in
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-4">
+    </div>
+  </div>
+</div>
+
+
+<div class="outer-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 call-to-action">
+        <h3>
+          Say goodbye to status meetings.
+        </h3>
+        <p>
+          Get automatic reports from the tools you already use.
+        </p>
+        <br>
+        <button class="btn btn-primary btn-lg" ng-click="goToSignupPage()">
+          Get started
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container inner">
+  <div class="row">
+    <div class="col-xs-5">
+
+    <img class="img-circle pawnstars" src="../images/password_reset/pawnstars.jpg">
+      <h4>Forgot your password?</h4>
+    </div>
+    <div class="col-xs-1">
+    </div>
+    <div class="col-xs-5 ptl mts">
+
+      <form class="login-form">
+        <div class="form-group">
+          <input type="text" class="form-control login-field" placeholder="Your e-mail" ng-model="ResetForm.email">
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" ng-click="resetPassword(ResetForm)">
+          Reset my password!
+        </button>
+      </form>
+
+    </div>
+  </div>
+  <div class="row">
+
+    <div class="col-xs-12">
+      <p>Aw, little buddy! You forgot your password? That's too bad. I tell you what - you give us your e-mail address, and we'll send you an e-mail that'll let you reset your password. Best we can do.</p>
+      <p><b>Be sure to keep an eye on your spam folder</b> - for some reason these emails tend to get marked as spam.</p>
+      <p><small>Please don't sue us, Pawn Stars.</small></p>
+    </div>
+  </div>
+</div>
+
+<div class="container inner">
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-xs-12 col-md-6">
+      <!-- Email confirmation alerts -->
+      <div class="alert alert-success" ng-repeat="alert in Settings.emailConfirmationAlerts">
+        {{alert.msg}}
+        <button type="button" class="close fui-cross" data-dismiss="alert">
+        </button>
+      </div>
+      <div class="alert" ng-class="alert.class" ng-repeat="alert in Settings.profileUpdateAlerts">
+        {{alert.msg}}
+        <button type="button" class="close fui-cross" data-dismiss="alert">
+        </button>
+      </div>
+
+      <form >
+        <div class="form-group">
+          Name
+          <input type="text" class="form-control" ng-model="Settings.userProfile.name"/>
+        </div>
+        <div class="form-group">
+          Email
+          <input type="text" class="form-control" ng-model="Settings.userProfile.email"/>
+        </div>
+
+        <div>Timezone</div>
+        <div class="btn-group form-group">
+          <button class="btn btn-inverse dropdown-toggle" type="button" data-toggle="dropdown">
+            {{Settings.userProfile.timezone}}<span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-inverse scrollable-menu" role="menu"> 
+            <li ng-repeat="tz in Settings.timezones" ng-click="Settings.updateTimezoneSetting(tz)">
+              <a href="#">{{tz}}</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-6">
+            <div>Reminder email time</div>
+            <div class="btn-group form-group">
+              <button class="btn btn-inverse dropdown-toggle" type="button" data-toggle="dropdown">
+                {{Settings.userProfile.email_hour}}<span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-inverse scrollable-menu" role="menu">
+                <li ng-repeat="time in Settings.times" ng-click="Settings.updateEmailHourSettings(time)">
+                  <a href="#">{{time}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div>Send email?</div>
+            <label class="checkbox">
+              <input type="checkbox" ng-model="Settings.userProfile.send_daily_email" class="custom-checkbox">
+              <span class="icons">
+                <span class="icon-unchecked">
+                </span>
+                <span class="icon-checked">
+                </span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-6">
+            <div>Activity report time</div>
+            <div class="btn-group form-group">
+              <button class="btn btn-inverse dropdown-toggle" type="button" data-toggle="dropdown">
+                {{Settings.userProfile.digest_hour}}<span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-inverse scrollable-menu" role="menu">
+                <li ng-repeat="time in Settings.times" ng-click="Settings.updateDigestHourSettings(time)">
+                  <a href="#">{{time}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div>Send email?</div>
+            <label class="checkbox">
+              <input type="checkbox" ng-model="Settings.userProfile.send_digest_email" class="custom-checkbox">
+              <span class="icons">
+                <span class="icon-unchecked">
+                </span>
+                <span class="icon-checked">
+                </span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button class="btn btn-primary" ng-click="Settings.updateProfile(Settings.userProfile)">Update profile</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row ptl pbl">
+    <div class="col-xs-12 ptl">
+    </div>
+  </div>
+
+  <div class="row ptl pbl mbl">
+    <div class="col-xs-1"></div>
+    <div class="col-xs-3">
+      <h2 class="dictionary-header">Darg</h2>
+    </div>
+    <div class="col-xs-8 ptl">
+      /dɑːɡ/  <b>noun</b><br>
+      <p class="dictionary-text">1. <i>Scot. and North English.</i> a day's work</p>
+      <p class="dictionary-text">2. <i>Australian.</i> a fixed or definite amount of work; a work quota.</p>
+    </div>
+  </div>
+  <div class="row mtl pbl mbl">
+  </div>
+
+  <!-- definition and signup form -->
+  <div class="row ptl mtl pbl mbl">
+    <!-- definition -->
+    <div class="col-xs-7 prl">
+      <p><b>Say goodbye to status meetings.</b></p>
+      <p>With Darg.io, we send you a daily e-mail asking what you did that day - all you have to do is reply, and your Darg is rolled up and sent to everybody on your team.</p>
+
+      <p>Don't want to reply to an e-mail? No problem! We've got easy to set up integrations with GitHub and Trello that tie into your existing workflow.</p>
+
+    </div>
+    <!-- /definition -->
+    <!-- signup form -->
+    <div class="col-xs-5 pll">
+      <form class="login-form">
+        <div class="form-group">
+          <input type="text" class="form-control login-field" placeholder="Your name" ng-model="Signup.SignupForm.name"/>
+          <label class="login-field-icon fui-user" for="signup-name"></label>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control login-field" placeholder="Your e-mail" ng-model="Signup.SignupForm.email"/>
+          <label class="login-field-icon fui-mail" for="signup-email"></label>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control login-field" placeholder="Your password" ng-model="Signup.SignupForm.password"/>
+          <label class="login-field-icon fui-lock" for="signup-pass"></label>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" ng-click="Signup.Signup()"> 
+          Sign Up 
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container inner">
+  <div class="row">
+    <div class="col-xs-3">
+    </div>
+    <div class="col-xs-6">
+      <h4>Create a New Team
+      </h4>
+      <form class="login-form">
+        <div class="form-group">
+          <input type="text" class="form-control login-field" placeholder="Team name" ng-model="Team.creationForm.name"/>
+          <label class="login-field-icon fui-user" for="signup-name"></label>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" ng-click="Team.createTeam(Team.creationForm)"> 
+          Create New Team 
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="container inner">
+  <div class="row">
+    <div class="col-xs-3">
+
+      <!-- Side navbar -->
+      <ul class="nav nav-list">
+        <li class="nav-header">Teams</li>
+        <li ng-repeat="team in currentUser.team">
+          <a class="team-timeline-link" ng-href="/team/{{team.id}}/timeline">
+            {{team.name}}
+          </a>
+          <a class="team-settings-link" ng-href="/team/{{team.id}}">
+            <i class="fa fa-cog"></i>
+          </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+          <a href="/team">
+            Create a new team
+          </a>
+        </li>
+      </ul>
+
+    <!--
+    <div style="display:inline-block; min-height:290px;">
+      <datepicker ng-model="date" min-date="minDate" show-weeks="false" max-mode="day"></datepicker>
+    </div>
+    -->
+
+      <div class="form-group"> 
+        <div class="input-group" ng-click="open($event)">
+          <input type="text" 
+          class="form-control" 
+          datepicker-popup="longDate" 
+          ng-model="date" 
+          is-open="opened" 
+          max-mode="day" 
+          datepicker-options="dateOptions" 
+          show-button-bar=false
+          ng-required="true" close-text="Close" />
+          <span class="input-group-addon">
+            <span class="fui-calendar"></span>
+          </span>
+        </div>
+      </div>
+
+      <!--
+      <div>
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button class="btn" type="button">
+                <span class="fui-calendar"></span>
+              </button>
+            </span>
+            <input type="text" class="form-control hadDatepicker timepicker-with-dropdowns" value="14 March, 2013" id="datepicker-02"/>
+          </div>
+        </div>
+      </div>
+      -->
+
+    </div>
+    <div class="col-xs-9">
+      
+      <!-- timeline -->
+      <div class="timeline-darg" ng-repeat="darg in Timeline.events">
+        <nav class="navbar navbar-default">
+          <ul class="nav navbar-nav navbar-left">
+            <li class="timeline-section">
+              <span class="fui-calendar timeline-section-icon"></span>
+              <span class="timeline-section-date">
+                {{formatDateString(darg.date) | date: 'fullDate'}}
+              </span>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- begin user section -->
+        <div class="row timeline-user" ng-repeat="user in darg.user" ng-show="showUser(user)">
+  
+          <!-- mini-profile on the left -->
+          <div class="col-xs-4">
+            <img class="img-portrait timeline-profile" gravatar-src="user.email" gravatar-size="64">
+            <div class="timeline-profile-text">
+              {{user.name}}
+            </div>
+          </div>
+
+          <!-- user's timeline on the right -->
+          <div class="col-xs-8 timeline-user-events">
+            <ul class="timeline timeline-icons timeline-sm" ng-show="userHasTasks(user)">
+              <li ng-repeat="task in user.task">
+                <p class=timeline-event>
+                  {{task.task}}
+                </p>
+                  <span class="timeline-icon octicon octicon-check"></span>
+                  <p class="timeline-timestamp">
+                    {{task.timestamp | date: 'shortTime'}}
+                  </p>
+
+              </li>
+            </ul>
+
+            <!-- Enter new tasks -->
+            <div ng-controller="DargTaskCtrl as Task" ng-show="isCurrentUser(user.id)">
+              <form class="task-form" ng-submit="Timeline.postTask(darg.date, Task.task)">
+                <input type="text" placeholder="Left something out? Enter it here!" class="form-control" ng-model="Task.task"/>
+              </form>
+            </div>
+          </div>
+
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container inner">
+  <div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-xs-12 col-md-8">
+      <!-- team selector -->
+      <div class="col-xs-12 pbl">
+        <a href="#" class="team-selector dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+          {{Team.currentTeam.name}}
+          <span class="octicon octicon-triangle-down team-caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li ng-repeat="team in currentUser.team">
+            <a ng-href="/team/{{team.id}}/timeline">
+              {{team.name}}
+            </a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="/team">Create a new team</a>
+          </li>
+        </ul>
+        <a class="team-settings-link" ng-href="/team/{{Team.currentTeam.id}}/timeline">
+          <span class="fui-calendar"></span>
+        </a>
+      </div>
+
+      <!-- Team settings -->
+      <div class="col-xs-12">
+
+        <h4>Settings</h4>
+        <form>
+          <div class="form-group">
+            Name
+            <input type="text" class="form-control" ng-model="Team.currentTeam.name">
+          </div>
+          <!-- At the moment we don't let people change this. 
+          <div class="form-group">
+            Email
+            <input type="text" disabled="disabled" class="form-control" ng-model="Team.currentTeam.email">
+          </div>
+          --> 
+          <div class="form-group">
+            <button class="btn btn-primary" ng-click="Team.updateTeam(Team.currentTeam)">Save</button>
+          </div>
+        </form>
+
+        <!-- Alerts -->
+        <div class="alert alert-success" ng-repeat="alert in Team.settingsUpdatedAlerts">
+          {{alert.msg}}
+          <button type="button" class="close fui-cross" data-dismiss="alert">
+          </button>
+        </div>
+
+        <!-- User administration -->
+        <h4>Members</h4>
+        <!-- list team members -->
+        <div class="col-xs-12" ng-repeat="role in Team.roles">
+          <div class="row role-card">
+            <div class="col-xs-10 role-contents">
+              <form>
+                <div class="form-group">
+                  <h6>
+                    {{role.name}}
+                  </h6>
+
+                  <input class="form-control" ng-model=role.role placeholder="What is this person's role on your team?">
+                </div>
+
+                <div class="col-xs-6">
+                  <div class="form-group">
+                    <label class="checkbox">
+                      <input type="checkbox" ng-model="role.admin" ng-disabled="{{!Team.canDelete(role)}}" class="custom-checkbox">
+                      <span class="icons">
+                        <span class="icon-unchecked">
+                        </span>
+                        <span class="icon-checked">
+                        </span>
+                      </span>
+                      Admin
+                    </label>
+                  </div>
+                </div>
+                <div class="col-xs-6">
+                  <div class="form-group">
+                    <button type="button" class="btn btn-primary" ng-click="Team.updateRole(role.team_id, role.user_id, role)" ng-show="Team.canDelete(role.user_id)">Save</button>
+                    <button type="button" class="btn btn-danger" ng-click="Team.deleteRole(role.team_id, role.user_id)" ng-show="Team.canDelete(role.user_id)">Remove</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="col-xs-2 tile role-profile">
+              <img class="img-portrait timeline-profile" gravatar-src="role.email" gravatr-size="64">
+            </div>
+          </div>
+        </div>
+
+        <!-- Invite new members -->
+        <div ng-show="Team.currentRole.admin">
+          <h6>Add a new member</h6>
+          <form class="form-horizontal">
+            <div class="form-group">
+              <div class="col-sm-10">
+                <input type="email" class="form-control login-field" name="email" ng-model="Team.newRole.email" placeholder="Email address"/>
+              </div>
+              <div class="col-sm-2">
+                <button class="btn btn-primary" ng-click="Team.createRole(Team.currentTeam.id, Team.newRole)" ng-submit="Team.addAlert(Team.newRole.email)">
+                  Send invitation!
+                </button>
+              </div>
+            </div>
+          </form>
+          <div class="alert alert-success" ng-repeat="alert in Team.invitationSuccessAlerts">
+            <span class="fui-mail mrm"></span>
+            {{alert.msg}}
+            <button type="button" class="close fui-cross" data-dismiss="alert"></button>
+          </div>
+          <div class="alert alert-danger" ng-repeat="alert in Team.invitationFailureAlerts">{{alert.msg}}
+            <button type="button" class="close fui-cross" data-dismiss="alert"></button>
+          </div>
+        </div>
+
+        <div>
+
+        </div>
+
+        <!-- Add a new team member -->
+      </div>
+
+    </div>
+  </div>
+
+<div class="container inner">
+  <div class="row">
+    <div class="col-xs-3">
+
+      <!-- Side navbar -->
+      <ul class="nav nav-list">
+        <li class="nav-header">Teams</li>
+        <li ng-repeat="team in currentUser.team">
+          <a class="team-timeline-link" ng-href="/team/{{team.id}}/timeline">
+            {{team.name}}
+          </a>
+          <a class="team-settings-link" ng-href="/team/{{team.id}}">
+            <i class="fa fa-cog"></i>
+          </a>
+        </li>
+        <li class="divider">
+        </li>
+        <li>
+          <form action="/team">
+            <button type="submit" class="btn btn-primary btn-block">
+              Create a new team&nbsp
+              <i class="fa fa-plus"></i>
+            </button>
+          </form>
+        </li>
+      </ul>
+
+    </div>
+
+    <!-- Team settings -->
+    <div class="col-xs-6">
+
+      <h4>Settings</h4>
+      <form>
+        <div class="form-group">
+          Name
+          <input type="text" class="form-control" ng-model="Team.currentTeam.name">
+        </div>
+        <!-- At the moment we don't let people change this. 
+        <div class="form-group">
+          Email
+          <input type="text" disabled="disabled" class="form-control" ng-model="Team.currentTeam.email">
+        </div>
+        --> 
+        <div class="form-group">
+          <button class="btn btn-primary" ng-click="Team.updateTeam(Team.currentTeam)">Save</button>
+        </div>
+      </form>
+
+      <!-- Alerts -->
+      <div class="alert alert-success" ng-repeat="alert in Team.settingsUpdatedAlerts">
+        {{alert.msg}}
+        <button type="button" class="close fui-cross" data-dismiss="alert">
+        </button>
+      </div>
+
+      <!-- User administration -->
+      <h4>Members</h4>
+      <!-- list team members -->
+      <div class="col-xs-12" ng-repeat="role in Team.roles">
+        <div class="row role-card">
+          <div class="col-xs-10 role-contents">
+            <form>
+              <div class="form-group">
+                <h6>
+                  {{role.name}}
+                </h6>
+
+                <input class="form-control" ng-model=role.role placeholder="What is this person's role on your team?">
+              </div>
+
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <label class="checkbox">
+                    <input type="checkbox" ng-model="role.admin" ng-disabled="{{!Team.canDelete(role)}}" class="custom-checkbox">
+                    <span class="icons">
+                      <span class="icon-unchecked">
+                      </span>
+                      <span class="icon-checked">
+                      </span>
+                    </span>
+                    Admin
+                  </label>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <button type="button" class="btn btn-primary" ng-click="Team.updateRole(role.team_id, role.user_id, role)" ng-show="Team.canDelete(role.user_id)">Save</button>
+                  <button type="button" class="btn btn-danger" ng-click="Team.deleteRole(role.team_id, role.user_id)" ng-show="Team.canDelete(role.user_id)">Remove</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-xs-2 tile role-profile">
+            <img class="img-portrait timeline-profile" gravatar-src="role.email" gravatr-size="64">
+          </div>
+        </div>
+      </div>
+
+      <!-- Invite new members -->
+      <div ng-show="Team.currentRole.admin">
+        <h6>Add a new member</h6>
+        <form class="form-horizontal">
+          <div class="form-group">
+            <div class="col-sm-10">
+              <input type="email" class="form-control login-field" name="email" ng-model="Team.newRole.email" placeholder="Email address"/>
+            </div>
+            <div class="col-sm-2">
+              <button class="btn btn-primary" ng-click="Team.createRole(Team.currentTeam.id, Team.newRole)" ng-submit="Team.addAlert(Team.newRole.email)">
+                Send invitation!
+              </button>
+            </div>
+          </div>
+        </form>
+        <div class="alert alert-success" ng-repeat="alert in Team.invitationSuccessAlerts">
+          <span class="fui-mail mrm"></span>
+          {{alert.msg}}
+          <button type="button" class="close fui-cross" data-dismiss="alert"></button>
+        </div>
+        <div class="alert alert-danger" ng-repeat="alert in Team.invitationFailureAlerts">{{alert.msg}}
+          <button type="button" class="close fui-cross" data-dismiss="alert"></button>
+        </div>
+      </div>
+
+      <div>
+
+      </div>
+
+      <!-- Add a new team member -->
+    </div>
+
+  </div>
+</div>
+
+<div class="container inner">
+  <div class="row">
+    <div class="col-md-2">
+    </div>
+
+    <!-- actual content here -->
+    <div class="col-xs-12 col-md-8">
+
+      <!-- team selector -->
+      <div class="col-xs-12 col-md-7 pbl">
+          <a href="#" class="team-selector dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+            {{Timeline.currentTeam.name}}
+            <span class="octicon octicon-triangle-down team-caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li ng-repeat="team in currentUser.team">
+              <a ng-href="/team/{{team.id}}/timeline">
+                {{team.name}}
+              </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+              <a href="/team">Create a new team</a>
+            </li>
+          </ul>
+          <a class="team-settings-link" ng-href="/team/{{Timeline.teamId}}">
+            <i class="fa fa-cog"></i>
+          </a>
+      </div>
+      <div class="col-xs-12 col-md-5 pbl calendar-container">
+        <div class="form-group calendar"> 
+          <div class="input-group" ng-click="open($event)">
+            <input type="text" 
+            class="form-control" 
+            datepicker-popup="longDate" 
+            ng-model="date" 
+            is-open="opened" 
+            max-mode="day" 
+            datepicker-options="dateOptions" 
+            show-button-bar=false
+            ng-required="true" close-text="Close" />
+            <span class="input-group-addon">
+              <span class="fui-calendar"></span>
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-xs-12 col-md-8 ptm">
+      
+      <!-- timeline -->
+      <div class="timeline-darg" ng-repeat="darg in Timeline.events">
+        <nav class="navbar navbar-default">
+          <ul class="nav navbar-nav navbar-left">
+            <li class="timeline-section">
+              <span class="fui-calendar timeline-section-icon"></span>
+              <span class="timeline-section-date">
+                {{formatDateString(darg.date) | date: 'fullDate'}}
+              </span>
+            </li>
+          </ul>
+        </nav>
+
+
+        <!-- begin user section -->
+        <div class="row timeline-user" ng-repeat="user in darg.user" ng-show="showUser(user)">
+  
+          <!-- mini-profile on the left -->
+          <div class="col-xs-4">
+            <img class="img-portrait timeline-profile" gravatar-src="user.email" gravatar-size="64">
+            <div class="timeline-profile-text">
+              {{user.name}}
+            </div>
+          </div>
+
+          <!-- user's timeline on the right -->
+          <div class="col-xs-8 timeline-user-events">
+            <ul class="timeline timeline-icons timeline-sm" ng-show="userHasTasks(user)">
+              <li ng-repeat="task in user.task">
+                <p class=timeline-event>
+                  {{task.task}}
+                </p>
+                  <span class="timeline-icon octicon octicon-check"></span>
+                  <p class="timeline-timestamp">
+                    {{task.timestamp | date: 'shortTime'}}
+                  </p>
+
+              </li>
+            </ul>
+
+            <!-- Enter new tasks -->
+            <div ng-controller="DargTaskCtrl as Task" ng-show="isCurrentUser(user.id)">
+              <form class="task-form" ng-submit="Timeline.postTask(darg.date, Task.task)">
+                <input type="text" placeholder="Left something out? Enter it here!" class="form-control" ng-model="Task.task"/>
+              </form>
+            </div>
+          </div>
+
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
