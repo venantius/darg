@@ -17,16 +17,16 @@
 
 ; DB tests
 
-(deftest we-can-retrieve-github-users-from-db
+(deftest ^:integration we-can-retrieve-github-users-from-db
   (is (not-empty (gh-user/fetch-github-user {:gh_login "dargtester1"}))))
 
 (deftest we-can-fetch-github-userid
   (is (= dargtester1-github-id (gh-user/fetch-github-user-id {:gh_login "dargtester1"}))))
 
-(deftest we-can-insert-github-user-into-the-db
+(deftest ^:integration we-can-insert-github-user-into-the-db
   (gh-user/create-github-user! dargtester2-github-map)
   (is (not-empty (gh-user/fetch-github-user {:id dargtester2-github-id}))))
 
-(deftest we-can-update-a-github-user-in-the-db
+(deftest ^:integration we-can-update-a-github-user-in-the-db
   (gh-user/update-github-user! dargtester1-github-id {:gh_email "dargtester1@darg.io"})
   (is (not-empty (gh-user/fetch-github-user {:gh_email "dargtester1@darg.io"}))))
