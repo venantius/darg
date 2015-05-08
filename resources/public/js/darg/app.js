@@ -331,7 +331,6 @@ darg.controller('DargSettingsCtrl',
         return user.info
     }, function(newValue, oldValue) {
         self.userProfile = newValue;
-        console.log(newValue);
     });
 
 }]);
