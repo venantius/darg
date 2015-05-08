@@ -7,7 +7,6 @@
     <meta content="Automatic status reports delivered to your e-mail inbox from the tools you already use." name="description">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/2.2.2/octicons.css">
@@ -24,6 +23,63 @@
     <!-- intercom -->
     <script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/pt2u9jve';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()</script>
 
+    <!-- fallback.js -->
+    <script src="/js/fallback/fallback.min.js"></script>
+    <script>
+      fallback.load({
+
+        "moment": ['/js/moment/moment-with-locales.min.js'],
+        "moment.tz": ['/js/moment/moment-timezone-with-data.min.js'],
+
+        jQuery: ['/js/flatui/jquery.min.js'],
+
+        "angular": ['/js/angular/angular.min.js'],
+        "angular.module('ngCookies')": 
+          ['/js/angular/angular-cookies.min.js'],
+        "angular.module('ngResource')":
+          ['/js/angular/angular-resource.min.js'],
+        "angular.module('ngRoute')":
+          ['/js/angular/angular-route.min.js'],
+
+        "angular.module('ui.gravatar')":
+          ['/js/angular/angular-gravatar.min.js'],
+        // TODO: maybe have to fix this
+        "angular.module('ui.bootstrap')":
+          ['/js/angular/ui-bootstrap.min.js'],
+
+        "angular.module('darg')":
+          ['/js/darg/app.js'],
+
+      }, {
+        shim: {
+          'moment.tz': ['moment'],
+          "angular": ['jQuery'],
+          "angular.module('ngCookies')": ['angular'],
+          "angular.module('ngResource')": ['angular'],
+          "angular.module('ngRoute')": ['angular'],
+          "angular.module('ui.gravatar')": ['angular'],
+          "angular.module('ui.bootstrap')": ['angular'],
+          "angular.module('darg')": 
+            [
+              "angular",
+              "angular.module('ngCookies')",
+              "angular.module('ngResource')",
+              "angular.module('ngRoute')",
+              "angular.module('ui.gravatar')",
+              "angular.module('ui.bootstrap')",
+            ]
+        }, 
+
+        callback: function(success, failed) {
+          flatui = document.createElement('script');
+          flatui.src = "/js/flatui/flat-ui-pro.min.js";
+          flatuiapp = document.createElement('script');
+          flatuiapp.src = "/js/flatui/application.js";
+          document.getElementsByTagName('head')[0].appendChild(flatui);
+          document.getElementsByTagName('head')[0].appendChild(flatuiapp);
+        }
+      });
+     </script>
   </head>
   <body>
     <div ng-controller="DargUserCtrl as User">
@@ -40,27 +96,4 @@
       </footer>
     </div>
   </body>
-    
-  <!-- Load JS here for greater good =============================-->
-  <!-- MomentJS -->
-  <script src="/js/moment/moment-with-locales.min.js"></script>
-  <script src="/js/moment/moment-timezone-with-data.min.js"></script>
-
-  <!-- jQuery -->
-  <script src="/js/flatui/jquery.min.js"></script>
-
-  <!-- AngularJS -->
-  <script src="/js/angular/angular.min.js"></script>
-  <script src="/js/angular/angular-cookies.min.js"></script>
-  <script src="/js/angular/angular-resource.min.js"></script>
-  <script src="/js/angular/angular-route.min.js"></script>
-  <script src="/js/angular/angular-gravatar.min.js"></script>
-  <script src="/js/angular/ui-bootstrap-0.12.1.js"></script>
-
-  <!-- Flat UI -->
-  <script src="/js/flatui/flat-ui-pro.min.js"></script>
-  <script src="/js/flatui/application.js"></script>
-
-  <!-- Darg JS -->
-  <script src="/js/darg/app.js"></script>
 </html>
