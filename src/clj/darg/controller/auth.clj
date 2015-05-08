@@ -58,7 +58,7 @@
         (bad-request "User with that e-mail could not be found.")
       :else
       (do
-        #_(user/send-password-reset-email user)
+        (user/send-password-reset-email user)
         (ok "Success!")))))
 
 (defn set-new-password

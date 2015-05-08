@@ -1,17 +1,17 @@
 module.exports = function(grunt) {
   grunt.initConfig({
 
-    // `grunt concat` to concat our source
+    // `grunt concat` to concat our source files together
     concat: {
 
       // the angular app
-      basic: {
+      js: {
         src: './src/js/**/*.js',
         dest: './resources/public/js/darg/app.js'
       },
 
       // all of our html templates for uncss, etc.
-      extras: {
+      web: {
         src: ['./resources/build/raw/index.html', 
               './resources/public/templates/**/*.html'],
         dest: './resources/build/concat/templates.html'
@@ -20,57 +20,53 @@ module.exports = function(grunt) {
 
     // `grunt less` to compile our css files
     less: {
-      development: {
+      email: {
+        options: {
+          paths: ["./css"],
+          yuicompress: true
+        },
+        files: {
+          "./resources/email/css/darg.css": "./src/less/email.less",
+        }
+      },
+
+      web: {
         options: {
           paths: ["./css"],
           yuicompress: true
         },
         files: {
           "./resources/public/css/flat-ui.css": "./src/less/darg.less",
-          "./resources/email/css/darg.css": "./src/less/email.less",
         }
       }
     },
 
     // `grunt uncss` to compile a CSS file for only the required CSS
     uncss: {
-      dist: {
-        options: {
-          // don't try to get around the CDN
-          ignoreSheets: [/cdnjs/, /maxcdn/],
-          timeout: 1000,
-        },
+      email: {
         files: {
-          // email css
           "./resources/email/css/email.css": 
             './resources/email/templates/raw/digest.html',
-
-          // www css
-          "./resources/public/css/darg.css": 
-            "./resources/build/concat/templates.html",
         }
       },
 
       web: {
         options: {
           // don't try to get around the CDN
+          ignore: [/dropdown/],
           ignoreSheets: [/cdnjs/, /maxcdn/],
           timeout: 1000,
         },
         files: {
-          // email css
-          "./resources/email/css/email.css": 
-            './resources/email/templates/raw/digest.html',
-
           // www css
           "./resources/public/css/darg.css": 
             "./resources/build/concat/templates.html",
         }
       }
-
     },
 
-    // replace stylesheet with economy version
+    // replace stylesheet block in <head> with a link to the uncss'd
+    // stylesheet
     processhtml: {
       email: {
         files: {
@@ -101,21 +97,17 @@ module.exports = function(grunt) {
 
     // running `grunt watch` will watch for changes to both js and less
     watch: {
-      concat: {
+      js: {
         files: "./src/js/**/*.js",
         tasks: ["concat"]
       },
-      less: {
-        files: "./src/less/**/*.less",
-        tasks: ["less"]
-      },
       email: {
         files: ["./resources/email/templates/**/*.html", "./src/less/**/*.less"],
-        tasks: ["uncss", "processhtml", "premailer"]
+        tasks: ["uncss:email", "processhtml:email", "premailer"]
       },
       web: {
-        files: ["./resources/**/*.html"],
-        tasks: ["concat", "uncss"]
+        files: ["./resources/**/*.html", "./src/less/**/*.less"],
+        tasks: ["concat:web", "less:web", "uncss:web", "processhtml:web"]
       }
     }
   });
