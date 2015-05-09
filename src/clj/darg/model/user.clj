@@ -214,11 +214,10 @@
 
 (defn send-password-reset-email
   "This initiates the password reset workflow."
-  [email]
-  (let [user (fetch-one-user {:email email})
-        email-content (build-password-reset-email user)]
+  [user]
+  (let [email-content (build-password-reset-email user)]
     (mailgun/send-message {:from "support@darg.io"
-                           :to email
+                           :to (:email user)
                            :subject "Darg.io Password Reset Requested"
                            :text email-content
                            :html email-content})))

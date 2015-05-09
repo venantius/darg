@@ -63,4 +63,5 @@
 (deftest ^:integration send-password-reset-email-works
   ;; This is the standard "successfully sent" response from Mailgun.
   (is (= "Queued. Thank you."
-         (:message (user/send-password-reset-email "test@darg.io")))))
+         (:message (user/send-password-reset-email 
+                     (user/fetch-one-user {:email "test@darg.io"}))))))

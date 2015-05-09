@@ -1,6 +1,8 @@
 (ns darg.controller.auth
-  (:require [darg.api.responses :refer [bad-request ok]]
-            [darg.model.user :as user]))
+  (:require [clojure.tools.logging :as log]
+            [darg.api.responses :refer [bad-request ok]]
+            [darg.model.user :as user]
+            [darg.model.password-reset-token :as token]))
 
 (defn login
   "/api/v1/login
@@ -33,7 +35,7 @@
   The other half of the authentication endpoint pair. This one clears
   your session cookie and your plaintext cookie, logging you out both
   in practice and appearance"
-  [request-map]
+  [request]
   {:body ""
    :status 200
    :session nil
@@ -48,10 +50,38 @@
   Initiates the password reset workflow. This will send an e-mail to the user
   with a special link that they can use to reset their password. The link will
   only remain valid for a finite amount of time."
-  [request-map]
-  (let [email (-> request-map :params :email clojure.string/lower-case)]
-    (try
-      (user/send-password-reset-email email)
-      (ok "Success!")
-      (catch Exception e
-        (bad-request "Password reset failed.")))))
+  [request]
+  (let [email (-> request :params :email clojure.string/lower-case)
+        user (user/fetch-one-user {:email email})]
+    (cond
+      (not user)
+        (bad-request "User with that e-mail could not be found.")
+      :else
+      (do
+        (user/send-password-reset-email user)
+        (ok "Success!")))))
+
+(defn set-new-password
+  "/api/v1/new_password
+   
+   Method: POST
+   
+   Finalize the password reset workflow."
+  [{:keys [params] :as request}]
+  (log/info params)
+  (let [{:keys [password confirm_password token]} params
+        token (token/fetch-one-valid {:token token})]
+    (cond
+      (not= password confirm_password)
+      (bad-request "Password fields do not match.")
+      (nil? token)
+      (bad-request "Invalid token.")
+      :else
+      (let [{:keys [email id] :as user} (user/fetch-one-user {:id (:user_id token)})]
+        (user/update-user! id
+                      {:password (user/encrypt-password password)})
+        {:status 200
+         :cookies {"logged-in" {:value true :path "/"}
+                   "id" {:value id :path "/"}}
+         :session {:authenticated true :id id :email email}
+         :body "Okay!"}))))

@@ -19,7 +19,8 @@ darg.controller('DargAlertCtrl',
     }, function(newValue, oldValue) {
         if (newValue != null) {
             alert.setAlert(alert.failedLoginAlerts,
-                           alert.failedLoginMessage);
+                           alert.failedLoginMessage,
+                          "dialog-danger");
         } else {
             alert.failedLoginAlerts = [];
         }
@@ -28,9 +29,14 @@ darg.controller('DargAlertCtrl',
     $scope.$watch(function() {
       return $location.path();
     }, function(newValue, oldValue) {
-      if (newValue != "/login") {
+      if (oldValue == "/login" && 
+          newValue != "/login") {
         alert.failedLoginAlerts = [];
         $location.search('failed_login', null);
+      }
+      if (oldValue == "/password_reset" && 
+          newValue != "/password_reset") {
+        alert.passwordResetAlerts = [];
       }
     });
 

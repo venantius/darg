@@ -37,6 +37,11 @@ darg.controller('DargUserCtrl',
         password: ""
     };
 
+    $scope.LoadPasswordResetPage = function() {
+        $location.path('/password_reset');
+        $location.search('failed_login', null);
+    };
+
     $scope.getCurrentUser = function() {
         user.getCurrentUser()
         .then(function(data) {
@@ -53,17 +58,6 @@ darg.controller('DargUserCtrl',
             return false;
         }
     };
-
-    $scope.ResetForm = {
-        "email": ""
-    }
-
-    $scope.LoadPasswordResetPage = function() {
-        $location.path('/password_reset');
-        $location.search('failed_login', null);
-    };
-
-    $scope.resetPassword = user.resetPassword;
 
     $scope.goToSignupPage = function() {
         $location.path('/signup');

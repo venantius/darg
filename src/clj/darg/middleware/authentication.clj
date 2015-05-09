@@ -41,7 +41,8 @@
      (= path "/api/v1/login")
      (= path "/api/v1/user")
      (= path "/api/v1/gravatar")
-     (= path "/api/v1/password_reset")) true
+     (= path "/api/v1/password_reset")
+      (= path "/api/v1/new_password")) true
     :else false))
 
 (defn darg-auth-fn

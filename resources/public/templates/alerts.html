@@ -18,4 +18,12 @@
         Forgot your password?
       </button>
     </div>
+  </div>
+
+  <div ng-repeat="alert in Alert.alerts.passwordResetAlerts"
+    ng-hide="loggedIn()">
+    <div class="dialog {{alert.class}}">
+      {{alert.msg}}
+    </div>
+  </div>
 </div>

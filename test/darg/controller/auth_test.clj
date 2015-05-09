@@ -28,3 +28,38 @@
     (is (not (some #{"logged-in=true;Path=/"}
                    (get (:headers auth-response) "Set-Cookie"))))))
 
+(deftest we-can-set-a-new-password
+  (let [request {:request-method :post
+                 :params {:password "new_password"
+                          :confirm_password "new_password"
+                          :token "XBT6XI7WAHPX4NQDHBWGXPP2YCJSXS7Q"}}
+        {:keys [status body] :as response} (api/set-new-password request)]
+    (is (= 200 status))
+    (is (= body "Okay!"))))
+
+(deftest we-cant-set-a-new-password-when-the-token-doesnt-exist
+  (let [request {:request-method :post
+                 :params {:password "new_password"
+                          :confirm_password "new_password"
+                          :token "XBT6XI7WAHPX4NQDHBW7Q"}}
+        {:keys [status body] :as response} (api/set-new-password request)]
+    (is (= 400 status))
+    (is (= body {:message "Invalid token."}))))
+
+(deftest we-cant-set-a-new-password-when-the-token-has-expired
+  (let [request {:request-method :post
+                 :params {:password "new_password"
+                          :confirm_password "new_password"
+                          :token "T3HLQG5QEPDF6K26Y2OQTFJGNOD2WYI7"}}
+        {:keys [status body] :as response} (api/set-new-password request)]
+    (is (= 400 status))
+    (is (= body {:message "Invalid token."}))))
+
+(deftest we-cant-set-a-new-password-when-the-passwords-dont-match
+  (let [request {:request-method :post
+                 :params {:password "new_password"
+                          :confirm_password "new_pass"
+                          :token "XBT6XI7WAHPX4NQDHBWGXPP2YCJSXS7Q"}}
+        {:keys [status body] :as response} (api/set-new-password request)]
+    (is (= 400 status))
+    (is (= body {:message "Password fields do not match."}))))

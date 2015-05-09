@@ -63,6 +63,7 @@
   (POST   "/api/v1/login"                   request (auth/login request))
   (GET    "/api/v1/logout"                  request (auth/logout request))
   (POST   "/api/v1/password_reset"          request (auth/password-reset request))
+  (POST   "/api/v1/new_password"            request (auth/set-new-password request))
   
   (POST   "/api/v1/email"                        request (email/email request))
   (POST   "/api/v1/email/send"                   request (email/send-email request))
