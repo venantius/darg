@@ -32,7 +32,7 @@
 (deftest ^:integration we-can-successfully-get-an-oauth-token
   (is (some? (access-token))))
 
-(deftest we-can-insert-and-link-a-github-user
+#_(deftest we-can-insert-and-link-a-github-user
   (let [userid 3]
     (oauth-github/insert-and-link-github-user userid (test-github-oauth))
     ;; Github token is linked to github user
