@@ -53,7 +53,7 @@ module.exports = function(grunt) {
       web: {
         options: {
           // don't try to get around the CDN
-          ignore: [/dropdown/],
+          ignore: [/dropdown/, /navbar/, /collapse/, /collapsing/],
           ignoreSheets: [/cdnjs/, /maxcdn/],
           timeout: 1000,
         },
