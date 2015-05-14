@@ -1,5 +1,7 @@
 var darg = angular.module('darg', 
-                          ['ngCookies', 
+                          ['angulartics',
+                           'angulartics.google.analytics',
+                           'ngCookies', 
                            'ngRoute', 
                            'ngLoadScript',
                            'ui.bootstrap',
