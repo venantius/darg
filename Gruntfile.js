@@ -65,6 +65,16 @@ module.exports = function(grunt) {
       }
     },
 
+    // minify css files
+    cssmin: {
+      web: {
+        files: {
+          "./resources/public/css/darg.min.css": 
+            "./resources/public/css/darg.css",
+        }
+      }
+    },
+
     // replace stylesheet block in <head> with a link to the uncss'd
     // stylesheet
     processhtml: {
@@ -99,19 +109,27 @@ module.exports = function(grunt) {
     watch: {
       js: {
         files: "./src/js/**/*.js",
-        tasks: ["concat"]
+        tasks: "js"
       },
       email: {
         files: ["./resources/email/templates/**/*.html", "./src/less/**/*.less"],
-        tasks: ["uncss:email", "processhtml:email", "premailer"]
+        tasks: "email"
       },
       web: {
         files: ["./resources/**/*.html", "./src/less/**/*.less"],
-        tasks: ["concat:web", "less:web", "uncss:web", "processhtml:web"]
+        tasks: "web"
       }
     }
   });
+  
+  // Darg tasks
+  grunt.task.registerTask('js', ['concat:js']);
+  grunt.task.registerTask('email', ['uncss:email', 'processhtml:email', 'premailer'])
+  grunt.task.registerTask('web', ['concat:web', 'less:web', 'uncss:web', 'cssmin:web', 'processhtml:web'])
+
+  // Plugin tasks
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-uncss');

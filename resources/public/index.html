@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/2.2.2/octicons.css">
 
-    <link rel="stylesheet" href="/css/darg.css">
+    <link rel="stylesheet" href="/css/darg.min.css">
 
     <!-- favicon -->
     <link rel="icon" type="image/png" href="/images/favicon-bird-96x96.png">
@@ -29,9 +29,7 @@
       ga('create', 'UA-62806721-1', 'auto');
     </script>
 
-    <!-- fallback.js -->
-    <script src="/js/fallback/fallback.min.js"></script>
-    <script src="/js/darg/loader.js"></script>
+
   </head>
   <body>
     <div ng-controller="DargUserCtrl as User">
@@ -47,5 +45,9 @@
         <div ng-include src='"/templates/footer.html"'></div>
       </footer>
     </div>
+
+    <!-- fallback.js -->
+    <script src="/js/fallback/fallback.min.js"></script>
+    <script src="/js/darg/loader.js"></script>
   </body>
 </html>
