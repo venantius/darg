@@ -30,7 +30,7 @@ fallback.load({
     ['/js/angular/angular-gravatar.min.js'],
   // TODO: maybe have to fix this
   "angular.module('ui.bootstrap')":
-    ['https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.0/ui-bootstrap.min.js',
+    ['https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap.min.js',
      '/js/angular/ui-bootstrap.min.js'],
   "angular.module('angulartics')":
     ['//cdnjs.cloudflare.com/ajax/libs/angulartics/0.17.2/angulartics.min.js'],
@@ -61,14 +61,14 @@ fallback.load({
         "angular.module('ui.gravatar')",
         "angular.module('ui.bootstrap')",
       ]
-  }, 
+  }
+});
 
-  callback: function(success, failed) {
+fallback.ready(function() {
     flatui = document.createElement('script');
     flatui.src = "/js/flatui/flat-ui-pro.min.js";
     flatuiapp = document.createElement('script');
     flatuiapp.src = "/js/flatui/application.js";
     document.getElementsByTagName('head')[0].appendChild(flatui);
     document.getElementsByTagName('head')[0].appendChild(flatuiapp);
-  }
 });

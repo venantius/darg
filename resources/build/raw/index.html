@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/2.2.2/octicons.css">
 
-    <!-- build:css /css/darg.css -->
+    <!-- build:css /css/darg.min.css -->
     <link href="../../public/css/solarized_dark.css" rel="stylesheet">
     <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../public/css/flat-ui.css" rel="stylesheet">
@@ -33,9 +33,7 @@
       ga('create', 'UA-62806721-1', 'auto');
     </script>
 
-    <!-- fallback.js -->
-    <script src="/js/fallback/fallback.min.js"></script>
-    <script src="/js/darg/loader.js"></script>
+
   </head>
   <body>
     <div ng-controller="DargUserCtrl as User">
@@ -51,5 +49,9 @@
         <div ng-include src='"/templates/footer.html"'></div>
       </footer>
     </div>
+
+    <!-- fallback.js -->
+    <script src="/js/fallback/fallback.min.js"></script>
+    <script src="/js/darg/loader.js"></script>
   </body>
 </html>
