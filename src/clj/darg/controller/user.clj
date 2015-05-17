@@ -15,7 +15,6 @@
   Signs a user up. This creates an account in our db and authenticates
   the user."
   [{:keys [params] :as request-map}]
-  (log/info params)
   (let [{:keys [email token]} params]
     (cond
       (some? (user/fetch-one-user {:email email}))
@@ -24,12 +23,11 @@
       (responses/bad-request
        "The signup form needs an e-mail, a name, and a password.")
       :else
-      (let [user (user/create-user-from-signup-form params)
-            conf (email-conf/create-user-email-confirmation! {:user_id (:id user)})]
+      (let [user (user/create-user-from-signup-form params)]
         (log/info token)
         (if (some? token)
           (role/create-role-from-token! user token))
-        (email-conf/send-email-confirmation user conf)
+        (email-conf/create-and-send-email-confirmation user)
         {:body {:message "Account successfully created"}
          :cookies {"logged-in" {:value true :path "/"}
                    "id" {:value (:id user) :path "/"}}
@@ -64,20 +62,23 @@
   (log/info params)
   (let [session-email (-> user :email clojure.string/lower-case)
         current-user (user/fetch-one-user {:email session-email})
+        maybe-existing-user (user/fetch-one-user {:email (:email params)})
         params (-> params
-                   (update-in [:id] read-string)
-                   (update-in [:send_digest_email] read-string)
-                   (update-in [:send_daily_email] read-string)
-                   (dissoc :confirmed_email :team)
-                   (select-keys [:email :timezone :name :send_daily_email
-                                 :confirmed_email :id :send_digest_email
-                                 :digest_hour :email_hour]))]
-    (if (or (= session-email (:email params))
-            (nil? (user/fetch-one-user {:email (:email params)})))
-      (let [updated-user (user/update-user! 
-                           (:id params)
-                           params)]
-        {:status 200
-         :session (assoc session :email (:email params))
-         :body updated-user})
-      (responses/conflict "User with that e-mail already exists"))))
+                   user/map->user
+                   (dissoc :created_at :confirmed_email))]
+    (if (and (some? maybe-existing-user)
+             (not= maybe-existing-user current-user))
+      (responses/conflict "User with that e-mail already exists")
+      (do
+        (when (not= session-email
+                    (:email params))
+          (user/update-user!
+            (:id user)
+            {:confirmed_email false})
+          (email-conf/create-and-send-email-confirmation user))
+        (let [updated-user (user/update-user! 
+                             (:id user)
+                             params)]
+          {:status 200
+           :session (assoc session :email (:email params))
+           :body updated-user})))))

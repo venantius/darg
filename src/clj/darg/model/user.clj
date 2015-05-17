@@ -2,13 +2,31 @@
   (:require [cemerick.url :as url]
             [clj-time.coerce :as c]
             [crypto.random :as random]
-            [darg.db.entities :as entities]
+            [darg.db.entities :as db]
+            [darg.model :refer [defmodel]]
             [darg.model.password-reset-token :as password-reset-token]
             [darg.services.mailgun :as mailgun]
             [environ.core :as env]
             [korma.core :refer :all]
-            [net.cgrand.enlive-html :as html])
+            [net.cgrand.enlive-html :as html]
+            [schema.core :as s])
   (:import [org.mindrot.jbcrypt BCrypt]))
+
+(defmodel db/user
+  {(s/optional-key :id) s/Int
+   (s/optional-key :email) s/Str
+   (s/optional-key :password) s/Str
+   (s/optional-key :name) s/Str
+   (s/optional-key :timezone) s/Str
+   (s/optional-key :email_hour) s/Str
+   (s/optional-key :admin) s/Bool
+   (s/optional-key :bot) s/Bool
+   (s/optional-key :active) s/Bool
+   (s/optional-key :confirmed_email) s/Bool
+   (s/optional-key :digest_hour) s/Str
+   (s/optional-key :created_at) s/Any
+   (s/optional-key :send_daily_email) s/Bool
+   (s/optional-key :send_digest_email) s/Bool})
 
 (defn encrypt-password
   "Perform BCrypt hash of password"
@@ -33,7 +51,7 @@
   (let [params (-> params
                    (update-in [:password] encrypt-password)
                    (update-in [:email] clojure.string/lower-case))]
-    (insert entities/user (values params))))
+    (insert db/user (values params))))
 
 (defn create-user-from-signup-form
   "Create a user from the signup form"
@@ -48,7 +66,7 @@
 
   Only for use in authentication functions."
   [params]
-  (first (select entities/user 
+  (first (select db/user 
                  (fields :id :password)
                  (where params))))
 
@@ -57,7 +75,7 @@
 
   Takes a map of fields for use in db lookup"
   [params]
-  (select entities/user
+  (select db/user
           (fields :timezone :email_hour :admin :bot :active
                   :confirmed_email :digest_hour :created_at
                   :send_daily_email :send_digest_email)
@@ -75,12 +93,12 @@
   (let [params (if (:email params)
                  (update-in params [:email] clojure.string/lower-case)
                  params)]
-    (update entities/user (where {:id id}) (set-fields params))
+    (update db/user (where {:id id}) (set-fields params))
     (fetch-one-user {:id id})))
 
 (defn delete-user!
   [params]
-  (delete entities/user (where params)))
+  (delete db/user (where params)))
 
 (defn profile
   "Returns the profile for a given user, including the teams that they're on.
@@ -89,16 +107,16 @@
   for limiting the visibility into which teams a user is a member of."
   ([params]
    (first
-    (select entities/user
+    (select db/user
             (fields :timezone :email_hour :admin :bot :active
                   :confirmed_email :digest_hour :created_at
                   :send_daily_email :send_digest_email)
-            (with entities/team
+            (with db/team
                   (order :team.name :asc))
             (where params))))
   ([params team-ids]
    (first
-    (select entities/user
+    (select db/user
             (fields 
               :confirmed_email
               :created_at
@@ -110,7 +128,7 @@
               :digest_hour
               :send_daily_email
               :send_digest_email)
-            (with entities/team
+            (with db/team
                   (where {:team.id [in team-ids]})
                   (order :team.name :asc))
             (where params)))))
@@ -120,9 +138,9 @@
 (defn fetch-user-github-account
   "Returns the associated github user"
   [userid]
-  (let [usermap (first (select entities/user
+  (let [usermap (first (select db/user
                                (where {:id userid})
-                               (with entities/github-user)))]
+                               (with db/github-user)))]
     {:user (merge (select-keys
                    usermap
                    [:id :email :name :admin :bot])
@@ -136,26 +154,26 @@
   "Returns boolean true/false based on whether the use is a member of a given team
   Takes a user-id (integer) and team-id (integer)"
   [userid teamid]
-  (if (empty? (select entities/role (where {:user_id userid :team_id teamid}))) false true))
+  (if (empty? (select db/role (where {:user_id userid :team_id teamid}))) false true))
 
 (defn fetch-user-teams
   "Returns the map of teams that a user belongs to."
   [user]
-  (:team (first (select entities/user
+  (:team (first (select db/user
                         (where user)
-                        (with entities/team)))))
+                        (with db/team)))))
 
 (defn team-overlap
   "Returns a seq of team-maps that two users have in common
   Will return an empty seq if the users do not share any teams.
   Takes 2 user-id's (integer)"
   [userid1 userid2]
-  (select entities/team
+  (select db/team
           (fields :id :name)
-          (where (and {:id [in (subselect entities/role
+          (where (and {:id [in (subselect db/role
                                           (fields :team_id)
                                           (where {:user_id userid1}))]}
-                      {:id [in (subselect entities/role
+                      {:id [in (subselect db/role
                                           (fields :team_id)
                                           (where {:user_id userid2}))]}))))
 
@@ -175,7 +193,7 @@
 (defn fetch-tasks-by-team-and-date
   "Find tasks for this user by date and team"
   [user team-id date]
-  (select entities/task
+  (select db/task
           (fields :id :timestamp :user_id :team_id :task)
           (where {:user_id (:id user)
                   :timestamp (c/to-sql-time date)

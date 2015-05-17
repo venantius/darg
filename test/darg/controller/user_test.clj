@@ -62,12 +62,14 @@
                 :id "4"
                 :send_digest_email "true"
                 :send_daily_email "true"}
-        sample-request {:user {:email "test-user2@darg.io"}
+        sample-request {:user {:email "test-user2@darg.io" :id 4}
                         :request-method :post
                         :params params}
         response (api/update! sample-request)]
     (is (= (:status response) 200))
     (is (some? (user/fetch-one-user {:email "test-user5@darg.io"})))))
+
+(deftest changing-the-email-requires-a-new-confirmation)
 
 (deftest we-cant-update-a-user-to-have-an-email-of-an-existing-user
   (let [params {:email "david@ursacorp.io"
