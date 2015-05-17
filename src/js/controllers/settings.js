@@ -73,6 +73,7 @@ darg.controller('DargSettingsCtrl',
         user.updateProfile(user_profile)
         .then(function(data) {
             console.log("success!");
+            console.log(data);
             alert.setAlert(self.profileUpdateAlerts,
                            "Profile updated!",
                           "alert-success");

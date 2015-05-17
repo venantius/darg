@@ -26,3 +26,9 @@
                            :to to
                            :subject subject
                            :html content})))
+
+(defn create-and-send-email-confirmation
+  "Create and then send an email confirmation message."
+  [user]
+  (let [conf (create-user-email-confirmation! {:user_id (:id user)})]
+    (send-email-confirmation user conf)))

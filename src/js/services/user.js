@@ -2,6 +2,7 @@
  * Shared data and functions for the current user
  */
 darg.service('user', function($cookieStore, $http, $q) {
+  var self = this;
     this.info = {
         "confirmed_email": null,
         "team": {}
@@ -20,7 +21,8 @@ darg.service('user', function($cookieStore, $http, $q) {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(data) {
-            deferred.resolve(data);
+          self.info.confirmed_email = data.confirmed_email;
+          deferred.resolve(data);
         })
         .error(function(data) {
             deferred.reject(data) 
