@@ -31,6 +31,7 @@
      (= path "/faq")
      (= path "/integrations")
      (= path "/password_reset")
+     (= path "/pricing")
      (.startsWith path "/login")
      (.startsWith path "/new_password")
      (.startsWith path "/signup")
