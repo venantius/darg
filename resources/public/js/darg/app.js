@@ -28,6 +28,9 @@ darg.config(['$routeProvider', '$locationProvider',
         .when('/integrations', {
             templateUrl: '/templates/integrations.html'
         })
+        .when('/pricing', {
+            templateUrl: '/templates/pricing.html'
+        })
 
         // Password reset flow
         .when('/password_reset', {

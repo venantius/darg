@@ -45,6 +45,7 @@
    "/login"
    "/signup"
    "/password_reset"
+   "/pricing"
    "/new_password"
    "/team"
    "/team/:team_id"
