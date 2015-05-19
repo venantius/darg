@@ -7973,6 +7973,24 @@ div.call-to-action p {
   }
 }
 
+div.diagram {
+  width: 90vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+img.diagram {
+  max-width: 600px;
+  max-height: 300px;
+}
+
+@media only screen and (max-device-width: 768px) {
+  img.diagram {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
 .img-portrait {
   border-radius: 50%;
 }
