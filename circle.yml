@@ -9,6 +9,7 @@ dependencies:
     - wget -O ~/bin/jq https://stedolan.github.io/jq/download/linux64/jq && chmod 755 ~/bin/jq
     - sudo pip install awscli
     - gem install premailer
+    - gem install nokogiri
 
 test:
   override:
