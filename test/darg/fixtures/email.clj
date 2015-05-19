@@ -39,7 +39,7 @@
    :message-headers [["Received", "by luna.mailgun.net with HTTP; Tue, 02 Sep 2014 01:51:29 +0000",]
                      ["Mime-Version", "1.0"],
                      ["Content-Type", "text/plain; charset=\"ascii\""],
-                     ["Subject", "Send in your log for Today: September 06 2014?"],
+                     ["Subject", "Send in your log for Today: September 06, 2014?"],
                      ["From", "butts@darg.io"],
                      ["To", "darg@mail.darg.io"],
                      ["Message-Id", "<20140902015129.23125.83955@darg.io>"],
@@ -50,7 +50,7 @@
    :stripped-text "Dancing tiem!!
    Aint it a thing?
    Reticulated Splines"
-   :Subject "Send in your log for Today: September 06 2014?"
+   :Subject "Send in your log for Today: September 06, 2014?"
    :Mime-Version 1.0
    :token "ee55af9ce04725e2b93ca5844b14621ac96de7e9144b21222f"
    :from "savelago@darg.io"
@@ -61,7 +61,7 @@
    :Content-Transfer-Encoding "7bit"
    :timestamp 1409622691
    :Content-Type "text/plain; charset=\"ascii\""
-   :subject "Send in your log for Today: September 06 2014?"
+   :subject "Send in your log for Today: September 06, 2014?"
    :body-plain "Dancing tiem!!
    Aint it a thing?
    Reticulated Splines"})
