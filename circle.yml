@@ -18,6 +18,9 @@ deployment:
   heroku:
     branch: master
     commands:
+      - grunt email
+      - grunt web
+      - grunt js
       - git push git@heroku.com:darg.git $CIRCLE_SHA1:master
       - source ./scripts/quay-deploy.sh
       - source ./scripts/eb-deploy.sh

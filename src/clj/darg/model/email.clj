@@ -107,6 +107,8 @@
         subject (digest-subject-line user)
         darg (first (darg/team-timeline user (:id team) one-day-ago))
         html (template/render-digest-email darg)]
+    (log/warn html)
+    (log/warn (count html))
     (log/info "Sending digest email to" to "from" from "for period starting" one-day-ago "to" current-local-time)
     (spit "demo.html" html)
     (mailgun/send-message {:from from
