@@ -6,7 +6,8 @@
             [darg.model.email :as email]
             [darg.model.task :as task]
             [darg.model.team :as team]
-            [darg.model.user :as user]))
+            [darg.model.user :as user]
+            [darg.util.datetime :as dt]))
 
 (with-db-fixtures)
 
@@ -34,3 +35,7 @@
     (let [user model-fixtures/test-user-1
           team model-fixtures/test-team-3]
       (is (false? (email/user-can-email-this-team? (:email user) (:email team)))))))
+
+(deftest we-can-parse-a-date-from-a-subject-line-we-wrote
+  (let [subject (email/daily-subject-line model-fixtures/test-user-1)]
+    (is (some? (dt/sql-time-from-subject subject)))))
