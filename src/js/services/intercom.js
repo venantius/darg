@@ -6,6 +6,7 @@ darg.service('intercom', function($cookieStore, $http, $location) {
     window.Intercom('boot', {
       app_id: "pt2u9jve",
       name: user.name,
+      user_id: user.id,
       email: user.email,
       created_at: Date.parse(user.created_at) / 1000
     });

@@ -194,7 +194,6 @@
   "Find tasks for this user by date and team"
   [user team-id date]
   (select db/task
-          (fields :id :timestamp :user_id :team_id :task)
           (where {:user_id (:id user)
                   :timestamp (c/to-sql-time date)
                   :team_id team-id})))

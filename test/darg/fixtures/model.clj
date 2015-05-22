@@ -9,7 +9,7 @@
   {:email "savelago@darg.io"
    :password (encrypt-password "butts")
    :name "John Lago"
-   :timezone "UTC"
+   :timezone "America/Los_Angeles"
    :email_hour "1pm"
    :admin true
    :bot false
@@ -112,52 +112,68 @@
    test-team-3])
 
 (def test-task-1
-  {:timestamp (c/to-sql-time (t/now))
+  {:date nil
+   :timestamp (c/to-sql-time (t/now))
    :user_id 4
    :team_id 1
-   :task "Do a good deed everyday"})
+   :task "Destroyed the Enchiridion."
+   :type "task"})
 
 (def test-task-2
-  {:timestamp (c/to-sql-time (t/now))
+  {:date nil
+   :timestamp (c/to-sql-time (t/now))
    :user_id 2
    :team_id 2
-   :task "Destroy all humans"})
+   :task "Destroy all humans"
+   :type "task"})
 
 (def test-task-3
-  {:timestamp (c/to-sql-time (t/minus (t/now) (t/days 1)))
+  {:date (c/to-sql-date (t/today))
+   :timestamp nil
    :user_id 4
    :team_id 1
-   :task "Salute the shorts"})
+   :task "Went out on a date with Flame Princess!"
+   :type "email"})
 
 (def test-task-4
-  {:timestamp (c/to-sql-time (t/now))
+  {:date nil
+   :timestamp (c/to-sql-time (t/now))
    :user_id 2
    :team_id 3
-   :task "Once more into the breach"})
+   :task "Once more into the breach"
+   :type "task"})
 
 (def test-task-5
-  {:timestamp (c/to-sql-time (t/minus (t/now) (t/days 1)))
+  {:date nil
+   :timestamp (c/to-sql-time (t/minus (t/now) (t/days 1)))
    :user_id 4
    :team_id 1
-   :task "Some folks call it a kaiser blade, me I call it a sling blade"})
+   :task "Some folks call it a kaiser blade, me I call it a sling blade"
+   :type "task"})
 
 (def test-task-6
-  {:timestamp (c/to-sql-time (t/now))
+  {:date (c/to-sql-date (t/today))
+   :timestamp nil
    :user_id 4
    :team_id 2
-   :task "Defeated the ice king."})
+   :task "Defeated the ice king."
+   :type "email"})
 
 (def test-task-7
-  {:timestamp (c/to-sql-time (t/now))
+  {:date nil
+   :timestamp (c/to-sql-time (t/now))
    :user_id 6
    :team_id 2
-   :task "Got a banking charter!"})
+   :task "Got a banking charter!"
+   :type "task"})
 
 (def test-task-8
-  {:timestamp (c/to-sql-time (t/now))
+  {:date nil
+   :timestamp (c/to-sql-time (t/now))
    :user_id 4
    :team_id 2
-   :task "Rescued Princess Bubblegum and saved the candy kingdom from disaster once again. It's a wonder they get anything done over there."})
+   :task "Rescued Princess Bubblegum and saved the candy kingdom from disaster once again. It's a wonder they get anything done over there."
+   :type "task"})
 
 (def test-tasks
   [test-task-1

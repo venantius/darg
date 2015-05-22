@@ -36,8 +36,8 @@
   in the given timezone (in long form, e.g. \"America/Los_Angeles\"."
   [dt tz-string]
   (t/to-time-zone
-    dt
-    (t/time-zone-for-id tz-string)))
+   dt
+   (t/time-zone-for-id tz-string)))
 
 (defn as-local-date
   "Given a date, return a localized datetime object for that date.
@@ -48,8 +48,8 @@
    Angeles (for instance)."
   [dt tz-string]
   (t/from-time-zone
-    dt
-    (t/time-zone-for-id tz-string)))
+   dt
+   (t/time-zone-for-id tz-string)))
 
 (defn nearest-hour
   "Return a constructed date-time object for the nearest hour (rounded
@@ -76,22 +76,24 @@
   (let [most-recent-day (t/minus (t/today) (t/days offset))]
     (map (partial offset-date most-recent-day) (range size))))
 
-(defn sql-time-from-subject
-   "Used to extract dates from the subject line. Assumes date format like 'Sept 23 2013' "
+(defn parse-from-email-subject
+  "Parse a DateTime object from a Darg.io email subject line.
+   
+   Assumes the subject will include a date in the format of 'September 23, 2015'"
   [string]
-  (c/to-sql-time (f/parse
-                 (f/formatter "MMM dd, YYY")
-                 (re-find (re-pattern "(?:January|February|March|April|May|June|July|August|September|October|November|December)\\s\\d{2},\\s\\d{4}") string))))
+  (f/parse
+   (f/formatter "MMM dd, YYY")
+   (re-find (re-pattern "(?:January|February|March|April|May|June|July|August|September|October|November|December)\\s\\d{2},\\s\\d{4}") string)))
 
 (defn sql-time-from-task
   "Convert a string into a SQL timestamp."
   [string]
   (log/warn string)
   (c/to-sql-time
-    (c/from-string string)))
+   (c/from-string string)))
 
 (defn datetime->date-str
   [dt]
   (f/unparse
-    (f/formatters :date)
-    dt))
+   (f/formatters :date)
+   dt))

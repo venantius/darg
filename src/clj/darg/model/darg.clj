@@ -7,20 +7,30 @@
             [darg.model.team :as team]
             [darg.util :as util]
             [darg.util.datetime :as dt]
-            [korma.core :refer [fields select with where]]))
+            [korma.core :refer [fields order select with where]]))
 
 (defn team-darg-by-date
   "Generate a darg for a specific team for a specific dates"
   [team-id role-ids date]
   (let [from (c/to-sql-time date)
-        to (c/to-sql-time (t/plus date (t/days 1)))]
-    (log/debug from)
-    (log/debug to)
+        to (c/to-sql-time (t/plus date (t/days 1)))
+        date (c/to-sql-date
+              (t/date-time
+               (t/year date)
+               (t/month date)
+               (t/day date)))]
     (select db/user
             (with db/task
-                  (where {:team_id team-id
-                          :timestamp [>= from]})
-                  (where {:timestamp [< to]}))
+                  (where 
+                   (and 
+                    {:team_id team-id}
+                    (or
+                     (and 
+                      {:timestamp [>= from]}
+                      {:timestamp [< to]})
+                     {:date date})))
+                  (order :date)
+                  (order :timestamp))
             (where {:id [in role-ids]}))))
 
 (defn- formatted-team-darg-by-date
@@ -28,9 +38,6 @@
   [team-id role-ids dt]
   {:date (dt/datetime->date-str dt)
    :user (vec (team-darg-by-date team-id role-ids dt))})
-
-;; take a date string
-;; construct a datetime object with that date in that timezone
 
 (defn team-timeline
   "Build a darg timeline for a given team. Also needs to know which user
@@ -40,4 +47,4 @@
   (let [role-ids (map :id (team/fetch-roles team-id))
         local-date (dt/as-local-date date (:timezone user))]
     (list (formatted-team-darg-by-date
-            team-id role-ids local-date))))
+           team-id role-ids local-date))))
