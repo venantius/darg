@@ -9,7 +9,7 @@
 
 (defmodel db/task {})
 
-(defn create-task-list
+(defn create-tasks-from-email
   "Used to insert multiple tasks into the db with matching metadata
   Takes a vector of tasks and a map of metadata {:user_id :team_id :date} to apply to the tasklist"
   [tasks-list metadata]

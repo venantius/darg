@@ -57,19 +57,21 @@
                    (get (:headers auth-response) "Set-Cookie"))))))
 
 (deftest update-user-works
-  (let [params {:email "test-user5@darg.io"
-                :name "Fiona the Human"
-                :id "4"
-                :send_digest_email "true"
-                :send_daily_email "true"}
-        sample-request {:user {:email "test-user2@darg.io" :id 4}
-                        :request-method :post
-                        :params params}
-        response (api/update! sample-request)]
-    (is (= (:status response) 200))
-    (is (some? (user/fetch-one-user {:email "test-user5@darg.io"})))))
+  (with-redefs [darg.services.mailgun/send-message (constantly true)]
+    (let [params {:email "test-user5@darg.io"
+                  :name "Fiona the Human"
+                  :id "4"
+                  :send_digest_email "true"
+                  :send_daily_email "true"}
+          sample-request {:user {:email "test-user2@darg.io" :id 4}
+                          :request-method :post
+                          :params params}
+          response (api/update! sample-request)]
+      (is (= (:status response) 200))
+      (is (some? (user/fetch-one-user {:email "test-user5@darg.io"}))))))
 
-(deftest changing-the-email-requires-a-new-confirmation)
+(deftest changing-the-email-requires-a-new-confirmation
+  #_(is (= 0 1)))
 
 (deftest we-cant-update-a-user-to-have-an-email-of-an-existing-user
   (let [params {:email "david@ursacorp.io"

@@ -38,4 +38,4 @@
 
 (deftest we-can-parse-a-date-from-a-subject-line-we-wrote
   (let [subject (email/daily-subject-line model-fixtures/test-user-1)]
-    (is (some? (dt/sql-time-from-subject subject)))))
+    (is (some? (dt/parse-from-email-subject subject)))))

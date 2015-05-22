@@ -30,11 +30,8 @@
                    :email "davidst@darg.io"
                    :id 3}
                   {:task (list
-                            {:task "Do a good deed everyday"
-                             :team_id 1
-                             :user_id 4
-                             :timestamp (:timestamp fixture-data/test-task-1)
-                             :id 1})
+                           (assoc fixture-data/test-task-3 :id 3)
+                           (assoc fixture-data/test-task-1 :id 1))
                    :name "Finn the Human"
                    :email "test-user2@darg.io"
                    :id 4}

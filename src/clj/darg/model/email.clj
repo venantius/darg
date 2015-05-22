@@ -1,5 +1,6 @@
 (ns darg.model.email
-  (:require [clj-time.core :as t]
+  (:require [clj-time.coerce :as c]
+            [clj-time.core :as t]
             [clj-time.format :as f]
             [clojure.string :as str]
             [clojure.tools.logging :as log]
@@ -58,10 +59,12 @@
   (let [task-list (-> stripped-text
                       (str/split #"\n")
                       (->> (map str/trim)))
-        email-metadata {:user_id (:id (user/fetch-one-user {:email sender}))
-                        :team_id (:id (team/fetch-one-team {:email recipient}))
-                        :timestamp (dt/sql-time-from-subject subject)}]
-    (task/create-task-list task-list email-metadata)))
+        sending-user (user/fetch-one-user {:email sender})
+        metadata {:user_id (:id sending-user)
+                  :team_id (:id (team/fetch-one-team {:email recipient}))
+                  :date (c/to-sql-date
+                          (dt/parse-from-email-subject subject))}]
+    (task/create-tasks-from-email task-list metadata)))
 
 
 (defn daily-subject-line
