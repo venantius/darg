@@ -9906,8 +9906,19 @@ div.outer-bg {
     background-image: url("/images/outer/foggy-read-sm.jpg");
   }
 }
+div.outer-section {
+  margin-top: 5vh;
+  margin-bottom: 10vh;
+  display: block;
+}
+@media only screen and (max-device-width: 768px) {
+  div.outer-section {
+    margin-top: 0vh;
+    margin-bottom: 4vh;
+  }
+}
 div.call-to-action {
-  height: 100vh;
+  height: 93vh;
   padding-top: 25vh;
   text-align: center;
   display: block;
@@ -9925,18 +9936,37 @@ div.call-to-action p {
   }
 }
 div.diagram {
-  width: 90vw;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  display: inline-block;
+  float: none;
 }
 img.diagram {
-  max-width: 600px;
+  max-width: 550px;
   max-height: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5vh;
+  display: block;
 }
 @media only screen and (max-device-width: 768px) {
   img.diagram {
+    margin-top: 0px;
+    margin-bottom: 20px;
     max-width: 100%;
     max-height: 100%;
+  }
+}
+.outer-mark {
+  margin-top: 35%;
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+  font-size: 80px !important;
+}
+@media only screen and (max-device-width: 768px) {
+  .outer-mark {
+    margin-top: 5px;
+    margin-bottom: 30px;
   }
 }
 .img-portrait {
@@ -10048,6 +10078,13 @@ a.team-settings-link {
   line-height: 0.6;
   margin-left: 20px;
   width: 36px;
+}
+a.team-settings-link:hover {
+  color: #1abc9c;
+}
+i.settings {
+  position: relative;
+  bottom: 3px;
 }
 .nav-list > li > a {
   display: inline-block;

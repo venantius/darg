@@ -2,9 +2,10 @@
 <html lang="en" ng-app="darg">
   <head>
 
-    <title>Darg.io</title>
+    <title>Darg - Say Goodbye to Status Meetings</title>
     <meta charset="utf-8">
-    <meta content="Automatic status reports delivered to your e-mail inbox from the tools you already use." name="description">
+    <meta content="Automatic daily reports delivered to your e-mail inbox, with data from the tools you already use." name="description">
+    <meta content="snippets, remote standup, engineering standup, status meetings, automatic saas tools, remote communication tool, remote development tools, hosted status reports, hosted snippets, standup as a service" name="keywords">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
@@ -351,6 +352,11 @@
           </li>
         </ul>
       </div>
+      <div class="col-md-2 col-sm-2">
+        <ul class="bottom-menu-iconic-list">
+          <li><a href="https://twitter.com/darg_io" class="fui-twitter"></a></li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
@@ -510,44 +516,87 @@
 
 
 
-<div class="container mtl mbl"> 
-  <div class="row">
-    <div class="col-md-3">
-    </div>
-    <div class="col-xs-12 col-md-6">
-      <h4>
+<div class="container"> 
+  <div class="row outer-section">
+    <div class="col-xs-12 col-md-6 prl">
+      <h3>
         How It Works
-      </h4>
+      </h3>
+
+      <p class="lead">
+        Every day, we send you a short e-mail asking what you've done.
+
+        All you have to do is reply. 
+      </p>
+
+      <div class="col-xs-12 hidden-md hidden-lg">
+        <div class="pbl">
+          <img class="diagram" src="/images/outer/batch_email.png">
+        </div>
+      </div>
 
       <p>
-        Every day, we send you a short e-mail asking what you did that day - all you have to do is reply. At the end of the day, your team's responses are batched up and emailed out to the entire team.
+        We take your replies and use them to fill out a log of your activity that day. You can also enter your tasks and achievements via our web UI.
+        
+        At the end of the day, we send out a summary email with everybody's activity for the day. 
       </p>
+      <p>
+        <b>At a glance, see what your friends and teammates have been up to!</b>
+      </p>
+
+    </div>
+    <div class="hidden-xs hidden-sm col-md-6 pll">
+      <div class="diagram">
+        <img class="diagram" src="/images/outer/batch_email.png">
+      </div>
     </div>
   </div>
-  <div class="col-md-3">
-  </div>
-</div>
-<center>
-  <div class="diagram pbl">
-    <img class="diagram" src="/images/outer/batch_email.png">
-  </div>
-</center>
+  <hr>
 
 
-<div class="container mtl mbl"> 
-  <div class="row">
-    <div class="col-md-3">
+  <div class="row outer-section">
+    <div class="col-md-6 hidden-xs hidden-sm prl">
+      <div class="col-xs-6">
+        <center>
+          <i class="fa fa-github fa-5 outer-mark"></i>
+        </center>
+      </div>
+      <div class="col-xs-6">
+        <center>
+          <i class="fa fa-trello fa-5 outer-mark"></i>
+        </center>
+      </div>
     </div>
     <div class="col-xs-12 col-md-6">
+      <h3>
+        Hate Writing Things Down?
+      </h3>
+      <p class="lead">
+        We've got you covered.
+      </p>
+
+      <div class="col-xs-12 hidden-md hidden-lg prl mrl">
+        <div class="col-xs-6 prl">
+          <center>
+            <i class="fa fa-github fa-5 outer-mark"></i>
+          </center>
+        </div>
+        <div class="col-xs-6 prl">
+          <center>
+            <i class="fa fa-trello fa-5 outer-mark"></i>
+          </center>
+        </div>
+      </div>
       <p>
-        You can also enter tasks as you complete them via our web UI.
+        Your tools already track your activity - why write down what they already know? We're working on easily configurable integrations with GitHub and Trello that tie into your existing workflow.
       </p>
       <p>
-        Don't want to reply to an e-mail? No problem! We're working on easily configurable integrations with GitHub and Trello that tie into your existing workflow.
+        <b>Keep your teammates informed of your activity - without the extra work.</b>
       </p>
     </div>
   </div>
-  <div class="col-md-3">
+  <div class="row">
+
   </div>
 </div>
 
@@ -1190,7 +1239,7 @@
             </li>
           </ul>
           <a class="team-settings-link" ng-href="/team/{{Timeline.teamId}}">
-            <i class="fa fa-cog"></i>
+            <i class="fa fa-cog settings"></i>
           </a>
       </div>
       <div class="col-xs-12 col-md-5 pbl calendar-container">
@@ -1262,7 +1311,7 @@
             <!-- Enter new tasks -->
             <div ng-controller="DargTaskCtrl as Task" ng-show="isCurrentUser(user.id)">
               <form class="task-form" ng-submit="Timeline.postTask(darg.date, Task.task)">
-                <input type="text" placeholder="Left something out? Enter it here!" class="form-control" ng-model="Task.task"/>
+                <input type="text" placeholder="What else did you do?" class="form-control" ng-model="Task.task"/>
               </form>
             </div>
           </div>
