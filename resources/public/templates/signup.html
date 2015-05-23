@@ -1,53 +1,38 @@
-<div class="container">
-  <div class="row ptl pbl">
-    <div class="col-xs-12 ptl">
+<div class="container inner"> 
+  <div class="row">
+    <div class="col-md-4">
     </div>
-  </div>
+    <div class="col-xs-12 col-md-4">
+      <h4>Sign Up</h4>
+      <form>
 
-  <div class="row ptl pbl mbl">
-    <div class="col-xs-1"></div>
-    <div class="col-xs-3">
-      <h2 class="dictionary-header">Darg</h2>
-    </div>
-    <div class="col-xs-8 ptl">
-      /dɑːɡ/  <b>noun</b><br>
-      <p class="dictionary-text">1. <i>Scot. and North English.</i> a day's work</p>
-      <p class="dictionary-text">2. <i>Australian.</i> a fixed or definite amount of work; a work quota.</p>
-    </div>
-  </div>
-  <div class="row mtl pbl mbl">
-  </div>
-
-  <!-- definition and signup form -->
-  <div class="row ptl mtl pbl mbl">
-    <!-- definition -->
-    <div class="col-xs-7 prl">
-      <p><b>Say goodbye to status meetings.</b></p>
-      <p>With Darg.io, we send you a daily e-mail asking what you did that day - all you have to do is reply, and your Darg is rolled up and sent to everybody on your team.</p>
-
-      <p>Don't want to reply to an e-mail? No problem! We've got easy to set up integrations with GitHub and Trello that tie into your existing workflow.</p>
-
-    </div>
-    <!-- /definition -->
-    <!-- signup form -->
-    <div class="col-xs-5 pll">
-      <form class="login-form">
+        Your Name
         <div class="form-group">
-          <input type="text" class="form-control login-field" placeholder="Your name" ng-model="Signup.SignupForm.name"/>
-          <label class="login-field-icon fui-user" for="signup-name"></label>
+          <input type="text" class="form-control" ng-model="Signup.SignupForm.name"/>
         </div>
+
+        E-mail
         <div class="form-group">
-          <input type="text" class="form-control login-field" placeholder="Your e-mail" ng-model="Signup.SignupForm.email"/>
-          <label class="login-field-icon fui-mail" for="signup-email"></label>
+          <input type="text" class="form-control" ng-model="Signup.SignupForm.email"/>
         </div>
+
+        Password
         <div class="form-group">
-          <input type="password" class="form-control login-field" placeholder="Your password" ng-model="Signup.SignupForm.password"/>
-          <label class="login-field-icon fui-lock" for="signup-pass"></label>
+          <input type="password" class="form-control" ng-model="Signup.SignupForm.password"/>
         </div>
-        <button class="btn btn-primary btn-lg btn-block" ng-click="Signup.Signup()"> 
-          Sign Up 
-        </button>
+
+        <div class="form-group">
+          <button class="btn btn-primary" ng-click="Signup.Signup()"> 
+            Sign up - it's free!
+          </button>
+
+          <button class="btn btn-info" ng-click="Signup.goToLoginPage()"> 
+            I already have an account
+          </button>
+        </div>
       </form>
     </div>
+  </div>
+  <div class="col-md-4">
   </div>
 </div>

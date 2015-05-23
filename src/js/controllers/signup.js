@@ -26,4 +26,8 @@ darg.controller('DargSignupCtrl',
             console.log(data)
         });
     };
+
+    this.goToLoginPage = function() {
+      $location.path('/login');
+    }
 }]);
