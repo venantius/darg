@@ -116,7 +116,11 @@ module.exports = function(grunt) {
         tasks: "email"
       },
       web: {
-        files: ["./resources/**/*.html", "./src/less/**/*.less"],
+        files: [
+          "./resources/public/templates/*.html", 
+          "./resources/build/raw/index.html", 
+          "./src/less/**/*.less"
+        ],
         tasks: "web"
       }
     }

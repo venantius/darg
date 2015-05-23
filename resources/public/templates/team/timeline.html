@@ -24,7 +24,7 @@
             </li>
           </ul>
           <a class="team-settings-link" ng-href="/team/{{Timeline.teamId}}">
-            <i class="fa fa-cog"></i>
+            <i class="fa fa-cog settings"></i>
           </a>
       </div>
       <div class="col-xs-12 col-md-5 pbl calendar-container">
@@ -96,7 +96,7 @@
             <!-- Enter new tasks -->
             <div ng-controller="DargTaskCtrl as Task" ng-show="isCurrentUser(user.id)">
               <form class="task-form" ng-submit="Timeline.postTask(darg.date, Task.task)">
-                <input type="text" placeholder="Left something out? Enter it here!" class="form-control" ng-model="Task.task"/>
+                <input type="text" placeholder="What else did you do?" class="form-control" ng-model="Task.task"/>
               </form>
             </div>
           </div>
