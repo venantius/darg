@@ -531,8 +531,25 @@
   <div class="diagram pbl">
     <img class="diagram" src="/images/outer/batch_email.png">
   </div>
-<center>
+</center>
 
+
+<div class="container mtl mbl"> 
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-xs-12 col-md-6">
+      <p>
+        You can also enter tasks as you complete them via our web UI.
+      </p>
+      <p>
+        Don't want to reply to an e-mail? No problem! We're working on easily configurable integrations with GitHub and Trello that tie into your existing workflow.
+      </p>
+    </div>
+  </div>
+  <div class="col-md-3">
+  </div>
+</div>
 
 <div class="container inner">
   <div class="row">
@@ -578,13 +595,15 @@
 
       <p>We believe that simple pricing plans are best, and that's what we've done with Darg. No hidden clauses or catches - just a free tier for small teams, and a flat rate for everyone after that.</p>
 
-      <br>
+      <div ng-hide="loggedIn()">
+        <br>
+        <center>
+          <button class="btn btn-primary btn-lg" ng-click="goToSignupPage()">
+            Try it free for 30 days
+          </button>
+        </center>
 
-      <center>
-        <button class="btn btn-primary btn-lg" ng-click="goToSignupPage()">
-          Try it free for 30 days
-        </button>
-      </center>
+      </div>
 
       <br>
 
@@ -700,57 +719,42 @@
   </div>
 </div>
 
-<div class="container">
-  <div class="row ptl pbl">
-    <div class="col-xs-12 ptl">
+<div class="container inner"> 
+  <div class="row">
+    <div class="col-md-4">
     </div>
-  </div>
+    <div class="col-xs-12 col-md-4">
+      <h4>Sign Up</h4>
+      <form>
 
-  <div class="row ptl pbl mbl">
-    <div class="col-xs-1"></div>
-    <div class="col-xs-3">
-      <h2 class="dictionary-header">Darg</h2>
-    </div>
-    <div class="col-xs-8 ptl">
-      /dɑːɡ/  <b>noun</b><br>
-      <p class="dictionary-text">1. <i>Scot. and North English.</i> a day's work</p>
-      <p class="dictionary-text">2. <i>Australian.</i> a fixed or definite amount of work; a work quota.</p>
-    </div>
-  </div>
-  <div class="row mtl pbl mbl">
-  </div>
-
-  <!-- definition and signup form -->
-  <div class="row ptl mtl pbl mbl">
-    <!-- definition -->
-    <div class="col-xs-7 prl">
-      <p><b>Say goodbye to status meetings.</b></p>
-      <p>With Darg.io, we send you a daily e-mail asking what you did that day - all you have to do is reply, and your Darg is rolled up and sent to everybody on your team.</p>
-
-      <p>Don't want to reply to an e-mail? No problem! We've got easy to set up integrations with GitHub and Trello that tie into your existing workflow.</p>
-
-    </div>
-    <!-- /definition -->
-    <!-- signup form -->
-    <div class="col-xs-5 pll">
-      <form class="login-form">
+        Your Name
         <div class="form-group">
-          <input type="text" class="form-control login-field" placeholder="Your name" ng-model="Signup.SignupForm.name"/>
-          <label class="login-field-icon fui-user" for="signup-name"></label>
+          <input type="text" class="form-control" ng-model="Signup.SignupForm.name"/>
         </div>
+
+        E-mail
         <div class="form-group">
-          <input type="text" class="form-control login-field" placeholder="Your e-mail" ng-model="Signup.SignupForm.email"/>
-          <label class="login-field-icon fui-mail" for="signup-email"></label>
+          <input type="text" class="form-control" ng-model="Signup.SignupForm.email"/>
         </div>
+
+        Password
         <div class="form-group">
-          <input type="password" class="form-control login-field" placeholder="Your password" ng-model="Signup.SignupForm.password"/>
-          <label class="login-field-icon fui-lock" for="signup-pass"></label>
+          <input type="password" class="form-control" ng-model="Signup.SignupForm.password"/>
         </div>
-        <button class="btn btn-primary btn-lg btn-block" ng-click="Signup.Signup()"> 
-          Sign Up 
-        </button>
+
+        <div class="form-group">
+          <button class="btn btn-primary" ng-click="Signup.Signup()"> 
+            Sign up - it's free!
+          </button>
+
+          <button class="btn btn-info" ng-click="Signup.goToLoginPage()"> 
+            I already have an account
+          </button>
+        </div>
       </form>
     </div>
+  </div>
+  <div class="col-md-4">
   </div>
 </div>
 
@@ -762,9 +766,9 @@
       <h4>Create a New Team
       </h4>
       <form class="login-form">
+        Team name
         <div class="form-group">
-          <input type="text" class="form-control login-field" placeholder="Team name" ng-model="Team.creationForm.name"/>
-          <label class="login-field-icon fui-user" for="signup-name"></label>
+          <input type="text" class="form-control login-field" ng-model="Team.creationForm.name"/>
         </div>
         <button class="btn btn-primary btn-lg btn-block" ng-click="Team.createTeam(Team.creationForm)"> 
           Create New Team 
@@ -774,6 +778,7 @@
   </div>
 </div>
 
+<br>
 
 <div class="container inner">
   <div class="row">
@@ -906,7 +911,7 @@
         </a>
         <ul class="dropdown-menu">
           <li ng-repeat="team in currentUser.team">
-            <a ng-href="/team/{{team.id}}/timeline">
+            <a ng-href="/team/{{team.id}}">
               {{team.name}}
             </a>
           </li>
@@ -1246,7 +1251,7 @@
                 <p class=timeline-event>
                   {{task.task}}
                 </p>
-                  <span class="timeline-icon octicon octicon-check"></span>
+                <span class="timeline-icon {{Timeline.getIcon(task)}}"></span>
                   <p class="timeline-timestamp">
                     {{task.timestamp | date: 'shortTime'}}
                   </p>

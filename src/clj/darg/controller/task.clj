@@ -14,7 +14,7 @@
   Create a task."
   [{:keys [params user] :as request}]
   (log/info "Creating task:" params)
-  (let [{:keys [date task timestamp]} params
+  (let [{:keys [date task timestamp type]} params
         user (user/fetch-one-user {:id (:id user)})
         user-id (:id user)
         team-id (read-string (:team_id params))
@@ -29,7 +29,8 @@
       (responses/ok (task/create-task! {:task task
                                         :user_id user-id
                                         :team_id team-id
-                                        :timestamp timestamp})))))
+                                        :timestamp timestamp
+                                        :type type})))))
 
 (defn update!
   "/api/v1/task/:id

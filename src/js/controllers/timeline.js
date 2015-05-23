@@ -106,6 +106,18 @@ darg.controller('DargTimelineCtrl',
         });
     }
 
+    this.getIcon = function(task) {
+      if (task.type == "email") {
+        return "fa fa-envelope-o"
+      } else if (task.type == "task") {
+        return "fa fa-check"
+      }
+    };
+
+    /*
+     * watchers
+     */
+
     $scope.$watch(function() {
         return $routeParams.teamId;
     }, function(newValue, oldValue) {

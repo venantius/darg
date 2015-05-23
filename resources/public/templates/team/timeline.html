@@ -85,7 +85,7 @@
                 <p class=timeline-event>
                   {{task.task}}
                 </p>
-                  <span class="timeline-icon octicon octicon-check"></span>
+                <span class="timeline-icon {{Timeline.getIcon(task)}}"></span>
                   <p class="timeline-timestamp">
                     {{task.timestamp | date: 'shortTime'}}
                   </p>

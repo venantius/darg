@@ -15,17 +15,22 @@
   Signs a user up. This creates an account in our db and authenticates
   the user."
   [{:keys [params] :as request-map}]
-  (let [{:keys [email token]} params]
+  (let [{:keys [email name password token]} params]
+      (log/warn (every? seq (vals params)))
+    (log/warn params)
     (cond
       (some? (user/fetch-one-user {:email email}))
       (responses/conflict "A user with that e-mail already exists.")
-      (not (every? params [:email :name :password]))
+      (not (and email name password))
       (responses/bad-request
        "The signup form needs an e-mail, a name, and a password.")
+      (not (every? seq [email name password]))
+      (responses/bad-request
+       "One of the requested fields is empty.")
       :else
       (let [user (user/create-user-from-signup-form params)]
         (log/info token)
-        (if (some? token)
+        (when (some? token)
           (role/create-role-from-token! user token))
         (email-conf/create-and-send-email-confirmation user)
         {:body {:message "Account successfully created"}

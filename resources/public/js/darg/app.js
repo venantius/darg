@@ -369,6 +369,10 @@ darg.controller('DargSignupCtrl',
             console.log(data)
         });
     };
+
+    this.goToLoginPage = function() {
+      $location.path('/login');
+    }
 }]);
 
 darg.controller('DargTaskCtrl', 
@@ -644,6 +648,18 @@ darg.controller('DargTimelineCtrl',
             console.log(data)
         });
     }
+
+    this.getIcon = function(task) {
+      if (task.type == "email") {
+        return "fa fa-envelope-o"
+      } else if (task.type == "task") {
+        return "fa fa-check"
+      }
+    };
+
+    /*
+     * watchers
+     */
 
     $scope.$watch(function() {
         return $routeParams.teamId;
@@ -1025,22 +1041,23 @@ darg.service('role', function($http, $q) {
 
 darg.service('task', function($http, $q) {
 
-    this.createTask = function(params) {
-        var deferred = $q.defer();
-        $http({
-            method: "post",
-            url: "/api/v1/task",
-            data: $.param(params),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(data) {
-            deferred.resolve(data);
-        })
-        .error(function(data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
-    };
+  this.createTask = function(params) {
+    params.type = "task";
+    var deferred = $q.defer();
+    $http({
+      method: "post",
+      url: "/api/v1/task",
+      data: $.param(params),
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    })
+    .success(function(data) {
+        deferred.resolve(data);
+    })
+    .error(function(data) {
+        deferred.reject(data);
+    });
+    return deferred.promise;
+  };
 
 });
 

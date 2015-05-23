@@ -10,13 +10,15 @@
 
       <p>We believe that simple pricing plans are best, and that's what we've done with Darg. No hidden clauses or catches - just a free tier for small teams, and a flat rate for everyone after that.</p>
 
-      <br>
+      <div ng-hide="loggedIn()">
+        <br>
+        <center>
+          <button class="btn btn-primary btn-lg" ng-click="goToSignupPage()">
+            Try it free for 30 days
+          </button>
+        </center>
 
-      <center>
-        <button class="btn btn-primary btn-lg" ng-click="goToSignupPage()">
-          Try it free for 30 days
-        </button>
-      </center>
+      </div>
 
       <br>
 
