@@ -16,8 +16,6 @@
   the user."
   [{:keys [params] :as request-map}]
   (let [{:keys [email name password token]} params]
-      (log/warn (every? seq (vals params)))
-    (log/warn params)
     (cond
       (some? (user/fetch-one-user {:email email}))
       (responses/conflict "A user with that e-mail already exists.")
