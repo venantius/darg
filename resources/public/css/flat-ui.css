@@ -9938,7 +9938,7 @@ div.call-to-action {
   text-align: center;
   display: block;
 }
-div.call-to-action h3 {
+div.call-to-action h2 {
   color: #ecf0f1;
 }
 div.call-to-action p {
@@ -9975,8 +9975,9 @@ img.diagram {
   }
 }
 .outer-mark {
-  margin-top: 35%;
+  margin-top: 50px;
   text-align: center;
+  margin-bottom: 50px;
   display: inline-block;
   width: 100%;
   font-size: 80px !important;
