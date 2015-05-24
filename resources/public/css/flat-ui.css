@@ -9890,6 +9890,21 @@ div.inner {
   -moz-osx-font-smoothing: grayscale;
   transition: color .25s linear;
 }
+img.header-logo {
+  max-height: 40px;
+  display: block;
+  position: absolute;
+  -webkit-transition: opacity 0.25s linear;
+  -moz-transition: opacity 0.25s linear;
+  -o-transition: opacity 0.25s linear;
+  transition: opacity 0.25s linear;
+}
+img.header-logo.top:hover {
+  opacity: 0;
+}
+.navbar-brand {
+  padding-top: 5px;
+}
 body {
   padding-top: 53px;
 }
@@ -9908,7 +9923,7 @@ div.outer-bg {
 }
 div.outer-section {
   margin-top: 5vh;
-  margin-bottom: 10vh;
+  margin-bottom: 7vh;
   display: block;
 }
 @media only screen and (max-device-width: 768px) {
@@ -9934,6 +9949,9 @@ div.call-to-action p {
   div.call-to-action {
     padding-top: 10vh;
   }
+}
+div.shaded {
+  background-color: #f5f9fa;
 }
 div.diagram {
   width: 100%;

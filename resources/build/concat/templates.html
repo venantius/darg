@@ -303,7 +303,7 @@
     <div class="col-xs-12 col-md-6">
       <h4>Frequently Asked Questions</h4>
       <p class="question">Q: When are you going to support [BaseCamp, Asana, GitHub, etc.?]</p>
-      <p class="answer">A: Great question! We maintain a public development roadmap <a href="/roadmap">here</a>, but if you don't see a feature included there that you'd like us to work on, feel free to shoot us an email (<a href="mailto:support@darg.io">support@darg.io</a>) or reach out via twitter <a href="https://twitter.com/venantius">@venantius</a></p>
+      <p class="answer">A: Great question! We maintain a public development roadmap <a href="/roadmap">here</a>, but if you don't see a feature included there that you'd like us to work on, feel free to shoot us an email (<a href="mailto:support@darg.io">support@darg.io</a>) or reach out via twitter <a href="https://twitter.com/darg_io">@darg_io</a></p>
 
       <p class="question">Q: Why doesn't the roadmap page load?</p>
       <p class="answer">A: It's on the roadmap.</p>
@@ -322,7 +322,11 @@
   <div class="container">
     <div class="row">
       <div class="col-md-2 col-sm-2">
-        <h3 class="bottom-menu-brand">Darg.io</h3>
+
+        <h3 class="bottom-menu-brand">
+          Darg.io
+        </h3>
+
       </div>
       <div class="col-md-8 col-sm-2">
         <ul class="bottom-menu-list">
@@ -364,8 +368,11 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
+
+
       <a class="navbar-brand" href="/">
-        <i class="fa fa-home navbar-icons"></i>
+        <img class="header-logo" src="/images/navbar/navbar-logo-green.png">
+        <img class="header-logo top" src="/images/navbar/navbar-logo-copy.png">
       </a>
 
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -514,9 +521,28 @@
   </div>
 </div>
 
+<!-- value prop -->
+
+<div class="shaded">
+<div class="container">
+  <div class="row outer-section">
+    <div class="col-md-3">
+    </div>
+    <div class="col-xs-12 col-md-6">
+      <h3>Stay Up To Date The Easy Way</h3>
+      <p class="lead">
+        We help you <b>know what your team is up to</b>, without wasting their time. Whether it's through <b>email</b> or <b>automatic feeds</b>, we make it easy for everybody to be on the same page.
+      </p>
+    </div>
+    <div class="col-md-3">
+    </div>
+  </div>
+</div>
+</div>
 
 
-<div class="container"> 
+<div class="container">
+  <!-- How It Works -->
   <div class="row outer-section">
     <div class="col-xs-12 col-md-6 prl">
       <h3>
@@ -551,52 +577,82 @@
       </div>
     </div>
   </div>
-  <hr>
+</div>
 
-
-  <div class="row outer-section">
-    <div class="col-md-6 hidden-xs hidden-sm prl">
-      <div class="col-xs-6">
-        <center>
-          <i class="fa fa-github fa-5 outer-mark"></i>
-        </center>
-      </div>
-      <div class="col-xs-6">
-        <center>
-          <i class="fa fa-trello fa-5 outer-mark"></i>
-        </center>
-      </div>
-    </div>
-    <div class="col-xs-12 col-md-6">
-      <h3>
-        Hate Writing Things Down?
-      </h3>
-      <p class="lead">
-        We've got you covered.
-      </p>
-
-      <div class="col-xs-12 hidden-md hidden-lg prl mrl">
-        <div class="col-xs-6 prl">
+<!-- Hate Writing Things Down? -->
+<div class="shaded">
+  <div class="container">
+    <div class="row outer-section">
+      <div class="col-md-6 hidden-xs hidden-sm prl">
+        <div class="col-xs-6">
           <center>
             <i class="fa fa-github fa-5 outer-mark"></i>
           </center>
         </div>
-        <div class="col-xs-6 prl">
+        <div class="col-xs-6">
           <center>
             <i class="fa fa-trello fa-5 outer-mark"></i>
           </center>
         </div>
       </div>
-      <p>
-        Your tools already track your activity - why write down what they already know? We're working on easily configurable integrations with GitHub and Trello that tie into your existing workflow.
-      </p>
-      <p>
-        <b>Keep your teammates informed of your activity - without the extra work.</b>
-      </p>
+      <div class="col-xs-12 col-md-6">
+        <h3>
+          Hate Writing Things Down?
+        </h3>
+        <p class="lead">
+          We've got you covered.
+        </p>
+
+        <div class="col-xs-12 hidden-md hidden-lg prl mrl">
+          <div class="col-xs-6 prl">
+            <center>
+              <i class="fa fa-github fa-5 outer-mark"></i>
+            </center>
+          </div>
+          <div class="col-xs-6 prl">
+            <center>
+              <i class="fa fa-trello fa-5 outer-mark"></i>
+            </center>
+          </div>
+        </div>
+        <p>
+          Your tools already track your activity - why write down what they already know? We're working on easily configurable integrations with GitHub and Trello that tie into your existing workflow.
+        </p>
+        <p>
+          <b>Keep everyone informed - without the extra work.</b>
+        </p>
+      </div>
     </div>
   </div>
-  <div class="row">
+</div>
 
+<!-- Call to action -->
+<div class="container">
+  <div class="row outer-section">
+    <div class="col-md-3">
+    </div>
+    <div class="col-xs-12 col-md-6">
+      <img class="logo" alt="UrsaCorp" src="/images/ursacorp/darg.png">
+      <h3>End The Meeting Tyranny!</h3>
+      <p class="lead">
+        Sign up with Darg and say goodbye to the status meeting as you know it.
+      </p>
+
+      <br> 
+
+      <center>
+        <button class="btn btn-primary btn-lg" ng-click="goToSignupPage()">
+          Start your free trial today
+        </button>
+        <p>
+          Wait, what's the deal with <a href="/pricing">pricing</a>?
+        </p>
+      </center>
+
+      <br>
+    </div>
+    <div class="col-md-3">
+    </div>
   </div>
 </div>
 
