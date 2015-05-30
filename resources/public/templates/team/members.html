@@ -1,52 +1,10 @@
-<div class="container inner">
+<div ng-include src='"../../templates/team/settings/top.html"'></div>
+
+<div class="container">
   <div class="row">
-    <div class="col-xs-3">
-
-      <!-- Side navbar -->
-      <ul class="nav nav-list">
-        <li class="nav-header">Teams</li>
-        <li ng-repeat="team in currentUser.team">
-          <a class="team-timeline-link" ng-href="/team/{{team.id}}/timeline">
-            {{team.name}}
-          </a>
-          <a class="team-settings-link" ng-href="/team/{{team.id}}">
-            <i class="fa fa-cog"></i>
-          </a>
-        </li>
-        <li class="divider">
-        </li>
-        <li>
-          <form action="/team">
-            <button type="submit" class="btn btn-primary btn-block">
-              Create a new team&nbsp
-              <i class="fa fa-plus"></i>
-            </button>
-          </form>
-        </li>
-      </ul>
-
+    <div class="col-md-2">
     </div>
-
-    <!-- Team settings -->
-    <div class="col-xs-6">
-
-      <h4>Settings</h4>
-      <form>
-        <div class="form-group">
-          Name
-          <input type="text" class="form-control" ng-model="Team.currentTeam.name">
-        </div>
-        <!-- At the moment we don't let people change this. 
-        <div class="form-group">
-          Email
-          <input type="text" disabled="disabled" class="form-control" ng-model="Team.currentTeam.email">
-        </div>
-        --> 
-        <div class="form-group">
-          <button class="btn btn-primary" ng-click="Team.updateTeam(Team.currentTeam)">Save</button>
-        </div>
-      </form>
-
+    <div class="col-md-8 col-xs-12">
       <!-- Alerts -->
       <div class="alert alert-success" ng-repeat="alert in Team.settingsUpdatedAlerts">
         {{alert.msg}}
@@ -122,12 +80,3 @@
         </div>
       </div>
 
-      <div>
-
-      </div>
-
-      <!-- Add a new team member -->
-    </div>
-
-  </div>
-</div>

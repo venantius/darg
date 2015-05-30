@@ -1,0 +1,49 @@
+<div class="container inner">
+  <div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-xs-12 col-md-8">
+      <!-- team selector -->
+      <a href="#" class="team-selector dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+        {{Team.currentTeam.name}}
+        <span class="octicon octicon-triangle-down team-caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li ng-repeat="team in currentUser.team">
+          <a ng-href="/team/{{team.id}}/settings">
+            {{team.name}}
+          </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+          <a href="/team">Create a new team</a>
+        </li>
+      </ul>
+      <a class="team-settings-link" ng-href="/team/{{Team.currentTeam.id}}/timeline">
+        <span class="fui-calendar"></span>
+      </a>
+    </div>
+    <div class="col-md-2">
+    </div>
+  </div>
+  <div class="row ptl">
+    <div class="col-md-2">
+    </div>
+    <!-- Team settings -->
+    <div class="col-xs-12 col-md-8">
+      <ul class="nav nav-pills nav-justified">
+        <li class="{{Team.isActive(Team.page, 'settings')}}">
+          <a href="/team/{{Team.currentTeam.id}}/settings">Settings</a>
+        </li>
+        <li class="{{Team.isActive(Team.page, 'members')}}">
+          <a href="/team/{{Team.currentTeam.id}}/members">Members</a>
+        </li>
+        <li class="{{Team.isActive(Team.page, 'services')}}">
+          <a href="/team/{{Team.currentTeam.id}}/services">Integrations</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-2">
+    </div>
+  </div>
+</div>

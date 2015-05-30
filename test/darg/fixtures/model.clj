@@ -43,6 +43,7 @@
    :email_hour "7pm"
    :admin false
    :bot false
+   :created_at (c/to-sql-time (t/date-time 2014 10 30))
    :active true})
 
 (def test-user-5
@@ -83,16 +84,6 @@
    test-user-5
    test-user-6
    test-user-7])
-
-(def test-github-user-1
-  {:gh_login "dargtester1"
-   :id 10094188
-   :gh_avatar_url "https://avatars.githubusercontent.com/u/10094188?v=3"
-   :github_token_id nil
-   :darg_user_id 4})
-
-(def test-github-users
-  [test-github-user-1])
 
 (def test-team-1
   {:name "Darg"

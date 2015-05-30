@@ -52,4 +52,16 @@ darg.service('team', function($http, $location, $q) {
         })
         return deferred.promise;
     };
+
+    this.isActive = function(ctrl, page) {
+      console.log(page)
+      if (page === "settings" && ctrl === "settings") {
+        return "active"
+      } else if (page === "members" && ctrl === "members") {
+        return "active"
+      } else if (page === "services" && ctrl === "services") {
+        return "active"
+      }
+    };
+
 });

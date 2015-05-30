@@ -17,7 +17,7 @@
   []
   (oauth-github/create-auth-token test-username test-password "Temp Token For Testing22"))
 (defn access-token 
-  [] (:access_token (oauth-github/parse-oauth-response (test-github-oauth))))
+  [] (:access_token (test-github-oauth)))
 
 (defn cleanup-auth-tokens
   [f]

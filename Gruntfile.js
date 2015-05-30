@@ -53,7 +53,7 @@ module.exports = function(grunt) {
       web: {
         options: {
           // don't try to get around the CDN
-          ignore: [/dropdown/, /navbar/, /collapse/, /collapsing/],
+          ignore: [/dropdown/, /navbar/, /collapse/, /collapsing/, /active/],
           ignoreSheets: [/cdnjs/, /maxcdn/],
           timeout: 1000,
         },
@@ -136,6 +136,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-notify');
   grunt.loadNpmTasks('grunt-uncss');
   grunt.loadNpmTasks('grunt-processhtml');
   grunt.loadNpmTasks('grunt-premailer');

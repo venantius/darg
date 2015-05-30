@@ -1,4 +1,4 @@
-darg.controller('DargTeamCtrl',
+darg.controller('DargTeamServicesCtrl',
     [
     '$cookies',
     '$cookieStore',
@@ -20,6 +20,9 @@ darg.controller('DargTeamCtrl',
         team,
         user) {
     var self = this;
+
+    this.isActive = team.isActive;
+    this.page = "services";
 
     /* 
      * Forms

@@ -16,7 +16,8 @@
    "2015-04-27-daily-digest"
    "2015-04-28-timestamp-tasks"
    "2015-05-01-user-opts"
-   "2015-05-19-email-tasks"])
+   "2015-05-19-email-tasks"
+   "2015-05-26-github-oauth"])
 
 (defn migrate-all
   "Run all of our migrations."

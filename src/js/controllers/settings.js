@@ -109,4 +109,5 @@ darg.controller('DargSettingsCtrl',
         self.userProfile = newValue;
     });
 
+
 }]);

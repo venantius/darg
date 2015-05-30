@@ -15,7 +15,7 @@
             [darg.controller.team.role :as role]
             [darg.controller.user :as user]
             [darg.controller.user.email-confirmation :as conf]
-            [darg.oauth.github :as gh-oauth]
+            [darg.controller.oauth.github :as gh-oauth]
             [ring.middleware.basic-authentication :refer
              [wrap-basic-authentication]]
             [ring.util.response :refer [resource-response]]))
@@ -48,12 +48,13 @@
    "/pricing"
    "/new_password"
    "/team"
-   "/team/:team_id"
+   "/team/:team_id/settings"
+   "/team/:team_id/members"
+   "/team/:team_id/services"
    "/team/:team_id/timeline"
    "/team/:team_id/timeline/:date"
    "/settings"
-   "/settings/:settings_page"
-   "/oauth/github"])
+   "/settings/:settings_page"])
 
 (defroutes site-routes
   (rfn request 

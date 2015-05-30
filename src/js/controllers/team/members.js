@@ -1,25 +1,22 @@
-darg.controller('DargTeamCtrl',
+darg.controller('DargTeamMembersCtrl',
     [
-    '$cookies',
     '$cookieStore',
-    '$http',
-    '$location',
     '$routeParams',
     '$scope',
     'role',
     'team',
     'user',
     function(
-        $cookies,
         $cookieStore,
-        $http,
-        $location,
         $routeParams,
         $scope,
         role,
         team,
         user) {
     var self = this;
+
+    this.isActive = team.isActive;
+    this.page = "members";
 
     /* 
      * Forms
@@ -107,20 +104,6 @@ darg.controller('DargTeamCtrl',
         });
     };
 
-    this.createTeam = function(params) {
-        team.createTeam(params).
-            then(function(data) {
-                user.getCurrentUser()
-                .then(function(data) {
-                    user.info = data;
-                }, function(data) {
-                    console.log(data)
-                });
-            }, function(data) {
-                console.log(data)
-            });
-    }
-
     this.updateTeam = function(params) {
         team.updateTeam($routeParams.teamId, params).
             then(function(data) {
@@ -145,13 +128,6 @@ darg.controller('DargTeamCtrl',
             self.setAlert(self.invitationFailureAlerts, data.message);
         });
     };
-
-    this.isActiveSettingsPage = function() {
-      console.log($location.path());
-      return 'active';
-    };
-
-    this.x = "active"
 
     /* Watch what team we should be looking at */
     $scope.$watch(function() {

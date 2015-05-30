@@ -1,0 +1,27 @@
+<div ng-include src='"../../templates/team/settings/top.html"'></div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8 col-xs-12">
+      <h4>Integrations</h4>
+      <form>
+        <div class="form-group">
+          Name
+          <input type="text" class="form-control" ng-model="Team.currentTeam.name">
+        </div>
+        <!-- At the moment we don't let people change this. 
+        <div class="form-group">
+          Email
+          <input type="text" disabled="disabled" class="form-control" ng-model="Team.currentTeam.email">
+        </div>
+        --> 
+        <div class="form-group">
+          <button class="btn btn-primary" ng-click="Team.updateTeam(Team.currentTeam)">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

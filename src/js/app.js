@@ -60,9 +60,19 @@ darg.config(['$routeProvider', '$locationProvider',
             controller: 'DargTeamCtrl',
             controllerAs: 'Team'
         })
-        .when('/team/:teamId', {
+        .when('/team/:teamId/settings', {
             templateUrl: '/templates/team/settings.html',
-            controller: 'DargTeamCtrl',
+            controller: 'DargTeamSettingsCtrl',
+            controllerAs: 'Team'
+        })
+        .when('/team/:teamId/members', {
+            templateUrl: '/templates/team/members.html',
+            controller: 'DargTeamMembersCtrl',
+            controllerAs: 'Team'
+        })
+        .when('/team/:teamId/services', {
+            templateUrl: '/templates/team/services.html',
+            controller: 'DargTeamServicesCtrl',
             controllerAs: 'Team'
         })
         .when('/team/:teamId/timeline', {

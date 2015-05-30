@@ -27,9 +27,6 @@
   []
   (insert-fixtures password-reset-token fmodel/test-password-reset-tokens))
 
-(defn insert-github-user-fixture-data
-  []
-  (insert-fixtures github-user fmodel/test-github-users))
 
 (defn insert-test-user-email-confirmations
   []
@@ -42,5 +39,4 @@
   (insert-task-fixture-data)
   (insert-role-fixture-data)
   (insert-password-reset-token-fixture-data)
-  (insert-github-user-fixture-data)
   (insert-test-user-email-confirmations))
