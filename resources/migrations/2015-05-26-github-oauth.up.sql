@@ -8,5 +8,5 @@ CREATE TABLE github.access_token (
     id              SERIAL      PRIMARY KEY,
     darg_user_id    INTEGER     REFERENCES darg.user(id) ON DELETE CASCADE,
     token           TEXT        NOT NULL,
-    scopes          TEXT
+    scope           TEXT
 )

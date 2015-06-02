@@ -7,10 +7,9 @@ darg.controller('DargTeamSettingsCtrl',
         $routeParams,
         $scope,
         team) {
-    var self = this;
 
-    this.isActive = team.isActive;
-    this.page = "settings";
+    var self = this;
+    $scope.teamPage = "settings";
 
     /*
      * Controller model
@@ -30,15 +29,6 @@ darg.controller('DargTeamSettingsCtrl',
      * Utility functions
      */
 
-    this._refreshTeamData = function(team_id) {
-        team.getTeam(team_id)
-        .then(function(data) {
-            self.currentTeam = data;
-        }, function(data) {
-            console.log(data);
-        });
-    };
-
     this.updateTeam = function(params) {
         team.updateTeam($routeParams.teamId, params).
             then(function(data) {
@@ -51,14 +41,15 @@ darg.controller('DargTeamSettingsCtrl',
             });
     };
 
-    this.x = "active"
+    /*
+     * watchers
+     */
 
-    /* Watch what team we should be looking at */
     $scope.$watch(function() {
-        return $routeParams.teamId
+        return team.currentTeam;
     }, function(newValue, oldValue) {
-        if (newValue != null) {
-            self._refreshTeamData(newValue);
+        if (newValue != {}) {
+          self.currentTeam = newValue;
         }
     });
 }]);

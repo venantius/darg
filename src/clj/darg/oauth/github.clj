@@ -8,8 +8,7 @@
   (:require [cemerick.url :as url]
             [cheshire.core :as json]
             [clojure.tools.logging :as log]
-            [darg.model.github-user :as gh-user]
-            [darg.model.github-token :as gh-token]
+            [darg.model.github.access-token :as access-token]
             [darg.api.responses :as responses]
             [environ.core :as env]
             [clj-http.client :as http]
@@ -30,9 +29,12 @@
              (url/url github-login-url)
              :query {:client_id client-id
                      :redirect-uri "http://localhost:8080/oauth/github"
-                     :scope "user"
+                     :scope "user,repo,read:org"
                      :state state})]
-    (response/redirect (str url))))
+    (assoc-in
+      (response/redirect (str url))
+      [:headers "Access-Control-Allow-Origin"]
+      "*")))
 
 ;; Parses Github OAuth response and updates tables
 
@@ -44,11 +46,11 @@
    and Github token are then linked to the provided userid."
   [userid body]
   (let [access-token (:access_token 5)]
-    (gh-token/create-github-token! {:gh_token access-token})
+    (access-token/create-github-access-token! {:gh_token access-token})
     ;Link token to github user
-    (let [github-user (assoc-in (gh-user/github-api-get-current-user access-token)
+    #_(let [github-user (assoc-in (gh-user/github-api-get-current-user access-token)
                                 [:github_token_id]
-                                (gh-token/fetch-github-token-id {:gh_token access-token}))
+                                (access-token/fetch-one-github-access-token {:gh_token access-token}))
           github-user-id (:id github-user)]
       ;if a github user already exists, update it if not, create it
       (if (empty? (gh-user/fetch-github-user-by-id github-user-id))
@@ -64,21 +66,6 @@
                                             :client_id client-id
                                             :client_secret client-secret}})]
     (-> response :body (json/parse-string true))))
-
-;; Authorizations API, Used to create and manage OAuth authorization tokens for test cases
-
-(defn create-auth-token
-  [username password note]
-  (let [options {:auth (str username ":" password)
-                 :client_id client-id
-                 :client_secret client-secret
-                 :note note
-                 :scopes "user:email"}]
-    ; Simulate web-flow OAuth response
-    {:body (-> (t-oauth/create-auth options)
-               (select-keys [:scopes :token :id])
-               (clojure.set/rename-keys {:token :access_token})
-               (json/generate-string))}))
 
 (defn delete-auth-token!
   [username password id]

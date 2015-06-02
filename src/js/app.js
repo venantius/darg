@@ -75,6 +75,11 @@ darg.config(['$routeProvider', '$locationProvider',
             controller: 'DargTeamServicesCtrl',
             controllerAs: 'Team'
         })
+        .when('/team/:teamId/services/github', {
+            templateUrl: '/templates/team/services/github.html',
+            controller: 'DargTeamGitHubCtrl',
+            controllerAs: 'GitHub'
+        })
         .when('/team/:teamId/timeline', {
             templateUrl: '/templates/team/timeline.html',
             controller: 'DargTimelineCtrl',

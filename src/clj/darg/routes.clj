@@ -13,19 +13,14 @@
             [darg.controller.task :as task]
             [darg.controller.team :as team]
             [darg.controller.team.role :as role]
+            [darg.controller.team.services.github :as github]
             [darg.controller.user :as user]
             [darg.controller.user.email-confirmation :as conf]
             [darg.controller.oauth.github :as gh-oauth]
+            [darg.middleware.authentication :as auth-middleware]
             [ring.middleware.basic-authentication :refer
              [wrap-basic-authentication]]
             [ring.util.response :refer [resource-response]]))
-
-(defn matches-any-path?
-  "Does this request match any of the paths?
-   
-   Expects paths to be a coll."
-  [paths request]
-  (some #(clout/route-matches % request) paths))
 
 (defn darg-spa
  "Our single page app." 
@@ -51,6 +46,7 @@
    "/team/:team_id/settings"
    "/team/:team_id/members"
    "/team/:team_id/services"
+   "/team/:team_id/services/github"
    "/team/:team_id/timeline"
    "/team/:team_id/timeline/:date"
    "/settings"
@@ -58,7 +54,7 @@
 
 (defroutes site-routes
   (rfn request 
-    (when (matches-any-path? site-paths request)
+    (when (auth-middleware/matches-any-path? site-paths request)
       (darg-spa))))
 
 (defroutes api-routes
@@ -85,6 +81,9 @@
   (POST   "/api/v1/team/:team_id/user/:user_id"  request (role/update! request))
   (DELETE "/api/v1/team/:team_id/user/:user_id"  request (role/delete! request))
 
+  (GET    "/api/v1/team/:team_id/services/github" 
+       request (github/fetch request))
+
   (POST   "/api/v1/user"                    request (user/create! request))
   (GET    "/api/v1/user/:id"                request (user/get request))
   (POST   "/api/v1/user/:id"                request (user/update! request))
@@ -96,5 +95,6 @@
   site-routes
   api-routes
   (ANY    "/debug"                          request (debug request))
+  (GET    "/oauth/github/login"             request (gh-oauth/redirect request)) 
   (GET    "/oauth/github"                   request (gh-oauth/callback request)) 
   (route/resources "/"))

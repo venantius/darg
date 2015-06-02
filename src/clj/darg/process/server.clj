@@ -5,17 +5,18 @@
             [darg.init :as init]
             [darg.middleware :as middleware]
             [darg.middleware.authentication :as authn]
-            [darg.routes :refer [routes]]
+            [darg.routes :as routes]
             [environ.core :as env]
             [ring.adapter.jetty :refer [run-jetty]]
             [ring.middleware.json :refer [wrap-json-response]]
             [ring.middleware.session.cookie :as cookie]))
 
 (def app
-  (-> routes
+  (-> routes/routes
       (authn/wrap-authentication
         authn/darg-auth-fn
-        :whitelist authn/route-whitelist-fn)
+        :whitelist authn/route-whitelist-fn
+        :site-paths routes/site-paths)
       (handler/site
         {:session {:store (cookie/cookie-store {:key (env/env :session-key)})}})
       middleware/ignore-trailing-slash

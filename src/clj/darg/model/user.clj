@@ -109,8 +109,8 @@
    (first
     (select db/user
             (fields :timezone :email_hour :admin :bot :active
-                  :confirmed_email :digest_hour :created_at
-                  :send_daily_email :send_digest_email)
+                    :confirmed_email :digest_hour :created_at
+                    :send_daily_email :send_digest_email)
             (with db/team
                   (order :team.name :asc))
             (where params))))
@@ -118,35 +118,28 @@
    (first
     (select db/user
             (fields 
-              :confirmed_email
-              :created_at
-              :active
-              :bot
-              :admin
-              :timezone
-              :email_hour
-              :digest_hour
-              :send_daily_email
-              :send_digest_email)
+             :confirmed_email
+             :created_at
+             :active
+             :bot
+             :admin
+             :timezone
+             :email_hour
+             :digest_hour
+             :send_daily_email
+             :send_digest_email)
             (with db/team
                   (where {:team.id [in team-ids]})
                   (order :team.name :asc))
             (where params)))))
 
-; Github Account
-
-(defn fetch-user-github-account
-  "Returns the associated github user"
-  [userid]
-  (let [usermap (first (select db/user
-                               (where {:id userid})
-                               (with db/github-user)))]
-    {:user (merge (select-keys
-                   usermap
-                   [:id :email :name :admin :bot])
-                  {:github_account (select-keys
-                                    usermap
-                                    [:gh_user_id :gh_login :gh_email :gh_avatar_url])})}))
+(defn fetch-one-with-github-access-token
+  "Retrieve this user with their GitHub access token, if any."
+  [user]
+  (first (select db/user
+                 (where user)
+                 (with db/github-access-token
+                   (fields [:token :github_access_token])))))
 
 ; User Team Membership
 

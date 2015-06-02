@@ -1,13 +1,15 @@
-darg.controller('DargTeamServicesCtrl',
+darg.controller('DargTeamGitHubCtrl',
     [
     '$location',
     '$routeParams',
     '$scope',
+    'github',
     'team',
     function(
         $location,
         $routeParams,
         $scope,
+        github,
         team) {
 
     var self = this;
@@ -16,12 +18,17 @@ darg.controller('DargTeamServicesCtrl',
     /*
      * Controller model
      */
-    this.currentTeam = {};
+    self.currentTeam = {};
+    self.repos = {};
 
-    this.goToGitHubSettingsPage = function(team) {
-      url = '/team/' + team.id + '/services/github'
-      $location.path(url)
-    };
+    self.oauthWithGitHub = github.oauthWithGitHub;
+
+    /* 
+     * Utility functions
+     */
+
+    self.isAuthenticated = function() {
+    }; // TODO
 
     /* Watch what team we should be looking at */
     $scope.$watch(function() {
@@ -32,3 +39,4 @@ darg.controller('DargTeamServicesCtrl',
         }
     });
 }]);
+

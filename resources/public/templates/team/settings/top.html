@@ -1,11 +1,11 @@
-<div class="container inner">
+<div class="container inner" ng-controller="DargTeamSettingsMenuCtrl as Menu">
   <div class="row">
     <div class="col-md-2">
     </div>
     <div class="col-xs-12 col-md-8">
       <!-- team selector -->
       <a href="#" class="team-selector dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-        {{Team.currentTeam.name}}
+        {{Menu.currentTeam.name}}
         <span class="octicon octicon-triangle-down team-caret"></span>
       </a>
       <ul class="dropdown-menu">
@@ -19,7 +19,7 @@
           <a href="/team">Create a new team</a>
         </li>
       </ul>
-      <a class="team-settings-link" ng-href="/team/{{Team.currentTeam.id}}/timeline">
+      <a class="team-settings-link" ng-href="/team/{{Menu.currentTeam.id}}/timeline">
         <span class="fui-calendar"></span>
       </a>
     </div>
@@ -32,14 +32,14 @@
     <!-- Team settings -->
     <div class="col-xs-12 col-md-8">
       <ul class="nav nav-pills nav-justified">
-        <li class="{{Team.isActive(Team.page, 'settings')}}">
-          <a href="/team/{{Team.currentTeam.id}}/settings">Settings</a>
+        <li class="{{Menu.isActive(teamPage, 'settings')}}">
+          <a href="/team/{{Menu.currentTeam.id}}/settings">Settings</a>
         </li>
-        <li class="{{Team.isActive(Team.page, 'members')}}">
-          <a href="/team/{{Team.currentTeam.id}}/members">Members</a>
+        <li class="{{Menu.isActive(teamPage, 'members')}}">
+          <a href="/team/{{Menu.currentTeam.id}}/members">Members</a>
         </li>
-        <li class="{{Team.isActive(Team.page, 'services')}}">
-          <a href="/team/{{Team.currentTeam.id}}/services">Integrations</a>
+        <li class="{{Menu.isActive(teamPage, 'services')}}">
+          <a href="/team/{{Menu.currentTeam.id}}/services">Integrations</a>
         </li>
       </ul>
     </div>

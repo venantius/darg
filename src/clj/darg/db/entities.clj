@@ -11,19 +11,14 @@
  team
  task
  role
- repo
- github-user
- github-token
- github-issue
- github-push
- github-pull-request)
+ github-access-token)
 
 (defentity user
   (table :darg.user :user)
   (entity-fields :id :name :email)
   (has-many task)
   (has-many role)
-  (belongs-to github-user)
+  (has-one github-access-token {:fk :darg_user_id})
   (many-to-many team :darg.role))
 
 (defentity team
@@ -33,7 +28,6 @@
                (assoc t :email (clojure.string/lower-case email))
                t)))
   (has-many task)
-  (has-many repo :team_repo)
   (has-many role)
   (many-to-many user :darg.role))
 
@@ -51,43 +45,9 @@
   (table :darg.password_reset_token :password_reset_token)
   (belongs-to user {:fk :user_id}))
 
-(defentity github-repo
-  (table :github.repo :team_repo)
-  (many-to-many team :darg.team_repo)
-  (has-many github-issue)
-  (has-many github-push)
-  (has-many github-pull-request))
-
-(defentity github-user
-  (table :github.user :github_user)
-  (has-one user)
-  (belongs-to github-token)
-  (has-many github-issue)
-  (has-many github-push)
-  (has-many github-pull-request))
-
-(defentity github-token
-  (table :github.token :github_token)
-  (has-one github-user))
-
-(defentity team-repo
-  (table :darg.team_repo :team_repo)
-  (has-many team {:fk :team_id}))
-
-(defentity github-issue
-  (table :github.issue :github_issue)
-  (belongs-to github-user)
-  (belongs-to github-repo {:fk :gh_repo_id}))
-
-(defentity github-push
-  (table :github.push :github_push)
-  (belongs-to github-user)
-  (belongs-to github-repo {:fk :github_repo_id}))
-
-(defentity github-pull-request
-  (table :github.pull_request :github_pull_request)
-  (belongs-to github-user)
-  (belongs-to github-repo {:fk :github_repo_id}))
+(defentity github-access-token
+  (table :github.access_token :github_access_token)
+  (belongs-to user))
 
 (defentity team-invitation
   (table :darg.team_invitation)

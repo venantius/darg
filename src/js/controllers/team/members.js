@@ -15,8 +15,7 @@ darg.controller('DargTeamMembersCtrl',
         user) {
     var self = this;
 
-    this.isActive = team.isActive;
-    this.page = "members";
+    $scope.teamPage = "members";
 
     /* 
      * Forms
@@ -131,11 +130,11 @@ darg.controller('DargTeamMembersCtrl',
 
     /* Watch what team we should be looking at */
     $scope.$watch(function() {
-        return $routeParams.teamId
+      return team.currentTeam
     }, function(newValue, oldValue) {
-        if (newValue != null) {
-            self._refreshTeamData(newValue);
-            self._refreshRoleData(newValue);
-        }
+      if (Object.keys(newValue).length > 0) {
+        self.currentTeam = newValue;
+        self._refreshRoleData(newValue.id);
+      }
     });
 }]);
