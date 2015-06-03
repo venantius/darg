@@ -25,21 +25,17 @@ darg.controller('DargUserCtrl',
     $scope.auth = auth;
 
     $scope.loggedIn = function() {
-        if ($cookieStore.get('logged-in') == true) {
-            return true;
-        } else {
-            return false;
-        }
+      return ($cookieStore.get('logged-in') == true)
     };
 
     $scope.LoginForm = {
-        email: "",
-        password: ""
+      email: "",
+      password: ""
     };
 
     $scope.LoadPasswordResetPage = function() {
-        $location.path('/password_reset');
-        $location.search('failed_login', null);
+      $location.path('/password_reset');
+      $location.search('failed_login', null);
     };
 
     $scope.getCurrentUser = function() {

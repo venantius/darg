@@ -1,32 +1,123 @@
 <div ng-include src='"../../../templates/team/settings/top.html"'></div>
 
-<div class="container">
+<div class="container pbl mbl">
   <div class="row">
     <div class="col-md-2">
     </div>
     <div class="col-md-8 col-xs-12">
-      <h2>GitHub</h2>
+      <h4>GitHub</h4>
+      <p class="lead">
+        GitHub provides powerful collaboration, code review, and code management for open source and private projects.
+      </p>
       <!-- if not authorized -->
+      <h6>Authentication</h6>
       <p>
         <div class="form-group">
-          <button class="btn btn-primary" ng-click="GitHub.oauthWithGitHub()">
+          <button class="btn btn-primary" ng-click="GitHub.oauthWithGitHub(GitHub.currentTeam.id)">
             <span class="octicon octicon-octoface"></span>
             &nbsp;OAuth with GitHub
           </button>
         </div>
       </p>
 
-
       <!-- if authorized -->
 
+      <h6>Repositories</h6>
 
-      <p>
-        Select your repos here
-      </p>
+      <div ng-show=GitHub.isAuthenticated()>
+        <p>
+          Select your repos here
+        </p>
+        <div class="btn-group form-group">
+          <button class="btn btn-inverse dropdown-toggle" type="button" data-toggle="dropdown">
+            Add Repository<span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-inverse scrollable-menu" role="menu">
+            <li ng-repeat="repo in GitHub.userRepos">
+              <a href="#">{{repo}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-      <p>
-        Select your notification options here
-      </p>
+      <h4>
+        Events
+      </h4>
+      <div class="row pbm">
+        <div class="col-xs-12">
+          <h6>
+            Commit Events
+          </h6>
+
+          <label class="checkbox">
+            <input type="checkbox" class="custom-checkbox">
+            <span class="icons">
+              <span class="icon-unchecked">
+              </span>
+              <span class="icon-checked">
+              </span>
+            </span>
+            Commits pushed to this repository
+          </label>
+
+          <label class="checkbox">
+            <input type="checkbox" class="custom-checkbox">
+            <span class="icons">
+              <span class="icon-unchecked">
+              </span>
+              <span class="icon-checked">
+              </span>
+            </span>
+            New comment on commit
+          </label>
+        </div>
+      </div>
+
+      <div class="row pbl">
+        <div class="col-xs-12">
+          <h6>
+            Issue / Pull Request Events
+          </h6>
+          
+          <label class="checkbox">
+            <input type="checkbox" class="custom-checkbox">
+            <span class="icons">
+              <span class="icon-unchecked">
+              </span>
+              <span class="icon-checked">
+              </span>
+            </span>
+            Pull request opened or closed
+          </label>
+
+          <label class="checkbox">
+            <input type="checkbox" class="custom-checkbox">
+            <span class="icons">
+              <span class="icon-unchecked">
+              </span>
+              <span class="icon-checked">
+              </span>
+            </span>
+            Issues opened or closed
+          </label>
+
+          <label class="checkbox">
+            <input type="checkbox" class="custom-checkbox">
+            <span class="icons">
+              <span class="icon-unchecked">
+              </span>
+              <span class="icon-checked">
+              </span>
+            </span>
+            New comment on issue or pull request
+          </label>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" ng-click="GitHub.oauthWithGitHub(GitHub.currentTeam.id)">
+        Update settings
+      </button>
+
     </div>
   </div>
 </div>

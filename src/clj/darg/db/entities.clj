@@ -11,7 +11,11 @@
  team
  task
  role
- github-access-token)
+ github-access-token
+ github-oauth-state
+ github-team-settings
+ github-repo
+ github-team-repo)
 
 (defentity user
   (table :darg.user :user)
@@ -19,6 +23,7 @@
   (has-many task)
   (has-many role)
   (has-one github-access-token {:fk :darg_user_id})
+  (has-many github-oauth-state {:fk :darg_user_id})
   (many-to-many team :darg.role))
 
 (defentity team
@@ -29,6 +34,8 @@
                t)))
   (has-many task)
   (has-many role)
+  (has-many github-oauth-state {:fk :darg_team_id})
+  (has-many github-team-repo {:fk :darg_team_id})
   (many-to-many user :darg.role))
 
 (defentity role
@@ -47,7 +54,8 @@
 
 (defentity github-access-token
   (table :github.access_token :github_access_token)
-  (belongs-to user))
+  (belongs-to user)
+  (has-many github-oauth-state {:fk :access_token_id}))
 
 (defentity team-invitation
   (table :darg.team_invitation)
@@ -65,3 +73,22 @@
                ec
                (assoc ec :token (token/generate-token)))))
   (belongs-to user))
+
+(defentity github-oauth-state
+  (table :github.oauth_state :github_oauth_state)
+  (belongs-to user)
+  (belongs-to team))
+
+(defentity github-team-settings
+  (table :github.team_settings :github_team_settings)
+  (belongs-to team)
+  (belongs-to github-oauth-state))
+
+(defentity github-repo
+  (table :github.repo :github_repo)
+  (has-many github-team-repo))
+
+(defentity github-team-repo
+  (table :github.team_repo :github_team_repo)
+  (belongs-to github-repo)
+  (belongs-to team))

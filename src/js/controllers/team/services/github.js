@@ -1,11 +1,13 @@
 darg.controller('DargTeamGitHubCtrl',
     [
+    '$cookieStore',
     '$location',
     '$routeParams',
     '$scope',
     'github',
     'team',
     function(
+        $cookieStore,
         $location,
         $routeParams,
         $scope,
@@ -19,16 +21,29 @@ darg.controller('DargTeamGitHubCtrl',
      * Controller model
      */
     self.currentTeam = {};
-    self.repos = {};
+
+    self.userRepos = {};
+
+    github.getUsersRepoList()
+    .then(function(data) {
+      self.userRepos = data;
+    }, function(data) {
+      console.log(data)
+    });
 
     self.oauthWithGitHub = github.oauthWithGitHub;
+
+    /*
+     * Data functions
+     */
 
     /* 
      * Utility functions
      */
 
     self.isAuthenticated = function() {
-    }; // TODO
+      return ($cookieStore.get('github') == true)
+    }
 
     /* Watch what team we should be looking at */
     $scope.$watch(function() {

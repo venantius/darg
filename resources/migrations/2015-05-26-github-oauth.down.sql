@@ -1,3 +1,7 @@
+DROP TABLE github.team_repo;
+DROP TABLE github.repo;
+DROP TABLE github.team_settings;
+DROP TABLE github.oauth_state;
 DROP TABLE github.access_token;
 
 CREATE TABLE github.token (

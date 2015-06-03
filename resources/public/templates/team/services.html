@@ -5,15 +5,27 @@
     <div class="col-md-2">
     </div>
     <div class="col-md-8 col-xs-12">
-      <h4>Integrations</h4>
-      <form>
-        <div class="form-group">
+
+      <h4 class="pbm">Integrations</h4>
+      <div class="panel panel-default">
+
+      <div class="panel-body">
+        <img class="service-logo" src="/images/github/mark.png">
+        <form class="service-button">
           <button class="btn btn-primary" ng-click="Team.goToGitHubSettingsPage(Team.currentTeam)">
-            <span class="octicon octicon-octoface"></span>
-            &nbsp;Add GitHub Integration
+            <span class="octicon octicon-gear"></span>
+            &nbsp;Configure
           </button>
+        </form>
+        <div class="service-block">
+          <h5 class="service-header">GitHub</h5>
+          <p class="service-description">
+            Source control and code management.
+          </p>
+
         </div>
-      </form>
+      </div>
+      </div>
     </div>
   </div>
 </div>

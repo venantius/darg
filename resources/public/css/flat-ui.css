@@ -10028,6 +10028,28 @@ div.role-profile {
 div.team-role {
   padding-top: 30px;
 }
+/* Styling for the services configuration page */
+img.service-logo {
+  float: left;
+  max-height: 46px;
+  max-width: 46px;
+}
+div.service-block {
+  margin-left: 70px;
+  margin-right: 95px;
+  display: block;
+}
+p.service-description {
+  margin-bottom: 0px;
+}
+form.service-button {
+  margin-top: 8px;
+  float: right;
+}
+.service-header {
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
 /*
 
 The Timeline is divided into the following hierarchy:

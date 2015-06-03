@@ -292,6 +292,7 @@ img {
 h2,
 h3,
 h4,
+h5,
 h6 {
   font-family: inherit;
   font-weight: 500;
@@ -306,6 +307,7 @@ h3 {
 }
 
 h4,
+h5,
 h6 {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -321,6 +323,10 @@ h3 {
 
 h4 {
   font-size: 18px;
+}
+
+h5 {
+  font-size: 14px;
 }
 
 h6 {
@@ -655,6 +661,10 @@ input[type=checkbox]:focus {
   position: absolute;
   margin-top: 4px \9;
   margin-left: -20px;
+}
+
+.checkbox+.checkbox {
+  margin-top: -5px;
 }
 
 .input-sm {
@@ -2116,6 +2126,19 @@ a.list-group-item-danger.active:focus {
   border-color: #a94442;
 }
 
+.panel {
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.panel-body {
+  padding: 15px;
+}
+
 .panel-heading>.dropdown .dropdown-toggle {
   color: inherit;
 }
@@ -2130,6 +2153,10 @@ a.list-group-item-danger.active:focus {
 
 .panel-group .panel-footer+.panel-collapse .panel-body {
   border-bottom: 1px solid #ddd;
+}
+
+.panel-default {
+  border-color: #ddd;
 }
 
 .panel-default>.panel-heading+.panel-collapse>.panel-body {
@@ -2244,7 +2271,9 @@ button.close {
 .navbar-header:before,
 .navbar-header:after,
 .navbar-collapse:before,
-.navbar-collapse:after {
+.navbar-collapse:after,
+.panel-body:before,
+.panel-body:after {
   display: table;
   content: " ";
 }
@@ -2255,7 +2284,8 @@ button.close {
 .nav:after,
 .navbar:after,
 .navbar-header:after,
-.navbar-collapse:after {
+.navbar-collapse:after,
+.panel-body:after {
   clear: both;
 }
 
@@ -2702,6 +2732,7 @@ a:focus {
 h2,
 h3,
 h4,
+h5,
 h6 {
   font-family: inherit;
   font-weight: 700;
@@ -2716,6 +2747,7 @@ h3 {
 }
 
 h4,
+h5,
 h6 {
   margin-top: 13.5px;
   margin-bottom: 13.5px;
@@ -2735,6 +2767,10 @@ h3 {
 
 h4 {
   font-size: 26px;
+}
+
+h5 {
+  font-size: 24px;
 }
 
 h6 {
@@ -3449,6 +3485,10 @@ fieldset[disabled] .input-group-btn .btn-default.active {
   color: #ffffff;
   font-size: 22px;
   z-index: 10;
+}
+
+.checkbox + .checkbox {
+  margin-top: 10px;
 }
 
 .bootstrap-tagsinput .twitter-typeahead .tt-dropdown-menu {
@@ -5439,12 +5479,24 @@ fieldset[disabled] .navbar-inverse .navbar-btn.active {
   height: 100% !important;
 }
 
+.panel {
+  margin-bottom: 27px;
+  background-color: #ffffff;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  box-shadow: none;
+}
+
 .panel-group .panel-heading + .panel-collapse > .panel-body {
   border-top: 2px solid #bdc3c7;
 }
 
 .panel-group .panel-footer + .panel-collapse .panel-body {
   border-bottom: 2px solid #bdc3c7;
+}
+
+.panel-default {
+  border-color: #bdc3c7;
 }
 
 .panel-default > .panel-heading + .panel-collapse > .panel-body {
@@ -5547,6 +5599,10 @@ input.todo-search-field:-ms-input-placeholder {
 
 .prl {
   padding-right: 20px !important;
+}
+
+.pbm {
+  padding-bottom: 10px !important;
 }
 
 .pbl {
@@ -5824,6 +5880,34 @@ div.role-contents {
 
 div.role-profile {
   padding-left: 10px;
+}
+
+/* Styling for the services configuration page */
+
+img.service-logo {
+  float: left;
+  max-height: 46px;
+  max-width: 46px;
+}
+
+div.service-block {
+  margin-left: 70px;
+  margin-right: 95px;
+  display: block;
+}
+
+p.service-description {
+  margin-bottom: 0px;
+}
+
+form.service-button {
+  margin-top: 8px;
+  float: right;
+}
+
+.service-header {
+  margin-bottom: 0px;
+  margin-top: 0px;
 }
 
 /*

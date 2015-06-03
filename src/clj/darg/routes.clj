@@ -16,6 +16,7 @@
             [darg.controller.team.services.github :as github]
             [darg.controller.user :as user]
             [darg.controller.user.email-confirmation :as conf]
+            [darg.controller.user.services.github :as user-gh]
             [darg.controller.oauth.github :as gh-oauth]
             [darg.middleware.authentication :as auth-middleware]
             [ring.middleware.basic-authentication :refer
@@ -82,19 +83,22 @@
   (DELETE "/api/v1/team/:team_id/user/:user_id"  request (role/delete! request))
 
   (GET    "/api/v1/team/:team_id/services/github" 
-       request (github/fetch request))
+       request (github/fetch request)) ;; TODO: test this
 
   (POST   "/api/v1/user"                    request (user/create! request))
   (GET    "/api/v1/user/:id"                request (user/get request))
   (POST   "/api/v1/user/:id"                request (user/update! request))
 
   (POST   "/api/v1/user/:id/email"          request (conf/create! request))
-  (POST   "/api/v1/user/:id/email/:token"   request (conf/confirm! request)))
+  (POST   "/api/v1/user/:id/email/:token"   request (conf/confirm! request))
+  
+  (GET    "/api/v1/user/services/github/repos"
+       request (user-gh/fetch-repos request))) ;; TODO: test this
 
 (defroutes routes
   site-routes
   api-routes
   (ANY    "/debug"                          request (debug request))
-  (GET    "/oauth/github/login"             request (gh-oauth/redirect request)) 
+  (GET    "/oauth/github/login/:team_id"    request (gh-oauth/redirect request)) 
   (GET    "/oauth/github"                   request (gh-oauth/callback request)) 
   (route/resources "/"))

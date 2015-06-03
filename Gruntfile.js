@@ -117,7 +117,7 @@ module.exports = function(grunt) {
       },
       web: {
         files: [
-          "./resources/public/templates/*.html", 
+          "./resources/public/templates/**/*.html", 
           "./resources/build/raw/index.html", 
           "./src/less/**/*.less"
         ],

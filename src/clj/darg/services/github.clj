@@ -4,7 +4,8 @@
    Most functions take a Darg user that should have a :github_access_token
    key."
   (:require [darg.model.user :as user]
-            [tentacles.core :as t]))
+            [tentacles.core :as t]
+            [tentacles.repos :as repos]))
 
 (defn- auth-map
   [user]
@@ -15,12 +16,14 @@
 (defn user-repos
   "Retrieve this user's repositories."
   [user]
-  (tentacles.repos/repos (auth-map user)))
+  (repos/repos (auth-map user)))
 
 (defn repos
   "Retrieve all repos this user is involved with, including org repos they
    have access to."
   [user]
-  (tentacles.repos/repos
+  (repos/repos
     (merge (auth-map user)
-           {:accept "application/vnd.github.moondragon+json"})))
+           {:accept "application/vnd.github.moondragon+json"
+            :per-page 100
+            :all-pages true})))

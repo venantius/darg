@@ -1,6 +1,7 @@
 (ns darg.controller.auth
   (:require [clojure.tools.logging :as log]
             [darg.api.responses :refer [bad-request ok]]
+            [darg.cookies :refer [authed-cookies]]
             [darg.model.user :as user]
             [darg.model.password-reset-token :as token]))
 
@@ -20,12 +21,11 @@
        :session {:authenticated false}
        :status 401}
       :else
-      (let [id (:id (user/fetch-one-user {:email email}))]
-        {:body "Successfully authenticated"
-         :cookies {"logged-in" {:value true :path "/"}
-                   "id" {:value id :path "/"}}
-         :session {:authenticated true :id id :email email}
-         :status 200}))))
+      (let [user (user/fetch-one-user {:email email})]
+        (merge
+          {:body "Successfully authenticated"
+           :status 200}
+          (authed-cookies user))))))
 
 (defn logout
   "/api/v1/logout
@@ -77,11 +77,11 @@
       (nil? token)
       (bad-request "Invalid token.")
       :else
-      (let [{:keys [email id] :as user} (user/fetch-one-user {:id (:user_id token)})]
-        (user/update-user! id
-                      {:password (user/encrypt-password password)})
-        {:status 200
-         :cookies {"logged-in" {:value true :path "/"}
-                   "id" {:value id :path "/"}}
-         :session {:authenticated true :id id :email email}
-         :body "Okay!"}))))
+      (let [user (user/fetch-one-user {:id (:user_id token)})]
+        (user/update-user! 
+          (:id user)
+                    {:password (user/encrypt-password password)})
+        (merge
+          {:status 200
+           :body "Okay!"}
+          (authed-cookies user))))))
