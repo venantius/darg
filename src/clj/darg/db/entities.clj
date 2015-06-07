@@ -1,4 +1,10 @@
 (ns darg.db.entities
+  "Namespace detailing relationships between database entities (tables).
+   
+   Note that in some cases relationships are set as 'has-many' even though
+   the actual data relationship is 'has-one'; this has been done to take
+   advantage of Korma's nesting of the associated table rather than
+   the flattened results set."
   (:require [clj-time.core :as t]
             [clj-time.coerce :as c]
             [clojure.tools.logging :as log]
@@ -15,13 +21,15 @@
  github-oauth-state
  github-team-settings
  github-repo
- github-team-repo)
+ github-team-repo
+ github-user)
 
 (defentity user
   (table :darg.user :user)
   (entity-fields :id :name :email)
   (has-many task)
   (has-many role)
+  (has-one github-user {:fk :darg_user_id})
   (has-one github-access-token {:fk :darg_user_id})
   (has-many github-oauth-state {:fk :darg_user_id})
   (many-to-many team :darg.role))
@@ -34,6 +42,7 @@
                t)))
   (has-many task)
   (has-many role)
+  (has-many github-team-settings {:fk :darg_team_id})
   (has-many github-oauth-state {:fk :darg_team_id})
   (has-many github-team-repo {:fk :darg_team_id})
   (many-to-many user :darg.role))
@@ -55,6 +64,7 @@
 (defentity github-access-token
   (table :github.access_token :github_access_token)
   (belongs-to user)
+  (belongs-to github-user)
   (has-many github-oauth-state {:fk :access_token_id}))
 
 (defentity team-invitation
@@ -92,3 +102,8 @@
   (table :github.team_repo :github_team_repo)
   (belongs-to github-repo)
   (belongs-to team))
+
+(defentity github-user
+  (table :github.user :github_user)
+  (belongs-to user)
+  (has-one github-access-token))

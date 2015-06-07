@@ -979,13 +979,20 @@
 
       <h4 class="pbm">Integrations</h4>
       <div class="panel panel-default">
-
       <div class="panel-body">
         <img class="service-logo" src="/images/github/mark.png">
         <form class="service-button">
-          <button class="btn btn-primary" ng-click="Team.goToGitHubSettingsPage(Team.currentTeam)">
+          <button class="btn btn-primary"
+            ng-show="Team.hasGitHubIntegration(Team.currentTeam)"
+            ng-click="Team.goToGitHubSettingsPage(Team.currentTeam)">
             <span class="octicon octicon-gear"></span>
             &nbsp;Configure
+          </button>
+          <button class="btn btn-primary"
+            ng-hide="Team.hasGitHubIntegration(Team.currentTeam)"
+            ng-click="Team.addGitHubIntegration(Team.currentTeam)">
+            <span class="octicon octicon-plus"></span>
+            &nbsp;Add
           </button>
         </form>
         <div class="service-block">
@@ -1013,21 +1020,26 @@
       <p class="lead">
         GitHub provides powerful collaboration, code review, and code management for open source and private projects.
       </p>
-      <!-- if not authorized -->
+      {{User}}
+      <br>
+      {{GitHub}}
       <h6>Authentication</h6>
-      <p>
-        <div class="form-group">
-          <button class="btn btn-primary" ng-click="GitHub.oauthWithGitHub(GitHub.currentTeam.id)">
-            <span class="octicon octicon-octoface"></span>
-            &nbsp;OAuth with GitHub
-          </button>
-        </div>
-      </p>
+
+      {{User.isAuthedWithGitHub()}}
+
+      <!-- if not authorized -->
+      <div class="form-group" ng-hide="GitHub.isAuthenticated">
+        <button class="btn btn-primary" ng-click="GitHub.oauthWithGitHub(GitHub.currentTeam.id)">
+          <span class="octicon octicon-octoface"></span>
+          &nbsp;OAuth with GitHub
+        </button>
+      </div>
+
+      <!-- if authenticated -->
+      <div ng-show="GitHub.isAuthenticated()">
 
       <!-- if authorized -->
-
       <h6>Repositories</h6>
-
       <div ng-show=GitHub.isAuthenticated()>
         <p>
           Select your repos here
@@ -1054,7 +1066,9 @@
           </h6>
 
           <label class="checkbox">
-            <input type="checkbox" class="custom-checkbox">
+            <input type="checkbox" 
+            class="custom-checkbox"
+            ng-model="GitHub.currentTeam.github_team_settings.commits">
             <span class="icons">
               <span class="icon-unchecked">
               </span>
@@ -1065,7 +1079,9 @@
           </label>
 
           <label class="checkbox">
-            <input type="checkbox" class="custom-checkbox">
+            <input type="checkbox" 
+            class="custom-checkbox"
+            ng-model="GitHub.currentTeam.github_team_settings.commit_comments">
             <span class="icons">
               <span class="icon-unchecked">
               </span>
@@ -1084,7 +1100,9 @@
           </h6>
           
           <label class="checkbox">
-            <input type="checkbox" class="custom-checkbox">
+            <input type="checkbox" 
+            class="custom-checkbox"
+            ng-model="GitHub.currentTeam.github_team_settings.pull_requests">
             <span class="icons">
               <span class="icon-unchecked">
               </span>
@@ -1095,7 +1113,9 @@
           </label>
 
           <label class="checkbox">
-            <input type="checkbox" class="custom-checkbox">
+            <input type="checkbox" 
+            class="custom-checkbox"
+            ng-model="GitHub.currentTeam.github_team_settings.issues">
             <span class="icons">
               <span class="icon-unchecked">
               </span>
@@ -1106,7 +1126,9 @@
           </label>
 
           <label class="checkbox">
-            <input type="checkbox" class="custom-checkbox">
+            <input type="checkbox" 
+            class="custom-checkbox"
+            ng-model="GitHub.currentTeam.github_team_settings.pr_issue_comments">
             <span class="icons">
               <span class="icon-unchecked">
               </span>

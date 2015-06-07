@@ -13,10 +13,10 @@
             [darg.controller.task :as task]
             [darg.controller.team :as team]
             [darg.controller.team.role :as role]
-            [darg.controller.team.services.github :as github]
+            [darg.controller.team.service.github :as github]
             [darg.controller.user :as user]
             [darg.controller.user.email-confirmation :as conf]
-            [darg.controller.user.services.github :as user-gh]
+            [darg.controller.user.service.github :as user-gh]
             [darg.controller.oauth.github :as gh-oauth]
             [darg.middleware.authentication :as auth-middleware]
             [ring.middleware.basic-authentication :refer
@@ -82,8 +82,8 @@
   (POST   "/api/v1/team/:team_id/user/:user_id"  request (role/update! request))
   (DELETE "/api/v1/team/:team_id/user/:user_id"  request (role/delete! request))
 
-  (GET    "/api/v1/team/:team_id/services/github" 
-       request (github/fetch request)) ;; TODO: test this
+  (POST   "/api/v1/team/:team_id/services/github" 
+       request (github/create! request)) ;; TODO: test this
 
   (POST   "/api/v1/user"                    request (user/create! request))
   (GET    "/api/v1/user/:id"                request (user/get request))

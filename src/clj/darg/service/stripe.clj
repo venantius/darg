@@ -1,4 +1,4 @@
-(ns darg.services.stripe
+(ns darg.service.stripe
   ;; TODO: We probably don't need all of these.
   (:require  [clj-stripe.util :as util]
              [clj-stripe.common :as common]

@@ -8,6 +8,22 @@ darg.service('github', function($http, $q, $window) {
     $window.location.href = url;
   };
 
+  self.addGitHubIntegration = function(team) {
+    var deferred = $q.defer();
+    url = "/api/v1/team/" + team.id + "/services/github"
+    $http({
+      method: "post",
+      url: url
+    })
+    .success(function(data) {
+      deferred.resolve(data);
+    })
+    .error(function(data) {
+      deferred.reject(data);
+    });
+    return deferred.promise;
+  };
+
   self.getUsersRepoList = function() {
     var deferred = $q.defer();
     url = "/api/v1/user/services/github/repos"

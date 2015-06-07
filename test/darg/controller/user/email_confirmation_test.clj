@@ -7,7 +7,7 @@
 (with-db-fixtures)
 
 (deftest we-can-confirm-a-users-email
-  (with-redefs [darg.services.mailgun/send-message (constantly true)]
+  (with-redefs [darg.service.mailgun/send-message (constantly true)]
     (let [user (user/fetch-one-user {:id 4})]
       (is (false? (:confirmed_email user)))
       (let [request {:user {:id 4}

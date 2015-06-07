@@ -1,7 +1,7 @@
-(ns ^:integration darg.services.mailgun-test
+(ns ^:integration darg.service.mailgun-test
   (:require [clojure.test :refer :all]
             [darg.fixtures.email :as email-fixtures]
-            [darg.services.mailgun :as mailgun]))
+            [darg.service.mailgun :as mailgun]))
 
 (def test-text-message
   {:from "test@mail.darg.io"

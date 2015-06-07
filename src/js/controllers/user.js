@@ -59,6 +59,14 @@ darg.controller('DargUserCtrl',
         $location.path('/signup');
     };
 
+    /* 
+     * Utility functions
+     */
+
+    self.isAuthedWithGitHub = function() {
+      return ($cookieStore.get('github') == true);
+    };
+
     this.sendEmailConfirmation = user.sendEmailConfirmation;
 
     /* Watch for the changes we need to redirect someone from the homepage */

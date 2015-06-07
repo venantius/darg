@@ -1,4 +1,4 @@
-(ns darg.services.mailgun
+(ns darg.service.mailgun
   "Mailgun integration library"
   (:require [cheshire.core :as json]
             [clj-http.client :as client]

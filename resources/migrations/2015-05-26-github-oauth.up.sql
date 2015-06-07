@@ -40,3 +40,11 @@ CREATE TABLE github.team_repo (
     darg_team_id    INTEGER     REFERENCES darg.team(id) ON DELETE CASCADE,
     repo_id         INTEGER     REFERENCES github.repo(id) ON DELETE CASCADE
 );
+
+CREATE TABLE github.user (
+    id              SERIAL  PRIMARY KEY,
+    darg_user_id    INTEGER UNIQUE NOT NULL REFERENCES darg.user(id) ON DELETE CASCADE,
+    access_token_id INTEGER REFERENCES github.access_token(id) ON DELETE SET NULL,
+    login           TEXT    NOT NULL
+);
+

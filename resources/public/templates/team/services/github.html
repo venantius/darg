@@ -9,21 +9,26 @@
       <p class="lead">
         GitHub provides powerful collaboration, code review, and code management for open source and private projects.
       </p>
-      <!-- if not authorized -->
+      {{User}}
+      <br>
+      {{GitHub}}
       <h6>Authentication</h6>
-      <p>
-        <div class="form-group">
-          <button class="btn btn-primary" ng-click="GitHub.oauthWithGitHub(GitHub.currentTeam.id)">
-            <span class="octicon octicon-octoface"></span>
-            &nbsp;OAuth with GitHub
-          </button>
-        </div>
-      </p>
+
+      {{User.isAuthedWithGitHub()}}
+
+      <!-- if not authorized -->
+      <div class="form-group" ng-hide="GitHub.isAuthenticat">
+        <button class="btn btn-primary" ng-click="GitHub.oauthWithGitHub(GitHub.currentTeam.id)">
+          <span class="octicon octicon-octoface"></span>
+          &nbsp;OAuth with GitHub
+        </button>
+      </div>
+
+      <!-- if authenticated -->
+      <div ng-show="GitHub.isAuthenticated()">
 
       <!-- if authorized -->
-
       <h6>Repositories</h6>
-
       <div ng-show=GitHub.isAuthenticated()>
         <p>
           Select your repos here
@@ -50,7 +55,9 @@
           </h6>
 
           <label class="checkbox">
-            <input type="checkbox" class="custom-checkbox">
+            <input type="checkbox" 
+            class="custom-checkbox"
+            ng-model="GitHub.currentTeam.github_team_settings.commits">
             <span class="icons">
               <span class="icon-unchecked">
               </span>
@@ -61,7 +68,9 @@
           </label>
 
           <label class="checkbox">
-            <input type="checkbox" class="custom-checkbox">
+            <input type="checkbox" 
+            class="custom-checkbox"
+            ng-model="GitHub.currentTeam.github_team_settings.commit_comments">
             <span class="icons">
               <span class="icon-unchecked">
               </span>
@@ -80,7 +89,9 @@
           </h6>
           
           <label class="checkbox">
-            <input type="checkbox" class="custom-checkbox">
+            <input type="checkbox" 
+            class="custom-checkbox"
+            ng-model="GitHub.currentTeam.github_team_settings.pull_requests">
             <span class="icons">
               <span class="icon-unchecked">
               </span>
@@ -91,7 +102,9 @@
           </label>
 
           <label class="checkbox">
-            <input type="checkbox" class="custom-checkbox">
+            <input type="checkbox" 
+            class="custom-checkbox"
+            ng-model="GitHub.currentTeam.github_team_settings.issues">
             <span class="icons">
               <span class="icon-unchecked">
               </span>
@@ -102,7 +115,9 @@
           </label>
 
           <label class="checkbox">
-            <input type="checkbox" class="custom-checkbox">
+            <input type="checkbox" 
+            class="custom-checkbox"
+            ng-model="GitHub.currentTeam.github_team_settings.pr_issue_comments">
             <span class="icons">
               <span class="icon-unchecked">
               </span>

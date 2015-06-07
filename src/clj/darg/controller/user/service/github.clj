@@ -1,9 +1,9 @@
-(ns darg.controller.user.services.github
+(ns darg.controller.user.service.github
   "Handlers for GitHub-related user functions"
   (:require [clojure.tools.logging :as log]
             [darg.api.responses :as responses]
             [darg.model.user :as user]
-            [darg.services.github :as github]))
+            [darg.service.github :as github]))
 
 (defn fetch-repos
   [{:keys [params user] :as request}]

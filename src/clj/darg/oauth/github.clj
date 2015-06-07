@@ -9,6 +9,7 @@
             [cheshire.core :as json]
             [clojure.tools.logging :as log]
             [darg.model.github.access-token :as access-token]
+            [darg.model.github.team-settings :as team-settings]
             [darg.api.responses :as responses]
             [environ.core :as env]
             [clj-http.client :as http]
@@ -38,25 +39,6 @@
 
 ;; Parses Github OAuth response and updates tables
 
-(defn insert-and-link-github-user
-  "This function is usually called from darg.oauth.github/callback. 
-   
-   It takes a Github OAuth response and darg userid, and updates the database 
-   with the access-token and related Github user information. The Github user 
-   and Github token are then linked to the provided userid."
-  [userid body]
-  (let [access-token (:access_token 5)]
-    (access-token/create-github-access-token! {:gh_token access-token})
-    ;Link token to github user
-    #_(let [github-user (assoc-in (gh-user/github-api-get-current-user access-token)
-                                [:github_token_id]
-                                (access-token/fetch-one-github-access-token {:gh_token access-token}))
-          github-user-id (:id github-user)]
-      ;if a github user already exists, update it if not, create it
-      (if (empty? (gh-user/fetch-github-user-by-id github-user-id))
-        (gh-user/create-github-user! github-user)
-        (gh-user/update-github-user! github-user-id github-user)))))
-
 (defn access-token-exchange
   "POST to GitHub with the code from the callback."
   [code]
@@ -66,6 +48,8 @@
                                             :client_id client-id
                                             :client_secret client-secret}})]
     (-> response :body (json/parse-string true))))
+
+;; Everything after this is unused / depracated
 
 (defn delete-auth-token!
   [username password id]

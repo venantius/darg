@@ -43,7 +43,7 @@
       (not (user/user-in-team? user-id (:id team)))
       (unauthorized "You are not a member of this team.")
       :else
-      (ok (team/fetch-one-team team)))))
+      (ok (team/fetch-one-with-services team)))))
 
 (defn update!
   "/api/v1/team/:id

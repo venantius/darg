@@ -5,7 +5,7 @@
             [darg.db.entities :as db]
             [darg.model :refer [defmodel]]
             [darg.model.password-reset-token :as password-reset-token]
-            [darg.services.mailgun :as mailgun]
+            [darg.service.mailgun :as mailgun]
             [environ.core :as env]
             [korma.core :refer :all]
             [net.cgrand.enlive-html :as html]
@@ -113,6 +113,8 @@
                     :send_daily_email :send_digest_email)
             (with db/team
                   (order :team.name :asc))
+            (with db/github-user
+              (fields [:login :github_login]))
             (where params))))
   ([params team-ids]
    (first
@@ -131,6 +133,8 @@
             (with db/team
                   (where {:team.id [in team-ids]})
                   (order :team.name :asc))
+            (with db/github-user
+              (fields [:login :github_login]))
             (where params)))))
 
 (defn fetch-one-with-github-access-token

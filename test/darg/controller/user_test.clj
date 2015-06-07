@@ -12,7 +12,7 @@
 (with-db-fixtures)
 
 (deftest i-can-signup-and-it-wrote-to-the-database-and-cookies
-  (with-redefs [darg.services.mailgun/send-message (constantly true)]
+  (with-redefs [darg.service.mailgun/send-message (constantly true)]
     (let [auth-response (server/app (mock-request/request
                                      :post "/api/v1/user"
                                      {:email "dummy@darg.io"
@@ -26,14 +26,14 @@
                 (get (:headers auth-response) "Set-Cookie"))))))
 
 (deftest ^:integration signup-sends-confirmation-email
-  (with-redefs [darg.services.mailgun/send-message (constantly true)]
-    (bond/with-spy [darg.services.mailgun/send-message]
+  (with-redefs [darg.service.mailgun/send-message (constantly true)]
+    (bond/with-spy [darg.service.mailgun/send-message]
       (let [auth-response (server/app (mock-request/request
                                        :post "/api/v1/user"
                                        {:email "dummy@darg.io"
                                         :password "test"
                                         :name "Crash dummy"}))]
-        (is (= 1 (-> darg.services.mailgun/send-message bond/calls count)))))))
+        (is (= 1 (-> darg.service.mailgun/send-message bond/calls count)))))))
 
 (deftest i-cant-write-the-same-thing-twice
   (let [user (select-keys model-fixtures/test-user-4
@@ -57,7 +57,7 @@
                    (get (:headers auth-response) "Set-Cookie"))))))
 
 (deftest update-user-works
-  (with-redefs [darg.services.mailgun/send-message (constantly true)]
+  (with-redefs [darg.service.mailgun/send-message (constantly true)]
     (let [params {:email "test-user5@darg.io"
                   :name "Fiona the Human"
                   :id "4"

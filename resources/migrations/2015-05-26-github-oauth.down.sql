@@ -1,3 +1,4 @@
+DROP TABLE github.user;
 DROP TABLE github.team_repo;
 DROP TABLE github.repo;
 DROP TABLE github.team_settings;

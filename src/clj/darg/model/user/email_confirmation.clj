@@ -3,7 +3,7 @@
             [darg.email.template :as template]
             [darg.model :refer [defmodel]]
             [darg.model.email :refer [from-darg]]
-            [darg.services.mailgun :as mailgun]
+            [darg.service.mailgun :as mailgun]
             [darg.util.token :as token]
             [korma.core :refer :all]))
 

@@ -10,7 +10,7 @@
             [darg.model.team :as team]
             [darg.model.user :as user]
             [darg.util.datetime :as dt]
-            [darg.services.mailgun :as mailgun]))
+            [darg.service.mailgun :as mailgun]))
 
 (defn within-the-hour?
   "Is the provided datetime within an hour of the desired target hour?"

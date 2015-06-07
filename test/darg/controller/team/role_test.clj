@@ -9,7 +9,7 @@
 (with-db-fixtures)
 
 (deftest create!-makes-a-role-if-the-user-exists
-  (with-redefs [darg.services.mailgun/send-message (constantly nil)]
+  (with-redefs [darg.service.mailgun/send-message (constantly nil)]
     (is (nil? (role/fetch-one-role {:team_id 2 :user_id 7})))
     (let [request {:request-method :post
                    :params {:team_id "2" :email "venantius@gmail.com"}
@@ -22,7 +22,7 @@
                                        :user_id 7}))))))
 
 (deftest create!-makes-an-invite-token
-  (with-redefs [darg.services.mailgun/send-message (constantly nil)]
+  (with-redefs [darg.service.mailgun/send-message (constantly nil)]
     (is (nil? (role/fetch-one-role {:team_id 2 :user_id 7})))
     (let [request {:request-method :post
                    :params {:team_id "2" :email "willied@gmail.com"}
