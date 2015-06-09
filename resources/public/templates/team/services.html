@@ -12,13 +12,13 @@
         <img class="service-logo" src="/images/github/mark.png">
         <form class="service-button">
           <button class="btn btn-primary"
-            ng-show="Team.hasGitHubIntegration(Team.currentTeam)"
+            ng-show="Team.github.hasIntegration(Team.currentTeam)"
             ng-click="Team.goToGitHubSettingsPage(Team.currentTeam)">
             <span class="octicon octicon-gear"></span>
             &nbsp;Configure
           </button>
           <button class="btn btn-primary"
-            ng-hide="Team.hasGitHubIntegration(Team.currentTeam)"
+            ng-hide="Team.github.hasIntegration(Team.currentTeam)"
             ng-click="Team.addGitHubIntegration(Team.currentTeam)">
             <span class="octicon octicon-plus"></span>
             &nbsp;Add

@@ -31,7 +31,7 @@ darg.controller('DargTeamGitHubCtrl',
       console.log(data)
     });
 
-    self.oauthWithGitHub = github.oauthWithGitHub;
+    self.github = github;
 
     /*
      * Data functions
@@ -41,16 +41,18 @@ darg.controller('DargTeamGitHubCtrl',
      * Utility functions
      */
 
-    self.isAuthenticated = function() {
-      return ($cookieStore.get('github') == true)
-    }
 
     /* Watch what team we should be looking at */
     $scope.$watch(function() {
         return team.currentTeam
     }, function(newValue, oldValue) {
-        if (newValue != {}) {
-          self.currentTeam = team.currentTeam;
+        if (newValue.id != null) {
+          self.currentTeam = newValue;
+
+          github.fetchIntegration(newValue)
+          .then(function(data) {
+            self.github.settings = data;
+          });
         }
     });
 }]);

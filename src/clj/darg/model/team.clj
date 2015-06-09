@@ -35,10 +35,14 @@
   "Fetch a single team, with its associated services."
   [team]
   (let [team (first
-               (select db/team
-                       (where team)
-                       (with db/github-team-settings)))]
-    (assoc
-      team
-      :github_team_settings
-      (first (:github_team_settings team)))))
+              (select db/team
+                      (where team)
+                      (with 
+                       db/github-team-settings
+                       (fields [:id :github]))))]
+    (-> team
+        (merge
+         (if (:github team)
+           {:services {:github true}}
+           {:services {:github false}}))
+        (dissoc :github))))

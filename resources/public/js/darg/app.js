@@ -78,7 +78,7 @@ darg.config(['$routeProvider', '$locationProvider',
         .when('/team/:teamId/services/github', {
             templateUrl: '/templates/team/services/github.html',
             controller: 'DargTeamGitHubCtrl',
-            controllerAs: 'GitHub'
+            controllerAs: 'Team'
         })
         .when('/team/:teamId/timeline', {
             templateUrl: '/templates/team/timeline.html',
@@ -776,7 +776,7 @@ darg.controller('DargTeamServicesCtrl',
      */
 
     self.addGitHubIntegration = function(team) {
-      github.addGitHubIntegration(team)
+      github.createIntegration(team)
       .then(function(data) {
         self.goToGitHubSettingsPage(team)
       }, function(data) {
@@ -788,10 +788,7 @@ darg.controller('DargTeamServicesCtrl',
      * Utility functions
      */
 
-    self.hasGitHubIntegration = function(team) {
-      return (team.github_team_settings != null &&
-              Object.keys(team.github_team_settings).length > 0);
-    };
+    self.github = github;
 
     self.goToGitHubSettingsPage = function(team) {
       url = '/team/' + team.id + '/services/github'
@@ -841,7 +838,7 @@ darg.controller('DargTeamGitHubCtrl',
       console.log(data)
     });
 
-    self.oauthWithGitHub = github.oauthWithGitHub;
+    self.github = github;
 
     /*
      * Data functions
@@ -851,16 +848,18 @@ darg.controller('DargTeamGitHubCtrl',
      * Utility functions
      */
 
-    self.isAuthenticated = function() {
-      return ($cookieStore.get('github') == true)
-    }
 
     /* Watch what team we should be looking at */
     $scope.$watch(function() {
         return team.currentTeam
     }, function(newValue, oldValue) {
-        if (newValue != {}) {
-          self.currentTeam = team.currentTeam;
+        if (newValue.id != null) {
+          self.currentTeam = newValue;
+
+          github.fetchIntegration(newValue)
+          .then(function(data) {
+            self.github.settings = data;
+          });
         }
     });
 }]);
@@ -1301,18 +1300,32 @@ darg.service('github', function($http, $q, $window) {
 
   var self = this;
 
-  self.oauthWithGitHub = function(team_id) {
-    url = "/oauth/github/login/" + team_id
+  self.settings = {};
+
+  self.hasIntegration = function(team) {
+    return (team.services != null && 
+            team.services.github == true)
+  };
+
+  self.hasAuth = function(gh_settings) {
+    return (gh_settings.login != null)
+  };
+
+  self.oauth = function(team) {
+    url = "/oauth/github/login/" + team.id
     console.log(url);
     $window.location.href = url;
   };
 
-  self.addGitHubIntegration = function(team) {
+  self.createIntegration = function(team) {
     var deferred = $q.defer();
-    url = "/api/v1/team/" + team.id + "/services/github"
+    url = "/api/v1/team/" + team.id + "/services"
+    params = {"type": "github"}
     $http({
       method: "post",
-      url: url
+      url: url,
+      data: $.param(params),
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     })
     .success(function(data) {
       deferred.resolve(data);
@@ -1322,6 +1335,48 @@ darg.service('github', function($http, $q, $window) {
     });
     return deferred.promise;
   };
+
+  self.fetchIntegration = function(team) {
+    var deferred = $q.defer();
+    url = "/api/v1/team/" + team.id + "/services/github"
+    $http({
+      method: "get",
+      url: url
+    })
+    .success(function(data) {
+      deferred.resolve(data);
+    })
+    .error(function(data) {
+      console.log(data);
+      deferred.reject(data);
+    });
+    return deferred.promise;
+  };
+
+  self.updateIntegration = function(team, params) {
+    var deferred = $q.defer();
+    url = "/api/v1/team/" + team.id + "/services/github"
+    $http({
+      method: "patch",
+      url: url,
+      data: $.param(params),
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    })
+    .success(function(data) {
+      deferred.resolve(data);
+    })
+    .error(function(data) {
+      deferred.reject(data);
+    });
+    return deferred.promise;
+  };
+
+  self.removeAuth = function(team) {
+    params = {"access_token_id": null}
+    self.updateIntegration(team, params)
+    self.settings.login = null;
+    self.settings.access_token_id = null;
+  }
 
   self.getUsersRepoList = function() {
     var deferred = $q.defer();

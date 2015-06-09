@@ -25,7 +25,7 @@ darg.controller('DargTeamServicesCtrl',
      */
 
     self.addGitHubIntegration = function(team) {
-      github.addGitHubIntegration(team)
+      github.createIntegration(team)
       .then(function(data) {
         self.goToGitHubSettingsPage(team)
       }, function(data) {
@@ -37,10 +37,7 @@ darg.controller('DargTeamServicesCtrl',
      * Utility functions
      */
 
-    self.hasGitHubIntegration = function(team) {
-      return (team.github_team_settings != null &&
-              Object.keys(team.github_team_settings).length > 0);
-    };
+    self.github = github;
 
     self.goToGitHubSettingsPage = function(team) {
       url = '/team/' + team.id + '/services/github'

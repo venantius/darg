@@ -5,7 +5,7 @@
    end in a slash is the site root."
   (:require [clojure.tools.logging :as log]
             [clout.core :as clout]
-            [compojure.core :refer [defroutes context rfn GET POST ANY DELETE]]
+            [compojure.core :refer [defroutes context rfn GET PATCH POST ANY DELETE]]
             [compojure.route :as route]
             [darg.controller.auth :as auth]
             [darg.controller.darg :as darg]
@@ -13,6 +13,7 @@
             [darg.controller.task :as task]
             [darg.controller.team :as team]
             [darg.controller.team.role :as role]
+            [darg.controller.team.service :as service]
             [darg.controller.team.service.github :as github]
             [darg.controller.user :as user]
             [darg.controller.user.email-confirmation :as conf]
@@ -24,13 +25,14 @@
             [ring.util.response :refer [resource-response]]))
 
 (defn darg-spa
- "Our single page app." 
+ "The Angular.js single page app." 
   []
   (resource-response "index.html" {:root "public"}))
 
 (defn debug [request]
   (log/info (str request))
-  {:body (str request)})
+  {:status 200
+   :body (str request)})
 
 (def site-paths
   ["/"
@@ -82,8 +84,13 @@
   (POST   "/api/v1/team/:team_id/user/:user_id"  request (role/update! request))
   (DELETE "/api/v1/team/:team_id/user/:user_id"  request (role/delete! request))
 
-  (POST   "/api/v1/team/:team_id/services/github" 
-       request (github/create! request)) ;; TODO: test this
+  (POST   "/api/v1/team/:team_id/services" 
+       request (service/create! request)) ;; TODO: test this
+
+  (GET    "/api/v1/team/:team_id/services/github" 
+       request (github/fetch request)) ;; TODO: test this
+  (PATCH  "/api/v1/team/:team_id/services/github" 
+       request (github/update! request))  ;; TODO: test this
 
   (POST   "/api/v1/user"                    request (user/create! request))
   (GET    "/api/v1/user/:id"                request (user/get request))
